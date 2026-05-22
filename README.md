@@ -29,3 +29,4 @@ Shared:
 - `widget-loop.js` — shared auto-play / loop / speed helper
 
 Every animated widget supports ⏸ Pause, ▶ Play, and a Speed slider (0.25× – 3×). Each widget auto-plays on page load, narrates each step in a panel below the visualization, and loops continuously until the user pauses.
+# computibility_and_complexity

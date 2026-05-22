@@ -1,0 +1,10 @@
+# Test scaffolding (kept locally, not on the published site)
+_test*.js
+
+# Source document
+*.docx
+
+# OS / editor artifacts
+.DS_Store
+.fuse_hidden*
+*~

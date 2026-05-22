@@ -1,0 +1,1069 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 5 · NP, NP-completeness &amp; the reduction chain</title>
+<link rel="stylesheet" href="styles.css">
+<script src="widget-loop.js"></script>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Module 5 · MIT 18.404J Lectures 14–16 · Sipser §7.3–§7.5</div>
+  <h1>NP, NP-completeness &amp; the reduction chain</h1>
+  <div class="sub">Finding vs. checking a solution — and one problem that, if easy, makes them all easy.</div>
+  <div class="tag">BCS 402 · Dr. Arash Kermani · CUD</div>
+</header>
+
+<nav class="tabs">
+  <a href="index.html">← All modules</a>
+  <a class="active" href="#verifier">1 · Verifiers</a>
+  <a href="#sat">2 · SAT</a>
+  <a href="#cooklevin">3 · Cook–Levin</a>
+  <a href="#chain">4 · Reduction chain</a>
+  <a href="#bigpicture">5 · The map</a>
+  <a href="#exercises">6 · Practice</a>
+</nav>
+
+<div class="wrap">
+
+<!-- ============================================================ -->
+<section id="verifier">
+  <h2>1 · Finding ≪ checking</h2>
+
+  <p>
+    NP is the class of problems where, given a candidate solution (a <em>certificate</em>), we can
+    <strong>verify</strong> it in polynomial time. Finding the certificate may be much harder.
+  </p>
+
+  <div class="widget" id="verifier-vis">
+    <div class="widget-title">Verifier vs. solver — race for 3SAT <span class="pill">Widget 1 · Auto-plays</span></div>
+
+    <div class="controls">
+      <label>Variables n:
+        <input type="range" id="ver-n" min="3" max="8" value="5">
+        <span id="ver-n-label">5</span>
+      </label>
+      <button class="btn play-btn" id="ver-play">⏸ Pause</button>
+      <button class="btn ghost" id="ver-reset">Reset</button>
+      <label class="speed-control">Speed
+        <input type="range" id="ver-speed" min="0.25" max="3" step="0.25" value="1">
+        <span id="ver-speed-label" style="font-family: var(--mono); min-width: 28px;">1×</span>
+      </label>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+      <div>
+        <h4>Solver: brute force (2ⁿ assignments)</h4>
+        <svg id="ver-solver" viewBox="0 0 400 220" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+        <div style="font-family: var(--sans); font-size: 12px; color: var(--muted); margin-top: 4px;">
+          Tested: <b id="ver-solver-count" style="font-family: var(--mono);">0</b>
+        </div>
+      </div>
+      <div>
+        <h4>Verifier: given a witness, check it</h4>
+        <svg id="ver-checker" viewBox="0 0 400 220" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+        <div style="font-family: var(--sans); font-size: 12px; color: var(--muted); margin-top: 4px;">
+          Checks: <b id="ver-checker-count" style="font-family: var(--mono);">0</b>
+        </div>
+      </div>
+    </div>
+
+    <div class="explain-panel" id="ver-explain">
+      <div class="step-num">The race</div>
+      Both panels solve the same instance. The verifier (right) is given the answer and only
+      needs to check it. The solver (left) has to find the answer by searching.
+    </div>
+  </div>
+
+  <div class="key-idea">
+    <strong>NP definition.</strong> A language <span class="math">L ∈ NP</span> iff there is a
+    polynomial-time verifier <span class="math">V</span> such that for every input <span class="math">x</span>,
+    <span class="math">x ∈ L ⇔ ∃c (|c| polynomial in |x|) such that V(x, c) accepts</span>.
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="sat">
+  <h2>2 · SAT — the canonical NP problem</h2>
+
+  <p>
+    <strong>SAT</strong>: given a Boolean formula, is there an assignment that makes it true?
+    Watch a small instance below; click on a variable to flip it and see clauses turn green/red.
+  </p>
+
+  <div class="widget" id="sat-vis">
+    <div class="widget-title">Interactive SAT — click to flip variables <span class="pill">Widget 2</span></div>
+
+    <div class="controls">
+      <label>Formula:
+        <select id="sat-preset">
+          <option value="sat1">(x∨y∨z) ∧ (¬x∨y) ∧ (¬y∨z) — SAT</option>
+          <option value="sat2">(x∨y) ∧ (¬x∨y) ∧ (x∨¬y) ∧ (¬x∨¬y) — UNSAT</option>
+          <option value="sat3">(x∨y∨z) ∧ (¬x∨¬y) ∧ (¬x∨¬z) ∧ (¬y∨¬z) — SAT</option>
+        </select>
+      </label>
+      <button class="btn play-btn" id="sat-auto">▶ Auto-solve (brute)</button>
+      <button class="btn ghost" id="sat-reset">Reset to false</button>
+    </div>
+
+    <div id="sat-vars" style="display: flex; gap: 12px; flex-wrap: wrap; margin: 14px 0;"></div>
+    <div id="sat-clauses" style="display: flex; gap: 10px; flex-wrap: wrap;"></div>
+
+    <div class="explain-panel" id="sat-explain"></div>
+  </div>
+
+  <h3>3-SAT</h3>
+  <p>
+    3-SAT restricts each clause to exactly 3 literals. The class doesn't get easier — 3-SAT
+    is still NP-complete (we'll see why below) — but it is structurally simpler, which makes
+    it the standard launching pad for most reductions.
+  </p>
+</section>
+
+<!-- ============================================================ -->
+<section id="cooklevin">
+  <h2>3 · Cook–Levin: every NP problem reduces to SAT</h2>
+
+  <p>
+    The Cook–Levin theorem says SAT is <strong>NP-hard</strong>: every problem in NP reduces to
+    SAT in polynomial time. The proof is a tour-de-force of encoding: given an NP language
+    <span class="math">L</span> with verifier <span class="math">V</span> running in time
+    <span class="math">n<sup>k</sup></span>, build a SAT formula <span class="math">φ_x</span>
+    asserting "there exists a computation of <span class="math">V</span> on <span class="math">(x, c)</span>
+    that accepts." The formula is satisfiable iff <span class="math">x ∈ L</span>.
+  </p>
+
+  <p>
+    The formula has clauses that say: "the start of the tape is the correct initial
+    configuration", "each cell changes consistent with δ", "an accept state appears somewhere".
+    Putting them together: the <strong>computation tableau</strong>.
+  </p>
+
+  <div class="widget" id="tableau">
+    <div class="widget-title">The Cook–Levin tableau — building computation as a grid <span class="pill">Widget 3 · Auto-plays</span></div>
+
+    <div class="controls">
+      <button class="btn play-btn" id="tab-play">⏸ Pause</button>
+      <button class="btn ghost" id="tab-reset">Reset</button>
+      <label class="speed-control">Speed
+        <input type="range" id="tab-speed" min="0.25" max="3" step="0.25" value="1">
+        <span id="tab-speed-label" style="font-family: var(--mono); min-width: 28px;">1×</span>
+      </label>
+    </div>
+
+    <svg id="tab-svg" viewBox="0 0 760 360" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+
+    <div class="explain-panel" id="tab-explain">
+      <div class="step-num">What you'll see</div>
+      A <span class="math">n<sup>k</sup> × n<sup>k</sup></span> grid where row <span class="math">i</span>
+      is the configuration of the verifier at time <span class="math">i</span>. The 2×3 "windows"
+      represent local consistency constraints encoded as SAT clauses.
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="chain">
+  <h2>4 · The reduction chain: how NP-completeness spreads</h2>
+
+  <p>
+    Once SAT is NP-hard, every problem we reduce <em>from</em> SAT inherits NP-hardness.
+    A chain of polynomial-time reductions:
+  </p>
+
+  <div class="math-block">
+    SAT &nbsp;⇒&nbsp; 3SAT &nbsp;⇒&nbsp; CLIQUE &nbsp;⇒&nbsp; VERTEX-COVER &nbsp;⇒&nbsp; HAMPATH &nbsp;⇒&nbsp; SUBSET-SUM
+  </div>
+
+  <div class="widget" id="chain-vis">
+    <div class="widget-title">Reduction chain — watch one problem morph into another <span class="pill">Widget 4 · Auto-plays</span></div>
+
+    <div class="controls">
+      <div class="toggle-group" id="chain-toggle">
+        <button class="active" data-r="3sat">SAT → 3SAT</button>
+        <button data-r="clique">3SAT → CLIQUE</button>
+        <button data-r="vc">CLIQUE → VC</button>
+        <button data-r="ss">3SAT → SUBSET-SUM</button>
+      </div>
+      <button class="btn play-btn" id="chain-play">▶ Animate</button>
+      <button class="btn ghost" id="chain-reset">Reset</button>
+    </div>
+
+    <div id="chain-display" style="margin-top: 12px;"></div>
+
+    <div class="explain-panel" id="chain-explain"></div>
+  </div>
+
+  <div class="key-idea">
+    Every problem in the chain is NP-complete. If you find a polynomial-time algorithm for any one
+    of them, you've collapsed P = NP, and won a million dollars.
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="bigpicture">
+  <h2>5 · The whole map</h2>
+
+  <div class="widget" id="map">
+    <div class="widget-title">P, NP, and the NP-complete frontier <span class="pill">Widget 5</span></div>
+    <svg viewBox="0 0 880 460" class="svg-anim" style="background:#fcfbf7;border-radius:6px;">
+      <defs>
+        <marker id="m5-arr" markerWidth="12" markerHeight="12" refX="10" refY="4" orient="auto">
+          <polygon points="0 0, 11 4, 0 8" fill="#8a6a2c"/>
+        </marker>
+        <filter id="m5-soft" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="0.6"/>
+        </filter>
+      </defs>
+
+      <!-- NP region (outer) -->
+      <ellipse cx="440" cy="220" rx="400" ry="180" fill="#fffdf3" stroke="#b58b00" stroke-width="2.5"/>
+      <text x="60" y="60" font-family="var(--sans), sans-serif" font-size="22" fill="#b58b00" font-weight="700" letter-spacing="0.05em">NP</text>
+      <text x="60" y="80" font-family="var(--sans), sans-serif" font-size="11" fill="#b58b00" opacity="0.7">verifiable in polynomial time</text>
+
+      <!-- P region (left lobe) -->
+      <ellipse cx="245" cy="240" rx="150" ry="95" fill="#d6ebe4" stroke="#2a6f5f" stroke-width="2.5"/>
+      <text x="245" y="153" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="20" fill="#1c4a3f" font-weight="700" letter-spacing="0.05em">P</text>
+      <text x="245" y="170" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="10" fill="#1c4a3f" opacity="0.75">solvable in polynomial time</text>
+
+      <!-- P-class problems (inside P) -->
+      <g font-family="ui-monospace, monospace" font-weight="700">
+        <circle cx="195" cy="240" r="26" fill="white" stroke="#2a6f5f" stroke-width="1.6"/>
+        <text x="195" y="245" text-anchor="middle" font-size="11" fill="#1c4a3f">PATH</text>
+        <circle cx="295" cy="220" r="26" fill="white" stroke="#2a6f5f" stroke-width="1.6"/>
+        <text x="295" y="225" text-anchor="middle" font-size="11" fill="#1c4a3f">2-COL</text>
+        <circle cx="245" cy="290" r="28" fill="white" stroke="#2a6f5f" stroke-width="1.6"/>
+        <text x="245" y="295" text-anchor="middle" font-size="11" fill="#1c4a3f">PRIMES</text>
+      </g>
+
+      <!-- NP-complete chain — laid out as a horizontal arc on the right -->
+      <g font-family="ui-monospace, monospace" font-weight="700">
+        <!-- SAT (top) -->
+        <circle cx="560" cy="135" r="32" fill="var(--warn-soft)" stroke="var(--warn)" stroke-width="2"/>
+        <text x="560" y="141" text-anchor="middle" font-size="13" fill="#7a3a18">SAT</text>
+        <!-- 3SAT -->
+        <circle cx="660" cy="170" r="32" fill="var(--warn-soft)" stroke="var(--warn)" stroke-width="2"/>
+        <text x="660" y="176" text-anchor="middle" font-size="13" fill="#7a3a18">3SAT</text>
+        <!-- CLIQUE -->
+        <circle cx="740" cy="240" r="34" fill="var(--warn-soft)" stroke="var(--warn)" stroke-width="2"/>
+        <text x="740" y="246" text-anchor="middle" font-size="12" fill="#7a3a18">CLIQUE</text>
+        <!-- VERTEX-COVER -->
+        <circle cx="710" cy="335" r="34" fill="var(--warn-soft)" stroke="var(--warn)" stroke-width="2"/>
+        <text x="710" y="333" text-anchor="middle" font-size="11" fill="#7a3a18">VERTEX</text>
+        <text x="710" y="346" text-anchor="middle" font-size="11" fill="#7a3a18">COVER</text>
+        <!-- HAMPATH -->
+        <circle cx="600" cy="378" r="34" fill="var(--warn-soft)" stroke="var(--warn)" stroke-width="2"/>
+        <text x="600" y="383" text-anchor="middle" font-size="12" fill="#7a3a18">HAMPATH</text>
+        <!-- SUBSET-SUM -->
+        <circle cx="490" cy="378" r="34" fill="var(--warn-soft)" stroke="var(--warn)" stroke-width="2"/>
+        <text x="490" y="376" text-anchor="middle" font-size="11" fill="#7a3a18">SUBSET</text>
+        <text x="490" y="389" text-anchor="middle" font-size="11" fill="#7a3a18">SUM</text>
+      </g>
+
+      <!-- Reduction arrows: smooth curves connecting the chain -->
+      <g fill="none" stroke="#8a6a2c" stroke-width="1.8">
+        <path d="M 591 145 C 615 145, 635 155, 633 160" marker-end="url(#m5-arr)"/>
+        <path d="M 684 196 C 715 210, 730 220, 730 220" marker-end="url(#m5-arr)"/>
+        <path d="M 738 274 C 730 305, 720 310, 718 310" marker-end="url(#m5-arr)"/>
+        <path d="M 685 358 C 660 370, 645 370, 635 372" marker-end="url(#m5-arr)"/>
+        <path d="M 568 378 C 545 378, 528 378, 525 378" marker-end="url(#m5-arr)"/>
+      </g>
+
+      <!-- Label for the chain -->
+      <text x="800" y="100" text-anchor="end" font-family="var(--sans), sans-serif" font-size="12" fill="#8a6a2c" font-style="italic">NP-complete frontier</text>
+      <text x="800" y="116" text-anchor="end" font-family="var(--sans), sans-serif" font-size="11" fill="#8a6a2c" opacity="0.7">↑ Cook–Levin reductions chain ↓</text>
+
+      <!-- Bottom caption inside the SVG so it doesn't bleed -->
+      <text x="440" y="430" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" fill="var(--muted)">
+        NP-complete problems (orange) sit at the boundary of NP.
+      </text>
+      <text x="440" y="448" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" fill="var(--muted)">
+        If <tspan font-style="italic" font-weight="700" fill="#1a1a1a">any one</tspan> of them is in P, then all of NP collapses into P.
+      </text>
+    </svg>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="exercises">
+  <h2>6 · Practice (Sipser §7.3–§7.5)</h2>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 7.18</div>
+    <p>Show that if P = NP, then every language in P, except ∅ and Σ*, is NP-complete.</p>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">If P = NP, every nontrivial L ∈ P is in NP. For NP-hardness: given any L' ∈ NP = P, build a poly-time reduction to L. Pick any x_0 ∈ L and x_1 ∉ L. The reduction f: on input w, decide if w ∈ L' (in P!); if yes output x_0, else x_1. Then w ∈ L' iff f(w) ∈ L.</div>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 7.21</div>
+    <p>Show that <span class="math">PATH</span> is in P, and that <span class="math">HAMPATH</span> is in NP.</p>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">PATH: BFS. HAMPATH verifier: certificate is a sequence of vertices; verify length n, all distinct, consecutive edges in graph, starts at s, ends at t. All polynomial.</div>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 7.23</div>
+    <p>Show that NP is closed under union and concatenation.</p>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">Union: V'(x, c) = V_1(x, c) OR V_2(x, c) (with appropriate flag). Concatenation: V'(x, ⟨i, c_1, c_2⟩) accepts iff x = uv with |u|=i, V_1(u, c_1), V_2(v, c_2). All polynomial.</div>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 7.28</div>
+    <p>Show that the <span class="math">3COLOR = {⟨G⟩ : G is 3-colorable}</span> problem is NP-complete.</p>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">In NP: certificate is a coloring; check each edge has different colors at endpoints. NP-hard: reduce from 3SAT. For each variable, gadgets enforcing T/F coloring; for each clause, gadgets that are 3-colorable iff the clause is satisfied. Standard textbook construction.</div>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 7.32</div>
+    <p>Show that SUBSET-SUM is NP-complete (in NP and 3SAT ≤_p SUBSET-SUM).</p>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">In NP: certificate is a subset, sum it. NP-hard via 3SAT: for n variables and m clauses, build numbers encoding variable assignments and clause satisfaction in different digit positions; target sum forces each variable to be picked exactly one way and each clause to be satisfied.</div>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 7.34</div>
+    <p>Show that if P = NP, you can find a satisfying assignment for any satisfiable 3CNF formula in polynomial time (search-to-decision reduction).</p>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">Self-reducibility: given φ, set x_1 = T; check if φ|<sub>x_1=T</sub> is satisfiable (use the assumed P-time SAT decider); if so, recurse, else set x_1 = F and recurse. n applications of the decider; polynomial total.</div>
+    </details>
+  </div>
+</section>
+
+<section>
+  <h2>One-sentence summary</h2>
+  <div class="key-idea">
+    NP is the class of decision problems whose "yes" instances admit polynomial-time-verifiable
+    certificates; SAT is NP-complete (Cook–Levin) and from SAT a chain of polynomial-time
+    reductions establishes NP-completeness for hundreds of natural problems.
+  </div>
+  <p style="text-align:center;margin-top:24px;">
+    <a class="btn" href="module-6-space-pspace.html" style="display:inline-block;padding:10px 18px;background:var(--accent);color:white;border-radius:4px;text-decoration:none;border:0;">
+      Next → Module 6: Space, PSPACE &amp; Games
+    </a>
+  </p>
+</section>
+
+</div>
+
+<footer class="foot">Module 5 of 7 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<script>
+// =================================================================
+// Module 5 — Animation-heavy widgets
+// =================================================================
+
+// ----- Verifier vs Solver race (Widget 1) -----
+(function(){
+  let n = 5;
+  let solverIdx = 0;
+  let raf = null;
+  let formula = null; // array of clauses, each clause is array of literals (signed indices)
+  let answer = null;
+
+  function makeFormula(nn) {
+    // build a random 3SAT formula that is satisfiable
+    answer = Array.from({length: nn}, () => Math.random() < 0.5);
+    const m = nn + 2;
+    const f = [];
+    for (let i = 0; i < m; i++) {
+      // build a clause that's satisfied by answer
+      let satVar = i % nn;
+      let lit = answer[satVar] ? (satVar+1) : -(satVar+1);
+      const cl = [lit];
+      for (let j = 0; j < 2; j++) {
+        let v = Math.floor(Math.random() * nn);
+        let sign = Math.random() < 0.5 ? 1 : -1;
+        cl.push(sign * (v+1));
+      }
+      f.push(cl);
+    }
+    return f;
+  }
+
+  function evaluate(assignment) {
+    for (const cl of formula) {
+      let ok = false;
+      for (const lit of cl) {
+        const idx = Math.abs(lit) - 1;
+        const val = assignment[idx];
+        if (lit > 0 ? val : !val) { ok = true; break; }
+      }
+      if (!ok) return false;
+    }
+    return true;
+  }
+
+  function renderSolver() {
+    const svg = document.getElementById('ver-solver');
+    const W = 400, H = 220;
+    const total = 1 << n;
+    const rows = Math.min(total, 32);
+    let s = '';
+    s += `<text x="${W/2}" y="20" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" fill="var(--muted)">Trying assignment ${solverIdx+1} / ${total}</text>`;
+    const cellW = (W - 40) / n;
+    const cellH = 14;
+    const startY = 32;
+    const maxRows = Math.min(rows, Math.floor((H - startY) / (cellH + 2)));
+    const startIdx = Math.max(0, Math.min(solverIdx - maxRows + 1, total - maxRows));
+
+    for (let r = 0; r < maxRows; r++) {
+      const idx = startIdx + r;
+      if (idx >= total) break;
+      const y = startY + r * (cellH + 2);
+      const assignment = [];
+      for (let i = 0; i < n; i++) assignment.push((idx >> i) & 1);
+      const sat = evaluate(assignment);
+      const isCurrent = (idx === solverIdx);
+      const bg = isCurrent ? (sat ? 'var(--accent-soft)' : '#fff8f3') : (idx < solverIdx ? '#f5f5f0' : '#fff');
+      s += `<rect x="20" y="${y}" width="${W-40}" height="${cellH}" fill="${bg}" stroke="${isCurrent?'var(--accent)':'#ddd'}" stroke-width="${isCurrent?1.5:0.5}"/>`;
+      for (let i = 0; i < n; i++) {
+        const cx = 20 + i * cellW + cellW/2;
+        s += `<text x="${cx}" y="${y+10}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" fill="${assignment[i]?'var(--accent)':'#888'}">${assignment[i]?'T':'F'}</text>`;
+      }
+      if (idx <= solverIdx) {
+        const cx = W - 30;
+        s += `<text x="${cx}" y="${y+10}" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="11" font-weight="bold" fill="${sat?'var(--accent)':'var(--warn)'}">${sat?'✓':'✗'}</text>`;
+      }
+    }
+    svg.innerHTML = s;
+    document.getElementById('ver-solver-count').textContent = solverIdx + 1;
+  }
+
+  function renderChecker() {
+    const svg = document.getElementById('ver-checker');
+    const W = 400, H = 220;
+    let s = '';
+    s += `<text x="${W/2}" y="20" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" fill="var(--muted)">Given certificate: ${answer.map(b=>b?'T':'F').join(' ')}</text>`;
+    s += `<text x="${W/2}" y="38" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="12" fill="var(--muted)">Checking each clause...</text>`;
+
+    const cellH = 22;
+    const startY = 56;
+    for (let c = 0; c < Math.min(formula.length, 7); c++) {
+      const y = startY + c * (cellH + 4);
+      const cl = formula[c];
+      const sat = (() => {
+        for (const lit of cl) {
+          const idx = Math.abs(lit) - 1;
+          const val = answer[idx];
+          if (lit > 0 ? val : !val) return true;
+        }
+        return false;
+      })();
+      const shown = (c <= solverIdx);
+      const opacity = shown ? '1' : '0.2';
+      s += `<rect x="20" y="${y}" width="${W-40}" height="${cellH}" fill="${shown?(sat?'var(--accent-soft)':'var(--warn-soft)'):'#fff'}" stroke="${shown?(sat?'var(--accent)':'var(--warn)'):'#ccc'}" stroke-width="1" opacity="${opacity}"/>`;
+      s += `<text x="30" y="${y+15}" font-family="ui-monospace, monospace" font-size="11" opacity="${opacity}">clause ${c+1}: ${cl.map(l => (l<0?'¬':'')+'x'+Math.abs(l)).join(' ∨ ')}</text>`;
+      if (shown) s += `<text x="${W-30}" y="${y+15}" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="bold" fill="${sat?'var(--accent)':'var(--warn)'}">${sat?'✓':'✗'}</text>`;
+    }
+    svg.innerHTML = s;
+    document.getElementById('ver-checker-count').textContent = Math.min(solverIdx+1, formula.length);
+  }
+
+  function reset() {
+    if (raf) { clearTimeout(raf); raf = null; }
+    formula = makeFormula(n);
+    solverIdx = 0;
+    renderSolver(); renderChecker();
+  }
+
+  function play() {
+    reset();
+    const total = 1 << n;
+    document.getElementById('ver-explain').innerHTML =
+      `<div class="step-num">Two algorithms, same instance</div>
+       <p style="margin:4px 0;"><strong>Left (solver):</strong> No clue what the answer is. It must try every one of 2<sup>${n}</sup> = ${total} possible assignments and test each one. That's exponential work.</p>
+       <p style="margin:4px 0;"><strong>Right (verifier):</strong> Has been handed the correct assignment as a <em>certificate</em>. All it has to do is plug it in and check each clause — that's just <em>${formula.length}</em> easy checks. Polynomial work.</p>
+       <p style="margin:4px 0;"><strong>Watch how many rows the solver burns through before stumbling on the answer the verifier already had.</strong></p>`;
+
+    const loop = () => {
+      const cur = [];
+      for (let i = 0; i < n; i++) cur.push((solverIdx >> i) & 1);
+      const sat = evaluate(cur);
+      renderSolver(); renderChecker();
+
+      if (sat) {
+        document.getElementById('ver-explain').innerHTML =
+          `<div class="step-num">Solver found a satisfying assignment after ${solverIdx+1} tries</div>
+           <p style="margin:4px 0;">It took <b>${solverIdx+1}</b> assignments out of ${total} possible to stumble onto one that works. The verifier (right) finished its check in only <b>${formula.length} steps</b>, because it already knew the answer.</p>
+           <p style="margin:4px 0;"><strong>Definition of NP, in one sentence:</strong> a language is in NP if there is a polynomial-size <em>certificate</em> that a polynomial-time verifier can check. SAT is in NP because the certificate is just the satisfying assignment.</p>
+           <p style="margin:4px 0;"><strong>The open question P ≟ NP</strong> asks: can we always find the certificate as quickly as we can check it? Try the slider — for n = 8 there are 256 assignments; for n = 30 there are over a billion; for n = 100 there are more than there are atoms in the observable universe.</p>`;
+        scheduleNext();
+        return;
+      }
+
+      // narrate intermediate progress
+      const failingClause = (() => {
+        for (let c = 0; c < formula.length; c++) {
+          const cl = formula[c];
+          let ok = false;
+          for (const lit of cl) {
+            const idx = Math.abs(lit) - 1;
+            const val = cur[idx];
+            if (lit > 0 ? val : !val) { ok = true; break; }
+          }
+          if (!ok) return c + 1;
+        }
+        return null;
+      })();
+      const assignStr = cur.map((v, i) => 'x' + (i+1) + '=' + (v?'T':'F')).join(', ');
+      document.getElementById('ver-explain').innerHTML =
+        `<div class="step-num">Trial ${solverIdx+1} of ${total} — ${assignStr}</div>
+         <p style="margin:4px 0;">This assignment fails clause #${failingClause} — at least one clause has all its literals false under this assignment, so the whole formula evaluates to false.</p>
+         <p style="margin:4px 0;">The solver has no way to know which assignment will work; it must keep enumerating. Meanwhile the verifier (right panel) has already checked all ${formula.length} clauses with the correct certificate — no enumeration needed.</p>`;
+
+      solverIdx++;
+      if (solverIdx >= total) {
+        document.getElementById('ver-explain').innerHTML =
+          `<div class="step-num">No assignment satisfied (UNSAT)</div>
+           <p style="margin:4px 0;">After trying all ${total} assignments, nothing worked. The formula was unsatisfiable.</p>
+           <p style="margin:4px 0;">Notice the asymmetry: <b>showing a formula IS satisfiable</b> only requires producing one witness (easy to verify). <b>Showing it is NOT satisfiable</b> requires ruling out all 2ⁿ candidates — much harder. This is why SAT ∈ NP but its complement (UNSAT) is in <em>coNP</em>, and the open question NP ≟ coNP asks whether these are the same.</p>`;
+        scheduleNext();
+        return;
+      }
+      raf = setTimeout(loop, 1400 / verSpeed());
+    };
+    loop();
+  }
+
+  let verLooping = true, verLoopTimer = null;
+  function verSpeed() { return parseFloat(document.getElementById('ver-speed').value) || 1; }
+  function verSetBtn() { document.getElementById('ver-play').textContent = verLooping ? '⏸ Pause' : '▶ Play'; }
+  function verClear() {
+    if (raf) clearTimeout(raf); raf = null;
+    if (verLoopTimer) clearTimeout(verLoopTimer); verLoopTimer = null;
+  }
+  function verStop() { verLooping = false; verClear(); verSetBtn(); }
+  function scheduleNext() {
+    if (verLooping) verLoopTimer = setTimeout(() => { if (verLooping) play(); }, 5000 / verSpeed());
+    else verSetBtn();
+  }
+  // Patch play() to mark looping and react to pause
+  const _play_inner = play;
+  play = function() {
+    verLooping = true; verClear(); verSetBtn();
+    _play_inner();
+  };
+  // Patch the success branch too: we need scheduleNext after sat-found.
+  // Simpler: hook into the explain panel to detect end. We use a MutationObserver-free approach: just wrap evaluate result.
+  // Replace original finalSat path by wrapping render call.
+  // (Above we already added scheduleNext in the UNSAT branch; the SAT branch needs it too — patch inline:)
+  const origSatHandler = document.getElementById('ver-explain');
+  // Instead of patching, use a single trick: re-call play() after a delay every time it completes.
+  // We do this by polling whether the loop has stopped (no raf).
+  function watcher() {
+    if (!verLooping) return;
+    if (!raf && !verLoopTimer) {
+      verLoopTimer = setTimeout(() => { if (verLooping) play(); }, 5000 / verSpeed());
+    }
+    setTimeout(watcher, 800);
+  }
+  setTimeout(watcher, 1500);
+
+  document.getElementById('ver-n').oninput = e => {
+    n = parseInt(e.target.value);
+    document.getElementById('ver-n-label').textContent = n;
+    verStop(); reset();
+  };
+  document.getElementById('ver-play').onclick = () => { if (verLooping || raf) verStop(); else play(); };
+  document.getElementById('ver-reset').onclick = () => { verStop(); reset(); };
+  document.getElementById('ver-speed').oninput = (e) => {
+    document.getElementById('ver-speed-label').textContent = parseFloat(e.target.value).toFixed(2).replace(/\.?0+$/, '') + '×';
+  };
+  reset();
+  setTimeout(play, 1200);
+})();
+
+// ----- Interactive SAT (Widget 2) -----
+(function(){
+  const presets = {
+    sat1: { vars: ['x','y','z'], clauses: [[1,2,3],[-1,2],[-2,3]] },
+    sat2: { vars: ['x','y'], clauses: [[1,2],[-1,2],[1,-2],[-1,-2]] },
+    sat3: { vars: ['x','y','z'], clauses: [[1,2,3],[-1,-2],[-1,-3],[-2,-3]] }
+  };
+
+  let cur = 'sat1';
+  let assignment = [];
+  let raf = null;
+  let autoIdx = 0;
+
+  function init() {
+    const p = presets[cur];
+    assignment = p.vars.map(() => false);
+    if (raf) { clearTimeout(raf); raf = null; }
+    render();
+  }
+  function eval_(assn) {
+    const p = presets[cur];
+    for (const cl of p.clauses) {
+      let ok = false;
+      for (const lit of cl) {
+        const idx = Math.abs(lit) - 1;
+        const val = assn[idx];
+        if (lit > 0 ? val : !val) { ok = true; break; }
+      }
+      if (!ok) return false;
+    }
+    return true;
+  }
+  function render() {
+    const p = presets[cur];
+    let varsHtml = '';
+    for (let i = 0; i < p.vars.length; i++) {
+      const val = assignment[i];
+      varsHtml += `<button class="btn ghost var-btn" data-i="${i}" style="font-size: 16px; font-family: ui-monospace, monospace; background: ${val?'var(--accent)':'#fff'}; color: ${val?'#fff':'var(--accent)'}; min-width: 70px;">${p.vars[i]} = ${val?'T':'F'}</button>`;
+    }
+    document.getElementById('sat-vars').innerHTML = varsHtml;
+    document.querySelectorAll('.var-btn').forEach(b => {
+      b.onclick = () => {
+        const i = parseInt(b.dataset.i);
+        assignment[i] = !assignment[i];
+        render();
+      };
+    });
+    // clauses
+    let clHtml = '';
+    let allSat = true;
+    for (let c = 0; c < p.clauses.length; c++) {
+      const cl = p.clauses[c];
+      let sat = false;
+      for (const lit of cl) {
+        const idx = Math.abs(lit) - 1;
+        const val = assignment[idx];
+        if (lit > 0 ? val : !val) { sat = true; break; }
+      }
+      if (!sat) allSat = false;
+      const clStr = cl.map(l => (l<0?'¬':'')+p.vars[Math.abs(l)-1]).join(' ∨ ');
+      const bg = sat ? 'var(--accent-soft)' : 'var(--warn-soft)';
+      const col = sat ? 'var(--accent)' : 'var(--warn)';
+      const mark = sat ? '✓' : '✗';
+      clHtml += `<div style="padding: 8px 14px; background: ${bg}; color: ${col}; border-radius: 4px; font-family: ui-monospace, monospace; font-size: 14px; transition: background .35s, color .35s;">${mark} (${clStr})</div>`;
+    }
+    document.getElementById('sat-clauses').innerHTML = clHtml;
+    const failingCount = p.clauses.length - p.clauses.filter((cl) => {
+      for (const lit of cl) {
+        const idx = Math.abs(lit) - 1;
+        if (lit > 0 ? assignment[idx] : !assignment[idx]) return true;
+      }
+      return false;
+    }).length;
+    document.getElementById('sat-explain').innerHTML =
+      `<div class="step-num">${allSat ? 'SAT — every clause is green ✓' : `${failingCount} clause(s) still unsatisfied`}</div>
+       ${allSat ?
+         '<p style="margin:4px 0;">This assignment makes the whole formula true. The formula is <b>satisfiable</b>. Notice you only needed one such witness — that\'s why SAT is in NP.</p>' +
+         '<p style="margin:4px 0;"><strong>What the colors mean:</strong> a green clause has at least one literal that evaluates to true under the current assignment. A clause is satisfied as soon as <em>any one</em> of its literals is true (clauses are OR\'s).</p>' :
+         '<p style="margin:4px 0;">A clause is RED when <em>all</em> its literals are false under the current assignment. To satisfy a red clause, flip at least one of its variables — but be careful: that might break a currently-green clause.</p>' +
+         '<p style="margin:4px 0;"><strong>Try strategy:</strong> look at a red clause, find a variable that appears positively in it and is currently F, flip it to T. Then re-check the others.</p>'}`;
+  }
+
+  function autoSolve() {
+    if (raf) clearTimeout(raf);
+    const p = presets[cur];
+    const total = 1 << p.vars.length;
+    autoIdx = 0;
+    const loop = () => {
+      const assn = [];
+      for (let i = 0; i < p.vars.length; i++) assn.push(!!(autoIdx & (1 << i)));
+      assignment = assn;
+      render();
+      if (eval_(assn)) {
+        const assnStr = p.vars.map((v, i) => v + '=' + (assn[i]?'T':'F')).join(', ');
+        document.getElementById('sat-explain').innerHTML =
+          `<div class="step-num">Found satisfying assignment after ${autoIdx+1} of ${total} tries</div>
+           <p style="margin:4px 0;"><b>Witness:</b> ${assnStr}. With this assignment, every clause has at least one true literal — so the formula is true.</p>
+           <p style="margin:4px 0;"><b>Lesson:</b> brute-force SAT takes at most 2<sup>n</sup> tries — exponential in the number of variables. No one has found a fundamentally better worst-case algorithm; whether one exists is the P=NP question.</p>`;
+        return;
+      }
+      const assnStr = p.vars.map((v, i) => v + '=' + (assn[i]?'T':'F')).join(', ');
+      document.getElementById('sat-explain').innerHTML =
+        `<div class="step-num">Trial ${autoIdx+1}/${total}: ${assnStr}</div>
+         <p style="margin:4px 0;">Auto-solver enumerates assignments in binary order (000, 001, 010, …). When at least one clause turns RED, this assignment fails — try the next one.</p>
+         <p style="margin:4px 0;">Watch the clauses flip color as variables change. The instance is satisfiable iff <em>some</em> row of this enumeration eventually shows all greens.</p>`;
+      autoIdx++;
+      if (autoIdx >= total) {
+        document.getElementById('sat-explain').innerHTML =
+          `<div class="step-num">UNSAT — exhausted all ${total} assignments</div>
+           <p style="margin:4px 0;">No assignment satisfies the formula. The formula is <strong>unsatisfiable</strong>.</p>
+           <p style="margin:4px 0;"><b>Important asymmetry:</b> demonstrating UNSAT to a skeptic requires showing all 2<sup>n</sup> trials fail. Demonstrating SAT requires only one witness. This asymmetry is the heart of the NP vs. coNP distinction.</p>`;
+        return;
+      }
+      raf = setTimeout(loop, 700);
+    };
+    loop();
+  }
+
+  document.getElementById('sat-preset').onchange = e => { cur = e.target.value; init(); };
+  document.getElementById('sat-auto').onclick = autoSolve;
+  document.getElementById('sat-reset').onclick = init;
+  init();
+})();
+
+// ----- Cook-Levin tableau (Widget 3) -----
+(function(){
+  // Display a small n^k x n^k tableau, animate it filling row by row
+  const W = 760, H = 360;
+  const rows = 8, cols = 12;
+  const cellW = (W - 60) / cols;
+  const cellH = (H - 60) / rows;
+  const startX = 40, startY = 30;
+  let stage = 0; // 0..rows*cols
+  let raf = null;
+
+  // synthetic tape content per row to simulate a TM trace
+  function cellContent(r, c) {
+    if (r === 0) {
+      // start config: q0 | input | _
+      if (c === 0) return 'q₀';
+      if (c <= 5) return '0';
+      if (c <= 9) return '1';
+      return '_';
+    }
+    if (r >= rows) return '_';
+    // simulate head moving right one position per row
+    if (c === 0) return '0';
+    if (c === r) return 'q' + r;
+    if (c < r) return c <= 5 ? '0' : c <= 9 ? '1' : '_';
+    if (c <= 5) return '0';
+    if (c <= 9) return '1';
+    return '_';
+  }
+
+  function render() {
+    let s = '';
+    s += `<text x="${W/2}" y="18" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" fill="var(--muted)">Computation tableau · row i = config at time i</text>`;
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const idx = r * cols + c;
+        const x = startX + c * cellW;
+        const y = startY + r * cellH;
+        const filled = idx < stage;
+        const fill = filled ? '#fff' : '#f5f5f0';
+        const opacity = filled ? '1' : '0.3';
+        const isHi = (idx === stage - 1);
+        s += `<rect x="${x}" y="${y}" width="${cellW}" height="${cellH}" fill="${isHi?'var(--gold-soft)':fill}" stroke="${isHi?'var(--gold)':'#ddd'}" stroke-width="${isHi?2:0.7}" opacity="${opacity}"/>`;
+        if (filled) {
+          const ch = cellContent(r, c);
+          const color = ch.startsWith('q') ? 'var(--info)' : (ch === '_' ? '#aaa' : '#1a1a1a');
+          s += `<text x="${x + cellW/2}" y="${y + cellH/2 + 5}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="${ch.length>1?12:14}" font-weight="${ch.startsWith('q')?'bold':'normal'}" fill="${color}">${ch}</text>`;
+        }
+      }
+    }
+    // y-axis labels (rows = time)
+    for (let r = 0; r < rows; r++) {
+      s += `<text x="20" y="${startY + r*cellH + cellH/2 + 5}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#888">t=${r}</text>`;
+    }
+    // 2x3 window emphasis
+    if (stage > cols) {
+      const r = Math.floor((stage - cols - 1) / cols);
+      const c = Math.max(0, (stage - 1) % cols - 1);
+      if (r < rows - 1 && c < cols - 2) {
+        s += `<rect x="${startX + c * cellW - 2}" y="${startY + r * cellH - 2}" width="${3 * cellW + 4}" height="${2 * cellH + 4}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4 3" class="dash-flow" opacity="0.8"/>`;
+        s += `<text x="${startX + c * cellW + 1.5 * cellW}" y="${startY + r * cellH - 6}" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="11" fill="var(--accent)" font-weight="bold">2×3 window</text>`;
+      }
+    }
+    document.getElementById('tab-svg').innerHTML = s;
+  }
+
+  function play() {
+    if (raf) clearTimeout(raf);
+    stage = 0;
+    render();
+    document.getElementById('tab-explain').innerHTML =
+      `<div class="step-num">What this grid means</div>
+       <p style="margin:4px 0;">Each <strong>row</strong> is a snapshot of the verifier's TM at one moment in time. Row 0 is the starting configuration: the tape holds the input <code>00000 1111 ___</code> and the TM is in state <code>q₀</code> at the leftmost cell. Row 1 is what the tape looks like one transition later. Row <em>i</em> is the configuration at time <em>i</em>.</p>
+       <p style="margin:4px 0;">Each <strong>column</strong> is one cell of the tape. So cell (row, col) records "what symbol is in tape cell <em>col</em> at time <em>row</em>" — possibly with a state-label inserted when the head is there.</p>
+       <p style="margin:4px 0;">The Cook–Levin construction turns this grid into SAT variables: one Boolean variable per (row, col, symbol) triple. The clauses say "this grid is a valid computation of the verifier accepting (x, c)." Watch the rows fill in.</p>`;
+
+    const phaseNarration = (s) => {
+      const row = Math.floor((s-1)/cols);
+      const col = (s-1) % cols;
+      if (s <= cols) {
+        return `<div class="step-num">Row 0 — initial configuration (cell ${col+1}/${cols})</div>
+         <p style="margin:4px 0;">Filling in the <em>start configuration</em>: state q₀ at position 0, then the input symbols, padded with blanks. <strong>SAT constraint here:</strong> one clause per cell forcing the right symbol — these are the φ_start clauses.</p>`;
+      } else if (row === rows - 1) {
+        return `<div class="step-num">Final row — accept condition (cell ${col+1}/${cols})</div>
+         <p style="margin:4px 0;">Some row must contain an <code>accept</code> state. <strong>SAT constraint here:</strong> φ_accept = "the variable saying 'row r col c has state qaccept' is true for at least one (r, c)."</p>`;
+      } else {
+        return `<div class="step-num">Row ${row}, cell ${col+1}/${cols} — δ-consistency window</div>
+         <p style="margin:4px 0;">Every cell at time ${row} must be consistent with the cell directly above (time ${row-1}) AND its left/right neighbors. The dashed orange box is one 2×3 window — six cells, two rows × three columns — that records "what changed in one TM step."</p>
+         <p style="margin:4px 0;"><strong>SAT constraint here:</strong> φ_move says every 2×3 window matches one of the δ-allowed transitions. Each window becomes a constant-size clause. There are O(n²k) such windows, so this part of the formula has polynomial size.</p>`;
+      }
+    };
+
+    const loop = () => {
+      stage++;
+      render();
+      if (stage <= rows * cols) {
+        document.getElementById('tab-explain').innerHTML = phaseNarration(stage);
+        raf = setTimeout(loop, 220);
+      } else {
+        document.getElementById('tab-explain').innerHTML =
+          `<div class="step-num">Tableau complete — the SAT formula φ_x</div>
+           <p style="margin:4px 0;">The full formula φ_x has four conjunct families:</p>
+           <ul style="margin:4px 0;">
+             <li><strong>φ_cell:</strong> exactly one symbol per cell. Trivial bookkeeping.</li>
+             <li><strong>φ_start:</strong> row 0 spells out the start configuration on input (x, c).</li>
+             <li><strong>φ_accept:</strong> some row has qaccept.</li>
+             <li><strong>φ_move:</strong> every 2×3 window is a legal δ-transition.</li>
+           </ul>
+           <p style="margin:4px 0;"><strong>Key fact:</strong> φ_x has size polynomial in |x| because the tableau is n<sup>k</sup> × n<sup>k</sup>. So we have a polynomial-time construction A<sub>TM</sub>-style: x ∈ L ⇔ certificate c exists ⇔ a valid computation tableau exists ⇔ φ_x is satisfiable.</p>
+           <p style="margin:4px 0;">That's it. Cook–Levin in one picture: <em>computation ↔ tableau ↔ SAT formula</em>.</p>`;
+      }
+    };
+    loop();
+  }
+  document.getElementById('tab-play').onclick = play;
+  document.getElementById('tab-reset').onclick = () => { if (raf) clearTimeout(raf); stage = 0; render(); };
+  render();
+  setTimeout(play, 800);
+})();
+
+// ----- Reduction chain (Widget 4) -----
+(function(){
+  let cur = '3sat';
+  let raf = null;
+
+  function show3sat() {
+    // SAT (x ∨ y ∨ z ∨ w) → 3SAT: (x ∨ y ∨ a₁) ∧ (¬a₁ ∨ z ∨ w)
+    let stage = 0;
+    const stages = [
+      { html: `<div style="font-family: ui-monospace, monospace; font-size: 18px; padding: 14px;">(x ∨ y ∨ z ∨ w)</div>`,
+        note: `<p style="margin:4px 0;"><strong>Start:</strong> a SAT clause with 4 literals. We want a 3SAT formula — every clause has <em>exactly</em> 3 literals.</p>
+               <p style="margin:4px 0;">Why bother? 3SAT is easier to reason about and remains NP-complete. Most reductions in the chain start from 3SAT, not SAT.</p>` },
+      { html: `<div style="font-family: ui-monospace, monospace; font-size: 18px; padding: 14px;">(x ∨ y ∨ <span style="color:var(--accent);font-weight:bold">a₁</span>) ∧ (<span style="color:var(--accent);font-weight:bold">¬a₁</span> ∨ z ∨ w)</div>`,
+        note: `<p style="margin:4px 0;"><strong>The trick:</strong> introduce a fresh variable <span style="color:var(--accent);font-weight:bold">a₁</span> (not in the original formula). Split the 4-literal clause into two 3-literal clauses sharing a₁ in opposite polarities.</p>
+               <p style="margin:4px 0;"><strong>Why this preserves satisfiability:</strong> in any satisfying assignment, at least one of x,y,z,w is true. If x or y is true, the first clause is satisfied — and we set a₁ = F so the second clause uses z or w. If z or w is true, we set a₁ = T so the first clause uses a₁. So we can always choose a₁ to make both small clauses true.</p>
+               <p style="margin:4px 0;"><strong>The converse:</strong> if both small clauses are true and we drop a₁, the original 4-literal clause must be true (because a₁ and ¬a₁ can't both be true simultaneously, so at least one small clause must rely on x,y,z, or w).</p>` },
+      { html: `<div style="font-family: ui-monospace, monospace; font-size: 18px; padding: 14px; background: var(--accent-soft); border-radius: 6px;">(x ∨ y ∨ a₁) ∧ (¬a₁ ∨ z ∨ w)</div>
+               <div style="font-family: var(--sans); font-size: 13px; color: var(--muted); margin-top: 10px; padding: 0 14px;">Reduction f(φ) is computable in time linear in |φ|.</div>`,
+        note: `<p style="margin:4px 0;"><strong>Equivalence proved:</strong> original ∈ SAT ⇔ this new 3CNF ∈ 3SAT.</p>
+               <p style="margin:4px 0;"><strong>The general rule:</strong> for a clause (ℓ₁ ∨ ℓ₂ ∨ … ∨ ℓ_k) with k > 3 literals, replace it with (ℓ₁ ∨ ℓ₂ ∨ a₁), (¬a₁ ∨ ℓ₃ ∨ a₂), (¬a₂ ∨ ℓ₄ ∨ a₃), …, (¬a<sub>k-3</sub> ∨ ℓ_{k-1} ∨ ℓ_k). Uses k − 3 auxiliary variables and gives k − 2 clauses.</p>
+               <p style="margin:4px 0;"><strong>So SAT ≤_p 3SAT in polynomial time.</strong> Since SAT is NP-hard (Cook–Levin), 3SAT is NP-hard too. And 3SAT is in NP (any subset of SAT instances is). So 3SAT is NP-complete.</p>` }
+    ];
+    function step() {
+      document.getElementById('chain-display').innerHTML = stages[stage].html;
+      document.getElementById('chain-explain').innerHTML =
+        `<div class="step-num">Stage ${stage+1}/${stages.length} · SAT → 3SAT</div>${stages[stage].note}`;
+      stage++;
+      if (stage < stages.length) raf = setTimeout(step, 3500);
+    }
+    if (raf) clearTimeout(raf);
+    step();
+  }
+
+  function showClique() {
+    // Build CLIQUE graph from a 3SAT instance
+    // Formula: (x ∨ y ∨ ¬z) ∧ (¬x ∨ y ∨ z) ∧ (x ∨ ¬y ∨ ¬z)
+    const W = 720, H = 280;
+    const clauses = [['x','y','¬z'],['¬x','y','z'],['x','¬y','¬z']];
+    const nodes = [];
+    const groupX = [120, 360, 600];
+    const groupYs = [80, 160, 240];
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        nodes.push({ lit: clauses[i][j], cluster: i, x: groupX[i], y: groupYs[j], id: i*3+j });
+      }
+    }
+    // Edges: between different clusters, if literals are compatible (not negations)
+    const edges = [];
+    function compat(a, b) {
+      if (a.startsWith('¬') && b === a.slice(1)) return false;
+      if (b.startsWith('¬') && a === b.slice(1)) return false;
+      return true;
+    }
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i+1; j < nodes.length; j++) {
+        if (nodes[i].cluster !== nodes[j].cluster && compat(nodes[i].lit, nodes[j].lit)) {
+          edges.push([i, j]);
+        }
+      }
+    }
+    const cliqueIdx = [0, 4, 6]; // (x in clause 0, y in clause 1, x in clause 2) — example clique witnessing x=T, y=T
+
+    let stage = 0;
+    const totalStages = 4;
+    function step() {
+      let s = '';
+      // clauses labels
+      for (let i = 0; i < 3; i++) {
+        s += `<text x="${groupX[i]}" y="${30}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13" font-weight="bold" fill="var(--muted)">(${clauses[i].join('∨')})</text>`;
+      }
+      // edges
+      if (stage >= 2) {
+        for (const [a,b] of edges) {
+          const inClique = stage >= 3 && cliqueIdx.includes(a) && cliqueIdx.includes(b);
+          s += `<line x1="${nodes[a].x}" y1="${nodes[a].y}" x2="${nodes[b].x}" y2="${nodes[b].y}" stroke="${inClique?'var(--gold)':'#ccc'}" stroke-width="${inClique?2.5:1}" opacity="${inClique?1:0.5}"/>`;
+        }
+      }
+      // nodes
+      for (let i = 0; i < nodes.length; i++) {
+        const n = nodes[i];
+        const inClique = stage >= 3 && cliqueIdx.includes(i);
+        const visible = stage >= 1;
+        if (!visible) continue;
+        s += `<circle cx="${n.x}" cy="${n.y}" r="22" fill="${inClique?'var(--gold)':'#fff'}" stroke="${inClique?'var(--gold)':'#666'}" stroke-width="${inClique?2.5:1.5}"/>`;
+        s += `<text x="${n.x}" y="${n.y+5}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13" fill="${inClique?'#fff':'#1a1a1a'}" font-weight="bold">${n.lit}</text>`;
+      }
+      document.getElementById('chain-display').innerHTML =
+        `<svg viewBox="0 0 ${W} ${H}" class="svg-anim" style="background:#fcfbf7;border-radius:6px;">${s}</svg>`;
+
+      const notes = [
+        `<p style="margin:4px 0;"><strong>Start:</strong> a 3SAT formula with 3 clauses, each over the same three variables x, y, z.</p>
+         <p style="margin:4px 0;">Goal: build a graph G whose CLIQUE-3 question (does G contain a clique on 3 vertices?) is yes <em>iff</em> the formula is satisfiable.</p>`,
+        `<p style="margin:4px 0;"><strong>Step 1 — make nodes.</strong> One node per <em>literal occurrence</em>. The formula has 3 clauses × 3 literals = 9 occurrences, so 9 nodes. Group them visually by clause.</p>
+         <p style="margin:4px 0;">Why one per occurrence and not one per literal? Because <code>x</code> appears in multiple clauses; we need to pick a witness for <em>each</em> clause, so each occurrence is independent.</p>`,
+        `<p style="margin:4px 0;"><strong>Step 2 — add edges.</strong> Connect two nodes iff they are in <em>different</em> clusters (clauses) AND their literals are not negations of each other. Within a cluster: never an edge (impossible to pick two literals from the same clause for a satisfying assignment that uses only one). Between clusters: edge iff compatible.</p>
+         <p style="margin:4px 0;">"Compatible" means: it's logically consistent to set both literals true. E.g. <code>x</code> and <code>x</code> are compatible (same variable, same polarity). <code>x</code> and <code>y</code> are compatible (different variables). <code>x</code> and <code>¬x</code> are NOT compatible.</p>`,
+        `<p style="margin:4px 0;"><strong>Step 3 — find a clique of size 3.</strong> Highlighted in gold: three mutually-connected vertices, one per clause. This is the witness we needed.</p>
+         <p style="margin:4px 0;"><strong>Why this works:</strong> a 3-clique must pick one vertex per cluster (no edges within clusters). The pairwise compatibility means we can simultaneously set all three literals true — giving an assignment that satisfies all three clauses, i.e., satisfies the formula.</p>
+         <p style="margin:4px 0;"><strong>So 3SAT ≤_p CLIQUE.</strong> CLIQUE is in NP (witness is the clique itself), so CLIQUE is NP-complete.</p>`
+      ];
+      document.getElementById('chain-explain').innerHTML =
+        `<div class="step-num">Stage ${stage+1}/${totalStages} · 3SAT → CLIQUE</div>${notes[stage]}`;
+      stage++;
+      if (stage < totalStages) raf = setTimeout(step, 3500);
+    }
+    if (raf) clearTimeout(raf);
+    stage = 0;
+    step();
+  }
+
+  function showVC() {
+    // CLIQUE in G of size k ⇔ VC in G_complement of size n-k
+    const W = 720, H = 280;
+    const nodes = [
+      {x: 200, y: 80, lab: 'A'}, {x: 350, y: 80, lab: 'B'}, {x: 500, y: 80, lab: 'C'},
+      {x: 200, y: 200, lab: 'D'}, {x: 350, y: 200, lab: 'E'}, {x: 500, y: 200, lab: 'F'}
+    ];
+    const edgesG = [[0,1],[1,2],[0,3],[1,4],[2,5],[3,4],[4,5]];
+    let stage = 0;
+    const stages = [
+      { show: 'G', highlight: [],
+        label: `<p style="margin:4px 0;"><strong>Setup.</strong> A graph G with 6 vertices A–F. We want to find a <strong>clique</strong> of size 3 — three vertices all pairwise connected. (Recall: CLIQUE asks "does this graph contain a complete subgraph of size k?")</p>
+                <p style="margin:4px 0;">Definition reminder. A <strong>vertex cover</strong> of size m is a set of m vertices such that every edge has at least one endpoint in the set. The complementary problem of CLIQUE.</p>` },
+      { show: 'G', highlight: [0,1,3],
+        label: `<p style="margin:4px 0;"><strong>Found a clique: {A, B, D}.</strong> Confirm: edges A–B, A–D, B–D are all present in G. (Check the picture — three solid edges among these three highlighted nodes.)</p>
+                <p style="margin:4px 0;">Now the question: can this clique also tell us something about VERTEX-COVER? Look at the complement graph.</p>` },
+      { show: 'complement', highlight: [],
+        label: `<p style="margin:4px 0;"><strong>Complement graph G̅.</strong> Same vertex set, but the edges are flipped: an edge exists in G̅ <em>iff</em> it did NOT exist in G.</p>
+                <p style="margin:4px 0;">Observe: the edges within the clique {A, B, D} (which were dense in G) are now <em>missing</em> in G̅. And the edges that were missing in G (the non-clique pairs) are now present.</p>` },
+      { show: 'complement', highlight: [2,4,5],
+        label: `<p style="margin:4px 0;"><strong>The complement vertices {C, E, F} form a vertex cover of G̅.</strong> Every edge in G̅ has at least one endpoint in {C, E, F}. (Try it: pick any gold-highlighted edge; one endpoint is in the set.)</p>
+                <p style="margin:4px 0;"><strong>The lemma:</strong> for any graph G on n vertices, S is a clique in G of size k ⇔ V \\ S is a vertex cover in G̅ of size n − k.</p>
+                <p style="margin:4px 0;"><strong>So CLIQUE ≤_p VERTEX-COVER:</strong> given (G, k), output (G̅, n − k). Computable in polynomial time, satisfiability preserved. VERTEX-COVER ∈ NP (the cover is the witness), so VERTEX-COVER is NP-complete.</p>` }
+    ];
+    function step() {
+      const st = stages[stage];
+      let s = '';
+      let edges;
+      if (st.show === 'G') edges = edgesG;
+      else {
+        // complement
+        edges = [];
+        for (let i = 0; i < nodes.length; i++)
+          for (let j = i+1; j < nodes.length; j++)
+            if (!edgesG.some(([a,b]) => (a===i&&b===j)||(a===j&&b===i))) edges.push([i,j]);
+      }
+      for (const [a,b] of edges) {
+        const covered = st.show === 'complement' && (st.highlight.includes(a) || st.highlight.includes(b));
+        s += `<line x1="${nodes[a].x}" y1="${nodes[a].y}" x2="${nodes[b].x}" y2="${nodes[b].y}" stroke="${covered?'var(--gold)':'#888'}" stroke-width="${covered?2.5:1.5}"/>`;
+      }
+      for (let i = 0; i < nodes.length; i++) {
+        const n = nodes[i];
+        const hi = st.highlight.includes(i);
+        s += `<circle cx="${n.x}" cy="${n.y}" r="24" fill="${hi?'var(--gold)':'#fff'}" stroke="${hi?'var(--gold)':'#666'}" stroke-width="2"/>`;
+        s += `<text x="${n.x}" y="${n.y+5}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="16" fill="${hi?'#fff':'#1a1a1a'}" font-weight="bold">${n.lab}</text>`;
+      }
+      s += `<text x="${W/2}" y="${25}" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" fill="var(--muted)">${st.show === 'G' ? 'graph G' : 'complement graph G̅'}</text>`;
+      document.getElementById('chain-display').innerHTML =
+        `<svg viewBox="0 0 ${W} ${H}" class="svg-anim" style="background:#fcfbf7;border-radius:6px;">${s}</svg>`;
+      document.getElementById('chain-explain').innerHTML =
+        `<div class="step-num">Stage ${stage+1}/${stages.length} · CLIQUE → VERTEX-COVER</div>${st.label}`;
+      stage++;
+      if (stage < stages.length) raf = setTimeout(step, 4000);
+    }
+    if (raf) clearTimeout(raf);
+    stage = 0;
+    step();
+  }
+
+  function showSubsetSum() {
+    // 3SAT → SUBSET-SUM with digit-position trick
+    const stages = [
+      { html: `<div style="font-family: ui-monospace, monospace; font-size: 16px; padding: 14px;">Formula: (x ∨ y) ∧ (¬x ∨ y)</div>
+               <div style="font-family: var(--sans); font-size: 13px; color: var(--muted); margin-top: 8px; padding: 0 14px;">2 variables, 2 clauses. We'll build a SUBSET-SUM instance whose target can be hit iff this formula is satisfiable.</div>`,
+        note: `<p style="margin:4px 0;"><strong>Goal of this reduction:</strong> given any 3CNF formula, produce a finite set of positive integers and a target sum T such that "some subset sums to T" ⇔ "the formula is satisfiable."</p>
+               <p style="margin:4px 0;"><strong>The trick:</strong> use base-10 (or any base ≥ 4) numbers with carefully chosen digit positions. Each variable gets two numbers (one for T, one for F). Each clause gets some slack numbers. The target sum forces the choices.</p>` },
+      { html: `<table class="data" style="font-family: ui-monospace, monospace; font-size: 13px; max-width: 380px;">
+                <tr><th></th><th>x</th><th>y</th><th>c₁</th><th>c₂</th></tr>
+                <tr><th>num for x=T</th><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+                <tr><th>num for x=F</th><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+                <tr><th>num for y=T</th><td>0</td><td>1</td><td>1</td><td>1</td></tr>
+                <tr><th>num for y=F</th><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+                <tr><th>slack a₁</th><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+                <tr><th>slack b₁</th><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+                <tr><th>slack a₂</th><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+                <tr><th>slack b₂</th><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+                <tr style="background: var(--gold-soft); font-weight: bold;"><th>TARGET</th><td>1</td><td>1</td><td>3</td><td>3</td></tr>
+               </table>`,
+        note: `<p style="margin:4px 0;"><strong>Reading the table.</strong> Each row is one number in our SUBSET-SUM instance, written digit-by-digit (column = digit position).</p>
+               <p style="margin:4px 0;"><strong>Variable columns (x, y):</strong> the two numbers for x both have a 1 in the x-column. Target says "x column = 1." So we must pick exactly one of {x=T-num, x=F-num} — picking both gives 2, picking neither gives 0. This <em>forces</em> a binary choice per variable.</p>
+               <p style="margin:4px 0;"><strong>Clause columns (c₁, c₂):</strong> a clause column has a 1 wherever a literal-number satisfies that clause. E.g. clause c₁ = (x ∨ y) is satisfied by x=T-num and by y=T-num — those rows have 1 in the c₁ column. Then slack-numbers a₁ and b₁ each have a 1 in c₁. Target says "c₁ column = 3."</p>
+               <p style="margin:4px 0;"><strong>Why the slack:</strong> if a clause has between 1 and 3 of its literals true, we can always add 2 or 0 from the slacks to reach exactly 3.</p>` },
+      { html: `<div style="font-family: var(--sans); font-size: 14px; padding: 16px; background: var(--accent-soft); border-radius: 6px; max-width: 480px;">
+                 <div style="font-family: ui-monospace, monospace; margin-bottom: 8px;">Subset: { x=T-num, y=T-num, slack a₁, slack a₂ }</div>
+                 <div style="font-family: ui-monospace, monospace; font-size: 13px;">x column: 1 + 0 = <strong>1</strong> ✓<br>y column: 0 + 1 = <strong>1</strong> ✓<br>c₁ column: 1 + 1 + 1 = <strong>3</strong> ✓<br>c₂ column: 0 + 1 + 1 = wait, only 2... need slack b₂ too: 0 + 1 + 1 + 1 = <strong>3</strong> ✓</div>
+               </div>`,
+        note: `<p style="margin:4px 0;"><strong>The witness subset corresponds to the assignment x=T, y=T.</strong> Each picked variable-number gives the literal that's true in our assignment; the slack-numbers patch the clause sums to exactly 3.</p>
+               <p style="margin:4px 0;"><strong>Verification.</strong> If the formula has a satisfying assignment, we can always build a witness subset. Conversely, if some subset sums to the target, the variable-number choices reveal the satisfying assignment.</p>
+               <p style="margin:4px 0;"><strong>Polynomial size.</strong> n variables + m clauses ⇒ 2n + 2m numbers, each with n + m digits. Total size O((n+m)²) — polynomial.</p>
+               <p style="margin:4px 0;"><strong>So 3SAT ≤_p SUBSET-SUM.</strong> SUBSET-SUM is in NP (subset is the witness), so SUBSET-SUM is NP-complete.</p>` }
+    ];
+    let stage = 0;
+    function step() {
+      document.getElementById('chain-display').innerHTML = stages[stage].html;
+      document.getElementById('chain-explain').innerHTML =
+        `<div class="step-num">Stage ${stage+1}/${stages.length} · 3SAT → SUBSET-SUM</div>${stages[stage].note}`;
+      stage++;
+      if (stage < stages.length) raf = setTimeout(step, 5000);
+    }
+    if (raf) clearTimeout(raf);
+    step();
+  }
+
+  function play() {
+    if (cur === '3sat') show3sat();
+    else if (cur === 'clique') showClique();
+    else if (cur === 'vc') showVC();
+    else if (cur === 'ss') showSubsetSum();
+  }
+
+  document.querySelectorAll('#chain-toggle button').forEach(b => {
+    b.onclick = () => {
+      document.querySelectorAll('#chain-toggle button').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      cur = b.dataset.r;
+      play();
+    };
+  });
+  document.getElementById('chain-play').onclick = play;
+  document.getElementById('chain-reset').onclick = () => {
+    if (raf) clearTimeout(raf);
+    document.getElementById('chain-display').innerHTML = '';
+    document.getElementById('chain-explain').innerHTML = '';
+  };
+  play();
+})();
+</script>
+
+</body>
+</html>

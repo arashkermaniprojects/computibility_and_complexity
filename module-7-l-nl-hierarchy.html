@@ -1,0 +1,915 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 7 · L, NL &amp; the hierarchy theorems</title>
+<link rel="stylesheet" href="styles.css">
+<script src="widget-loop.js"></script>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Module 7 · MIT 18.404J Lectures 20–21 · Sipser §8.4–§9.1</div>
+  <h1>L, NL &amp; the hierarchy theorems</h1>
+  <div class="sub">The smallest natural complexity classes — and the one separation theorem we can actually prove.</div>
+  <div class="tag">BCS 402 · Dr. Arash Kermani · CUD</div>
+</header>
+
+<nav class="tabs">
+  <a href="index.html">← All modules</a>
+  <a class="active" href="#l-nl">1 · L and NL</a>
+  <a href="#path">2 · PATH is NL-complete</a>
+  <a href="#nl-conl">3 · NL = coNL</a>
+  <a href="#hierarchy">4 · Hierarchy theorems</a>
+  <a href="#picture">5 · The full map</a>
+  <a href="#exercises">6 · Practice</a>
+</nav>
+
+<div class="wrap">
+
+<!-- ============================================================ -->
+<section id="l-nl">
+  <h2>1 · L and NL — counting with logarithmic memory</h2>
+
+  <p>
+    For tiny space, we use a <strong>2-tape model</strong>: a read-only input tape (doesn't count
+    toward space) and a work tape (does). A language is in <strong>L</strong> if some deterministic
+    machine decides it using <span class="math">O(log n)</span> work-tape cells. <strong>NL</strong>
+    is the nondeterministic version.
+  </p>
+
+  <div class="math-block">
+    L ⊆ NL ⊆ P ⊆ NP ⊆ PSPACE
+  </div>
+
+  <p>
+    Log space is barely enough to store a pointer into the input. That's the right metaphor:
+    <em>L is the class of problems solvable by reading the input while maintaining only a
+    constant number of pointers into it</em>.
+  </p>
+
+  <div class="widget" id="lspace">
+    <div class="widget-title">A log-space machine in action <span class="pill">Widget 1 · Auto-plays</span></div>
+
+    <div class="controls">
+      <label>Input:
+        <select id="ls-preset">
+          <option value="palindrome">Palindrome check (L)</option>
+          <option value="adfa">A<sub>DFA</sub> simulation (L)</option>
+        </select>
+      </label>
+      <button class="btn play-btn" id="ls-play">⏸ Pause</button>
+      <button class="btn ghost" id="ls-reset">Reset</button>
+      <label class="speed-control">Speed
+        <input type="range" id="ls-speed" min="0.25" max="3" step="0.25" value="1">
+        <span id="ls-speed-label" style="font-family: var(--mono); min-width: 28px;">1×</span>
+      </label>
+    </div>
+
+    <svg id="ls-svg" viewBox="0 0 760 240" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+
+    <div class="status">
+      <div class="stat">Work tape <b id="ls-work">∅</b></div>
+      <div class="stat">Work cells used <b id="ls-cells">0</b></div>
+      <div class="stat">Verdict <b id="ls-verdict">—</b></div>
+    </div>
+
+    <div class="explain-panel" id="ls-explain"></div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="path">
+  <h2>2 · PATH is NL-complete</h2>
+
+  <p>
+    <strong>PATH</strong>: given a directed graph and two vertices <span class="math">s</span> and
+    <span class="math">t</span>, is there a directed path from <span class="math">s</span> to
+    <span class="math">t</span>? PATH is the canonical NL-complete problem. The proof uses
+    log-space reductions.
+  </p>
+
+  <p>
+    PATH is in NL by the following nondeterministic algorithm: store the current vertex (
+    <span class="math">log n</span> bits) and a step counter (
+    <span class="math">log n</span> bits). At each step, guess a neighbor; if it's the target
+    within <span class="math">n</span> steps, accept.
+  </p>
+
+  <div class="widget" id="nl-path">
+    <div class="widget-title">Nondeterministic guesses on PATH <span class="pill">Widget 2 · Auto-plays</span></div>
+
+    <div class="controls">
+      <button class="btn play-btn" id="nlp-play">⏸ Pause</button>
+      <button class="btn ghost" id="nlp-reset">Reset</button>
+      <label class="speed-control">Speed
+        <input type="range" id="nlp-speed" min="0.25" max="3" step="0.25" value="1">
+        <span id="nlp-speed-label" style="font-family: var(--mono); min-width: 28px;">1×</span>
+      </label>
+    </div>
+
+    <svg id="nlp-svg" viewBox="0 0 760 320" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+
+    <div class="status">
+      <div class="stat">Configurations explored <b id="nlp-cfg">0</b></div>
+      <div class="stat">Space used <b id="nlp-space">log n + log n bits</b></div>
+    </div>
+
+    <div class="explain-panel" id="nlp-explain">
+      <div class="step-num">Branching</div>
+      Watch the nondeterministic computation explore all paths in parallel. Each branch only needs
+      log n bits to track current vertex + step counter.
+    </div>
+  </div>
+
+  <p>
+    Why is PATH NL-<em>hard</em>? Given any NL machine <span class="math">M</span> and input
+    <span class="math">w</span>, construct the configuration graph: vertices are configurations of
+    <span class="math">M</span> on <span class="math">w</span>, edges are δ-transitions. There are
+    <span class="math">2<sup>O(log n)</sup> = poly(n)</span> configurations — the graph is
+    polynomial in size, constructible in log space. Then <span class="math">M</span> accepts iff
+    there is a path from start config to accept config in this graph.
+  </p>
+</section>
+
+<!-- ============================================================ -->
+<section id="nl-conl">
+  <h2>3 · Immerman–Szelepcsényi: NL = coNL</h2>
+
+  <p>
+    Astonishingly, NL is closed under complement: <span class="math">NL = coNL</span>. The proof
+    technique is <strong>inductive counting</strong>.
+  </p>
+
+  <p>
+    To show <span class="math">\overline{PATH}</span> is in NL, we need an NL algorithm that
+    accepts iff there is NO path from <span class="math">s</span> to <span class="math">t</span>.
+    The idea: count the number of vertices reachable from <span class="math">s</span> in
+    <span class="math">≤ i</span> steps (call this <span class="math">c_i</span>), and use
+    <span class="math">c_i</span> to <em>certify</em> <span class="math">c<sub>i+1</sub></span>. If we
+    arrive at <span class="math">c_n</span> and the target <span class="math">t</span> is NOT in
+    that count, then there is no path.
+  </p>
+
+  <div class="widget" id="isz">
+    <div class="widget-title">Inductive counting on the configuration graph <span class="pill">Widget 3 · Auto-plays</span></div>
+
+    <div class="controls">
+      <button class="btn play-btn" id="isz-play">⏸ Pause</button>
+      <button class="btn ghost" id="isz-reset">Reset</button>
+      <label class="speed-control">Speed
+        <input type="range" id="isz-speed" min="0.25" max="3" step="0.25" value="1">
+        <span id="isz-speed-label" style="font-family: var(--mono); min-width: 28px;">1×</span>
+      </label>
+    </div>
+
+    <svg id="isz-svg" viewBox="0 0 760 360" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+
+    <div class="status">
+      <div class="stat">Step i <b id="isz-i">0</b></div>
+      <div class="stat">c_i (vertices reachable in ≤ i steps) <b id="isz-c">1</b></div>
+    </div>
+
+    <div class="explain-panel" id="isz-explain"></div>
+  </div>
+
+  <div class="callout">
+    <h5>What inductive counting buys us</h5>
+    <p style="margin: 0;">
+      Once we know <span class="math">c_n</span>, we can in NL "for each vertex, certify it is
+      reachable or unreachable using <span class="math">c_n</span> as a witness count." Then
+      checking <span class="math">t ∉ R</span> is a positive existential check, doable in NL.
+      So <span class="math">\overline{PATH} ∈ NL</span>, and since PATH is NL-complete, every NL
+      language is closed under complement. ∎
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="hierarchy">
+  <h2>4 · The hierarchy theorems</h2>
+
+  <p>
+    More space = more languages decidable. The <strong>space hierarchy theorem</strong>:
+  </p>
+  <div class="math-block">
+    if f(n) is space-constructible and f(n) ≥ log n, then SPACE(f(n)) ⊊ SPACE(o(f(n) · log f(n))).
+  </div>
+  <p>
+    A similar theorem holds for time. The proofs are by <strong>diagonalization</strong> — just
+    like the proof that A<sub>TM</sub> is undecidable, but now with resource bounds.
+  </p>
+
+  <div class="widget" id="hier">
+    <div class="widget-title">Hierarchy diagonalization, visually <span class="pill">Widget 4 · Auto-plays</span></div>
+
+    <div class="controls">
+      <button class="btn play-btn" id="hier-play">⏸ Pause</button>
+      <button class="btn ghost" id="hier-reset">Reset</button>
+      <label class="speed-control">Speed
+        <input type="range" id="hier-speed" min="0.25" max="3" step="0.25" value="1">
+        <span id="hier-speed-label" style="font-family: var(--mono); min-width: 28px;">1×</span>
+      </label>
+    </div>
+
+    <svg id="hier-svg" viewBox="0 0 760 340" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+
+    <div class="explain-panel" id="hier-explain">
+      <div class="step-num">The diagonal language</div>
+      Each row is a TM with space ≤ f(n). The diagonalizer D runs M_i on ⟨M_i⟩ in space slightly
+      larger than f, and flips the answer. D cannot be in SPACE(f) — so SPACE(g) strictly
+      contains SPACE(f).
+    </div>
+  </div>
+
+  <div class="key-idea">
+    <strong>Concretely known separations.</strong>
+    NL ⊊ PSPACE (consequence of space hierarchy). &nbsp;
+    P ⊊ EXPTIME. &nbsp;
+    NP ⊊ NEXPTIME. &nbsp;
+    Whether <span class="math">P ⊊ NP</span> is open — but at least we know <em>some</em>
+    separations exist, thanks to the hierarchy theorems.
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="picture">
+  <h2>5 · The full map (everything we've covered)</h2>
+
+  <svg viewBox="0 0 760 400" class="svg-anim" style="background:#fcfbf7;border-radius:6px;">
+    <defs>
+      <marker id="arr-final" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+        <polygon points="0 0, 10 3, 0 6" fill="#666"/>
+      </marker>
+    </defs>
+
+    <rect x="20" y="20" width="720" height="360" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+    <text x="30" y="38" font-family="var(--sans), sans-serif" font-size="11" fill="#888">All languages over {0,1}*</text>
+
+    <ellipse cx="380" cy="220" rx="320" ry="140" fill="#d6e3f4" stroke="#2f60a8" stroke-width="1.2"/>
+    <text x="80" y="120" font-family="var(--sans), sans-serif" font-size="13" font-weight="bold" fill="#2f60a8">Decidable</text>
+
+    <ellipse cx="380" cy="230" rx="270" ry="115" fill="#fffdf3" stroke="#b58b00" stroke-width="1.5"/>
+    <text x="120" y="160" font-family="var(--sans), sans-serif" font-size="13" font-weight="bold" fill="#b58b00">EXPTIME</text>
+
+    <ellipse cx="380" cy="235" rx="225" ry="95" fill="#f4dfcf" fill-opacity="0.5" stroke="#b95825" stroke-width="1.5"/>
+    <text x="170" y="190" font-family="var(--sans), sans-serif" font-size="13" font-weight="bold" fill="#b95825">PSPACE</text>
+
+    <ellipse cx="380" cy="240" rx="180" ry="65" fill="#fff" stroke="#444" stroke-width="1.3"/>
+    <text x="220" y="225" font-family="var(--sans), sans-serif" font-size="13" font-weight="bold" fill="#444">NP</text>
+
+    <ellipse cx="370" cy="245" rx="125" ry="40" fill="#d6ebe4" stroke="#2a6f5f" stroke-width="1.4"/>
+    <text x="370" y="250" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" font-weight="bold" fill="#1c4a3f">P</text>
+
+    <ellipse cx="370" cy="250" rx="70" ry="22" fill="#d6e3f4" stroke="#2f60a8" stroke-width="1.2"/>
+    <text x="370" y="254" text-anchor="middle" font-family="ui-monospace, monospace" font-size="12" font-weight="bold" fill="#2f60a8">NL</text>
+
+    <ellipse cx="365" cy="252" rx="30" ry="12" fill="#fff" stroke="#444" stroke-width="0.8"/>
+    <text x="365" y="256" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" font-weight="bold" fill="#1a1a1a">L</text>
+
+    <!-- Strict separations on right -->
+    <text x="700" y="155" text-anchor="end" font-family="var(--sans), sans-serif" font-size="11" fill="var(--muted)">⊊ (hierarchy thm)</text>
+    <text x="700" y="200" text-anchor="end" font-family="var(--sans), sans-serif" font-size="11" fill="var(--muted)">⊊?? (Savitch ⇒ PSPACE=NPSPACE)</text>
+    <text x="700" y="240" text-anchor="end" font-family="var(--sans), sans-serif" font-size="11" fill="var(--muted)">⊊?? (P vs NP — open!)</text>
+    <text x="700" y="265" text-anchor="end" font-family="var(--sans), sans-serif" font-size="11" fill="var(--muted)">⊊?? (P vs NL — open)</text>
+    <text x="700" y="290" text-anchor="end" font-family="var(--sans), sans-serif" font-size="11" fill="var(--muted)">⊊? (NL vs L — open)</text>
+
+    <!-- Open question star -->
+    <text x="370" y="350" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" fill="var(--muted)">All inclusions are known. Most strict separations are open.</text>
+  </svg>
+</section>
+
+<!-- ============================================================ -->
+<section id="exercises">
+  <h2>6 · Practice (Sipser §8.4–§9.1)</h2>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 8.22</div>
+    <p>Show that <span class="math">EQ<sub>DFA</sub> ∈ NL</span>.</p>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">Equivalent to: ⟨D₁, D₂⟩ accept iff for no string w does D₁ accept w ≠ D₂ accept w. Use NL = coNL: nondeterministically guess a string causing disagreement (track current state in each DFA, log space).</div>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 8.23</div>
+    <p>Show that 2SAT ∈ NL.</p>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">Use the implication graph: from each clause (x ∨ y) derive ¬x → y and ¬y → x. φ is UNSAT iff some variable z has both z → ¬z and ¬z → z paths. Using NL for PATH, the complement (SAT) is in NL by NL = coNL.</div>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 9.1</div>
+    <p>Show that there is a function <span class="math">f : ℕ → ℕ</span> such that <span class="math">f(n) = Ω(log n)</span> and TIME(f(n)) ⊊ TIME(f(n) log f(n)).</p>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">Direct application of the time hierarchy theorem. Pick f(n) = n · log n, which is time-constructible; the theorem gives TIME(f) ⊊ TIME(f log f) = TIME(n log² n · log log n).</div>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 9.3</div>
+    <p>Show that for any function <span class="math">f : ℕ → ℕ</span> with <span class="math">f(n) ≥ n</span>, the class NSPACE(f(n)) is closed under complementation.</p>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">Immerman–Szelepcsényi: the proof for NL generalizes — same inductive counting works whenever you can count the configurations in your space bound. For f(n) ≥ n, configurations are at most 2^O(f(n)), and counting them takes O(f) space.</div>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 9.10</div>
+    <p>Recall that <span class="math">EXPTIME = ⋃<sub>k</sub> TIME(2<sup>n<sup>k</sup></sup>)</span>. Show that <span class="math">P ⊊ EXPTIME</span>.</p>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">Direct from the time hierarchy theorem: TIME(n^k) ⊊ TIME(2ⁿ) for any constant k. So P ⊊ TIME(2ⁿ) ⊆ EXPTIME.</div>
+    </details>
+  </div>
+</section>
+
+<section>
+  <h2>One-sentence summary of the whole course</h2>
+  <div class="key-idea">
+    Algorithms are bounded by what's computable (diagonalization rules out the undecidable) and by
+    resources (time and space hierarchy theorems separate classes within the decidable); the few
+    proven separations and the many open ones (P vs NP being the headline) define the landscape of
+    modern complexity theory.
+  </div>
+  <p style="text-align:center;margin-top:24px;">
+    <a class="btn" href="index.html" style="display:inline-block;padding:10px 18px;background:var(--accent);color:white;border-radius:4px;text-decoration:none;border:0;">
+      ← Back to all modules
+    </a>
+  </p>
+</section>
+
+</div>
+
+<footer class="foot">Module 7 of 7 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<script>
+// =================================================================
+// Module 7 — Animation-heavy widgets
+// =================================================================
+
+// ----- Log-space machine (Widget 1) -----
+(function(){
+  let preset = 'palindrome';
+  let raf = null;
+  let state = null;
+
+  function init() {
+    if (raf) clearTimeout(raf);
+    preset = document.getElementById('ls-preset').value;
+    if (preset === 'palindrome') {
+      state = {
+        input: 'abcba',
+        i: 0, j: 4,
+        cellsUsed: 2,
+        ok: null,
+        phase: 'compare'
+      };
+    } else {
+      state = {
+        input: '0101',
+        dfaState: 'q0',
+        i: 0,
+        cellsUsed: 2,
+        ok: null,
+        phase: 'sim'
+      };
+    }
+    render();
+  }
+
+  function render() {
+    let s = '';
+    const W = 760, H = 240;
+    // input tape
+    const cellW = 36;
+    const startX = 40;
+    const yTape = 40;
+    for (let k = 0; k < state.input.length; k++) {
+      const x = startX + k * cellW;
+      const isI = (preset === 'palindrome') ? (k === state.i) : (k === state.i);
+      const isJ = (preset === 'palindrome') && (k === state.j);
+      const fill = isI ? 'var(--accent-soft)' : isJ ? 'var(--info-soft)' : '#fff';
+      const stroke = isI ? 'var(--accent)' : isJ ? 'var(--info)' : 'var(--rule-strong)';
+      s += `<rect x="${x}" y="${yTape}" width="${cellW}" height="38" fill="${fill}" stroke="${stroke}" stroke-width="${isI||isJ?2:1}"/>`;
+      s += `<text x="${x+cellW/2}" y="${yTape+25}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="15" font-weight="${isI||isJ?'bold':'normal'}">${state.input[k]}</text>`;
+    }
+    s += `<text x="20" y="${yTape+25}" text-anchor="end" font-family="var(--sans), sans-serif" font-size="12" fill="#888">input</text>`;
+
+    // pointer labels
+    if (preset === 'palindrome') {
+      const xi = startX + state.i * cellW + cellW/2;
+      const xj = startX + state.j * cellW + cellW/2;
+      s += `<text x="${xi}" y="${yTape-6}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="bold" fill="var(--accent)">i=${state.i}</text>`;
+      s += `<text x="${xj}" y="${yTape+58}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="bold" fill="var(--info)">j=${state.j}</text>`;
+    } else {
+      const xi = startX + state.i * cellW + cellW/2;
+      s += `<text x="${xi}" y="${yTape-6}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="bold" fill="var(--accent)">i=${state.i}</text>`;
+    }
+
+    // work tape (small, separate row)
+    const yWork = 130;
+    s += `<text x="20" y="${yWork+25}" text-anchor="end" font-family="var(--sans), sans-serif" font-size="12" fill="#888">work tape (log n)</text>`;
+    // we visualize the work tape as a few cells showing the binary representation of i (and j for palindrome)
+    const iBits = state.i.toString(2).padStart(3, '0');
+    for (let k = 0; k < 4; k++) {
+      const x = startX + k * cellW;
+      const ch = iBits[k] || '_';
+      s += `<rect x="${x}" y="${yWork}" width="${cellW}" height="38" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1"/>`;
+      s += `<text x="${x+cellW/2}" y="${yWork+25}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="14" fill="var(--accent-strong)">${ch}</text>`;
+    }
+    if (preset === 'palindrome') {
+      const jBits = state.j.toString(2).padStart(3, '0');
+      for (let k = 0; k < 4; k++) {
+        const x = startX + (k+5) * cellW;
+        const ch = jBits[k] || '_';
+        s += `<rect x="${x}" y="${yWork}" width="${cellW}" height="38" fill="var(--info-soft)" stroke="var(--info)" stroke-width="1"/>`;
+        s += `<text x="${x+cellW/2}" y="${yWork+25}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="14" fill="var(--info)">${ch}</text>`;
+      }
+      s += `<text x="${startX + 4.5*cellW}" y="${yWork-6}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="var(--muted)">i (bin)</text>`;
+      s += `<text x="${startX + 9*cellW}" y="${yWork-6}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="var(--muted)">j (bin)</text>`;
+    } else {
+      s += `<text x="${startX + 4*cellW + 20}" y="${yWork+25}" font-family="ui-monospace, monospace" font-size="13" fill="var(--accent-strong)">state = ${state.dfaState}</text>`;
+    }
+    s += `<text x="${W/2}" y="${H-10}" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="12" fill="var(--muted)">Notice: work tape grows only with log(input length). The input tape is just read.</text>`;
+
+    document.getElementById('ls-svg').innerHTML = s;
+    document.getElementById('ls-cells').textContent = state.cellsUsed;
+    document.getElementById('ls-work').textContent = preset === 'palindrome' ? `i=${state.i}, j=${state.j}` : `state=${state.dfaState}, i=${state.i}`;
+    document.getElementById('ls-verdict').textContent = state.ok === null ? '—' : (state.ok ? 'ACCEPT' : 'REJECT');
+  }
+
+  function step() {
+    if (preset === 'palindrome') {
+      if (state.i >= state.j) { state.ok = true; return false; }
+      if (state.input[state.i] !== state.input[state.j]) { state.ok = false; return false; }
+      state.i++; state.j--;
+      return true;
+    } else {
+      // simulate a tiny DFA that accepts strings with even number of 1s
+      if (state.i >= state.input.length) {
+        state.ok = (state.dfaState === 'q0');
+        return false;
+      }
+      const c = state.input[state.i];
+      const next = c === '0' ? state.dfaState : (state.dfaState === 'q0' ? 'q1' : 'q0');
+      state.dfaState = next;
+      state.i++;
+      return true;
+    }
+  }
+
+  function play() {
+    init();
+    document.getElementById('ls-explain').innerHTML =
+      `<div class="step-num">Algorithm setup</div>
+       ${preset === 'palindrome' ?
+         '<p style="margin:4px 0;"><strong>Palindrome check using only log n memory:</strong> the input is on a read-only tape (doesn\'t count toward space). We use a tiny work tape to hold two pointers: i starts at 0 (left end), j starts at n−1 (right end). We compare input[i] with input[j]; if they ever differ, reject. If i meets/passes j, accept.</p>' +
+         '<p style="margin:4px 0;"><strong>Space accounting:</strong> i and j are at most n−1, so each takes ⌈log₂ n⌉ bits to write. Total work-tape usage: 2⌈log₂ n⌉ — that\'s O(log n). Hence palindrome ∈ L.</p>' :
+         '<p style="margin:4px 0;"><strong>DFA simulation using only log n memory:</strong> the input is read-only; we maintain the DFA\'s current state (a small constant-size identifier) and a single input pointer (log n bits). Each step we read input[i], look up the transition, update state, increment i.</p>' +
+         '<p style="margin:4px 0;"><strong>Space accounting:</strong> state takes O(1) bits, pointer takes O(log n) bits. Total: O(log n). Hence A<sub>DFA</sub> ∈ L. This is the prototypical "logspace lookup" algorithm.</p>'}`;
+    const loop = () => {
+      const cont = step();
+      render();
+      if (cont) {
+        if (preset === 'palindrome') {
+          document.getElementById('ls-explain').innerHTML =
+            `<div class="step-num">Compare input[${state.i-1}] = '${state.input[state.i-1]}' with input[${state.j+1}] = '${state.input[state.j+1]}'</div>
+             <p style="margin:4px 0;">Characters matched. Advance i forward, j backward. Both pointers are stored on the work tape using only log n bits each.</p>
+             <p style="margin:4px 0;"><strong>Notice:</strong> we never copy the input. We only <em>read</em> it through the pointers. That's why this algorithm uses logarithmic space.</p>`;
+        } else {
+          document.getElementById('ls-explain').innerHTML =
+            `<div class="step-num">Read input[${state.i-1}] = '${state.input[state.i-1]}', new state ${state.dfaState}</div>
+             <p style="margin:4px 0;">After reading the character at position ${state.i-1}, the DFA transitions. The work tape stores only the state (1 cell, here labeled q0 or q1) and the pointer i (log n bits).</p>
+             <p style="margin:4px 0;"><strong>Watch the work tape:</strong> it does not grow with input size — only the pointer's bit-width does. That's logarithmic growth.</p>`;
+        }
+        raf = setTimeout(loop, 1800 / lsSpeed());
+      }
+      else {
+        document.getElementById('ls-explain').innerHTML =
+          `<div class="step-num">${state.ok ? 'ACCEPT' : 'REJECT'} — final tally</div>
+           ${preset === 'palindrome' ?
+             `<p style="margin:4px 0;">${state.ok ? 'The pointers met without finding a mismatch — the input is a palindrome.' : 'A mismatch was found before i could pass j — not a palindrome.'}</p>
+              <p style="margin:4px 0;"><strong>Work-tape usage:</strong> 2 · ⌈log₂(${state.input.length})⌉ = ${2*Math.ceil(Math.log2(state.input.length))} bits. The constant factor 2 is for the two pointers. Hence <strong>palindromes ∈ L</strong>.</p>` :
+             `<p style="margin:4px 0;">${state.ok ? 'Final state q0 — accept (even number of 1s).' : 'Final state q1 — reject (odd number of 1s).'}</p>
+              <p style="margin:4px 0;"><strong>Work-tape usage:</strong> 1 bit for state + ⌈log₂(${state.input.length})⌉ bits for position = O(log n). Hence <strong>A<sub>DFA</sub> ∈ L</strong>.</p>`}
+           <p style="margin:4px 0;"><strong>Why this matters:</strong> L is the class of problems solvable by a "pointer-chaser" — a machine that can only hold a constant number of pointers into the input. Many database operations live exactly here.</p>`;
+        // Loop: restart after a pause if still looping
+        if (lsLooping) lsLoopTimer = setTimeout(() => { if (lsLooping) play(); }, 5000 / lsSpeed());
+      }
+    };
+    loop();
+  }
+
+  let lsLooping = true, lsLoopTimer = null;
+  function lsSpeed() { return parseFloat(document.getElementById('ls-speed').value) || 1; }
+  function lsSetBtn() { document.getElementById('ls-play').textContent = lsLooping ? '⏸ Pause' : '▶ Play'; }
+  function lsClear() {
+    if (raf) clearTimeout(raf); raf = null;
+    if (lsLoopTimer) clearTimeout(lsLoopTimer); lsLoopTimer = null;
+  }
+  function lsStop() { lsLooping = false; lsClear(); lsSetBtn(); }
+  // Wrap play() so it marks looping each invocation
+  const _ls_play_inner = play;
+  play = function() { lsLooping = true; lsClear(); lsSetBtn(); _ls_play_inner(); };
+
+  document.getElementById('ls-preset').onchange = () => { lsStop(); init(); setTimeout(play, 800); };
+  document.getElementById('ls-play').onclick = () => { if (lsLooping || raf) lsStop(); else play(); };
+  document.getElementById('ls-reset').onclick = () => { lsStop(); init(); };
+  document.getElementById('ls-speed').oninput = (e) => {
+    document.getElementById('ls-speed-label').textContent = parseFloat(e.target.value).toFixed(2).replace(/\.?0+$/, '') + '×';
+  };
+  init();
+  setTimeout(play, 1200);
+})();
+
+// ----- NL: branching search on PATH (Widget 2) -----
+(function(){
+  const W = 760, H = 320;
+  const nodes = {
+    S: {x:80, y:160},
+    A: {x:200, y:80},
+    B: {x:200, y:240},
+    C: {x:340, y:120},
+    D: {x:340, y:220},
+    E: {x:480, y:80},
+    F: {x:480, y:240},
+    T: {x:620, y:160}
+  };
+  const edges = [['S','A'],['S','B'],['A','C'],['A','D'],['B','D'],['C','E'],['D','E'],['D','F'],['E','T'],['F','T']];
+
+  let frontier = []; // array of paths (each a list of node names)
+  let cfgCount = 0;
+  let raf = null;
+
+  function render() {
+    let s = '';
+    // edges
+    for (const [a,b] of edges) {
+      const na = nodes[a], nb = nodes[b];
+      const onFrontier = frontier.some(p => p.includes(a) && p.includes(b) && p.indexOf(b) === p.indexOf(a) + 1);
+      const stroke = onFrontier ? 'var(--gold)' : '#bbb';
+      s += `<line x1="${na.x}" y1="${na.y}" x2="${nb.x}" y2="${nb.y}" stroke="${stroke}" stroke-width="${onFrontier?2.5:1.2}"/>`;
+      // arrowhead
+      const dx = nb.x - na.x, dy = nb.y - na.y, len = Math.hypot(dx, dy);
+      const ux = dx/len, uy = dy/len;
+      const ex = nb.x - ux*24, ey = nb.y - uy*24;
+      s += `<polygon points="${ex},${ey} ${ex-ux*8-uy*4},${ey-uy*8+ux*4} ${ex-ux*8+uy*4},${ey-uy*8-ux*4}" fill="${stroke}"/>`;
+    }
+    // nodes
+    const heads = new Set(frontier.map(p => p[p.length-1]));
+    for (const [name, p] of Object.entries(nodes)) {
+      const isHead = heads.has(name);
+      const isTarget = (name === 'T');
+      const fill = isTarget && isHead ? 'var(--accent)' : isHead ? 'var(--gold)' : '#fff';
+      const stroke = isTarget ? 'var(--accent)' : isHead ? 'var(--gold)' : '#666';
+      s += `<circle cx="${p.x}" cy="${p.y}" r="22" fill="${fill}" stroke="${stroke}" stroke-width="2"/>`;
+      s += `<text x="${p.x}" y="${p.y+5}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="14" font-weight="bold" fill="${isHead?'#fff':'#1a1a1a'}">${name}</text>`;
+    }
+    // show frontier
+    let ly = 290;
+    s += `<text x="20" y="${ly}" font-family="var(--sans), sans-serif" font-size="11" fill="var(--muted)">Branches: ${frontier.map(p => p.join('→')).join(' · ')}</text>`;
+    document.getElementById('nlp-svg').innerHTML = s;
+    document.getElementById('nlp-cfg').textContent = cfgCount;
+  }
+
+  function play() {
+    if (raf) clearTimeout(raf);
+    frontier = [['S']];
+    cfgCount = 1;
+    render();
+    document.getElementById('nlp-explain').innerHTML =
+      `<div class="step-num">Step 0 — starting at S</div>
+       <p style="margin:4px 0;"><strong>What we're simulating:</strong> a <em>nondeterministic</em> log-space machine deciding PATH (is there a directed path from S to T?). Such a machine has a <em>two-tape</em> setup: read-only input + a work tape limited to O(log n) cells.</p>
+       <p style="margin:4px 0;"><strong>Memory budget per branch:</strong> store the current vertex (log n bits to identify it) + a step counter (log n bits to ensure no infinite loop). That's it. Two log-n integers.</p>
+       <p style="margin:4px 0;"><strong>Branches:</strong> each time the machine encounters a choice, it forks — equivalent to a tree of computation paths. All branches share the same memory budget; we draw them in parallel for clarity, but really the NL machine "guesses" the right one.</p>`;
+
+    let stepNum = 0;
+    const loop = () => {
+      stepNum++;
+      const newFront = [];
+      let found = false;
+      for (const p of frontier) {
+        const last = p[p.length-1];
+        const outs = edges.filter(([a,b]) => a === last).map(([a,b]) => b);
+        for (const o of outs) {
+          if (p.includes(o)) continue;
+          newFront.push([...p, o]);
+          cfgCount++;
+          if (o === 'T') found = true;
+        }
+      }
+      frontier = newFront.slice(0, 8);
+      render();
+      const branchStr = frontier.map(p => p.join('→')).join(' · ');
+
+      if (found) {
+        const winningBranch = frontier.find(p => p[p.length-1] === 'T');
+        document.getElementById('nlp-explain').innerHTML =
+          `<div class="step-num">Step ${stepNum} — T reached via ${winningBranch.join('→')}</div>
+           <p style="margin:4px 0;"><strong>Accept.</strong> The NL machine doesn't actually fork in parallel — it just <em>guesses</em>, and on at least one guess-sequence it ends up at T. The definition of NL says: accept iff <em>some</em> branch accepts.</p>
+           <p style="margin:4px 0;"><strong>Space accounting:</strong> on the winning branch we only ever stored one vertex name + one counter — both log n bits. Total work-tape usage: O(log n). PATH is in <strong>NL</strong>.</p>
+           <p style="margin:4px 0;"><strong>Why not in L?</strong> A deterministic log-space machine can't easily "remember" which neighbor it picked at each branching vertex. The frontier can be exponential in size, but only O(log n) bits per branch — the gap deterministic-vs-nondeterministic.</p>`;
+        return;
+      }
+      if (frontier.length === 0) {
+        document.getElementById('nlp-explain').innerHTML =
+          `<div class="step-num">Step ${stepNum} — no live branches</div>
+           <p style="margin:4px 0;"><strong>All branches dead.</strong> No path from S to T exists in this graph.</p>
+           <p style="margin:4px 0;"><strong>But here's the catch:</strong> an NL machine can't actually <em>verify</em> "no path exists" by running this — because to say "no", it would need to certify <em>all</em> guesses fail, which is a universal claim, not an existential one. NL is the class of <em>positive</em> existential checks.</p>
+           <p style="margin:4px 0;">The non-trivial result NL = coNL (Immerman–Szelepcsényi, shown in the next widget) tells us that even though it seems harder, ¬PATH is also in NL.</p>`;
+        return;
+      }
+      document.getElementById('nlp-explain').innerHTML =
+        `<div class="step-num">Step ${stepNum} — frontier has ${frontier.length} branch(es)</div>
+         <p style="margin:4px 0;"><strong>Each branch represents one possible sequence of guesses.</strong> Active branches: ${branchStr}.</p>
+         <p style="margin:4px 0;"><strong>From each branch's current vertex, the NL machine guesses a next neighbor.</strong> If T is reached, we accept; if no neighbor is unvisited, this branch dies.</p>
+         <p style="margin:4px 0;"><strong>Critically:</strong> any single branch fits in O(log n) memory. We do NOT store the whole frontier — only what the current guess needs. The picture shows all branches at once for clarity; the real NL machine pursues just one (luckily guessed) branch.</p>`;
+      raf = setTimeout(loop, 2400 / nlpSpeed());
+    };
+    loop();
+  }
+
+  let nlpLooping = true, nlpLoopTimer = null;
+  function nlpSpeed() { return parseFloat(document.getElementById('nlp-speed').value) || 1; }
+  function nlpSetBtn() { document.getElementById('nlp-play').textContent = nlpLooping ? '⏸ Pause' : '▶ Play'; }
+  function nlpClear() {
+    if (raf) clearTimeout(raf); raf = null;
+    if (nlpLoopTimer) clearTimeout(nlpLoopTimer); nlpLoopTimer = null;
+  }
+  function nlpStop() { nlpLooping = false; nlpClear(); nlpSetBtn(); }
+  // Watcher: when the animation stops, restart after a pause if still looping
+  function nlpWatcher() {
+    if (nlpLooping && !raf && !nlpLoopTimer) {
+      nlpLoopTimer = setTimeout(() => { if (nlpLooping) { nlpLoopTimer = null; play(); } }, 5000 / nlpSpeed());
+    }
+    setTimeout(nlpWatcher, 800);
+  }
+  const _nlp_play_inner = play;
+  play = function() { nlpLooping = true; nlpClear(); nlpSetBtn(); _nlp_play_inner(); };
+
+  document.getElementById('nlp-play').onclick = () => { if (nlpLooping || raf) nlpStop(); else play(); };
+  document.getElementById('nlp-reset').onclick = () => { nlpStop(); frontier = [['S']]; cfgCount = 1; render(); };
+  document.getElementById('nlp-speed').oninput = (e) => {
+    document.getElementById('nlp-speed-label').textContent = parseFloat(e.target.value).toFixed(2).replace(/\.?0+$/, '') + '×';
+  };
+  render();
+  setTimeout(play, 1200);
+  setTimeout(nlpWatcher, 1800);
+})();
+
+// ----- Inductive counting (Widget 3) -----
+(function(){
+  const W = 760, H = 360;
+  const nodes = {
+    S: {x:80, y:180},
+    A: {x:220, y:100},
+    B: {x:220, y:260},
+    C: {x:360, y:180},
+    D: {x:500, y:100},
+    E: {x:500, y:260},
+    T: {x:640, y:180}
+  };
+  const edges = [['S','A'],['S','B'],['A','C'],['B','C'],['C','D'],['C','E'],['D','T'],['E','T']];
+
+  let i = 0;
+  let reach = new Set(['S']);
+  let raf = null;
+
+  function render() {
+    let s = '';
+    // edges
+    for (const [a,b] of edges) {
+      const na = nodes[a], nb = nodes[b];
+      const justGot = reach.has(b) && i > 0;
+      s += `<line x1="${na.x}" y1="${na.y}" x2="${nb.x}" y2="${nb.y}" stroke="${justGot?'var(--accent)':'#bbb'}" stroke-width="${justGot?2:1.2}"/>`;
+      const dx = nb.x - na.x, dy = nb.y - na.y, len = Math.hypot(dx, dy);
+      const ux = dx/len, uy = dy/len;
+      const ex = nb.x - ux*24, ey = nb.y - uy*24;
+      s += `<polygon points="${ex},${ey} ${ex-ux*8-uy*4},${ey-uy*8+ux*4} ${ex-ux*8+uy*4},${ey-uy*8-ux*4}" fill="${justGot?'var(--accent)':'#bbb'}"/>`;
+    }
+    // nodes
+    for (const [name, p] of Object.entries(nodes)) {
+      const isReach = reach.has(name);
+      const isTarget = (name === 'T');
+      const fill = isReach ? (isTarget ? 'var(--accent)' : 'var(--accent-soft)') : '#fff';
+      const stroke = isReach ? 'var(--accent-strong)' : '#666';
+      s += `<circle cx="${p.x}" cy="${p.y}" r="22" fill="${fill}" stroke="${stroke}" stroke-width="2"/>`;
+      s += `<text x="${p.x}" y="${p.y+5}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="14" font-weight="bold" fill="${isReach&&isTarget?'#fff':isReach?'var(--accent-strong)':'#1a1a1a'}">${name}</text>`;
+    }
+    // counter
+    s += `<text x="${W/2}" y="30" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" fill="var(--muted)">Step ${i} · c_${i} = |R_${i}| = ${reach.size}</text>`;
+    s += `<text x="${W/2}" y="${H-15}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="var(--muted)">R_${i} = {${Array.from(reach).join(', ')}}</text>`;
+    document.getElementById('isz-svg').innerHTML = s;
+    document.getElementById('isz-i').textContent = i;
+    document.getElementById('isz-c').textContent = reach.size;
+  }
+
+  function play() {
+    if (raf) clearTimeout(raf);
+    i = 0;
+    reach = new Set(['S']);
+    render();
+    document.getElementById('isz-explain').innerHTML =
+      `<div class="step-num">Step 0 — initialize</div>
+       <p style="margin:4px 0;"><strong>The big idea (Immerman–Szelepcsényi):</strong> we want an NL algorithm for <em>\\overline{PATH}</em> — i.e., one that accepts if there is NO path from S to T. NL is naturally good at <em>positive</em> existential checks ("some path exists"), not negative ones. So we cheat by counting.</p>
+       <p style="margin:4px 0;"><strong>Key definition.</strong> Let R_i = "set of vertices reachable from S in ≤ i steps". Let c_i = |R_i|.</p>
+       <p style="margin:4px 0;"><strong>Plan:</strong> we'll compute c_i one i at a time, in log space. Once we know c_n, we can certify "T is not reachable" by certifying "the n reachable vertices are exactly {S, A, B, …} and T is not among them."</p>
+       <p style="margin:4px 0;"><strong>Starting point:</strong> R_0 = {S}, c_0 = 1.</p>`;
+    const loop = () => {
+      const newReach = new Set(reach);
+      for (const u of reach) {
+        for (const [a,b] of edges) if (a === u) newReach.add(b);
+      }
+      if (newReach.size === reach.size) {
+        document.getElementById('isz-explain').innerHTML =
+          `<div class="step-num">Step ${i} — fixed point reached</div>
+           <p style="margin:4px 0;">No new vertices appeared. So R_${i} = R<sub>final</sub>, the full set of vertices reachable from S.</p>
+           <p style="margin:4px 0;"><strong>Final count:</strong> c<sub>final</sub> = ${reach.size}.</p>
+           <p style="margin:4px 0;"><strong>Verdict:</strong> T ${reach.has('T') ? 'IS' : 'is NOT'} in R<sub>final</sub>, so PATH ${reach.has('T') ? 'accepts' : 'rejects'} this instance.</p>
+           <p style="margin:4px 0;"><strong>What the NL algorithm actually does (inductive counting trick):</strong> at each step i, it nondeterministically guesses c<sub>i</sub> "witnesses" — vertices it claims are reachable. For each guessed witness, it verifies reachability using log space (just like PATH itself in NL). If the witness count matches the previously-computed c<sub>i</sub>, we trust it. Then for step i+1 we count successors of those witnesses. Total memory: O(log n) for each counter. PATH and ¬PATH both in NL ⇒ <strong>NL = coNL</strong>. ∎</p>`;
+        return;
+      }
+      const newVerts = Array.from(newReach).filter(v => !reach.has(v));
+      reach = newReach;
+      i++;
+      render();
+      document.getElementById('isz-explain').innerHTML =
+        `<div class="step-num">Step ${i} — expand frontier</div>
+         <p style="margin:4px 0;"><strong>R_${i}:</strong> we added {${newVerts.join(', ')}} — every neighbor of something already in R_${i-1}. New count <strong>c_${i} = ${reach.size}</strong>.</p>
+         <p style="margin:4px 0;"><strong>How the NL machine computes c_${i} from c_${i-1}:</strong> for each vertex v in the graph, it asks "is v in R_${i}?" An NL algorithm checks this by guessing whether v is in R_${i-1} (and verifying via PATH-in-NL) OR v is a neighbor of some w in R_${i-1} (guess w, verify w ∈ R_${i-1}, verify edge (w,v)). It uses c_${i-1} as a <em>count witness</em>: we accept the answer for v only if we've also verified <em>all</em> ${reach.size-1+(newVerts.length>0?0:0)} previous reachables — that count match is what makes the negative claim trustworthy.</p>
+         <p style="margin:4px 0;"><strong>Space cost:</strong> just a handful of log-n integer counters. No matter how many vertices reach what — we never store more than O(log n) bits at once.</p>`;
+      raf = setTimeout(loop, 3000 / iszSpeed());
+    };
+    raf = setTimeout(loop, 1500 / iszSpeed());
+  }
+
+  let iszLooping = true, iszLoopTimer = null;
+  function iszSpeed() { return parseFloat(document.getElementById('isz-speed').value) || 1; }
+  function iszSetBtn() { document.getElementById('isz-play').textContent = iszLooping ? '⏸ Pause' : '▶ Play'; }
+  function iszClear() {
+    if (raf) clearTimeout(raf); raf = null;
+    if (iszLoopTimer) clearTimeout(iszLoopTimer); iszLoopTimer = null;
+  }
+  function iszStop() { iszLooping = false; iszClear(); iszSetBtn(); }
+  function iszWatcher() {
+    if (iszLooping && !raf && !iszLoopTimer) {
+      iszLoopTimer = setTimeout(() => { if (iszLooping) { iszLoopTimer = null; play(); } }, 5500 / iszSpeed());
+    }
+    setTimeout(iszWatcher, 800);
+  }
+  const _isz_play_inner = play;
+  play = function() { iszLooping = true; iszClear(); iszSetBtn(); i = 0; reach = new Set(['S']); _isz_play_inner(); };
+
+  document.getElementById('isz-play').onclick = () => { if (iszLooping || raf) iszStop(); else play(); };
+  document.getElementById('isz-reset').onclick = () => { iszStop(); i = 0; reach = new Set(['S']); render(); };
+  document.getElementById('isz-speed').oninput = (e) => {
+    document.getElementById('isz-speed-label').textContent = parseFloat(e.target.value).toFixed(2).replace(/\.?0+$/, '') + '×';
+  };
+  render();
+  setTimeout(play, 1200);
+  setTimeout(iszWatcher, 1800);
+})();
+
+// ----- Hierarchy diagonalization (Widget 4) -----
+(function(){
+  const n = 8;
+  // m[i][j] = does M_i (space f(n)) accept ⟨M_j⟩? simulated
+  const M = [];
+  let seed = 7777;
+  for (let i = 0; i < n; i++) {
+    const row = [];
+    for (let j = 0; j < n; j++) {
+      seed = (seed * 1664525 + 1013904223) >>> 0;
+      row.push((seed >> 16) & 1);
+    }
+    M.push(row);
+  }
+  let walked = 0;
+  let showD = false;
+  let raf = null;
+
+  function render() {
+    let s = '';
+    const W = 760, H = 340;
+    const startX = 80, startY = 50;
+    const cellW = (W - 160) / (n + 1);
+    const cellH = (H - 80) / (n + 1);
+
+    s += `<text x="${W/2}" y="20" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" fill="var(--muted)">SPACE(f) machines listed. D will diagonalize against all of them.</text>`;
+    // column headers
+    for (let j = 0; j < n; j++) {
+      s += `<text x="${startX + j * cellW + cellW/2}" y="${startY - 6}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="var(--muted)">⟨M_${j+1}⟩</text>`;
+    }
+    if (showD) s += `<text x="${startX + n * cellW + cellW/2}" y="${startY - 6}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="var(--gold)" font-weight="bold">D diag</text>`;
+    // row labels
+    for (let i = 0; i < n; i++) {
+      s += `<text x="${startX - 8}" y="${startY + i * cellH + cellH/2 + 4}" text-anchor="end" font-family="ui-monospace, monospace" font-size="11" fill="var(--muted)">M_${i+1}</text>`;
+    }
+    if (showD) s += `<text x="${startX - 8}" y="${startY + n * cellH + cellH/2 + 4}" text-anchor="end" font-family="ui-monospace, monospace" font-size="11" fill="var(--gold)" font-weight="bold">D</text>`;
+    // cells
+    for (let i = 0; i < n; i++) {
+      for (let j = 0; j < n; j++) {
+        const isDiag = (i === j);
+        const inspected = isDiag && i < walked;
+        const x = startX + j * cellW;
+        const y = startY + i * cellH;
+        const v = M[i][j];
+        const bg = isDiag ? (inspected ? 'var(--warn-soft)' : 'var(--accent-soft)') : '#fff';
+        s += `<rect x="${x}" y="${y}" width="${cellW-2}" height="${cellH-2}" fill="${bg}" stroke="#ddd" stroke-width="0.7"/>`;
+        const color = v ? 'var(--accent)' : 'var(--warn)';
+        s += `<text x="${x + (cellW-2)/2}" y="${y + (cellH-2)/2 + 4}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="12" font-weight="${isDiag?'bold':'normal'}" fill="${color}">${v?'A':'R'}</text>`;
+      }
+      // D column
+      if (showD) {
+        const flip = M[i][i] === 1 ? 0 : 1;
+        const x = startX + n * cellW;
+        const y = startY + i * cellH;
+        s += `<rect x="${x}" y="${y}" width="${cellW-2}" height="${cellH-2}" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1"/>`;
+        const color = flip ? 'var(--accent)' : 'var(--warn)';
+        s += `<text x="${x + (cellW-2)/2}" y="${y + (cellH-2)/2 + 4}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="12" font-weight="bold" fill="${color}">${flip?'A':'R'}</text>`;
+      }
+    }
+    // D row
+    if (showD) {
+      for (let j = 0; j < n; j++) {
+        const flip = M[j][j] === 1 ? 0 : 1;
+        const x = startX + j * cellW;
+        const y = startY + n * cellH;
+        s += `<rect x="${x}" y="${y}" width="${cellW-2}" height="${cellH-2}" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1"/>`;
+        const color = flip ? 'var(--accent)' : 'var(--warn)';
+        s += `<text x="${x + (cellW-2)/2}" y="${y + (cellH-2)/2 + 4}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="12" font-weight="bold" fill="${color}">${flip?'A':'R'}</text>`;
+      }
+      const x = startX + n * cellW;
+      const y = startY + n * cellH;
+      s += `<rect x="${x}" y="${y}" width="${cellW-2}" height="${cellH-2}" fill="#fff" stroke="var(--gold)" stroke-width="1"/>`;
+      s += `<text x="${x + (cellW-2)/2}" y="${y + (cellH-2)/2 + 4}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="var(--muted)">≠ self</text>`;
+    }
+    document.getElementById('hier-svg').innerHTML = s;
+  }
+
+  function play() {
+    if (raf) clearTimeout(raf);
+    walked = 0; showD = false;
+    render();
+    document.getElementById('hier-explain').innerHTML =
+      `<div class="step-num">Setup — what we want to prove</div>
+       <p style="margin:4px 0;"><strong>The space hierarchy theorem:</strong> if f(n) is "space constructible" and g grows enough faster than f, then SPACE(f) ⊊ SPACE(g). In particular, more space lets you decide strictly more languages.</p>
+       <p style="margin:4px 0;"><strong>Proof technique:</strong> diagonalization. We list every TM that runs in SPACE(f), and build a new TM D that, by design, disagrees with every one of them on at least one input. So D's language is in SPACE(g) (for g a bit bigger than f) but not in SPACE(f).</p>
+       <p style="margin:4px 0;"><strong>The table:</strong> rows are SPACE(f) machines M₁, M₂, …. Columns are inputs (we use ⟨Mⱼ⟩ — the description of Mⱼ — as the j-th input). Cell (i, j) shows whether M<sub>i</sub> accepts ⟨M<sub>j</sub>⟩.</p>`;
+    const loop = () => {
+      if (walked < n) {
+        walked++;
+        render();
+        const diag = M[walked-1][walked-1];
+        document.getElementById('hier-explain').innerHTML =
+          `<div class="step-num">Step ${walked} — inspect diagonal cell M_${walked}(⟨M_${walked}⟩)</div>
+           <p style="margin:4px 0;"><strong>Diagonal entry:</strong> M_${walked} ${diag?'accepts':'rejects'} ⟨M_${walked}⟩. (Highlighted on the diagonal.)</p>
+           <p style="margin:4px 0;"><strong>What D will do here:</strong> on input ⟨M_${walked}⟩, D will <em>${diag?'reject':'accept'}</em> — the opposite of M_${walked}.</p>
+           <p style="margin:4px 0;"><strong>To do that, D must simulate M_${walked}.</strong> Simulating a SPACE(f) machine takes a bit more than f(n) space (the simulator needs scratch for the simulation table). That extra space is what creates the gap between SPACE(f) and SPACE(g) for g = a bit larger than f.</p>`;
+        raf = setTimeout(loop, 2500 / hierSpeed());
+      } else if (!showD) {
+        showD = true;
+        render();
+        document.getElementById('hier-explain').innerHTML =
+          `<div class="step-num">D is built — the punchline</div>
+           <p style="margin:4px 0;"><strong>Look at the gold row:</strong> D's behavior. For each i, D disagrees with M<sub>i</sub> at column i (the diagonal).</p>
+           <p style="margin:4px 0;"><strong>Why D is NOT in SPACE(f):</strong> if D were equal to some M<sub>k</sub> (a SPACE(f) machine in our list), then column k would have to show: M<sub>k</sub>(⟨M<sub>k</sub>⟩) = D(⟨M<sub>k</sub>⟩). But by construction, D(⟨M<sub>k</sub>⟩) is the OPPOSITE of M<sub>k</sub>(⟨M<sub>k</sub>⟩). Contradiction.</p>
+           <p style="margin:4px 0;"><strong>Why D IS in SPACE(g):</strong> on input ⟨M⟩, D simulates M on ⟨M⟩ and flips the answer. Simulating a SPACE(f) machine takes O(f(n) · log f(n)) space (a known result). So D runs in SPACE(O(f · log f)) — that's our g.</p>
+           <p style="margin:4px 0;"><strong>Conclusion:</strong> SPACE(f) ⊊ SPACE(f · log f). In particular: NL ⊊ PSPACE, P ⊊ EXPSPACE, and (by the time analog) P ⊊ EXPTIME. Hierarchy theorems give us the only proven separations between standard complexity classes — most others (P vs NP, NL vs L) remain open. ∎</p>`;
+      }
+    };
+    raf = setTimeout(loop, 1200 / hierSpeed());
+  }
+
+  let hierLooping = true, hierLoopTimer = null;
+  function hierSpeed() { return parseFloat(document.getElementById('hier-speed').value) || 1; }
+  function hierSetBtn() { document.getElementById('hier-play').textContent = hierLooping ? '⏸ Pause' : '▶ Play'; }
+  function hierClear() {
+    if (raf) clearTimeout(raf); raf = null;
+    if (hierLoopTimer) clearTimeout(hierLoopTimer); hierLoopTimer = null;
+  }
+  function hierStop() { hierLooping = false; hierClear(); hierSetBtn(); }
+  function hierWatcher() {
+    if (hierLooping && !raf && !hierLoopTimer && showD) {
+      hierLoopTimer = setTimeout(() => { if (hierLooping) { hierLoopTimer = null; walked = 0; showD = false; render(); play(); } }, 6000 / hierSpeed());
+    }
+    setTimeout(hierWatcher, 800);
+  }
+  const _hier_play_inner = play;
+  play = function() { hierLooping = true; hierClear(); hierSetBtn(); _hier_play_inner(); };
+
+  document.getElementById('hier-play').onclick = () => { if (hierLooping || raf) hierStop(); else play(); };
+  document.getElementById('hier-reset').onclick = () => { hierStop(); walked = 0; showD = false; render(); };
+  document.getElementById('hier-speed').oninput = (e) => {
+    document.getElementById('hier-speed-label').textContent = parseFloat(e.target.value).toFixed(2).replace(/\.?0+$/, '') + '×';
+  };
+  render();
+  setTimeout(play, 1200);
+  setTimeout(hierWatcher, 1800);
+})();
+</script>
+
+</body>
+</html>

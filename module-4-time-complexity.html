@@ -1,0 +1,1049 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 4 · Time complexity &amp; the class P</title>
+<link rel="stylesheet" href="styles.css">
+<script src="widget-loop.js"></script>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Module 4 · MIT 18.404J Lecture 12 · Sipser §7.1–§7.2</div>
+  <h1>Time complexity &amp; the class P</h1>
+  <div class="sub">Counting steps on a tape — and watching the same problem in radically different time on different machines.</div>
+  <div class="tag">BCS 402 · Dr. Arash Kermani · CUD</div>
+</header>
+
+<nav class="tabs">
+  <a href="index.html">← All modules</a>
+  <a class="active" href="#growth">1 · Growth races</a>
+  <a href="#bigO">2 · Big-O</a>
+  <a href="#tm-time">3 · TM time</a>
+  <a href="#models">4 · Models matter</a>
+  <a href="#P">5 · The class P</a>
+  <a href="#exercises">6 · Practice</a>
+</nav>
+
+<div class="wrap">
+
+<!-- ============================================================ -->
+<section id="growth">
+  <h2>1 · Watch growth rates race</h2>
+
+  <p>
+    Complexity classes are about <em>asymptotic</em> growth: how fast the running time grows as
+    the input gets large. Watch six functions race.
+  </p>
+
+  <div class="widget" id="growth-race">
+    <div class="widget-title">Growth-rate animator <span class="pill">Widget 1 · Auto-plays</span></div>
+
+    <div class="controls">
+      <button class="btn play-btn" id="growth-play">⏸ Pause</button>
+      <button class="btn ghost" id="growth-reset">Restart</button>
+      <label class="speed-control">Speed
+        <input type="range" id="growth-speed" min="0.25" max="3" step="0.25" value="1">
+        <span id="growth-speed-label" style="font-family: var(--mono); min-width: 28px;">1×</span>
+      </label>
+      <label>Max n: <span id="growth-n-label">40</span>
+        <input type="range" id="growth-n" min="20" max="100" value="40">
+      </label>
+      <label>Y-scale:
+        <select id="growth-scale">
+          <option value="linear">linear</option>
+          <option value="log" selected>log</option>
+        </select>
+      </label>
+    </div>
+
+    <svg id="growth-svg" viewBox="0 0 760 380" class="svg-anim" style="background: #fcfbf7; border-radius: 6px;"></svg>
+
+    <div class="status">
+      <div class="stat">n <b id="growth-n-cur">0</b></div>
+      <div class="stat">log n <b id="growth-v-log">0</b></div>
+      <div class="stat">n² <b id="growth-v-sq">0</b></div>
+      <div class="stat">2ⁿ <b id="growth-v-exp">0</b></div>
+    </div>
+
+    <p style="font-family: var(--sans); font-size: 13px; color: var(--muted); margin-top: 8px;">
+      <span style="color:#2a6f5f;font-weight:bold;">log n</span> &nbsp;
+      <span style="color:#2f60a8;font-weight:bold;">n</span> &nbsp;
+      <span style="color:#9b59b6;font-weight:bold;">n log n</span> &nbsp;
+      <span style="color:#b58b00;font-weight:bold;">n²</span> &nbsp;
+      <span style="color:#b95825;font-weight:bold;">n³</span> &nbsp;
+      <span style="color:#c0392b;font-weight:bold;">2ⁿ</span>
+    </p>
+
+    <div class="explain-panel" id="growth-explain">
+      <div class="step-num">What to watch</div>
+      Press <strong>▶ Play race</strong>. Six curves climb at very different speeds. Pay attention to two moments: (a) when does the exponential curve <span style="color:#c0392b;font-weight:bold;">2ⁿ</span> overtake the polynomial <span style="color:#b95825;font-weight:bold;">n³</span> — usually around n = 9. (b) Notice how <span style="color:#2a6f5f;font-weight:bold;">log n</span> stays nearly flat — that is the dream complexity. The <em>log scale</em> on the Y-axis compresses huge numbers; switch to linear if you want to feel the chasm in absolute terms.
+    </div>
+  </div>
+
+  <div class="key-idea">
+    Polynomial growth (left side) lives in <strong>P</strong>. Exponential (right) doesn't.
+    The race makes the gap visible: at n = 40, the gap between n² and 2ⁿ is roughly a trillion-fold.
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="bigO">
+  <h2>2 · Big-O — what we throw away</h2>
+
+  <p>
+    Big-O notation says: ignore constants and lower-order terms; keep only the dominant behavior.
+    The widget below shows what gets thrown away as n grows.
+  </p>
+
+  <div class="widget" id="bigO-vis">
+    <div class="widget-title">Big-O decomposition <span class="pill">Widget 2</span></div>
+
+    <div class="controls">
+      <label>Function: <input type="text" id="bigO-fn" value="3n^2 + 5n + 7" style="width: 200px;"></label>
+      <button class="btn" id="bigO-go">Plot</button>
+    </div>
+
+    <svg id="bigO-svg" viewBox="0 0 760 320" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+
+    <div id="bigO-explain" class="explain-panel">
+      <div class="step-num">What you see</div>
+      The three stacked colored bands show how the function breaks into pieces. As n grows,
+      the <span style="color:var(--accent);font-weight:bold">dominant n² term</span> swallows everything.
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="tm-time">
+  <h2>3 · How a TM spends time on {0ⁿ1ⁿ}</h2>
+
+  <p>
+    The canonical first example: deciding whether a string has the form
+    <span class="math">0<sup>n</sup>1<sup>n</sup></span> — equal numbers of 0s and 1s, all 0s before
+    all 1s. Watch a single-tape TM do this by repeatedly crossing off matched pairs.
+  </p>
+
+  <div class="widget" id="tm-onbn">
+    <div class="widget-title">Single-tape TM on {0ⁿ1ⁿ} · animated <span class="pill">Widget 3 · Auto-plays</span></div>
+
+    <div class="controls">
+      <label>Input <input type="text" id="onbn-input" value="000111" maxlength="20" style="width:120px;"></label>
+      <button class="btn play-btn" id="onbn-play">⏸ Pause</button>
+      <button class="btn ghost" id="onbn-step">Step</button>
+      <button class="btn ghost" id="onbn-reset">Reset</button>
+      <label class="speed-control">Speed
+        <input type="range" id="onbn-speed" min="0.25" max="3" step="0.25" value="1">
+        <span id="onbn-speed-label" style="font-family: var(--mono); min-width: 28px;">1×</span>
+      </label>
+    </div>
+
+    <svg id="onbn-svg" viewBox="0 0 760 200" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+
+    <div class="status">
+      <div class="stat">Step <b id="onbn-steps">0</b></div>
+      <div class="stat">State <b id="onbn-state">q0</b></div>
+      <div class="stat">Verdict <b id="onbn-verdict">—</b></div>
+    </div>
+    <div class="explain-panel" id="onbn-explain">
+      <div class="step-num">Phase</div>
+      The TM strategy: find leftmost 0, mark it X; sweep right to find leftmost 1, mark it Y; rewind; repeat. If a pass finds no 0 left, check there are no 1s left either.
+    </div>
+  </div>
+
+  <div class="key-idea">
+    Counting steps: each "pair" pass costs O(n) sweeps. There are n/2 pairs. Total: <strong>O(n²)</strong>
+    on a single tape. Watch the step counter — it grows quadratically with input length.
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="models">
+  <h2>4 · The model matters — single vs two tapes</h2>
+
+  <p>
+    Same language <span class="math">{0<sup>n</sup>1<sup>n</sup>}</span>, two TMs side by side:
+    one with a single tape, one with two tapes. Watch how the two-tape TM finishes in O(n) while
+    the single-tape one drags on in O(n²).
+  </p>
+
+  <div class="widget" id="race-tm">
+    <div class="widget-title">Two TM models, one race <span class="pill">Widget 4 · Auto-plays</span></div>
+
+    <div class="controls">
+      <label>Input length n:
+        <input type="range" id="race-n" min="4" max="14" value="6" step="2">
+        <span id="race-n-label">6</span>
+      </label>
+      <button class="btn play-btn" id="race-play">⏸ Pause</button>
+      <button class="btn ghost" id="race-reset">Reset</button>
+      <label class="speed-control">Speed
+        <input type="range" id="race-speed" min="0.25" max="3" step="0.25" value="1">
+        <span id="race-speed-label" style="font-family: var(--mono); min-width: 28px;">1×</span>
+      </label>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr; gap: 14px;">
+      <div>
+        <h4>Single-tape TM (one head)</h4>
+        <svg id="race-svg-1" viewBox="0 0 760 100" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+        <div style="font-family: var(--sans); font-size: 12px; color: var(--muted); margin-top: 4px;">
+          Steps: <b id="race-steps-1" style="font-family: var(--mono);">0</b>
+        </div>
+      </div>
+      <div>
+        <h4>Two-tape TM (two heads)</h4>
+        <svg id="race-svg-2" viewBox="0 0 760 140" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+        <div style="font-family: var(--sans); font-size: 12px; color: var(--muted); margin-top: 4px;">
+          Steps: <b id="race-steps-2" style="font-family: var(--mono);">0</b>
+        </div>
+      </div>
+    </div>
+
+    <div class="explain-panel" id="race-explain">
+      <div class="step-num">The two strategies</div>
+      Single-tape: shuttle to pair off 0s with 1s, O(n²). Two-tape: copy the 0s to tape 2, then march tape 1 right through the 1s while tape 2 marches left through the copied 0s — both in sync. O(n).
+    </div>
+  </div>
+
+  <div class="callout">
+    <h5>Theorem (Sipser §7.2)</h5>
+    <p style="margin: 0;">
+      Every <em>k</em>-tape TM running in time <span class="math">t(n)</span> can be simulated by a
+      single-tape TM running in time <span class="math">O(t(n)<sup>2</sup>)</span>. So polynomial
+      stays polynomial across reasonable models — the class P is robust.
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="P">
+  <h2>5 · The class P</h2>
+
+  <div class="math-block">
+    P = ⋃<sub>k ≥ 1</sub> TIME(n<sup>k</sup>)
+  </div>
+
+  <p>
+    A language is in <strong>P</strong> if some TM decides it in time polynomial in the input
+    length. Watch a few classic P-class problems below.
+  </p>
+
+  <div class="widget" id="p-problems">
+    <div class="widget-title">Classic P problems <span class="pill">Widget 5</span></div>
+
+    <div class="controls">
+      <div class="toggle-group" id="p-toggle">
+        <button class="active" data-p="path">PATH (graph reachability)</button>
+        <button data-p="rel">RELPRIME (Euclid)</button>
+        <button data-p="cfg">A<sub>CFG</sub> (CYK)</button>
+      </div>
+    </div>
+
+    <div id="p-display"></div>
+
+    <div class="explain-panel" id="p-explain"></div>
+  </div>
+
+  <div class="key-idea">
+    <strong>The Cobham–Edmonds thesis.</strong> "Polynomial time" is the right mathematical proxy for
+    "feasibly computable in practice." It is robust across models, closed under composition, and
+    matches our experience with real algorithms.
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="exercises">
+  <h2>6 · Practice (Sipser §7.1–§7.2)</h2>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 7.1</div>
+    <p>True or false: 5n² + 3n + 2 = O(n²)?  &nbsp; True or false: 5n² + 3n + 2 = O(n)?</p>
+    <details><summary>Show answer</summary>
+      <div class="solution">First true (n² dominates). Second false (the n² term grows faster than any constant multiple of n).</div>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 7.4</div>
+    <p>Show that the language <span class="math">A = {0<sup>2k</sup> : k ≥ 0}</span> is in P.</p>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">Read input; check all symbols are 0; count length n in unary; check n is a power of 2 by repeatedly dividing by 2. Each check is linear or O(log n); total O(n).</div>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 7.6</div>
+    <p>Let <span class="math">UNARY = {1<sup>n</sup> : n ≥ 1}</span>. Show <span class="math">UNARY ∈ P</span> and that the standard binary representation of <span class="math">n</span> has only <span class="math">⌈log<sub>2</sub>(n+1)⌉</span> bits — so problems with unary inputs are exponentially easier than the same problems with binary inputs.</p>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">Scanning O(n) symbols is polynomial in input length n. The same n in binary takes only log(n) bits, so the binary algorithm would be exponential in input length.</div>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 7.10</div>
+    <p>Show that <span class="math">P</span> is closed under union, concatenation, and complement.</p>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">Closed under complement: flip the decider's accept/reject. Closed under union: run both deciders, accept if either accepts. Closed under concatenation: try all splits w = uv and run deciders on u, v; n+1 splits times polynomial = polynomial.</div>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 7.11</div>
+    <p>Let <span class="math">TRIANGLE = {⟨G⟩ : G contains a triangle}</span>. Show <span class="math">TRIANGLE ∈ P</span>.</p>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">Enumerate all triples of vertices (u, v, w) and check whether all three edges (u,v), (v,w), (u,w) exist. O(n³) checks of O(1) each.</div>
+    </details>
+  </div>
+</section>
+
+<section>
+  <h2>One-sentence summary</h2>
+  <div class="key-idea">
+    P is the class of decision problems solvable in polynomial time on a deterministic TM; it is
+    robust across reasonable machine models, and it is the mathematical proxy for "feasible."
+  </div>
+  <p style="text-align:center;margin-top:24px;">
+    <a class="btn" href="module-5-np-completeness.html" style="display:inline-block;padding:10px 18px;background:var(--accent);color:white;border-radius:4px;text-decoration:none;border:0;">
+      Next → Module 5: NP &amp; NP-completeness
+    </a>
+  </p>
+</section>
+
+</div>
+
+<footer class="foot">Module 4 of 7 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<script>
+// =================================================================
+// Module 4 — Animation-heavy widgets
+// =================================================================
+
+// ----- Growth-rate race (Widget 1) -----
+(function(){
+  const colors = {
+    'log n': '#2a6f5f',
+    'n':     '#2f60a8',
+    'n log n':'#9b59b6',
+    'n²':    '#b58b00',
+    'n³':    '#b95825',
+    '2ⁿ':    '#c0392b'
+  };
+  const funcs = {
+    'log n':  n => Math.log2(Math.max(2,n)),
+    'n':      n => n,
+    'n log n':n => n * Math.log2(Math.max(2,n)),
+    'n²':     n => n*n,
+    'n³':     n => n*n*n,
+    '2ⁿ':     n => Math.pow(2, Math.min(n, 60))  // cap to avoid Infinity
+  };
+
+  let raf = null, t = 0, nmax = 40;
+  const W = 760, H = 380;
+  const pad = {l: 50, r: 80, t: 20, b: 30};
+
+  function logScale(v, vmax) {
+    if (v <= 1) v = 1;
+    return Math.log10(v) / Math.log10(Math.max(2, vmax));
+  }
+
+  function render(curN) {
+    const scale = document.getElementById('growth-scale').value;
+    const svg = document.getElementById('growth-svg');
+    let s = '';
+    // axes
+    s += `<line x1="${pad.l}" y1="${H-pad.b}" x2="${W-pad.r}" y2="${H-pad.b}" stroke="#888" stroke-width="1"/>`;
+    s += `<line x1="${pad.l}" y1="${pad.t}" x2="${pad.l}" y2="${H-pad.b}" stroke="#888" stroke-width="1"/>`;
+    s += `<text x="${(W-pad.r+pad.l)/2}" y="${H-6}" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="12" fill="#888">input size n</text>`;
+    s += `<text x="${pad.l-32}" y="${(H+pad.t)/2}" font-family="var(--sans), sans-serif" font-size="12" fill="#888" transform="rotate(-90 ${pad.l-32} ${(H+pad.t)/2})">steps (${scale})</text>`;
+
+    // x ticks
+    for (let i = 0; i <= 5; i++) {
+      const xn = (i / 5) * nmax;
+      const x = pad.l + (i/5) * (W - pad.l - pad.r);
+      s += `<line x1="${x}" y1="${H-pad.b}" x2="${x}" y2="${H-pad.b+4}" stroke="#888"/>`;
+      s += `<text x="${x}" y="${H-pad.b+16}" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="11" fill="#888">${Math.round(xn)}</text>`;
+    }
+
+    // compute vmax for scaling
+    let vmax = 1;
+    for (const fname of Object.keys(funcs)) {
+      vmax = Math.max(vmax, funcs[fname](nmax));
+    }
+
+    // plot each function
+    for (const fname of Object.keys(funcs)) {
+      const color = colors[fname];
+      let pts = [];
+      for (let n = 1; n <= curN; n++) {
+        const v = funcs[fname](n);
+        let y;
+        if (scale === 'log') {
+          y = (H-pad.b) - logScale(v, vmax) * (H-pad.b-pad.t);
+        } else {
+          y = (H-pad.b) - (v / vmax) * (H-pad.b-pad.t);
+        }
+        const x = pad.l + (n / nmax) * (W - pad.l - pad.r);
+        pts.push(`${x},${y}`);
+      }
+      if (pts.length >= 2) {
+        s += `<polyline points="${pts.join(' ')}" fill="none" stroke="${color}" stroke-width="2"/>`;
+        // dot at current
+        const [lx, ly] = pts[pts.length-1].split(',');
+        s += `<circle cx="${lx}" cy="${ly}" r="4" fill="${color}"/>`;
+        s += `<text x="${parseFloat(lx)+10}" y="${parseFloat(ly)+4}" font-family="var(--sans), sans-serif" font-size="12" fill="${color}" font-weight="bold">${fname}</text>`;
+      }
+    }
+    svg.innerHTML = s;
+    document.getElementById('growth-n-cur').textContent = curN;
+    document.getElementById('growth-v-log').textContent = funcs['log n'](curN).toFixed(1);
+    document.getElementById('growth-v-sq').textContent = funcs['n²'](curN).toLocaleString();
+    const exp = funcs['2ⁿ'](curN);
+    document.getElementById('growth-v-exp').textContent = exp > 1e9 ? exp.toExponential(2) : exp.toLocaleString();
+
+    // Running narration: pick something interesting to say at this n
+    const expl = document.getElementById('growth-explain');
+    const ratio = funcs['2ⁿ'](curN) / Math.max(1, funcs['n²'](curN));
+    let msg;
+    if (curN <= 3) {
+      msg = `<div class="step-num">n = ${curN} — all six are close</div>For tiny n, even an exponential algorithm finishes immediately. The differences between O(log n), O(n²), O(2ⁿ) are invisible here. This is why "asymptotic" reasoning matters: we care about behavior <em>as n grows</em>, not at n = 3.`;
+    } else if (curN <= 8) {
+      msg = `<div class="step-num">n = ${curN} — the curves start to separate</div>The polynomial curves (n, n log n, n², n³) climb steadily; the exponential <span style="color:#c0392b;font-weight:bold;">2ⁿ</span> is starting to bolt upward. At n = ${curN}, 2ⁿ = ${exp.toLocaleString()} vs. n² = ${(curN*curN).toLocaleString()}. Ratio ${ratio.toFixed(1)}× — already visible.`;
+    } else if (curN <= 15) {
+      msg = `<div class="step-num">n = ${curN} — the exponential pulls away</div>The gap between n³ and 2ⁿ is now ${ratio.toFixed(0)}×. A computer doing one million operations per second handles n² = ${(curN*curN).toLocaleString()} in microseconds but 2ⁿ = ${exp.toLocaleString()} starts to take real time. This is the line between "feasible" (P) and "infeasible" — and it is exactly where the course's next module begins.`;
+    } else if (curN <= 25) {
+      msg = `<div class="step-num">n = ${curN} — astronomical</div>2ⁿ = ${exp.toExponential(2)} operations. A modern computer at 10⁹ ops/sec would need <b>${(exp/1e9).toFixed(0)} seconds</b> to finish. The polynomial n² still costs only ${(curN*curN).toLocaleString()} steps. <strong>This factor — billion-fold or more — is the central economic fact of complexity theory.</strong>`;
+    } else {
+      msg = `<div class="step-num">n = ${curN} — universe-aged</div>2ⁿ = ${exp.toExponential(2)} steps. At 10⁹ ops/sec, that is ${(exp/1e9/31556952).toExponential(2)} <em>years</em> — possibly more than the age of the universe. Yet n² = ${(curN*curN).toLocaleString()} finishes in a blink. The two functions are not "a bit different"; they are different worlds. <strong>P is the world where we can finish; NP-hard problems live outside it.</strong>`;
+    }
+    expl.innerHTML = msg;
+  }
+
+  let growthLooping = true, growthLoopTimer = null;
+  function growthSpeed() { return parseFloat(document.getElementById('growth-speed').value) || 1; }
+  function growthClear() {
+    if (raf) cancelAnimationFrame(raf); raf = null;
+    if (growthLoopTimer) clearTimeout(growthLoopTimer); growthLoopTimer = null;
+  }
+  function growthSetBtn() { document.getElementById('growth-play').textContent = growthLooping ? '⏸ Pause' : '▶ Play'; }
+  function growthStop() { growthLooping = false; growthClear(); growthSetBtn(); }
+  function animate() {
+    growthLooping = true; growthClear(); growthSetBtn();
+    t = 1;
+    const step = () => {
+      render(t);
+      t++;
+      if (t <= nmax) {
+        raf = requestAnimationFrame(() => setTimeout(step, 350 / growthSpeed()));
+      } else {
+        raf = null;
+        if (growthLooping) growthLoopTimer = setTimeout(() => { render(1); animate(); }, 4000 / growthSpeed());
+        else growthSetBtn();
+      }
+    };
+    step();
+  }
+
+  document.getElementById('growth-play').onclick = () => { if (growthLooping || raf) growthStop(); else animate(); };
+  document.getElementById('growth-reset').onclick = () => { growthStop(); render(1); };
+  document.getElementById('growth-n').oninput = (e) => {
+    nmax = parseInt(e.target.value);
+    document.getElementById('growth-n-label').textContent = nmax;
+    render(nmax);
+  };
+  document.getElementById('growth-scale').onchange = () => render(nmax);
+  document.getElementById('growth-speed').oninput = (e) => {
+    document.getElementById('growth-speed-label').textContent = parseFloat(e.target.value).toFixed(2).replace(/\.?0+$/, '') + '×';
+  };
+
+  render(nmax);
+  setTimeout(animate, 1000);
+})();
+
+// ----- Big-O decomposition (Widget 2) -----
+(function(){
+  function parseFn(str) {
+    // very simple parser for like "3n^2 + 5n + 7"
+    str = str.replace(/\s+/g, '').replace(/-/g, '+-');
+    const parts = str.split('+').filter(s => s);
+    const terms = [];
+    for (const p of parts) {
+      const m = p.match(/^(-?\d*\.?\d*)(n)?(\^?(\d+))?$/);
+      if (!m) continue;
+      let coef = m[1];
+      if (coef === '' || coef === '-') coef = (coef||'') + '1';
+      coef = parseFloat(coef);
+      const hasN = m[2] === 'n';
+      let exp = 0;
+      if (hasN) exp = m[4] ? parseInt(m[4]) : 1;
+      terms.push({coef, exp});
+    }
+    terms.sort((a,b) => b.exp - a.exp);
+    return terms;
+  }
+
+  function evalTerm(t, n) { return t.coef * Math.pow(n, t.exp); }
+
+  let nmax = 25;
+  function render() {
+    const fn = document.getElementById('bigO-fn').value;
+    const terms = parseFn(fn);
+    if (terms.length === 0) return;
+    const svg = document.getElementById('bigO-svg');
+    const W = 760, H = 320, pad = {l:50, r:60, t:15, b:30};
+    const palette = ['var(--accent)', 'var(--info)', 'var(--gold)', 'var(--warn)'];
+
+    let s = '';
+    // axes
+    s += `<line x1="${pad.l}" y1="${H-pad.b}" x2="${W-pad.r}" y2="${H-pad.b}" stroke="#888"/>`;
+    s += `<line x1="${pad.l}" y1="${pad.t}" x2="${pad.l}" y2="${H-pad.b}" stroke="#888"/>`;
+
+    // compute max value of total at nmax
+    let vmax = 0;
+    for (let n = 1; n <= nmax; n++) {
+      let v = terms.reduce((a,t)=>a+evalTerm(t,n),0);
+      vmax = Math.max(vmax, v);
+    }
+    if (vmax < 1) vmax = 1;
+
+    // stacked area for each term
+    for (let ti = 0; ti < terms.length; ti++) {
+      const t = terms[ti];
+      const color = palette[ti % palette.length];
+      let topPts = [], botPts = [];
+      for (let n = 1; n <= nmax; n++) {
+        let cumTop = 0, cumBot = 0;
+        for (let j = 0; j <= ti; j++) cumTop += evalTerm(terms[j], n);
+        for (let j = 0; j < ti;  j++) cumBot += evalTerm(terms[j], n);
+        const x = pad.l + ((n-1)/(nmax-1)) * (W - pad.l - pad.r);
+        const yTop = (H-pad.b) - (cumTop / vmax) * (H-pad.b-pad.t);
+        const yBot = (H-pad.b) - (cumBot / vmax) * (H-pad.b-pad.t);
+        topPts.push(`${x},${yTop}`);
+        botPts.push(`${x},${yBot}`);
+      }
+      const path = `M ${topPts.join(' L ')} L ${botPts.reverse().join(' L ')} Z`;
+      const expLabel = t.exp === 0 ? `${t.coef}` : t.exp === 1 ? `${t.coef}n` : `${t.coef}n^${t.exp}`;
+      s += `<path d="${path}" fill="${color}" opacity="0.55" stroke="${color}" stroke-width="1"/>`;
+      // label
+      const lastX = pad.l + (W-pad.l-pad.r);
+      const cumTopAtMax = terms.slice(0, ti+1).reduce((a,t)=>a+evalTerm(t,nmax),0);
+      const yLabel = (H-pad.b) - (cumTopAtMax / vmax) * (H-pad.b-pad.t) + 12;
+      s += `<text x="${lastX + 8}" y="${yLabel}" font-family="var(--sans), sans-serif" font-size="12" fill="${color}" font-weight="bold">${expLabel}</text>`;
+    }
+
+    // n labels on x
+    for (let i = 0; i <= 5; i++) {
+      const xn = Math.round((i/5)*nmax) || 1;
+      const x = pad.l + (i/5) * (W-pad.l-pad.r);
+      s += `<text x="${x}" y="${H-pad.b+16}" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="11" fill="#888">${xn}</text>`;
+    }
+
+    svg.innerHTML = s;
+    const dom = terms[0];
+    document.getElementById('bigO-explain').innerHTML =
+      `<div class="step-num">Big-O of ${fn}</div>The dominant term is <b>${dom.coef}n<sup>${dom.exp}</sup></b>. Throwing away the lower-order terms and the constant ${dom.coef}, we get <b>O(n<sup>${dom.exp}</sup>)</b>. Look at the chart: at n=${nmax} the highest-power band visually dwarfs the others.`;
+  }
+  document.getElementById('bigO-go').onclick = render;
+  document.getElementById('bigO-fn').addEventListener('keypress', e => { if (e.key === 'Enter') render(); });
+  render();
+})();
+
+// ----- Single-tape TM on 0^n 1^n (Widget 3) -----
+(function(){
+  const W = 760, H = 200;
+  let tape = [], head = 0, state = 'q0', steps = 0, phase = 'find0', halted = false;
+  let input = '000111';
+  let raf = null;
+
+  function reset() {
+    input = document.getElementById('onbn-input').value;
+    tape = input.split('');
+    if (!tape.length) tape = ['_'];
+    head = 0; state = 'q0'; steps = 0; phase = 'find0'; halted = false;
+    if (raf) { cancelAnimationFrame(raf); raf = null; }
+    render(); update();
+  }
+  function update() {
+    document.getElementById('onbn-steps').textContent = steps;
+    document.getElementById('onbn-state').textContent = state;
+    document.getElementById('onbn-verdict').textContent = halted ? (state === 'qa' ? 'ACCEPT' : 'REJECT') : '—';
+  }
+  function render(extra) {
+    const cellW = 36;
+    const startX = 40;
+    const y = 60;
+    let s = '';
+    for (let i = 0; i < Math.max(tape.length, 8); i++) {
+      const ch = tape[i] || '_';
+      const x = startX + i * cellW;
+      const isHead = (i === head);
+      s += `<rect x="${x}" y="${y}" width="${cellW}" height="40" fill="${isHead?'var(--accent-soft)':(ch==='X'||ch==='Y'?'var(--gold-soft)':'#fff')}" stroke="${isHead?'var(--accent)':'var(--rule-strong)'}" stroke-width="${isHead?2:1}"/>`;
+      s += `<text x="${x+cellW/2}" y="${y+27}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="16" font-weight="${isHead?'bold':'normal'}" fill="${ch==='_'?'#888':'#1a1a1a'}">${ch}</text>`;
+    }
+    // arrow above head
+    const hx = startX + head * cellW + cellW/2;
+    s += `<path d="M ${hx-6} ${y-12} L ${hx+6} ${y-12} L ${hx} ${y-2} Z" fill="var(--accent)"/>`;
+    s += `<text x="${hx}" y="${y-18}" text-anchor="middle" font-family="var(--mono)" font-size="12" font-weight="bold" fill="var(--accent)">${state}</text>`;
+    document.getElementById('onbn-svg').innerHTML = s;
+    document.getElementById('onbn-explain').innerHTML =
+      `<div class="step-num">Phase: ${phase}</div>${describePhase()}`;
+  }
+  function describePhase() {
+    switch (phase) {
+      case 'find0':
+        return `<strong>Phase 1 — hunting an unmarked 0.</strong> The head is scanning <em>rightward</em>, skipping over any cells already marked X or Y. When it finds a 0, it will rewrite it as X (claiming "this 0 has been paired") and switch to Phase 2. If it instead sees a blank (_), it has run out of 0s — and the algorithm checks whether any 1s remain (those would be unpaired). <br><em>Why this phase exists:</em> the only way to match equal counts of 0s and 1s on a single tape is to <strong>pair them up</strong>, one at a time.`;
+      case 'find1':
+        return `<strong>Phase 2 — hunting an unmarked 1 to pair with the X just placed.</strong> The head walks rightward through 0s and Y-marks (already-paired 1s). When a fresh 1 is found, mark it Y. Then we must rewind to the leftmost unmarked 0. <br><em>Why this is slow:</em> we cannot "remember" how far right the 1 was — single-tape TMs have no separate counters. So every pair forces a full traversal.`;
+      case 'rewind':
+        return `<strong>Phase 3 — rewinding to the left end.</strong> The head walks left past all the marks and 0s until it hits a wall (here, position 0). Then we go back to Phase 1. <br><em>Cost of this design:</em> each pair-up costs one round-trip across the tape — O(n) steps per pair, and we do n/2 pairs, so total O(n²). Watch the step counter climb quadratically as you re-run with longer inputs.`;
+      case 'check_no1':
+        return `<strong>End check — any 1s left unmatched?</strong> If we ran out of 0s but a 1 is still on the tape, the input had more 1s than 0s — reject.`;
+      case 'accept':
+        return `<strong>ACCEPT — every 0 paired with a 1 and vice versa.</strong> The tape now shows all X's followed by all Y's, no orphans. The input was indeed in <span class="math">0<sup>n</sup>1<sup>n</sup></span>. <br><em>Count the steps used:</em> roughly n²/2 + n. That is O(n²). Compare this to the two-tape race in the next widget — there it drops to O(n).`;
+      case 'reject':
+        return `<strong>REJECT — structural violation.</strong> Either we found a 1 before all 0s were consumed (wrong order), or a 0 after a 1 (also wrong order), or counts didn't match. The input is <em>not</em> of the form 0ⁿ1ⁿ.`;
+    }
+    return '';
+  }
+  function step() {
+    if (halted) return;
+    const r = tape[head] || '_';
+    steps++;
+    if (phase === 'find0') {
+      if (r === '0') {
+        tape[head] = 'X';
+        phase = 'find1'; head++;
+      } else if (r === 'X' || r === 'Y') {
+        head++;
+      } else if (r === '_') {
+        // no 0 left; ensure no 1 left either by sweeping right (here we just check)
+        halted = true; state = 'qa'; phase = 'accept';
+      } else if (r === '1') {
+        halted = true; state = 'qr'; phase = 'reject';
+      } else { halted = true; state = 'qr'; phase = 'reject'; }
+    } else if (phase === 'find1') {
+      if (r === '0' || r === 'Y') { head++; }
+      else if (r === '1') { tape[head] = 'Y'; phase = 'rewind'; head--; }
+      else { halted = true; state = 'qr'; phase = 'reject'; }
+    } else if (phase === 'rewind') {
+      if (head === 0) { phase = 'find0'; }
+      else if (r === '_' || r === '0' || r === 'X' || r === 'Y') { head--; }
+      else { halted = true; state = 'qr'; phase = 'reject'; }
+    }
+    state = phase === 'find0' ? 'q0' : phase === 'find1' ? 'q1' : phase === 'rewind' ? 'q2' : phase === 'accept' ? 'qa' : 'qr';
+    render(); update();
+  }
+  let onbnLooping = true, onbnLoopTimer = null;
+  function onbnSpeed() { return parseFloat(document.getElementById('onbn-speed').value) || 1; }
+  function onbnClear() {
+    if (raf) cancelAnimationFrame(raf); raf = null;
+    if (onbnLoopTimer) clearTimeout(onbnLoopTimer); onbnLoopTimer = null;
+  }
+  function onbnSetBtn() { document.getElementById('onbn-play').textContent = onbnLooping ? '⏸ Pause' : '▶ Play'; }
+  function onbnStop() { onbnLooping = false; onbnClear(); onbnSetBtn(); }
+  function animate() {
+    onbnLooping = true; onbnClear(); onbnSetBtn();
+    const stepFn = () => {
+      step();
+      if (!halted) raf = setTimeout(() => requestAnimationFrame(stepFn), 500 / onbnSpeed());
+      else {
+        raf = null;
+        if (onbnLooping) onbnLoopTimer = setTimeout(() => { reset(); animate(); }, 4000 / onbnSpeed());
+        else onbnSetBtn();
+      }
+    };
+    stepFn();
+  }
+  document.getElementById('onbn-play').onclick = () => { if (onbnLooping || raf) onbnStop(); else animate(); };
+  document.getElementById('onbn-step').onclick = () => { onbnStop(); step(); };
+  document.getElementById('onbn-reset').onclick = () => { onbnStop(); reset(); };
+  document.getElementById('onbn-input').oninput = () => { onbnStop(); reset(); };
+  document.getElementById('onbn-speed').oninput = (e) => {
+    document.getElementById('onbn-speed-label').textContent = parseFloat(e.target.value).toFixed(2).replace(/\.?0+$/, '') + '×';
+  };
+  reset();
+  setTimeout(animate, 1500);
+})();
+
+// ----- Race: single tape vs two tape (Widget 4) -----
+(function(){
+  let n = 6, raf1 = null, raf2 = null;
+  let s1 = null, s2 = null;
+
+  function makeInput(n) { return '0'.repeat(n) + '1'.repeat(n); }
+
+  function initS1() {
+    const inp = makeInput(n);
+    return { tape: inp.split(''), head: 0, steps: 0, phase: 'find0', state: 'q0', halted: false };
+  }
+  function initS2() {
+    const inp = makeInput(n);
+    return {
+      tape1: inp.split(''), tape2: ['_'],
+      head1: 0, head2: 0, steps: 0, phase: 'copy', halted: false, accept: null
+    };
+  }
+
+  function renderS1() {
+    const svg = document.getElementById('race-svg-1');
+    const cellW = 30; const startX = 20; const y = 40;
+    let s = '';
+    for (let i = 0; i < s1.tape.length; i++) {
+      const ch = s1.tape[i];
+      const x = startX + i * cellW;
+      const isHead = (i === s1.head);
+      const fill = ch === 'X' || ch === 'Y' ? 'var(--gold-soft)' : isHead ? 'var(--accent-soft)' : '#fff';
+      s += `<rect x="${x}" y="${y}" width="${cellW}" height="36" fill="${fill}" stroke="${isHead?'var(--accent)':'var(--rule-strong)'}" stroke-width="${isHead?2:1}"/>`;
+      s += `<text x="${x+cellW/2}" y="${y+24}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="14" font-weight="${isHead?'bold':'normal'}">${ch}</text>`;
+    }
+    const hx = startX + s1.head * cellW + cellW/2;
+    s += `<path d="M ${hx-5} ${y-10} L ${hx+5} ${y-10} L ${hx} ${y-2} Z" fill="var(--accent)"/>`;
+    svg.innerHTML = s;
+    document.getElementById('race-steps-1').textContent = s1.steps;
+  }
+  function renderS2() {
+    const svg = document.getElementById('race-svg-2');
+    const cellW = 30; const startX = 20;
+    let s = '';
+    // tape 1
+    const y1 = 30;
+    for (let i = 0; i < s2.tape1.length; i++) {
+      const ch = s2.tape1[i];
+      const x = startX + i * cellW;
+      const isHead = (i === s2.head1);
+      const fill = isHead ? 'var(--accent-soft)' : '#fff';
+      s += `<rect x="${x}" y="${y1}" width="${cellW}" height="32" fill="${fill}" stroke="${isHead?'var(--accent)':'var(--rule-strong)'}" stroke-width="${isHead?2:1}"/>`;
+      s += `<text x="${x+cellW/2}" y="${y1+22}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="14" font-weight="${isHead?'bold':'normal'}">${ch}</text>`;
+    }
+    const hx1 = startX + s2.head1 * cellW + cellW/2;
+    s += `<path d="M ${hx1-5} ${y1-8} L ${hx1+5} ${y1-8} L ${hx1} ${y1} Z" fill="var(--accent)"/>`;
+
+    // tape 2
+    const y2 = 84;
+    for (let i = 0; i < Math.max(s2.tape2.length, n + 1); i++) {
+      const ch = s2.tape2[i] || '_';
+      const x = startX + i * cellW;
+      const isHead = (i === s2.head2);
+      const fill = isHead ? 'var(--info-soft)' : '#fff';
+      s += `<rect x="${x}" y="${y2}" width="${cellW}" height="32" fill="${fill}" stroke="${isHead?'var(--info)':'var(--rule-strong)'}" stroke-width="${isHead?2:1}"/>`;
+      s += `<text x="${x+cellW/2}" y="${y2+22}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="14" font-weight="${isHead?'bold':'normal'}" fill="${ch==='_'?'#888':'#1a1a1a'}">${ch}</text>`;
+    }
+    const hx2 = startX + s2.head2 * cellW + cellW/2;
+    s += `<path d="M ${hx2-5} ${y2-8} L ${hx2+5} ${y2-8} L ${hx2} ${y2} Z" fill="var(--info)"/>`;
+    s += `<text x="${10}" y="${y1+22}" font-family="var(--sans), sans-serif" font-size="11" fill="#888">tape 1</text>`;
+    s += `<text x="${10}" y="${y2+22}" font-family="var(--sans), sans-serif" font-size="11" fill="#888">tape 2</text>`;
+    svg.innerHTML = s;
+    document.getElementById('race-steps-2').textContent = s2.steps;
+  }
+
+  function stepS1() {
+    if (s1.halted) return false;
+    s1.steps++;
+    const r = s1.tape[s1.head];
+    if (s1.phase === 'find0') {
+      if (r === '0') { s1.tape[s1.head] = 'X'; s1.phase = 'find1'; s1.head++; }
+      else if (r === 'X' || r === 'Y') { s1.head++; }
+      else { s1.halted = true; s1.state = (r === undefined || r === '_') ? 'qa' : 'qr'; }
+    } else if (s1.phase === 'find1') {
+      if (s1.head >= s1.tape.length || s1.tape[s1.head] === undefined) { s1.halted = true; s1.state = 'qr'; return true; }
+      if (r === '0' || r === 'Y') { s1.head++; }
+      else if (r === '1') { s1.tape[s1.head] = 'Y'; s1.phase = 'rewind'; s1.head--; }
+      else { s1.halted = true; s1.state = 'qr'; }
+    } else if (s1.phase === 'rewind') {
+      if (s1.head <= 0) { s1.phase = 'find0'; }
+      else { s1.head--; }
+    }
+    return true;
+  }
+
+  function stepS2() {
+    if (s2.halted) return false;
+    s2.steps++;
+    if (s2.phase === 'copy') {
+      // copy 0s to tape 2
+      const r = s2.tape1[s2.head1];
+      if (r === '0') {
+        s2.tape2[s2.head2] = '0'; s2.head1++; s2.head2++;
+        if (s2.head2 >= s2.tape2.length) s2.tape2.push('_');
+      } else if (r === '1') {
+        // transition: rewind tape 2 to start; tape 1 stays
+        s2.phase = 'rewind2';
+      } else { s2.halted = true; s2.accept = false; }
+    } else if (s2.phase === 'rewind2') {
+      if (s2.head2 > 0) s2.head2--;
+      else s2.phase = 'match';
+    } else if (s2.phase === 'match') {
+      const r1 = s2.tape1[s2.head1];
+      const r2 = s2.tape2[s2.head2];
+      if (r1 === '1' && r2 === '0') { s2.head1++; s2.head2++; }
+      else if (r1 === undefined && r2 === '_') { s2.halted = true; s2.accept = true; }
+      else { s2.halted = true; s2.accept = false; }
+    }
+    return true;
+  }
+
+  function reset() {
+    if (raf1) { clearTimeout(raf1); raf1 = null; }
+    if (raf2) { clearTimeout(raf2); raf2 = null; }
+    s1 = initS1(); s2 = initS2();
+    renderS1(); renderS2();
+  }
+
+  let raceLooping = true, raceLoopTimer = null;
+  function raceSpeed() { return parseFloat(document.getElementById('race-speed').value) || 1; }
+  function raceClear() {
+    if (raf1) clearTimeout(raf1); if (raf2) clearTimeout(raf2);
+    if (raceLoopTimer) clearTimeout(raceLoopTimer);
+    raf1 = raf2 = raceLoopTimer = null;
+  }
+  function raceSetBtn() { document.getElementById('race-play').textContent = raceLooping ? '⏸ Pause' : '▶ Play'; }
+  function raceStop() { raceLooping = false; raceClear(); raceSetBtn(); }
+  function play() {
+    raceLooping = true; raceClear(); raceSetBtn();
+    reset();
+    const baseDur = 500;
+    const loop1 = () => {
+      if (stepS1()) renderS1();
+      if (!s1.halted) raf1 = setTimeout(loop1, baseDur / raceSpeed());
+      else maybeRestart();
+    };
+    const loop2 = () => {
+      if (stepS2()) renderS2();
+      if (!s2.halted) raf2 = setTimeout(loop2, baseDur / raceSpeed());
+      else maybeRestart();
+    };
+    loop1(); loop2();
+  }
+  function maybeRestart() {
+    if (s1.halted && s2.halted && raceLooping && !raceLoopTimer) {
+      raceLoopTimer = setTimeout(() => { if (raceLooping) play(); }, 4500 / raceSpeed());
+    }
+  }
+
+  document.getElementById('race-n').oninput = (e) => {
+    n = parseInt(e.target.value);
+    document.getElementById('race-n-label').textContent = n;
+    raceStop(); reset();
+  };
+  document.getElementById('race-play').onclick = () => { if (raceLooping || raf1 || raf2) raceStop(); else play(); };
+  document.getElementById('race-reset').onclick = () => { raceStop(); reset(); };
+  document.getElementById('race-speed').oninput = (e) => {
+    document.getElementById('race-speed-label').textContent = parseFloat(e.target.value).toFixed(2).replace(/\.?0+$/, '') + '×';
+  };
+  reset();
+  setTimeout(play, 1500);
+})();
+
+// ----- P-class problems showcase (Widget 5) -----
+(function(){
+  let current = 'path';
+  const handlers = {
+    path: () => {
+      // visualize BFS on a small graph
+      const W = 720, H = 260;
+      const nodes = {
+        A: {x:80, y:130}, B:{x:200,y:60}, C:{x:200,y:200}, D:{x:340,y:130},
+        E:{x:480,y:60}, F:{x:480,y:200}, G:{x:620,y:130}
+      };
+      const edges = [['A','B'],['A','C'],['B','D'],['C','D'],['D','E'],['D','F'],['E','G'],['F','G']];
+      let visited = new Set(['A']);
+      let frontier = ['A'];
+      let depth = 0;
+      let timer = null;
+      const goal = 'G';
+
+      function render(found) {
+        let s = '';
+        for (const [u,v] of edges) {
+          const uu = nodes[u], vv = nodes[v];
+          const onPath = visited.has(u) && visited.has(v);
+          s += `<line x1="${uu.x}" y1="${uu.y}" x2="${vv.x}" y2="${vv.y}" stroke="${onPath?'var(--accent)':'#bbb'}" stroke-width="${onPath?2.5:1.5}"/>`;
+        }
+        for (const [name, p] of Object.entries(nodes)) {
+          const isFront = frontier.includes(name);
+          const isVis = visited.has(name);
+          const isGoal = (name === goal);
+          const fill = isGoal && found ? 'var(--accent)' : isFront ? 'var(--gold)' : isVis ? 'var(--accent-soft)' : '#fff';
+          const stroke = isGoal ? 'var(--gold)' : 'var(--accent-strong)';
+          s += `<circle cx="${p.x}" cy="${p.y}" r="24" fill="${fill}" stroke="${stroke}" stroke-width="2"/>`;
+          s += `<text x="${p.x}" y="${p.y+5}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="16" font-weight="bold" fill="${(isFront||isGoal&&found)?'#fff':'#1a1a1a'}">${name}</text>`;
+        }
+        s += `<text x="${W/2}" y="20" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" fill="var(--muted)">BFS layer ${depth} · frontier = {${frontier.join(', ')}}</text>`;
+        document.getElementById('p-display').innerHTML = `<svg viewBox="0 0 ${W} ${H}" class="svg-anim" style="background:#fcfbf7;border-radius:6px;">${s}</svg>`;
+      }
+
+      function step() {
+        if (visited.has(goal)) {
+          document.getElementById('p-explain').innerHTML =
+            `<div class="step-num">Reached goal in ${depth} layers</div>BFS visits at most every vertex and edge once: O(V + E). Polynomial. Hence PATH ∈ P.`;
+          return;
+        }
+        const newFrontier = [];
+        for (const u of frontier) {
+          for (const [a,b] of edges) {
+            if (a === u && !visited.has(b)) { visited.add(b); newFrontier.push(b); }
+            if (b === u && !visited.has(a)) { visited.add(a); newFrontier.push(a); }
+          }
+        }
+        frontier = newFrontier;
+        depth++;
+        render(visited.has(goal));
+        if (visited.has(goal)) {
+          document.getElementById('p-explain').innerHTML =
+            `<div class="step-num">Goal reached in ${depth} layers</div>BFS visits each vertex and edge at most once: O(V + E). Polynomial. Hence <b>PATH ∈ P</b>.`;
+        } else if (frontier.length === 0) {
+          document.getElementById('p-explain').innerHTML =
+            `<div class="step-num">No more nodes</div>Goal unreachable.`;
+        } else {
+          timer = setTimeout(step, 900);
+        }
+      }
+
+      render(false);
+      document.getElementById('p-explain').innerHTML =
+        `<div class="step-num">PATH = {⟨G, s, t⟩ : there is a path from s to t in G}</div>Algorithm: BFS from s. If t is ever discovered, accept. Animating from A toward G.`;
+      timer = setTimeout(step, 700);
+    },
+    rel: () => {
+      // Euclid's algorithm animation
+      let a = 252, b = 105, steps = [];
+      let A = a, B = b;
+      while (B !== 0) {
+        steps.push({a: A, b: B, r: A % B});
+        const r = A % B;
+        A = B; B = r;
+      }
+      let i = 0;
+      let timer = null;
+
+      function render() {
+        let s = '<div style="font-family: ui-monospace, monospace; font-size: 15px; line-height: 1.9;">';
+        s += `<div style="margin-bottom: 10px; color: var(--muted);">RELPRIME(252, 105): test if gcd(252, 105) = 1?</div>`;
+        for (let k = 0; k < steps.length; k++) {
+          const st = steps[k];
+          const cls = k <= i ? 'slide-in-left' : '';
+          const opacity = k <= i ? '1' : '0';
+          s += `<div class="${cls}" style="opacity: ${opacity}; padding: 4px 8px; ${k===i?'background: var(--gold-soft); border-radius: 4px;':''}">${st.a} = ${Math.floor(st.a/st.b)} · ${st.b} + <b>${st.r}</b></div>`;
+        }
+        if (i >= steps.length - 1) {
+          const finalGCD = steps[steps.length-1].b;
+          const verdict = finalGCD === 1 ? 'RELATIVELY PRIME ✓' : `gcd = ${finalGCD} — NOT relprime`;
+          s += `<div style="margin-top: 10px; padding: 6px 10px; background: ${finalGCD===1?'var(--accent-soft)':'var(--warn-soft)'}; border-radius: 4px; font-weight: bold; color: ${finalGCD===1?'var(--accent)':'var(--warn)'}">${verdict}</div>`;
+        }
+        s += '</div>';
+        document.getElementById('p-display').innerHTML = s;
+      }
+
+      function step() {
+        i++;
+        render();
+        if (i < steps.length) timer = setTimeout(step, 1100);
+        else {
+          document.getElementById('p-explain').innerHTML =
+            `<div class="step-num">Euclid in ${steps.length} steps</div>Each step at least halves the smaller number (a fact requiring a short proof), so the number of steps is O(log min(a,b)). On binary inputs that's polynomial in input length. Hence <b>RELPRIME ∈ P</b>.`;
+        }
+      }
+
+      render();
+      document.getElementById('p-explain').innerHTML =
+        `<div class="step-num">RELPRIME = {⟨a, b⟩ : gcd(a, b) = 1}</div>Watch Euclid's algorithm peel away the gcd step by step.`;
+      timer = setTimeout(step, 800);
+    },
+    cfg: () => {
+      // CYK animation for a simple grammar
+      const grammar = { S: [['A','B'],['B','A']], A: [['a']], B: [['b']] };
+      const input = 'abba';
+      const n = input.length;
+      // build cells in order span 1, 2, ..., n
+      let cells = []; // {i, j}
+      for (let span = 1; span <= n; span++)
+        for (let i = 0; i + span - 1 < n; i++)
+          cells.push({i, j: i+span-1});
+
+      let table = Array.from({length: n}, () => Array(n).fill(null));
+      let idx = 0;
+      let timer = null;
+
+      function fillCell(c) {
+        const {i, j} = c;
+        const set = new Set();
+        if (i === j) {
+          const ch = input[i];
+          for (const [lhs, alts] of Object.entries(grammar)) {
+            for (const alt of alts) if (alt.length === 1 && alt[0] === ch) set.add(lhs);
+          }
+        } else {
+          for (let k = i; k < j; k++) {
+            const L = table[i][k]; const R = table[k+1][j];
+            if (!L || !R) continue;
+            for (const [lhs, alts] of Object.entries(grammar)) {
+              for (const alt of alts) {
+                if (alt.length === 2 && L.has(alt[0]) && R.has(alt[1])) set.add(lhs);
+              }
+            }
+          }
+        }
+        table[i][j] = set;
+      }
+
+      function render(hi) {
+        let html = '<table class="data" style="font-family: ui-monospace, monospace; max-width: 400px; text-align: center;"><thead><tr><th></th>';
+        for (let j = 0; j < n; j++) html += `<th>${j}: ${input[j]}</th>`;
+        html += '</tr></thead><tbody>';
+        for (let i = 0; i < n; i++) {
+          html += `<tr><th>${i}</th>`;
+          for (let j = 0; j < n; j++) {
+            if (j < i) { html += `<td style="background: var(--rule);"></td>`; continue; }
+            const cell = table[i][j];
+            const isHi = hi && hi.i === i && hi.j === j;
+            const bg = isHi ? 'var(--gold-soft)' : '';
+            const cont = cell ? (cell.size ? '{' + Array.from(cell).join(',') + '}' : '∅') : '';
+            html += `<td style="background: ${bg};" class="${isHi?'fade-in':''}">${cont}</td>`;
+          }
+          html += '</tr>';
+        }
+        html += '</tbody></table>';
+        document.getElementById('p-display').innerHTML = html;
+      }
+
+      function step() {
+        if (idx >= cells.length) {
+          const top = table[0][n-1];
+          const ok = top && top.has('S');
+          document.getElementById('p-explain').innerHTML =
+            `<div class="step-num">Done in ${cells.length} cells</div>"${input}" is ${ok?'<b>generated</b>':'<b>not generated</b>'}. CYK fills O(n²) cells in O(n) work each ⇒ <b>O(n³)</b>. Hence <b>A<sub>CFG</sub> ∈ P</b>.`;
+          return;
+        }
+        const c = cells[idx];
+        fillCell(c);
+        idx++;
+        render(c);
+        timer = setTimeout(step, 600);
+      }
+
+      render();
+      document.getElementById('p-explain').innerHTML =
+        `<div class="step-num">A<sub>CFG</sub> = {⟨G, w⟩ : w ∈ L(G)}</div>Grammar: S→AB|BA, A→a, B→b. Input: "${input}". The CYK table fills bottom-up.`;
+      timer = setTimeout(step, 700);
+    }
+  };
+
+  function loadCurrent() {
+    handlers[current]();
+  }
+
+  document.querySelectorAll('#p-toggle button').forEach(b => {
+    b.onclick = () => {
+      document.querySelectorAll('#p-toggle button').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      current = b.dataset.p;
+      loadCurrent();
+    };
+  });
+  loadCurrent();
+})();
+</script>
+
+</body>
+</html>

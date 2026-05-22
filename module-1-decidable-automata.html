@@ -1,0 +1,1592 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 1 · Decidable problems for automata &amp; grammars</title>
+<link rel="stylesheet" href="styles.css">
+<script src="widget-loop.js"></script>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Module 1 · MIT 18.404J Lecture 7 · Sipser §4.1</div>
+  <h1>Decidable problems for automata &amp; grammars</h1>
+  <div class="sub">Every "natural question" about a DFA or a CFG can be answered by an algorithm.</div>
+  <div class="tag">BCS 402 · Dr. Arash Kermani · CUD</div>
+</header>
+
+<nav class="tabs">
+  <a href="index.html">← All modules</a>
+  <a class="active" href="#intro">1 · Why decidability</a>
+  <a href="#adfa">2 · A<sub>DFA</sub></a>
+  <a href="#edfa">3 · E<sub>DFA</sub></a>
+  <a href="#eqdfa">4 · EQ<sub>DFA</sub></a>
+  <a href="#acfg">5 · A<sub>CFG</sub></a>
+  <a href="#ecfg">6 · E<sub>CFG</sub></a>
+  <a href="#exercises">7 · Practice</a>
+</nav>
+
+<div class="wrap">
+
+<!-- ============================================================ -->
+<section id="intro">
+  <h2>1 · Why this module exists</h2>
+
+  <p>
+    By this point in the course you can already tell a DFA and a CFG apart, and you can <em>simulate</em>
+    them in your head. This module is about a different question: given the <em>description</em> of a
+    DFA or a CFG, can a computer answer questions about it &mdash; like "does this DFA accept this
+    string?" or "is the language of this grammar empty?" — by following an algorithm that is
+    guaranteed to halt with the right answer?
+  </p>
+
+  <p>
+    The headline result is yes, for the five questions in this module. Each one will get its own
+    section, but they all share a common shape, so it is worth naming it now:
+  </p>
+
+  <div class="key-idea">
+    <strong>Decidability template.</strong> To show a language <span class="math">L</span> is decidable,
+    describe a Turing machine that on input <span class="math">⟨x⟩</span> always halts, and accepts
+    if <span class="math">x ∈ L</span>, rejects otherwise. We will only ever describe it in plain
+    English; the formal TM is left implicit.
+  </div>
+
+  <h3>The five questions of this lecture</h3>
+
+  <table class="data">
+    <thead><tr><th>Name</th><th>Set</th><th>Plain English</th></tr></thead>
+    <tbody>
+      <tr><td><span class="math">A<sub>DFA</sub></span></td><td><span class="math">{⟨B, w⟩ : B is a DFA, w ∈ L(B)}</span></td><td>"Does DFA B accept string w?"</td></tr>
+      <tr><td><span class="math">E<sub>DFA</sub></span></td><td><span class="math">{⟨B⟩ : L(B) = ∅}</span></td><td>"Is the language of DFA B empty?"</td></tr>
+      <tr><td><span class="math">EQ<sub>DFA</sub></span></td><td><span class="math">{⟨A, B⟩ : L(A) = L(B)}</span></td><td>"Do DFAs A and B accept exactly the same strings?"</td></tr>
+      <tr><td><span class="math">A<sub>CFG</sub></span></td><td><span class="math">{⟨G, w⟩ : w ∈ L(G)}</span></td><td>"Does CFG G generate string w?"</td></tr>
+      <tr><td><span class="math">E<sub>CFG</sub></span></td><td><span class="math">{⟨G⟩ : L(G) = ∅}</span></td><td>"Is the language of CFG G empty?"</td></tr>
+    </tbody>
+  </table>
+
+  <p>
+    All five are decidable. Notice what is conspicuously missing from this list:
+    <span class="math">EQ<sub>CFG</sub></span>, the equivalence problem for context-free grammars. It is
+    <em>not</em> decidable, and we will prove that in Module 3. The line between this module
+    and the next is drawn exactly there.
+  </p>
+
+  <div class="callout info">
+    <h5>A word about encodings</h5>
+    <p style="margin:0;">
+      The notation <span class="math">⟨B⟩</span> means "the encoding of B as a string" &mdash; e.g. listing
+      its states, alphabet, transition function, start and accept states. The specific encoding does
+      not matter, as long as we can recover the DFA from it and one DFA has exactly one encoding.
+      Throughout the course we will mostly stop fussing about encodings; just treat
+      <span class="math">⟨·⟩</span> as quote marks around a machine description.
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="adfa">
+  <h2>2 · A<sub>DFA</sub>: does DFA B accept string w?</h2>
+
+  <p>
+    The algorithm is the most natural one imaginable: <strong>just simulate the DFA on the
+    input</strong>. Read one character at a time, walk through the transitions, and at the end
+    check whether you ended in an accept state. DFAs are deterministic, so there is exactly one
+    walk to take; and the walk has length <span class="math">|w|</span>, which is finite.
+  </p>
+
+  <div class="callout">
+    <h5>Proof sketch — A<sub>DFA</sub> is decidable</h5>
+    <p style="margin:0;">
+      Construct a TM <span class="math">M</span> that on input <span class="math">⟨B, w⟩</span>:
+      (1) parses the DFA, (2) sets a pointer to the start state and reads <span class="math">w</span>
+      left to right, updating the state per the transition function, (3) accepts if the final state
+      is in the accept set, rejects otherwise. <span class="math">M</span> always halts (after exactly
+      <span class="math">|w|</span> steps of simulation), so <span class="math">A<sub>DFA</sub></span> is decidable. ∎
+    </p>
+  </div>
+
+  <h3>Try it: a DFA simulator</h3>
+
+  <p>
+    Below is a small DFA over the alphabet {0, 1}. The default accepts exactly those binary
+    strings with an even number of 1s. Type a string and step through; the active state lights up.
+    Click the transition table to edit the DFA.
+  </p>
+
+  <div class="widget" id="dfa-sim">
+    <div class="widget-title">A<sub>DFA</sub> simulator <span class="pill">Widget 1</span></div>
+
+    <div class="controls">
+      <label>Input string <input type="text" id="dfa-input" value="0110101" maxlength="40" style="width: 200px;"></label>
+      <button class="btn" id="dfa-reset">Reset</button>
+      <button class="btn" id="dfa-step">Step</button>
+      <button class="btn play-btn" id="dfa-run">⏸ Pause</button>
+      <label class="speed-control">Speed
+        <input type="range" id="dfa-speed" min="0.25" max="3" step="0.25" value="1">
+        <span id="dfa-speed-label" style="font-family: var(--mono); min-width: 28px;">1×</span>
+      </label>
+    </div>
+
+    <h4 style="margin-top:14px;">Input tape — read left-to-right</h4>
+    <div id="dfa-tape" class="tape"></div>
+
+    <svg id="dfa-svg" viewBox="0 0 700 220" class="svg-anim" style="background: #fcfbf7; border-radius: 6px; margin-top: 12px;"></svg>
+
+    <div class="status">
+      <div class="stat">Step <b id="dfa-step-num">0</b> / <b id="dfa-step-tot">7</b></div>
+      <div class="stat">Current state <b id="dfa-state">q0</b></div>
+      <div class="stat">Read so far <b id="dfa-read">ε</b></div>
+      <div class="stat">Verdict <b id="dfa-verdict">—</b></div>
+    </div>
+
+    <h4 style="margin-top:18px;">Transition table (click a cell to edit)</h4>
+    <table class="data" id="dfa-table" style="max-width: 320px;">
+      <thead><tr><th>δ</th><th>0</th><th>1</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <div style="font-family: var(--sans); font-size:12px; color: var(--muted); margin-top: 4px;">
+      Start state: q0 · Accept states (toggle):
+      <span class="accept-toggle" data-st="q0">q0 ✓</span>
+      <span class="accept-toggle" data-st="q1">q1</span>
+    </div>
+
+    <div class="explain-panel" id="dfa-explain">
+      <div class="step-num">Step 0</div>
+      Press <strong>Step</strong> to walk through the simulation one character at a time.
+      The simulator just walks through the DFA's transition function, exactly as the
+      <span class="math">A<sub>DFA</sub></span> decider would.
+    </div>
+  </div>
+
+  <p>
+    That is the whole proof. The widget above <em>is</em> the decision procedure — there is no
+    separate "Turing machine" to imagine; this is what one would do.
+  </p>
+</section>
+
+<!-- ============================================================ -->
+<section id="edfa">
+  <h2>3 · E<sub>DFA</sub>: is L(B) empty?</h2>
+
+  <p>
+    "Empty" sounds harder than "accepts this string", but it is actually <em>easier</em>: emptiness
+    is a question about <em>structure</em>, not about a specific input. A DFA accepts <em>some</em>
+    string if and only if there is a path from its start state to <em>some</em> accept state.
+  </p>
+
+  <div class="callout">
+    <h5>Algorithm — graph reachability</h5>
+    <p style="margin:0;">
+      Treat the DFA as a directed graph (states = nodes, transitions = edges). Run BFS or DFS from
+      the start state. If any reachable node is an accept state, output <em>not empty</em>;
+      otherwise, output <em>empty</em>. The DFA has finitely many states, so the search halts.
+    </p>
+  </div>
+
+  <h3>Try it: emptiness by reachability</h3>
+
+  <p>
+    Below is a DFA with 5 states. Toggle which states are accept states and click <strong>Run
+    reachability</strong> to mark the reachable states (shaded). The verdict appears at the bottom.
+  </p>
+
+  <div class="widget" id="edfa-sim">
+    <div class="widget-title">E<sub>DFA</sub> reachability walkthrough <span class="pill">Widget 2</span></div>
+    <svg id="edfa-svg" viewBox="0 0 700 240" style="background:#fcfbf7;border-radius:6px;"></svg>
+    <div class="controls">
+      <button class="btn" id="edfa-step">Step BFS</button>
+      <button class="btn play-btn" id="edfa-run">⏸ Pause</button>
+      <button class="btn ghost" id="edfa-reset">Reset</button>
+      <label class="speed-control">Speed
+        <input type="range" id="edfa-speed" min="0.25" max="3" step="0.25" value="1">
+        <span id="edfa-speed-label" style="font-family: var(--mono); min-width: 28px;">1×</span>
+      </label>
+    </div>
+    <div class="status">
+      <div class="stat">Frontier <b id="edfa-frontier">{q0}</b></div>
+      <div class="stat">Discovered <b id="edfa-disc">{q0}</b></div>
+      <div class="stat">Verdict <b id="edfa-verdict">running…</b></div>
+    </div>
+    <div class="explain-panel" id="edfa-explain">
+      <div class="step-num">Step 0</div>
+      Click <strong>Step BFS</strong> to expand the next frontier of the breadth-first search from <span class="math">q0</span>.
+    </div>
+    <div style="font-family:var(--sans);font-size:12px;color:var(--muted);margin-top:8px;">
+      Click a state to toggle whether it is an accept state.
+    </div>
+  </div>
+
+  <p>
+    The procedure halts because the DFA has only finitely many states — at most <span class="math">|Q|</span>
+    of them, where <span class="math">|Q|</span> is the number of states. So the algorithm runs in
+    linear time in the size of the DFA, and <span class="math">E<sub>DFA</sub></span> is not just decidable
+    but very efficiently decidable.
+  </p>
+</section>
+
+<!-- ============================================================ -->
+<section id="eqdfa">
+  <h2>4 · EQ<sub>DFA</sub>: do DFAs A and B accept the same language?</h2>
+
+  <p>
+    This is where things get a little clever. We reduce equivalence to emptiness using the
+    <strong>symmetric difference</strong>:
+  </p>
+
+  <div class="math-block">
+    L(A) = L(B)   ⇔   L(A) △ L(B) = ∅
+    &nbsp;&nbsp;where&nbsp;&nbsp;
+    L(A) △ L(B) = (L(A) ∩ L(B)<sup>c</sup>) ∪ (L(A)<sup>c</sup> ∩ L(B)).
+  </div>
+
+  <p>
+    The symmetric difference is the set of strings on which <span class="math">A</span> and
+    <span class="math">B</span> <em>disagree</em>. They are equivalent iff they never disagree iff
+    the symmetric difference is empty.
+  </p>
+
+  <p>
+    Now, the regular languages are closed under union, intersection, and complement (we proved this
+    in Lecture 1). So there is a DFA <span class="math">C</span> that recognizes
+    <span class="math">L(A) △ L(B)</span> &mdash; we just build it. And we already know how to test
+    a DFA for emptiness: use <span class="math">E<sub>DFA</sub></span> from the previous section.
+  </p>
+
+  <div class="callout">
+    <h5>Algorithm</h5>
+    <p style="margin:0;">
+      On input <span class="math">⟨A, B⟩</span>: (1) construct the product DFA <span class="math">C</span>
+      whose states are pairs <span class="math">(q_A, q_B)</span> and whose accept states are pairs in
+      which <em>exactly one</em> of <span class="math">q_A, q_B</span> is accepting; (2) test
+      <span class="math">L(C) = ∅</span> using the reachability procedure from §3. Accept iff yes.
+    </p>
+  </div>
+
+  <h3>Try it: the product DFA, built one cell at a time</h3>
+
+  <p>
+    Below: two small DFAs <span class="math">A</span> and <span class="math">B</span>, and the product
+    construction for <span class="math">L(A) △ L(B)</span>. Click <strong>Build product</strong> to
+    fill in the table step by step. Cells marked <span style="background:var(--warn-soft);padding:0 6px;border-radius:3px;">XOR</span>
+    are accept states of the product; if no XOR state is reachable from the start pair, the
+    languages are equal.
+  </p>
+
+  <div class="widget" id="eqdfa-sim">
+    <div class="widget-title">EQ<sub>DFA</sub> product construction <span class="pill">Widget 3</span></div>
+
+    <div class="cols-2">
+      <div>
+        <h4>DFA A — even number of 0s</h4>
+        <svg id="eq-A-svg" viewBox="0 0 280 140" style="background:#fcfbf7;border-radius:6px;"></svg>
+      </div>
+      <div>
+        <h4>DFA B — last symbol is 0</h4>
+        <svg id="eq-B-svg" viewBox="0 0 280 140" style="background:#fcfbf7;border-radius:6px;"></svg>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="eq-build">Build product</button>
+      <button class="btn" id="eq-reach">Run reachability</button>
+      <button class="btn ghost" id="eq-reset">Reset</button>
+    </div>
+
+    <h4>Product DFA for the symmetric difference</h4>
+    <table class="data" id="eq-product-table" style="max-width: 480px;"></table>
+
+    <div class="explain-panel" id="eq-explain">
+      <div class="step-num">Setup</div>
+      <span class="math">A</span> accepts strings with an even number of 0s.
+      <span class="math">B</span> accepts strings whose last symbol is 0.
+      They disagree on, for example, <span class="math">"01"</span> &mdash; an odd number of 0s
+      so <span class="math">A</span> rejects, but the last symbol is 1 so <span class="math">B</span>
+      also rejects. Or on <span class="math">"0"</span>: one 0 so <span class="math">A</span> rejects,
+      but last symbol is 0 so <span class="math">B</span> accepts. The product DFA should witness one of
+      those disagreements.
+    </div>
+  </div>
+
+  <div class="key-idea">
+    <strong>Why this works.</strong> The product construction is doing real work: it is computing
+    <em>two</em> DFAs in parallel, treating the pair of current states as a single state. The
+    reduction <span class="math">EQ<sub>DFA</sub> ≤ E<sub>DFA</sub></span> is the prototype of every reduction we'll do
+    later — turning a question about one machine into a question about another, where we already
+    know the answer is computable.
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="acfg">
+  <h2>5 · A<sub>CFG</sub>: does CFG G generate string w?</h2>
+
+  <p>
+    For CFGs we have to be a bit careful. A naïve algorithm — "try all possible derivations" — does
+    not work, because there are infinitely many derivations once the grammar has any recursion
+    (e.g. <span class="math">S → SS</span> can be expanded forever). We need a bound on how long a
+    derivation needs to be.
+  </p>
+
+  <div class="callout gold">
+    <h5>The CNF trick</h5>
+    <p style="margin:0;">
+      <strong>Chomsky Normal Form (CNF):</strong> every production is either
+      <span class="math">A → BC</span> or <span class="math">A → a</span>, with one exception:
+      <span class="math">S → ε</span> for the start variable (if <span class="math">ε ∈ L(G)</span>).
+      Any CFG can be converted to CNF, and then a derivation of a string of length
+      <span class="math">n ≥ 1</span> must use exactly <span class="math">2n − 1</span> production
+      steps. So we just enumerate all derivations of length <span class="math">2n − 1</span> and
+      check whether any yields <span class="math">w</span>.
+    </p>
+  </div>
+
+  <p>
+    There is a cleaner algorithm than enumeration — the <em>CYK</em> dynamic-programming algorithm —
+    which runs in <span class="math">O(n³)</span> time. We won't develop CYK in detail here, but it is
+    the standard way to implement <span class="math">A<sub>CFG</sub></span>.
+  </p>
+
+  <h3>Try it: bottom-up parsing table (CYK)</h3>
+
+  <p>
+    Below is the grammar (in CNF)
+    <span class="math">S → AB | BA, A → a, B → b</span>
+    which generates strings of <span class="math">a</span>'s and <span class="math">b</span>'s where
+    the first and last characters differ. Type a string and click <strong>Fill table</strong> to see
+    the CYK table populated bottom-up. If the start variable <span class="math">S</span> appears in
+    the top cell, the string is in the language.
+  </p>
+
+  <div class="widget" id="cyk-sim">
+    <div class="widget-title">A<sub>CFG</sub> via CYK <span class="pill">Widget 4</span></div>
+    <div class="controls">
+      <label>String <input type="text" id="cyk-input" value="abba" maxlength="10" style="width: 140px;"></label>
+      <button class="btn" id="cyk-step">Fill one cell</button>
+      <button class="btn" id="cyk-run">Fill all</button>
+      <button class="btn ghost" id="cyk-reset">Reset</button>
+    </div>
+    <div id="cyk-table-wrap"></div>
+    <div class="status">
+      <div class="stat">Verdict <b id="cyk-verdict">—</b></div>
+    </div>
+    <div class="explain-panel" id="cyk-explain">
+      <div class="step-num">How to read the table</div>
+      Cell <span class="math">T[i, j]</span> contains the set of variables that derive the substring
+      <span class="math">w_i…w_j</span>. The bottom row is filled from the rules
+      <span class="math">A → a</span>. Higher rows are filled by looking at all splits
+      <span class="math">w_i…w_k · w<sub>k+1</sub>…w_j</span> and combining via rules
+      <span class="math">A → BC</span>. The verdict is "in L(G)" iff <span class="math">S</span>
+      is in the top cell.
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="ecfg">
+  <h2>6 · E<sub>CFG</sub>: is L(G) empty?</h2>
+
+  <p>
+    This one is beautiful. To test whether <span class="math">L(G)</span> is empty, we ask: is
+    there <em>any</em> string the start variable can derive? Equivalently: is the start variable
+    <strong>productive</strong>?
+  </p>
+
+  <p>
+    Define a variable to be <em>productive</em> if it can derive some string of terminals. We
+    compute the set of productive variables by an iterative marking procedure:
+  </p>
+
+  <div class="callout">
+    <h5>Marking algorithm — E<sub>CFG</sub></h5>
+    <ol style="margin: 0;">
+      <li>Mark every variable <span class="math">A</span> for which some rule <span class="math">A → w</span> has <span class="math">w</span> consisting only of terminals.</li>
+      <li>Repeat: mark <span class="math">A</span> if there is a rule <span class="math">A → α</span> in which every variable in <span class="math">α</span> is already marked.</li>
+      <li>Stop when no new variables get marked.</li>
+      <li>Accept iff the start variable is <em>not</em> marked.</li>
+    </ol>
+  </div>
+
+  <p>
+    There are only finitely many variables, so the algorithm halts in at most
+    <span class="math">|V|</span> rounds. The marked variables are exactly the productive ones, so
+    we have <span class="math">L(G) = ∅</span> iff the start variable is not marked.
+  </p>
+
+  <h3>Try it: mark productive variables, round by round</h3>
+
+  <div class="widget" id="ecfg-sim">
+    <div class="widget-title">E<sub>CFG</sub> variable marking <span class="pill">Widget 5</span></div>
+
+    <h4>Grammar (editable)</h4>
+    <textarea id="ecfg-grammar" rows="6" style="width:100%;font-family:var(--mono);font-size:13px;padding:8px;border:1px solid var(--rule-strong);border-radius:4px;">S -> AB | BC
+A -> aA | a
+B -> bB
+C -> Cc
+D -> d</textarea>
+    <div style="font-family:var(--sans);font-size:12px;color:var(--muted);margin-top:4px;">
+      Format: each line is <code>Var -> alt1 | alt2 | ...</code>. Use lowercase for terminals,
+      uppercase for variables. Start variable is the LHS of the first rule.
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="ecfg-step">Run one round</button>
+      <button class="btn" id="ecfg-run">Run all rounds</button>
+      <button class="btn ghost" id="ecfg-reset">Reset</button>
+    </div>
+
+    <div id="ecfg-marked-display" style="margin-top: 12px; font-family: var(--mono); font-size: 14px; line-height: 1.8;"></div>
+
+    <div class="status">
+      <div class="stat">Round <b id="ecfg-round">0</b></div>
+      <div class="stat">Marked <b id="ecfg-marked-set">∅</b></div>
+      <div class="stat">Verdict <b id="ecfg-verdict">—</b></div>
+    </div>
+
+    <div class="explain-panel" id="ecfg-explain">
+      <div class="step-num">Round 0</div>
+      Initially nothing is marked. Click <strong>Run one round</strong> to mark all variables
+      that have at least one rule consisting only of terminals.
+    </div>
+  </div>
+
+  <p>
+    In the default grammar, only <span class="math">A</span> and <span class="math">D</span> have a
+    rule <em>directly</em> producing a terminal string. From there, <span class="math">B</span>
+    cannot become productive because its only rule keeps requiring another <span class="math">B</span>.
+    Likewise <span class="math">C</span> is stuck. So <span class="math">S</span> needs an
+    <span class="math">AB</span> or <span class="math">BC</span> &mdash; both contain an unproductive
+    variable. The verdict will be <strong>L(G) = ∅</strong>. Edit the grammar to flip the verdict!
+  </p>
+
+  <div class="key-idea">
+    <strong>The whole module in one sentence:</strong> for DFAs and CFGs, every property you would
+    naturally want to test — acceptance, emptiness, equivalence — reduces to a finite search,
+    so it can be decided.
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="exercises">
+  <h2>7 · Practice (Sipser Ch. 4.1)</h2>
+
+  <p>
+    The interactive widgets above each implement one of these algorithms. The problems below are
+    the ones from Sipser most directly tied to this lecture. Click each "Show hint" to reveal a
+    nudge, then "Show solution outline" for a worked sketch.
+  </p>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 4.1</div>
+    <p>
+      Let <span class="math">INFINITE<sub>DFA</sub> = {⟨A⟩ : A is a DFA and L(A) is an infinite language}</span>.
+      Show that <span class="math">INFINITE<sub>DFA</sub></span> is decidable.
+    </p>
+    <details><summary>Show hint</summary>
+      <div class="hint">A DFA's language is infinite iff there is a cycle on some path from the start state to an accept state. Why?</div>
+    </details>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">
+        On input <span class="math">⟨A⟩</span>: (1) Mark all states reachable from the start.
+        (2) Mark all states from which an accept state is reachable. (3) Check whether any state
+        in the intersection (reachable AND can reach accept) lies on a directed cycle. Equivalently:
+        a state <span class="math">q</span> lies on a cycle iff it can reach itself in
+        ≥ 1 transitions. Accept iff such a "good" cycle exists. Halts because the DFA is finite.
+      </div>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 4.2</div>
+    <p>
+      Let <span class="math">ALL<sub>DFA</sub> = {⟨A⟩ : A is a DFA and L(A) = Σ*}</span>.
+      Show that <span class="math">ALL<sub>DFA</sub></span> is decidable.
+    </p>
+    <details><summary>Show hint</summary>
+      <div class="hint">"Accepts everything" is the same as "complement accepts nothing." How do you build a DFA for the complement?</div>
+    </details>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">
+        Flip the accept and non-accept states of <span class="math">A</span> to get <span class="math">A'</span>;
+        then <span class="math">L(A') = Σ* \ L(A)</span>. Now run the <span class="math">E<sub>DFA</sub></span>
+        decider on <span class="math">A'</span>: accept iff <span class="math">L(A') = ∅</span>,
+        i.e., iff <span class="math">L(A) = Σ*</span>.
+      </div>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 4.3</div>
+    <p>
+      Let <span class="math">A<sub>εCFG</sub> = {⟨G⟩ : G is a CFG that generates ε}</span>. Show that
+      <span class="math">A<sub>εCFG</sub></span> is decidable.
+    </p>
+    <details><summary>Show hint</summary>
+      <div class="hint">"Productive" but specifically for ε: which variables can derive the empty string?</div>
+    </details>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">
+        Iteratively mark a variable <span class="math">A</span> if it has a rule
+        <span class="math">A → α</span> in which every symbol is either ε-yielding (already marked)
+        or itself; closing this off gives the set of variables that can derive ε. Accept iff the
+        start variable is in that set.
+      </div>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 4.5</div>
+    <p>
+      Let <span class="math">EQ<sub>DFA</sub> = {⟨A, B⟩ : L(A) = L(B)}</span>. Give the product-construction
+      algorithm in pseudocode and analyze its running time as a function of
+      <span class="math">|A|</span> and <span class="math">|B|</span>.
+    </p>
+    <details><summary>Show hint</summary>
+      <div class="hint">Walk through Widget 3 (above) one cell at a time and count how many cells you fill.</div>
+    </details>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">
+        Construct product DFA <span class="math">C</span> with state set
+        <span class="math">Q_A × Q_B</span>; accept states are pairs where exactly one component
+        is accepting. Run <span class="math">E<sub>DFA</sub></span> on <span class="math">C</span>: do BFS
+        from the start pair. Time is <span class="math">O(|Q_A| · |Q_B| · |Σ|)</span> to build the
+        product, plus the same to do reachability. So total
+        <span class="math">O(|A| · |B| · |Σ|)</span>.
+      </div>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 4.10</div>
+    <p>
+      Let <span class="math">INFINITE<sub>PDA</sub> = {⟨M⟩ : M is a PDA and L(M) is infinite}</span>.
+      Show that <span class="math">INFINITE<sub>PDA</sub></span> is decidable.
+    </p>
+    <details><summary>Show hint</summary>
+      <div class="hint">Convert the PDA to an equivalent CFG, then use a pumping-style argument: a CFG generates an infinite language iff some variable can derive a string containing itself.</div>
+    </details>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">
+        Convert to CFG <span class="math">G</span>. <span class="math">L(G)</span> is infinite iff
+        some "useful" variable <span class="math">A</span> (reachable from <span class="math">S</span>
+        and productive) admits a derivation <span class="math">A ⇒* uAv</span> with
+        <span class="math">uv ≠ ε</span>. Use the marking algorithms from §6 to filter useful
+        variables; then for each useful <span class="math">A</span>, do a graph search over the
+        "derives" relation to test for such a self-loop. All finite, so decidable.
+      </div>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 4.13</div>
+    <p>
+      Let <span class="math">A = {⟨R, S⟩ : R, S are regular expressions and L(R) ⊆ L(S)}</span>.
+      Show that <span class="math">A</span> is decidable.
+    </p>
+    <details><summary>Show hint</summary>
+      <div class="hint"><span class="math">L(R) ⊆ L(S)</span> iff <span class="math">L(R) ∩ L(S)<sup>c</sup> = ∅</span>. Use the product construction for the intersection and complement.</div>
+    </details>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">
+        Convert <span class="math">R, S</span> to DFAs. Build a product DFA accepting
+        <span class="math">L(R) ∩ L(S)<sup>c</sup></span> (accept iff <span class="math">R</span>-component
+        is accepting and <span class="math">S</span>-component is not). Run
+        <span class="math">E<sub>DFA</sub></span>. Accept iff that language is empty.
+      </div>
+    </details>
+  </div>
+</section>
+
+<section>
+  <h2>One-sentence summary</h2>
+  <div class="key-idea">
+    Every standard yes/no question about a DFA or CFG — acceptance, emptiness, equivalence (for DFAs),
+    membership and emptiness (for CFGs) — has a decision algorithm, because each reduces to a finite
+    search (over states, transitions, or derivations of bounded length).
+  </div>
+
+  <p style="text-align:center;margin-top:24px;">
+    <a class="btn" href="module-2-undecidability.html" style="display:inline-block;padding:10px 18px;background:var(--accent);color:white;border-radius:4px;text-decoration:none;border:0;">
+      Next → Module 2: Undecidability &amp; the Halting Problem
+    </a>
+  </p>
+</section>
+
+</div>
+
+<footer class="foot">
+  Module 1 of 7 · BCS 402 · Dr. Arash Kermani · CUD
+</footer>
+
+<script>
+// =================================================================
+// Module 1 — Interactive widgets
+// All widgets are self-contained: no external libraries.
+// =================================================================
+
+// ----- DFA simulator (Widget 1) -----
+(function(){
+  // DFA: count parity of 1s.  q0 = even, q1 = odd. Accept = q0.
+  let dfa = {
+    states: ['q0', 'q1'],
+    delta: { 'q0': {'0': 'q0', '1': 'q1'},
+             'q1': {'0': 'q1', '1': 'q0'} },
+    start: 'q0',
+    accept: new Set(['q0'])
+  };
+
+  let curState = dfa.start;
+  let step = 0;
+  let input = document.getElementById('dfa-input').value;
+
+  const svg = document.getElementById('dfa-svg');
+  const layout = {
+    q0: {x: 200, y: 110},
+    q1: {x: 500, y: 110}
+  };
+
+  let activeEdge = null; // {from, to, on} when a transition was just fired
+
+  function drawTape() {
+    const tape = document.getElementById('dfa-tape');
+    if (!tape) return;
+    let html = '';
+    for (let i = 0; i < input.length; i++) {
+      const isJustRead = (i === step - 1);
+      const isNext = (i === step);
+      const isPast = (i < step - 1);
+      let cls = 'cell';
+      let extra = '';
+      if (isJustRead) {
+        cls += ' write';
+        extra = 'background: var(--gold); color: white; border-color: var(--gold); font-weight: 700; transform: scale(1.12); box-shadow: 0 4px 10px rgba(181,139,0,0.35);';
+      } else if (isNext) {
+        cls += ' head';
+        extra = 'background: var(--accent-soft); border: 2px solid var(--accent); font-weight: 700;';
+      } else if (isPast) {
+        extra = 'background: #f5f3ec; color: var(--muted); border-color: var(--rule);';
+      }
+      html += `<div class="${cls}" style="${extra} transition: all .35s ease;">${input[i]}</div>`;
+    }
+    if (input.length === 0) {
+      html = '<div style="font-family: var(--sans); font-size: 12px; color: var(--muted); padding: 8px;">empty input (ε) — no characters to read</div>';
+    }
+    tape.innerHTML = html;
+  }
+
+  function drawDFA() {
+    svg.innerHTML = '';
+    const NS = 'http://www.w3.org/2000/svg';
+
+    // arrow defs (default + active — same shape, different color only)
+    const defs = document.createElementNS(NS, 'defs');
+    defs.innerHTML = `<marker id="arr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#444"/></marker>
+      <marker id="arr-active" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#b58b00"/></marker>`;
+    svg.appendChild(defs);
+
+    // start arrow
+    const sa = document.createElementNS(NS, 'line');
+    sa.setAttribute('x1', layout[dfa.start].x - 70);
+    sa.setAttribute('y1', layout[dfa.start].y);
+    sa.setAttribute('x2', layout[dfa.start].x - 38);
+    sa.setAttribute('y2', layout[dfa.start].y);
+    sa.setAttribute('stroke', '#444');
+    sa.setAttribute('stroke-width', '1.4');
+    sa.setAttribute('marker-end', 'url(#arr)');
+    svg.appendChild(sa);
+
+    // transitions
+    for (const s of dfa.states) {
+      for (const c of ['0', '1']) {
+        const t = dfa.delta[s][c];
+        const isActive = activeEdge && activeEdge.from === s && activeEdge.to === t && activeEdge.on === c;
+        const edgeStroke = isActive ? '#b58b00' : '#444';
+        const edgeWidth = '1.2';
+        const marker = isActive ? 'url(#arr-active)' : 'url(#arr)';
+        const labelFill = isActive ? '#b58b00' : '#1a1a1a';
+        const labelWeight = isActive ? '700' : '400';
+        if (s === t) {
+          // self-loop
+          const path = document.createElementNS(NS, 'path');
+          const cx = layout[s].x, cy = layout[s].y - 30;
+          path.setAttribute('d', `M ${cx-14} ${cy} Q ${cx} ${cy-40} ${cx+14} ${cy}`);
+          path.setAttribute('fill', 'none');
+          path.setAttribute('stroke', edgeStroke);
+          path.setAttribute('stroke-width', edgeWidth);
+          path.setAttribute('marker-end', marker);
+          svg.appendChild(path);
+          if (isActive) {
+            // pulse circle on label
+            const pulse = document.createElementNS(NS, 'circle');
+            pulse.setAttribute('cx', cx);
+            pulse.setAttribute('cy', cy - 32);
+            pulse.setAttribute('r', 14);
+            pulse.setAttribute('fill', '#fce8a8');
+            pulse.setAttribute('opacity', '0.7');
+            svg.appendChild(pulse);
+          }
+          const txt = document.createElementNS(NS, 'text');
+          txt.setAttribute('x', cx);
+          txt.setAttribute('y', cy - 28);
+          txt.setAttribute('text-anchor', 'middle');
+          txt.setAttribute('font-family', 'ui-monospace, monospace');
+          txt.setAttribute('font-size', '13');
+          txt.setAttribute('fill', labelFill);
+          txt.setAttribute('font-weight', labelWeight);
+          txt.textContent = c;
+          svg.appendChild(txt);
+        } else {
+          const sx = layout[s].x, sy = layout[s].y;
+          const tx = layout[t].x, ty = layout[t].y;
+          const dx = tx - sx, dy = ty - sy;
+          const len = Math.sqrt(dx*dx + dy*dy);
+          const ux = dx/len, uy = dy/len;
+          const offset = 14;
+          const px = -uy * offset, py = ux * offset;
+          const x1 = sx + ux*32 + px;
+          const y1 = sy + uy*32 + py;
+          const x2 = tx - ux*32 + px;
+          const y2 = ty - uy*32 + py;
+          const ln = document.createElementNS(NS, 'line');
+          ln.setAttribute('x1', x1);
+          ln.setAttribute('y1', y1);
+          ln.setAttribute('x2', x2);
+          ln.setAttribute('y2', y2);
+          ln.setAttribute('stroke', edgeStroke);
+          ln.setAttribute('stroke-width', edgeWidth);
+          ln.setAttribute('marker-end', marker);
+          svg.appendChild(ln);
+          if (isActive) {
+            const pulse = document.createElementNS(NS, 'circle');
+            pulse.setAttribute('cx', (x1+x2)/2 + px*0.6);
+            pulse.setAttribute('cy', (y1+y2)/2 + py*0.6 - 4);
+            pulse.setAttribute('r', 14);
+            pulse.setAttribute('fill', '#fce8a8');
+            pulse.setAttribute('opacity', '0.7');
+            svg.appendChild(pulse);
+          }
+          const txt = document.createElementNS(NS, 'text');
+          txt.setAttribute('x', (x1+x2)/2 + px*0.6);
+          txt.setAttribute('y', (y1+y2)/2 + py*0.6 - 4);
+          txt.setAttribute('text-anchor', 'middle');
+          txt.setAttribute('font-family', 'ui-monospace, monospace');
+          txt.setAttribute('font-size', '13');
+          txt.setAttribute('fill', labelFill);
+          txt.setAttribute('font-weight', labelWeight);
+          txt.textContent = c;
+          svg.appendChild(txt);
+        }
+      }
+    }
+
+    // states
+    for (const s of dfa.states) {
+      const {x, y} = layout[s];
+      const c = document.createElementNS(NS, 'circle');
+      c.setAttribute('cx', x);
+      c.setAttribute('cy', y);
+      c.setAttribute('r', 32);
+      c.setAttribute('fill', s === curState ? '#d6ebe4' : '#ffffff');
+      c.setAttribute('stroke', s === curState ? '#2a6f5f' : '#444');
+      c.setAttribute('stroke-width', s === curState ? '2.5' : '1.4');
+      svg.appendChild(c);
+      if (dfa.accept.has(s)) {
+        const c2 = document.createElementNS(NS, 'circle');
+        c2.setAttribute('cx', x);
+        c2.setAttribute('cy', y);
+        c2.setAttribute('r', 26);
+        c2.setAttribute('fill', 'none');
+        c2.setAttribute('stroke', s === curState ? '#2a6f5f' : '#444');
+        c2.setAttribute('stroke-width', '1.4');
+        svg.appendChild(c2);
+      }
+      const txt = document.createElementNS(NS, 'text');
+      txt.setAttribute('x', x);
+      txt.setAttribute('y', y + 5);
+      txt.setAttribute('text-anchor', 'middle');
+      txt.setAttribute('font-family', 'ui-monospace, monospace');
+      txt.setAttribute('font-size', '16');
+      txt.setAttribute('font-weight', 'bold');
+      txt.textContent = s;
+      svg.appendChild(txt);
+    }
+  }
+
+  function renderTable() {
+    const tb = document.querySelector('#dfa-table tbody');
+    tb.innerHTML = '';
+    for (const s of dfa.states) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<th>${s}</th><td>${dfa.delta[s]['0']}</td><td>${dfa.delta[s]['1']}</td>`;
+      tb.appendChild(tr);
+    }
+    // accept-toggle visibility
+    document.querySelectorAll('.accept-toggle').forEach(el => {
+      const st = el.dataset.st;
+      el.textContent = st + (dfa.accept.has(st) ? ' ✓' : '');
+      el.style.cursor = 'pointer';
+      el.style.color = dfa.accept.has(st) ? 'var(--accent)' : 'var(--muted)';
+      el.style.marginRight = '8px';
+      el.onclick = () => {
+        if (dfa.accept.has(st)) dfa.accept.delete(st); else dfa.accept.add(st);
+        renderTable(); drawDFA(); updateVerdict();
+      };
+    });
+  }
+
+  function reset() {
+    curState = dfa.start;
+    step = 0;
+    activeEdge = null;
+    input = document.getElementById('dfa-input').value;
+    document.getElementById('dfa-step-num').textContent = '0';
+    document.getElementById('dfa-step-tot').textContent = input.length;
+    document.getElementById('dfa-state').textContent = curState;
+    document.getElementById('dfa-read').textContent = 'ε';
+    document.getElementById('dfa-verdict').textContent = '—';
+    document.getElementById('dfa-explain').innerHTML =
+      `<div class="step-num">Setup — what the decider does</div>
+       <p style="margin:4px 0;"><strong>A<sub>DFA</sub> = {⟨B, w⟩ : DFA B accepts string w}.</strong> The decider simply <em>simulates</em> B on input w, character by character.</p>
+       <p style="margin:4px 0;"><strong>Current input:</strong> <code>${input || 'ε'}</code> · <strong>Start state:</strong> <code>${curState}</code>.</p>
+       <p style="margin:4px 0;"><strong>What to watch:</strong> the input tape above shows each character. The <span style="background:var(--accent-soft);padding:1px 6px;border:1px solid var(--accent);border-radius:3px;">teal-bordered</span> cell is the next character to be read; when you Step, that character flashes <span style="background:var(--gold);color:white;padding:1px 6px;border-radius:3px;">gold</span> and the transition edge it triggers also glows gold in the diagram below.</p>
+       <p style="margin:4px 0;"><strong>Termination:</strong> exactly ${input.length} steps. The decider always halts because the DFA is finite and we step through the input deterministically.</p>`;
+    drawDFA();
+    drawTape();
+  }
+  function updateVerdict() {
+    if (step >= input.length) {
+      document.getElementById('dfa-verdict').textContent =
+        dfa.accept.has(curState) ? 'ACCEPT' : 'REJECT';
+    } else {
+      document.getElementById('dfa-verdict').textContent = '—';
+    }
+  }
+  function stepOnce() {
+    if (step >= input.length) return;
+    const c = input[step];
+    if (!(c in dfa.delta[curState])) {
+      document.getElementById('dfa-explain').innerHTML =
+        `<div class="step-num">Step ${step+1} — input character outside alphabet</div>
+         <p style="margin:4px 0;">Symbol <code>${c}</code> is not in the DFA's alphabet {0, 1}. The simulation halts as an error. Typically we'd reject.</p>`;
+      return;
+    }
+    const next = dfa.delta[curState][c];
+    const isFinal = (step + 1 === input.length);
+    const finalAccept = isFinal && dfa.accept.has(next);
+    document.getElementById('dfa-explain').innerHTML =
+      `<div class="step-num">Step ${step+1} of ${input.length}: read '${c}' at state ${curState} → ${next}</div>
+       <p style="margin:4px 0;"><strong>Input cell ${step} flashed gold above.</strong> That's the character we just consumed — symbol <code>${c}</code>. The edge labeled <code>${c}</code> leaving <code>${curState}</code> also glows gold in the diagram.</p>
+       <p style="margin:4px 0;"><strong>Transition fired:</strong> δ(${curState}, ${c}) = ${next}. The active state moves to <code>${next}</code>.</p>
+       <p style="margin:4px 0;"><strong>Prefix consumed:</strong> <code>${input.slice(0, step+1)}</code> (${step+1} of ${input.length} characters).</p>
+       ${isFinal ? `<p style="margin:4px 0;"><strong>End of input.</strong> The final state is <code>${next}</code>, which is ${finalAccept ? '<b>accepting</b> ⇒ ACCEPT' : '<b>non-accepting</b> ⇒ REJECT'}.</p>` :
+                   `<p style="margin:4px 0;"><strong>Continue:</strong> next character to read is '${input[step+1]}' (the teal cell). Click Step again.</p>`}`;
+    activeEdge = { from: curState, to: next, on: c };
+    curState = next;
+    step++;
+    document.getElementById('dfa-step-num').textContent = step;
+    document.getElementById('dfa-state').textContent = curState;
+    document.getElementById('dfa-read').textContent = input.slice(0, step) || 'ε';
+    drawTape();
+    drawDFA();
+    updateVerdict();
+  }
+  let runTimer = null, loopTimer = null, looping = true;
+  const BASE_STEP = 2200;
+  const BASE_LOOP = 4500;
+  function getSpeed() { return parseFloat(document.getElementById('dfa-speed').value) || 1; }
+  function stepDelay() { return BASE_STEP / getSpeed(); }
+  function loopPause() { return BASE_LOOP / getSpeed(); }
+  function clearTimers() {
+    if (runTimer) clearTimeout(runTimer);
+    if (loopTimer) clearTimeout(loopTimer);
+    runTimer = null; loopTimer = null;
+  }
+  function setBtnLabel() { document.getElementById('dfa-run').textContent = looping ? '⏸ Pause' : '▶ Play'; }
+  function stopLoop() { looping = false; clearTimers(); setBtnLabel(); }
+  function startLoop() {
+    looping = true; clearTimers(); setBtnLabel();
+    if (step >= input.length) reset();
+    const tick = () => {
+      if (step >= input.length) {
+        runTimer = null;
+        if (looping) loopTimer = setTimeout(() => { reset(); startLoop(); }, loopPause());
+        else setBtnLabel();
+        return;
+      }
+      stepOnce();
+      runTimer = setTimeout(tick, stepDelay());
+    };
+    runTimer = setTimeout(tick, Math.min(900, stepDelay()));
+  }
+
+  document.getElementById('dfa-reset').onclick = () => { stopLoop(); reset(); };
+  document.getElementById('dfa-step').onclick = () => { stopLoop(); stepOnce(); };
+  document.getElementById('dfa-run').onclick = () => { if (looping || runTimer) stopLoop(); else startLoop(); };
+  document.getElementById('dfa-input').oninput = () => { stopLoop(); reset(); };
+  document.getElementById('dfa-speed').oninput = (e) => {
+    document.getElementById('dfa-speed-label').textContent = parseFloat(e.target.value).toFixed(2).replace(/\.?0+$/, '') + '×';
+  };
+
+  // Auto-start on load
+  setTimeout(startLoop, 1200);
+
+  renderTable();
+  reset();
+})();
+
+// ----- E<sub>DFA</sub> reachability (Widget 2) -----
+(function(){
+  // 5-state DFA: q0..q4. Transitions chosen to leave some states unreachable.
+  let dfa = {
+    states: ['q0','q1','q2','q3','q4'],
+    delta: { 'q0': {'a':'q1','b':'q2'},
+             'q1': {'a':'q0','b':'q1'},
+             'q2': {'a':'q3','b':'q0'},
+             'q3': {'a':'q3','b':'q3'},
+             'q4': {'a':'q4','b':'q4'} }, // q4 is unreachable from q0
+    start: 'q0',
+    accept: new Set(['q4'])
+  };
+  const layout = {
+    'q0': {x: 110, y: 120},
+    'q1': {x: 260, y: 60},
+    'q2': {x: 260, y: 180},
+    'q3': {x: 430, y: 120},
+    'q4': {x: 600, y: 120}
+  };
+
+  let frontier = new Set(['q0']);
+  let discovered = new Set(['q0']);
+  const svg = document.getElementById('edfa-svg');
+
+  function drawSVG() {
+    svg.innerHTML = '';
+    const NS = 'http://www.w3.org/2000/svg';
+    const defs = document.createElementNS(NS, 'defs');
+    defs.innerHTML = `<marker id="arr2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#666"/></marker>`;
+    svg.appendChild(defs);
+
+    // transitions
+    for (const s of dfa.states) {
+      for (const c of ['a','b']) {
+        const t = dfa.delta[s][c];
+        if (s === t) {
+          const cx = layout[s].x, cy = layout[s].y - 28;
+          const path = document.createElementNS(NS, 'path');
+          path.setAttribute('d', `M ${cx-12} ${cy} Q ${cx} ${cy-32} ${cx+12} ${cy}`);
+          path.setAttribute('fill', 'none');
+          path.setAttribute('stroke', '#888');
+          path.setAttribute('stroke-width', '1.2');
+          path.setAttribute('marker-end', 'url(#arr2)');
+          svg.appendChild(path);
+          const txt = document.createElementNS(NS, 'text');
+          txt.setAttribute('x', cx);
+          txt.setAttribute('y', cy - 22);
+          txt.setAttribute('text-anchor', 'middle');
+          txt.setAttribute('font-size', '12');
+          txt.setAttribute('font-family', 'ui-monospace, monospace');
+          txt.textContent = c;
+          svg.appendChild(txt);
+        } else {
+          const sx = layout[s].x, sy = layout[s].y;
+          const tx = layout[t].x, ty = layout[t].y;
+          const dx = tx-sx, dy = ty-sy, len = Math.hypot(dx,dy);
+          const ux = dx/len, uy = dy/len;
+          const off = 9;
+          const px = -uy*off, py = ux*off;
+          const x1 = sx + ux*28 + px, y1 = sy + uy*28 + py;
+          const x2 = tx - ux*28 + px, y2 = ty - uy*28 + py;
+          const ln = document.createElementNS(NS,'line');
+          ln.setAttribute('x1', x1); ln.setAttribute('y1', y1);
+          ln.setAttribute('x2', x2); ln.setAttribute('y2', y2);
+          ln.setAttribute('stroke', '#888');
+          ln.setAttribute('stroke-width', '1.2');
+          ln.setAttribute('marker-end', 'url(#arr2)');
+          svg.appendChild(ln);
+          const txt = document.createElementNS(NS,'text');
+          txt.setAttribute('x', (x1+x2)/2 + px*0.4);
+          txt.setAttribute('y', (y1+y2)/2 + py*0.4 - 3);
+          txt.setAttribute('text-anchor', 'middle');
+          txt.setAttribute('font-size', '12');
+          txt.setAttribute('font-family', 'ui-monospace, monospace');
+          txt.textContent = c;
+          svg.appendChild(txt);
+        }
+      }
+    }
+
+    // start arrow
+    const sa = document.createElementNS(NS, 'line');
+    sa.setAttribute('x1', layout[dfa.start].x - 60);
+    sa.setAttribute('y1', layout[dfa.start].y);
+    sa.setAttribute('x2', layout[dfa.start].x - 32);
+    sa.setAttribute('y2', layout[dfa.start].y);
+    sa.setAttribute('stroke', '#444');
+    sa.setAttribute('stroke-width', '1.4');
+    sa.setAttribute('marker-end', 'url(#arr2)');
+    svg.appendChild(sa);
+
+    // states
+    for (const s of dfa.states) {
+      const {x, y} = layout[s];
+      const c = document.createElementNS(NS,'circle');
+      c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', 26);
+      const isFrontier = frontier.has(s);
+      const isDisc = discovered.has(s);
+      c.setAttribute('fill', isFrontier ? '#fffdf3' : (isDisc ? '#d6ebe4' : '#ffffff'));
+      c.setAttribute('stroke', isFrontier ? '#b58b00' : (isDisc ? '#2a6f5f' : '#444'));
+      c.setAttribute('stroke-width', isFrontier ? '2.5' : '1.4');
+      c.style.cursor = 'pointer';
+      c.onclick = () => {
+        if (dfa.accept.has(s)) dfa.accept.delete(s); else dfa.accept.add(s);
+        drawSVG(); updateVerdict();
+      };
+      svg.appendChild(c);
+      if (dfa.accept.has(s)) {
+        const c2 = document.createElementNS(NS,'circle');
+        c2.setAttribute('cx', x); c2.setAttribute('cy', y); c2.setAttribute('r', 21);
+        c2.setAttribute('fill', 'none');
+        c2.setAttribute('stroke', isFrontier ? '#b58b00' : (isDisc ? '#2a6f5f' : '#444'));
+        c2.setAttribute('stroke-width', '1.4');
+        c2.style.pointerEvents = 'none';
+        svg.appendChild(c2);
+      }
+      const txt = document.createElementNS(NS,'text');
+      txt.setAttribute('x', x); txt.setAttribute('y', y+5);
+      txt.setAttribute('text-anchor', 'middle');
+      txt.setAttribute('font-family', 'ui-monospace, monospace');
+      txt.setAttribute('font-size', '14');
+      txt.setAttribute('font-weight', 'bold');
+      txt.textContent = s;
+      txt.style.pointerEvents = 'none';
+      svg.appendChild(txt);
+    }
+  }
+
+  function setEl(id, txt) { document.getElementById(id).textContent = txt; }
+  function setSet(id, s) {
+    setEl(id, s.size ? '{' + Array.from(s).join(', ') + '}' : '∅');
+  }
+  function updateVerdict() {
+    const reachedAccept = Array.from(discovered).some(s => dfa.accept.has(s));
+    if (frontier.size === 0) {
+      const v = reachedAccept ? 'L(B) ≠ ∅ (string exists)' : 'L(B) = ∅ (no accept reachable)';
+      setEl('edfa-verdict', v);
+    } else {
+      setEl('edfa-verdict', 'running…');
+    }
+  }
+  function stepBFS() {
+    if (frontier.size === 0) { return; }
+    const oldFrontier = new Set(frontier);
+    const newFrontier = new Set();
+    for (const q of frontier) {
+      for (const c of ['a','b']) {
+        const t = dfa.delta[q][c];
+        if (!discovered.has(t)) { discovered.add(t); newFrontier.add(t); }
+      }
+    }
+    frontier = newFrontier;
+    setSet('edfa-frontier', frontier);
+    setSet('edfa-disc', discovered);
+    drawSVG(); updateVerdict();
+    const reached = Array.from(discovered);
+    document.getElementById('edfa-explain').innerHTML =
+      `<div class="step-num">BFS expansion · ${frontier.size ? `new frontier = {${Array.from(frontier).join(', ')}}` : 'no new vertices'}</div>
+       <p style="margin:4px 0;"><strong>What just happened:</strong> from each vertex in the old frontier {${Array.from(oldFrontier).join(', ')}}, follow every outgoing transition (one on 'a', one on 'b'). Any target that hasn't been seen yet joins the new frontier.</p>
+       <p style="margin:4px 0;"><strong>Discovered so far:</strong> {${reached.join(', ')}} (${reached.length} of ${dfa.states.length} states).</p>
+       ${frontier.size === 0 ?
+         `<p style="margin:4px 0;"><strong>BFS done.</strong> No more reachable states. ${Array.from(discovered).some(s=>dfa.accept.has(s)) ? '<strong>An accept state is reachable</strong> — so L(B) is non-empty.' : '<strong>No accept state is reachable</strong> — so L(B) = ∅, and ⟨B⟩ ∈ E<sub>DFA</sub>.'} The decision took O(|Q|·|Σ|) time — linear in the DFA size.</p>` :
+         '<p style="margin:4px 0;"><strong>Continue or run all:</strong> BFS will keep expanding until either we reach every reachable state or the frontier is empty.</p>'}`;
+  }
+  let edfaTimer = null, edfaLoopTimer = null, edfaLooping = true;
+  const EDFA_BASE_STEP = 2400, EDFA_BASE_PAUSE = 4500;
+  function edfaSpeed() { return parseFloat(document.getElementById('edfa-speed').value) || 1; }
+  function edfaSetBtn() { document.getElementById('edfa-run').textContent = edfaLooping ? '⏸ Pause' : '▶ Play'; }
+  function edfaClearTimers() {
+    if (edfaTimer) clearTimeout(edfaTimer);
+    if (edfaLoopTimer) clearTimeout(edfaLoopTimer);
+    edfaTimer = null; edfaLoopTimer = null;
+  }
+  function cancelEdfaRun() { edfaLooping = false; edfaClearTimers(); edfaSetBtn(); }
+  function runAll() {
+    edfaLooping = true; edfaClearTimers(); edfaSetBtn();
+    if (frontier.size === 0) reset();
+    const tick = () => {
+      if (frontier.size === 0) {
+        edfaTimer = null;
+        if (edfaLooping) edfaLoopTimer = setTimeout(() => { reset(); runAll(); }, EDFA_BASE_PAUSE / edfaSpeed());
+        else edfaSetBtn();
+        return;
+      }
+      stepBFS();
+      edfaTimer = setTimeout(tick, EDFA_BASE_STEP / edfaSpeed());
+    };
+    edfaTimer = setTimeout(tick, 900);
+  }
+  function reset() {
+    cancelEdfaRun();
+    frontier = new Set(['q0']); discovered = new Set(['q0']);
+    setSet('edfa-frontier', frontier); setSet('edfa-disc', discovered);
+    document.getElementById('edfa-explain').innerHTML =
+      `<div class="step-num">Setup — what we're testing</div>
+       <p style="margin:4px 0;"><strong>Question:</strong> is L(B) = ∅?  Equivalently: from the start state q0, is there any path to an accept state?</p>
+       <p style="margin:4px 0;"><strong>Method:</strong> BFS (breadth-first search). Start the frontier with {q0}. Repeatedly expand: for every vertex in the frontier, follow each outgoing transition; collect previously-unseen targets into the next frontier.</p>
+       <p style="margin:4px 0;"><strong>Stop when:</strong> the frontier is empty (= every reachable state has been discovered). Then check whether any discovered state is an accept state.</p>
+       <p style="margin:4px 0;"><strong>Try it:</strong> click states to toggle them as accept (double-circled). Then <strong>Step BFS</strong> to expand one layer at a time.</p>`;
+    drawSVG(); updateVerdict();
+  }
+  document.getElementById('edfa-step').onclick = () => { cancelEdfaRun(); stepBFS(); };
+  document.getElementById('edfa-run').onclick = () => { if (edfaLooping || edfaTimer) cancelEdfaRun(); else runAll(); };
+  document.getElementById('edfa-reset').onclick = () => { cancelEdfaRun(); reset(); };
+  document.getElementById('edfa-speed').oninput = (e) => {
+    document.getElementById('edfa-speed-label').textContent = parseFloat(e.target.value).toFixed(2).replace(/\.?0+$/, '') + '×';
+  };
+  reset();
+  setTimeout(runAll, 1500);
+})();
+
+// ----- EQ<sub>DFA</sub> product construction (Widget 3) -----
+(function(){
+  const A = { states: ['p0','p1'], delta: {'p0':{'0':'p1','1':'p0'},'p1':{'0':'p0','1':'p1'}}, start:'p0', accept:new Set(['p0']) };
+  const B = { states: ['r0','r1'], delta: {'r0':{'0':'r0','1':'r1'},'r1':{'0':'r0','1':'r1'}}, start:'r0', accept:new Set(['r0']) };
+
+  function drawMini(svgId, dfa, layout, label) {
+    const svg = document.getElementById(svgId);
+    svg.innerHTML = '';
+    const NS = 'http://www.w3.org/2000/svg';
+    const defs = document.createElementNS(NS,'defs');
+    defs.innerHTML = `<marker id="arr-${svgId}" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#666"/></marker>`;
+    svg.appendChild(defs);
+
+    for (const s of dfa.states) {
+      for (const c of ['0','1']) {
+        const t = dfa.delta[s][c];
+        if (s === t) {
+          const cx = layout[s].x, cy = layout[s].y - 24;
+          const path = document.createElementNS(NS,'path');
+          path.setAttribute('d', `M ${cx-10} ${cy} Q ${cx} ${cy-26} ${cx+10} ${cy}`);
+          path.setAttribute('fill','none'); path.setAttribute('stroke','#888');
+          path.setAttribute('marker-end', `url(#arr-${svgId})`);
+          svg.appendChild(path);
+          const txt = document.createElementNS(NS,'text');
+          txt.setAttribute('x', cx); txt.setAttribute('y', cy-18);
+          txt.setAttribute('text-anchor','middle');
+          txt.setAttribute('font-size','11');
+          txt.setAttribute('font-family','ui-monospace, monospace');
+          txt.textContent = c; svg.appendChild(txt);
+        } else {
+          const sx = layout[s].x, sy = layout[s].y;
+          const tx = layout[t].x, ty = layout[t].y;
+          const dx = tx-sx, dy=ty-sy, len=Math.hypot(dx,dy);
+          const ux=dx/len, uy=dy/len, off=8, px=-uy*off, py=ux*off;
+          const x1=sx+ux*22+px, y1=sy+uy*22+py, x2=tx-ux*22+px, y2=ty-uy*22+py;
+          const ln = document.createElementNS(NS,'line');
+          ln.setAttribute('x1',x1); ln.setAttribute('y1',y1);
+          ln.setAttribute('x2',x2); ln.setAttribute('y2',y2);
+          ln.setAttribute('stroke','#888');
+          ln.setAttribute('marker-end',`url(#arr-${svgId})`);
+          svg.appendChild(ln);
+          const txt = document.createElementNS(NS,'text');
+          txt.setAttribute('x', (x1+x2)/2 + px*0.5);
+          txt.setAttribute('y', (y1+y2)/2 + py*0.5 - 2);
+          txt.setAttribute('text-anchor','middle');
+          txt.setAttribute('font-size','11');
+          txt.setAttribute('font-family','ui-monospace, monospace');
+          txt.textContent = c; svg.appendChild(txt);
+        }
+      }
+    }
+    // start arrow
+    const sa = document.createElementNS(NS,'line');
+    sa.setAttribute('x1', layout[dfa.start].x - 40);
+    sa.setAttribute('y1', layout[dfa.start].y);
+    sa.setAttribute('x2', layout[dfa.start].x - 22);
+    sa.setAttribute('y2', layout[dfa.start].y);
+    sa.setAttribute('stroke','#444');
+    sa.setAttribute('marker-end',`url(#arr-${svgId})`);
+    svg.appendChild(sa);
+
+    for (const s of dfa.states) {
+      const {x,y} = layout[s];
+      const c = document.createElementNS(NS,'circle');
+      c.setAttribute('cx',x); c.setAttribute('cy',y); c.setAttribute('r',20);
+      c.setAttribute('fill','#fff'); c.setAttribute('stroke','#444');
+      svg.appendChild(c);
+      if (dfa.accept.has(s)) {
+        const c2 = document.createElementNS(NS,'circle');
+        c2.setAttribute('cx',x); c2.setAttribute('cy',y); c2.setAttribute('r',16);
+        c2.setAttribute('fill','none'); c2.setAttribute('stroke','#444');
+        svg.appendChild(c2);
+      }
+      const txt = document.createElementNS(NS,'text');
+      txt.setAttribute('x',x); txt.setAttribute('y',y+4);
+      txt.setAttribute('text-anchor','middle');
+      txt.setAttribute('font-size','12');
+      txt.setAttribute('font-family','ui-monospace, monospace');
+      txt.setAttribute('font-weight','bold');
+      txt.textContent = s; svg.appendChild(txt);
+    }
+  }
+  drawMini('eq-A-svg', A, {'p0':{x:80,y:70},'p1':{x:200,y:70}});
+  drawMini('eq-B-svg', B, {'r0':{x:80,y:70},'r1':{x:200,y:70}});
+
+  // Product DFA: states = p_i × r_j; accept iff exactly one is accepting
+  // For symmetric difference of L(A) and L(B)
+  let productCells = []; // list of {p,r,delta0,delta1,accept,reachable}
+  let reachedSet = new Set();
+  let buildIdx = 0;
+
+  function buildOneCell() {
+    const order = [['p0','r0'],['p0','r1'],['p1','r0'],['p1','r1']];
+    if (buildIdx >= order.length) return false;
+    const [p, r] = order[buildIdx];
+    const d0p = A.delta[p]['0'], d1p = A.delta[p]['1'];
+    const d0r = B.delta[r]['0'], d1r = B.delta[r]['1'];
+    const acc = (A.accept.has(p)) !== (B.accept.has(r)); // XOR
+    productCells.push({p, r, d0: [d0p, d0r], d1: [d1p, d1r], acc});
+    buildIdx++;
+    renderProduct();
+    return true;
+  }
+  function renderProduct() {
+    const tbl = document.getElementById('eq-product-table');
+    let html = `<thead><tr><th>(p, r)</th><th>0 →</th><th>1 →</th><th>Accept (XOR)</th><th>Reachable?</th></tr></thead><tbody>`;
+    for (const c of productCells) {
+      const pair = `(${c.p}, ${c.r})`;
+      const isAcc = c.acc;
+      const isReach = reachedSet.has(pair);
+      html += `<tr style="${isAcc?'background:var(--warn-soft);':''}">`;
+      html += `<td><b>${pair}</b></td>`;
+      html += `<td>(${c.d0[0]}, ${c.d0[1]})</td>`;
+      html += `<td>(${c.d1[0]}, ${c.d1[1]})</td>`;
+      html += `<td>${isAcc?'<b>XOR</b>':'—'}</td>`;
+      html += `<td>${isReach?'✓':''}</td></tr>`;
+    }
+    html += '</tbody>';
+    tbl.innerHTML = html;
+  }
+  function runReach() {
+    if (productCells.length < 4) { while (buildOneCell()) {} }
+    const startPair = `(${A.start}, ${B.start})`;
+    reachedSet = new Set([startPair]);
+    let frontier = [startPair];
+    while (frontier.length) {
+      const newF = [];
+      for (const pair of frontier) {
+        const cell = productCells.find(c => `(${c.p}, ${c.r})` === pair);
+        for (const next of [`(${cell.d0[0]}, ${cell.d0[1]})`, `(${cell.d1[0]}, ${cell.d1[1]})`]) {
+          if (!reachedSet.has(next)) { reachedSet.add(next); newF.push(next); }
+        }
+      }
+      frontier = newF;
+    }
+    const hitXor = productCells.some(c => c.acc && reachedSet.has(`(${c.p}, ${c.r})`));
+    renderProduct();
+    document.getElementById('eq-explain').innerHTML =
+      `<div class="step-num">Verdict</div>${hitXor ?
+        '<b>L(A) ≠ L(B)</b> — a reachable XOR state exists, witnessing a string on which A and B disagree.' :
+        '<b>L(A) = L(B)</b> — no reachable XOR state, so A and B agree on every input.'}`;
+  }
+  document.getElementById('eq-build').onclick = () => {
+    if (!buildOneCell()) {
+      document.getElementById('eq-explain').innerHTML =
+        `<div class="step-num">All cells built</div>Click <strong>Run reachability</strong> to test which pairs are reachable from (p0, r0).`;
+    } else {
+      const last = productCells[productCells.length-1];
+      document.getElementById('eq-explain').innerHTML =
+        `<div class="step-num">Cell ${productCells.length}/4</div>Added (${last.p}, ${last.r}). On '0' it goes to (${last.d0[0]}, ${last.d0[1]}). On '1' it goes to (${last.d1[0]}, ${last.d1[1]}). ${last.acc ? 'This pair is XOR-accepting.' : 'This pair is non-accepting in the product.'}`;
+    }
+  };
+  document.getElementById('eq-reach').onclick = runReach;
+  document.getElementById('eq-reset').onclick = () => {
+    productCells = []; reachedSet = new Set(); buildIdx = 0;
+    document.getElementById('eq-product-table').innerHTML = '';
+    document.getElementById('eq-explain').innerHTML =
+      `<div class="step-num">Reset</div>Click <strong>Build product</strong> to add the next product cell.`;
+  };
+})();
+
+// ----- CYK (Widget 4) -----
+(function(){
+  // Grammar:  S -> AB | BA
+  //           A -> a
+  //           B -> b
+  // Lang: strings with first char != last char (over a,b, length >= 2)
+  const grammar = {
+    rules: {
+      'S': [['A','B'], ['B','A']],
+      'A': [['a']],
+      'B': [['b']]
+    },
+    start: 'S'
+  };
+
+  let table = []; // table[i][j] = Set of variables
+  let n = 0;
+  let buildOrder = []; // list of (i, j, span) to fill
+  let buildIdx = 0;
+  let input = 'abba';
+
+  function initTable() {
+    input = document.getElementById('cyk-input').value;
+    n = input.length;
+    table = [];
+    for (let i = 0; i < n; i++) {
+      const row = [];
+      for (let j = 0; j < n; j++) row.push(null);
+      table.push(row);
+    }
+    buildOrder = [];
+    // bottom row first (span=1), then span=2, ..., span=n
+    for (let span = 1; span <= n; span++) {
+      for (let i = 0; i + span - 1 < n; i++) {
+        const j = i + span - 1;
+        buildOrder.push({i, j, span});
+      }
+    }
+    buildIdx = 0;
+    renderTable();
+    document.getElementById('cyk-verdict').textContent = '—';
+  }
+
+  function fillOne() {
+    if (buildIdx >= buildOrder.length) return false;
+    const {i, j, span} = buildOrder[buildIdx];
+    const set = new Set();
+    let detail = '';
+    if (span === 1) {
+      const ch = input[i];
+      const matchedRules = [];
+      for (const [lhs, alts] of Object.entries(grammar.rules)) {
+        for (const alt of alts) {
+          if (alt.length === 1 && alt[0] === ch) { set.add(lhs); matchedRules.push(`${lhs} → ${ch}`); }
+        }
+      }
+      detail = matchedRules.length ? `Rules matched: ${matchedRules.join(', ')}` : `No rule directly produces '${ch}' — cell is ∅`;
+    } else {
+      const evidences = [];
+      for (let k = i; k < j; k++) {
+        const left = table[i][k] || new Set();
+        const right = table[k+1][j] || new Set();
+        for (const [lhs, alts] of Object.entries(grammar.rules)) {
+          for (const alt of alts) {
+            if (alt.length === 2 && left.has(alt[0]) && right.has(alt[1])) {
+              set.add(lhs);
+              evidences.push(`split at k=${k}: <em>${input.slice(i,k+1)}</em>·<em>${input.slice(k+1,j+1)}</em>, via ${lhs} → ${alt[0]}${alt[1]}`);
+            }
+          }
+        }
+      }
+      detail = evidences.length ? evidences.slice(0, 4).join('<br>') : `No splits worked — cell is ∅`;
+    }
+    table[i][j] = set;
+    buildIdx++;
+    renderTable(true, i, j);
+    if (buildIdx === buildOrder.length) {
+      const top = table[0][n-1];
+      const isInL = top && top.has(grammar.start);
+      document.getElementById('cyk-verdict').textContent = isInL ? `${input} ∈ L(G) ✓` : `${input} ∉ L(G) ✗`;
+      document.getElementById('cyk-explain').innerHTML =
+        `<div class="step-num">Done — top cell T[0,${n-1}] = {${top?Array.from(top).join(', '):'∅'}}</div>
+         <p style="margin:4px 0;">The full input "${input}" is generated by the grammar starting from <b>variable V</b> iff V appears in the top-right cell T[0,${n-1}].</p>
+         <p style="margin:4px 0;"><strong>Verdict:</strong> ${isInL ? '<b>S is in the top cell ⇒ the start variable derives the whole string ⇒ the string is in L(G).</b>' : '<b>S is NOT in the top cell ⇒ the start variable cannot derive this string ⇒ the string is NOT in L(G).</b>'}</p>
+         <p style="margin:4px 0;"><strong>Total work:</strong> ${buildOrder.length} cells filled. Each cell tries at most ${n-1} split points and runs through the grammar rules. So CYK runs in O(n³ · |G|) — polynomial. Hence A<sub>CFG</sub> ∈ P.</p>`;
+    } else {
+      document.getElementById('cyk-explain').innerHTML =
+        `<div class="step-num">Just filled T[${i}, ${j}] (substring "${input.slice(i,j+1)}", length ${span})</div>
+         <p style="margin:4px 0;"><strong>Question this cell answers:</strong> which grammar variables can derive the substring "${input.slice(i,j+1)}" (positions ${i} through ${j})?</p>
+         ${span === 1 ?
+           `<p style="margin:4px 0;"><strong>Bottom-row rule:</strong> for a single character at position ${i}, look for grammar rules of the form V → ${input[i]}. Any matching V can derive this single character.</p>
+            <p style="margin:4px 0;"><strong>${detail}</strong></p>
+            <p style="margin:4px 0;"><strong>Result:</strong> T[${i},${j}] = {${Array.from(set).join(', ') || '∅'}}.</p>` :
+           `<p style="margin:4px 0;"><strong>Inductive step:</strong> to derive a substring of length ${span}, the start variable's rule must be V → BC (in CNF), where B derives some prefix and C derives the remaining suffix. So we try every "split point" k between ${i} and ${j-1}.</p>
+            <p style="margin:4px 0;"><strong>${detail}</strong></p>
+            <p style="margin:4px 0;"><strong>Result:</strong> T[${i},${j}] = {${Array.from(set).join(', ') || '∅'}}. Once T[0, n-1] is filled (top-right corner), we check if S is in it.</p>`}
+         <p style="margin:4px 0;"><strong>Fill order:</strong> bottom row first (length 1), then length 2, then 3, …, finally the full string. This guarantees every cell's prerequisites are already computed when we need them.</p>`;
+    }
+    return true;
+  }
+
+  function renderTable(highlight = false, hi = -1, hj = -1) {
+    const wrap = document.getElementById('cyk-table-wrap');
+    let html = '';
+    // input strip — highlight the substring covered by the current cell
+    html += '<div style="margin: 8px 0;"><div style="font-family: var(--sans); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">Input string · ';
+    if (highlight && hi >= 0 && hj >= 0) {
+      html += `substring being analyzed: positions ${hi}..${hj} = "${input.slice(hi, hj+1)}"`;
+    } else {
+      html += 'click Step to start filling cells';
+    }
+    html += '</div><div style="display: flex; gap: 0;">';
+    for (let j = 0; j < n; j++) {
+      const inRange = (highlight && j >= hi && j <= hj);
+      const style = inRange
+        ? 'background: var(--gold); color: white; border-color: var(--gold); font-weight: 700; transform: scale(1.08); box-shadow: 0 3px 8px rgba(181,139,0,.3);'
+        : 'background: white; color: var(--ink); border-color: var(--rule-strong);';
+      html += `<div style="width: 36px; height: 40px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--rule-strong); border-right: 0; font-family: ui-monospace, monospace; font-size: 16px; transition: all .35s ease; position: relative; ${style}">`;
+      html += `<span>${input[j]}</span>`;
+      html += `<span style="position:absolute;top:-14px;font-size:10px;color:${inRange?'var(--gold)':'var(--muted)'};font-family:var(--sans);">${j}</span>`;
+      html += '</div>';
+    }
+    // close right border on last cell
+    html = html.replace(/border-right: 0;([^"]*">[^<]*<span>[^<]+<\/span><span[^<]+<\/span><\/div>)$/, 'border-right: 1px solid var(--rule-strong);$1');
+    html += '</div></div>';
+
+    // table
+    html += '<table class="data" style="font-family:var(--mono); margin-top: 10px;">';
+    html += '<thead><tr><th></th>';
+    for (let j = 0; j < n; j++) {
+      const inRange = (highlight && j >= hi && j <= hj);
+      const colHi = inRange ? 'background: var(--gold-soft); color: var(--gold);' : '';
+      html += `<th style="${colHi}">${j}: ${input[j]}</th>`;
+    }
+    html += '</tr></thead><tbody>';
+    for (let i = 0; i < n; i++) {
+      const rowHi = (highlight && i === hi) ? 'background: var(--gold-soft); color: var(--gold);' : '';
+      html += `<tr><th style="${rowHi}">${i}</th>`;
+      for (let j = 0; j < n; j++) {
+        if (j < i) { html += '<td style="background:var(--rule);"></td>'; continue; }
+        const cell = table[i][j];
+        const hl = (highlight && i === hi && j === hj) ? 'background:var(--gold); color: white; font-weight: 700;' : '';
+        const content = cell ? (cell.size ? '{' + Array.from(cell).join(', ') + '}' : '∅') : '';
+        html += `<td style="${hl}">${content}</td>`;
+      }
+      html += '</tr>';
+    }
+    html += '</tbody></table>';
+    wrap.innerHTML = html;
+  }
+
+  let cykTimer = null;
+  function cancelCyk() {
+    if (cykTimer) { clearTimeout(cykTimer); cykTimer = null; document.getElementById('cyk-run').textContent = 'Fill all'; }
+  }
+  document.getElementById('cyk-step').onclick = () => { cancelCyk(); fillOne(); };
+  document.getElementById('cyk-run').onclick = () => {
+    const btn = document.getElementById('cyk-run');
+    if (cykTimer) { cancelCyk(); return; }
+    btn.textContent = '⏸ Pause';
+    const tick = () => {
+      if (!fillOne()) { cykTimer = null; btn.textContent = 'Fill all'; return; }
+      cykTimer = setTimeout(tick, 600);
+    };
+    tick();
+  };
+  document.getElementById('cyk-reset').onclick = () => { cancelCyk(); initTable(); };
+  document.getElementById('cyk-input').oninput = () => { cancelCyk(); initTable(); };
+  initTable();
+})();
+
+// ----- E<sub>CFG</sub> variable marking (Widget 5) -----
+(function(){
+  let grammar = null;
+  let marked = new Set();
+  let round = 0;
+
+  function parseGrammar() {
+    const text = document.getElementById('ecfg-grammar').value;
+    const rules = {};
+    let start = null;
+    for (const raw of text.split('\n')) {
+      const line = raw.trim();
+      if (!line) continue;
+      const m = line.match(/^([A-Z])\s*->\s*(.+)$/);
+      if (!m) continue;
+      const lhs = m[1];
+      if (!start) start = lhs;
+      const alts = m[2].split('|').map(s => s.trim()).map(s =>
+        s === 'ε' || s === '' ? [] : s.split('').filter(c => c !== ' ')
+      );
+      if (!rules[lhs]) rules[lhs] = [];
+      rules[lhs].push(...alts);
+    }
+    return {rules, start};
+  }
+
+  function isVar(c) { return /[A-Z]/.test(c); }
+
+  function runRound() {
+    if (!grammar) grammar = parseGrammar();
+    const before = new Set(marked);
+    for (const [lhs, alts] of Object.entries(grammar.rules)) {
+      for (const alt of alts) {
+        // alt is array of chars; productive if every var in alt is in marked, terminals are fine
+        if (alt.every(c => !isVar(c) || marked.has(c))) {
+          marked.add(lhs);
+        }
+      }
+    }
+    const added = Array.from(marked).filter(v => !before.has(v));
+    round++;
+    render(added);
+    return added.length > 0;
+  }
+
+  function render(addedThisRound = []) {
+    if (!grammar) return;
+    const lines = [];
+    for (const [lhs, alts] of Object.entries(grammar.rules)) {
+      const isM = marked.has(lhs);
+      const isNew = addedThisRound.includes(lhs);
+      const style = isNew ? 'background: var(--gold-soft); padding: 2px 8px; border-radius: 4px; border-left: 3px solid var(--gold);' :
+                    isM ? 'color: var(--accent); font-weight: bold;' : 'color: var(--muted);';
+      const mark = isM ? ' ✓' : '';
+      const altsStr = alts.map(a => a.length ? a.join('') : 'ε').join(' | ');
+      lines.push(`<div style="${style}">${lhs}${mark} → ${altsStr}</div>`);
+    }
+    document.getElementById('ecfg-marked-display').innerHTML = lines.join('');
+    document.getElementById('ecfg-round').textContent = round;
+    document.getElementById('ecfg-marked-set').textContent =
+      marked.size ? '{' + Array.from(marked).join(', ') + '}' : '∅';
+
+    const isEmpty = !marked.has(grammar.start);
+    document.getElementById('ecfg-verdict').textContent =
+      addedThisRound.length === 0 && round > 0 ? (isEmpty ? `L(G) = ∅ (S = ${grammar.start} unproductive)` : `L(G) ≠ ∅ (S = ${grammar.start} productive)`) :
+      'running…';
+
+    document.getElementById('ecfg-explain').innerHTML =
+      addedThisRound.length === 0 && round > 0 ?
+        `<div class="step-num">Fixed point</div>No new variables marked. The start variable ${grammar.start} is ${marked.has(grammar.start) ? '<b>marked</b> ⇒ L(G) ≠ ∅' : '<b>unmarked</b> ⇒ L(G) = ∅'}.` :
+        `<div class="step-num">Round ${round}</div>Marked new: ${addedThisRound.length ? '{' + addedThisRound.join(', ') + '}' : '∅'}. Click <strong>Run one round</strong> again to continue.`;
+  }
+
+  function reset() {
+    grammar = parseGrammar();
+    marked = new Set();
+    round = 0;
+    render();
+    document.getElementById('ecfg-explain').innerHTML =
+      `<div class="step-num">Round 0</div>Initially nothing is marked. Start variable is <code>${grammar.start}</code>. Click <strong>Run one round</strong>.`;
+  }
+
+  let ecfgTimer = null;
+  function cancelEcfg() {
+    if (ecfgTimer) { clearTimeout(ecfgTimer); ecfgTimer = null; document.getElementById('ecfg-run').textContent = 'Run all rounds'; }
+  }
+  document.getElementById('ecfg-step').onclick = () => { cancelEcfg(); runRound(); };
+  document.getElementById('ecfg-run').onclick = () => {
+    const btn = document.getElementById('ecfg-run');
+    if (ecfgTimer) { cancelEcfg(); return; }
+    btn.textContent = '⏸ Pause';
+    const tick = () => {
+      const more = runRound();
+      if (!more) { ecfgTimer = null; btn.textContent = 'Run all rounds'; return; }
+      ecfgTimer = setTimeout(tick, 1100);
+    };
+    tick();
+  };
+  document.getElementById('ecfg-reset').onclick = () => { cancelEcfg(); reset(); };
+  document.getElementById('ecfg-grammar').addEventListener('input', () => { cancelEcfg(); reset(); });
+
+  reset();
+})();
+</script>
+
+</body>
+</html>

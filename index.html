@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computability &amp; Complexity — Interactive Lectures</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">BCS 402 · Dr. Arash Kermani · CUD</div>
+  <h1>Computability &amp; Complexity</h1>
+  <div class="sub">Interactive companion to Sipser, Ch. 3–9 (MIT 18.404J L7–21)</div>
+  <div class="tag">Seven hands-on modules: simulate machines, walk through proofs, build reductions, practice problems.</div>
+</header>
+
+<div class="wrap">
+
+<section>
+  <h2>How to use this site</h2>
+  <p>
+    Each of the seven modules below corresponds to a cluster of lectures from Michael Sipser's
+    MIT 18.404J course. Inside every module you will find: a short narrative that builds the
+    intuition; one or more <strong>interactive widgets</strong> (machine simulators, proof
+    walkthroughs, reduction builders); and a set of <strong>practice problems</strong> taken
+    from <em>Introduction to the Theory of Computation</em> (Sipser, 3rd ed.), each with hints
+    and staged solutions.
+  </p>
+  <p>
+    The modules are designed to be read in order — later modules assume the language of earlier
+    ones — but you can jump in anywhere if you already know the prerequisite vocabulary.
+  </p>
+
+  <div class="key-idea">
+    <strong>One sentence per module.</strong>  Every module ends with a one-sentence
+    statement of the central theorem of that module. If you can re-derive that sentence
+    on a blank page, you understand the module.
+  </div>
+</section>
+
+<section>
+  <h2>The seven modules</h2>
+
+  <div class="module-grid">
+
+    <a class="module-card" href="module-1-decidable-automata.html">
+      <div class="num">Module 1 · Lecture 7</div>
+      <div class="ttl">Decidable problems for automata &amp; grammars</div>
+      <div class="desc">A<sub>DFA</sub>, E<sub>DFA</sub>, EQ<sub>DFA</sub>, A<sub>CFG</sub>, E<sub>CFG</sub> — every "natural question about a DFA / CFG" is decidable. Run the algorithms on machines you build yourself.</div>
+      <div class="meta">Sipser §4.1 · 5 widgets · 6 exercises</div>
+    </a>
+
+    <a class="module-card" href="module-2-undecidability.html">
+      <div class="num">Module 2 · Lectures 8–9</div>
+      <div class="ttl">Undecidability &amp; the Halting Problem</div>
+      <div class="desc">The diagonal argument made visual: A<sub>TM</sub> is undecidable, HALT<sub>TM</sub> is undecidable, and the world splits into decidable / recognizable / co-recognizable / neither.</div>
+      <div class="meta">Sipser §4.2, §5.1 · 4 widgets · 7 exercises</div>
+    </a>
+
+    <a class="module-card" href="module-3-reductions-recursion.html">
+      <div class="num">Module 3 · Lectures 10–11</div>
+      <div class="ttl">Computation-history method &amp; Recursion theorem</div>
+      <div class="desc">Use the computation-history trick to prove A<sub>LBA</sub> decidable but E<sub>LBA</sub>, ALL<sub>CFG</sub> undecidable; then the recursion theorem: programs that print themselves.</div>
+      <div class="meta">Sipser §5.1, §6.1, §6.3 · 3 widgets · 6 exercises</div>
+    </a>
+
+    <a class="module-card" href="module-4-time-complexity.html">
+      <div class="num">Module 4 · Lecture 12</div>
+      <div class="ttl">Time complexity &amp; the class P</div>
+      <div class="desc">From counting steps on a tape to the formal class P. Compare single-tape vs multi-tape running times; see why P is robust across reasonable models.</div>
+      <div class="meta">Sipser §7.1, §7.2 · 4 widgets · 5 exercises</div>
+    </a>
+
+    <a class="module-card" href="module-5-np-completeness.html">
+      <div class="num">Module 5 · Lectures 14–16</div>
+      <div class="ttl">NP, NP-completeness, Cook–Levin</div>
+      <div class="desc">Verifiers, polynomial-time reductions, the Cook–Levin tableau, and the chain SAT → 3SAT → CLIQUE → VERTEX-COVER → HAMPATH → SUBSET-SUM, all interactive.</div>
+      <div class="meta">Sipser §7.3, §7.4, §7.5 · 6 widgets · 9 exercises</div>
+    </a>
+
+    <a class="module-card" href="module-6-space-pspace.html">
+      <div class="num">Module 6 · Lectures 17–19</div>
+      <div class="ttl">Space complexity, PSPACE, games</div>
+      <div class="desc">Savitch's theorem visualized as a recursion tree; TQBF as the canonical PSPACE-complete problem; play Generalized Geography and feel why it is PSPACE-hard.</div>
+      <div class="meta">Sipser §8.1–§8.3 · 5 widgets · 7 exercises</div>
+    </a>
+
+    <a class="module-card" href="module-7-l-nl-hierarchy.html">
+      <div class="num">Module 7 · Lectures 20–21</div>
+      <div class="ttl">L, NL, hierarchy theorems</div>
+      <div class="desc">Log-space reductions, PATH is NL-complete, Immerman–Szelepcsényi (NL = coNL) via inductive counting, and the diagonalization at the heart of the hierarchy theorems.</div>
+      <div class="meta">Sipser §8.4–§9.1 · 4 widgets · 6 exercises</div>
+    </a>
+
+  </div>
+</section>
+
+<section>
+  <h2>What you will be able to do at the end</h2>
+  <p>
+    The course's five learning outcomes line up cleanly with the modules:
+  </p>
+  <table class="data">
+    <thead>
+      <tr><th>CLO</th><th>Statement</th><th>Primary modules</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>CLO-1</td><td>Use diagonalization to prove undecidability</td><td>Module 2, Module 7</td></tr>
+      <tr><td>CLO-2</td><td>Use informal and formal reductions to establish algorithmic unsolvability</td><td>Module 2, Module 3</td></tr>
+      <tr><td>CLO-3</td><td>Distinguish the complexity of finding vs verifying a solution</td><td>Module 4, Module 5</td></tr>
+      <tr><td>CLO-4</td><td>Use mapping reductions to establish hardness of computational problems</td><td>Module 5, Module 6</td></tr>
+      <tr><td>CLO-5</td><td>Use hierarchy theorems to establish separation between complexity classes</td><td>Module 7</td></tr>
+    </tbody>
+  </table>
+
+  <p>
+    Every module ends with a row of Sipser exercises you should now be able to solve. By the end
+    of Module 7 you will be ready for the Sipser problems in chapters 4 through 9.
+  </p>
+</section>
+
+<section>
+  <h2>The big picture, in one diagram</h2>
+  <p>
+    The whole course is, in the end, about drawing the following picture and knowing where
+    each landmark lives:
+  </p>
+
+  <svg viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Map of computability and complexity classes">
+    <defs>
+      <style>
+        .lbl { font-family: var(--sans), sans-serif; font-size: 12px; fill: #1a1a1a; }
+        .lbl-strong { font-family: var(--sans), sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a1a; }
+        .lbl-mut { font-family: var(--sans), sans-serif; font-size: 10px; fill: #888; }
+      </style>
+    </defs>
+
+    <!-- All languages -->
+    <rect x="20" y="20" width="660" height="340" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+    <text class="lbl-mut" x="30" y="38">All languages over {0,1}*</text>
+
+    <!-- Recognizable (RE) -->
+    <ellipse cx="380" cy="200" rx="270" ry="130" fill="#d6e3f4" stroke="#2f60a8" stroke-width="1.2"/>
+    <text class="lbl" x="160" y="100">Turing-recognizable (RE)</text>
+
+    <!-- co-RE -->
+    <ellipse cx="320" cy="200" rx="270" ry="130" fill="#f4dfcf" fill-opacity="0.55" stroke="#b95825" stroke-width="1.2"/>
+    <text class="lbl" x="540" y="100" text-anchor="end">co-Turing-recognizable</text>
+
+    <!-- Decidable -->
+    <ellipse cx="350" cy="200" rx="180" ry="80" fill="#d6ebe4" stroke="#2a6f5f" stroke-width="1.5"/>
+    <text class="lbl-strong" x="350" y="156" text-anchor="middle">Decidable</text>
+
+    <!-- PSPACE -->
+    <ellipse cx="350" cy="210" rx="140" ry="55" fill="#fffdf3" stroke="#b58b00" stroke-width="1.4"/>
+    <text class="lbl-strong" x="350" y="190" text-anchor="middle">PSPACE</text>
+
+    <!-- NP -->
+    <ellipse cx="335" cy="215" rx="95" ry="35" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.2"/>
+    <text class="lbl-strong" x="335" y="208" text-anchor="middle">NP</text>
+
+    <!-- P -->
+    <ellipse cx="320" cy="220" rx="55" ry="20" fill="#fffefb" stroke="#1a1a1a" stroke-width="1.2"/>
+    <text class="lbl-strong" x="320" y="223" text-anchor="middle">P</text>
+
+    <!-- Annotations -->
+    <text class="lbl" x="660" y="200" text-anchor="end">A<sub>TM</sub> ∈ RE \ Decidable</text>
+    <text class="lbl" x="50"  y="200">A<sub>TM</sub>⁻ ∈ co-RE \ Decidable</text>
+    <text class="lbl" x="350" y="290" text-anchor="middle">TQBF</text>
+    <line x1="350" y1="280" x2="350" y2="240" stroke="#b58b00" stroke-width="0.8" stroke-dasharray="2 3"/>
+    <text class="lbl" x="430" y="320" text-anchor="middle">SAT, 3SAT, CLIQUE, …</text>
+    <line x1="430" y1="310" x2="370" y2="225" stroke="#1a1a1a" stroke-width="0.8" stroke-dasharray="2 3"/>
+    <text class="lbl" x="220" y="320" text-anchor="middle">PATH, primes, 2-COL, …</text>
+    <line x1="220" y1="310" x2="305" y2="230" stroke="#1a1a1a" stroke-width="0.8" stroke-dasharray="2 3"/>
+  </svg>
+
+  <p style="font-size:14px;color:var(--muted);margin-top:6px;">
+    Every solid boundary on this map is either a theorem we will prove together
+    (P ⊆ NP ⊆ PSPACE ⊆ Decidable ⊊ RE) or an open question (P =? NP, NP =? PSPACE).
+    By Module 7 you'll know which is which, and how the few known separations are
+    forced by diagonalization.
+  </p>
+</section>
+
+<section>
+  <h2>About the design</h2>
+  <p>
+    Every interactive widget is hand-built; there is no math library running underneath. That
+    is on purpose: the point is to <em>see</em> the algorithm execute, not to take its output
+    on faith. If the diagonalization tableau looks like cheating, you can step through the
+    construction one cell at a time and convince yourself it isn't.
+  </p>
+  <p>
+    The site is self-contained — no internet connection or login required. You can use it on
+    a laptop in class, on a tablet at home, or projected on a board.
+  </p>
+</section>
+
+</div>
+
+<footer class="foot">
+  Computability &amp; Complexity · BCS 402 · Dr. Arash Kermani · CUD ·
+  Built as an interactive companion to Sipser (3rd ed.) and MIT 18.404J (Fall 2020).
+</footer>
+
+</body>
+</html>

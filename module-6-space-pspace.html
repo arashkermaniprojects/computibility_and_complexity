@@ -1,0 +1,826 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 6 · Space, PSPACE &amp; games</title>
+<link rel="stylesheet" href="styles.css">
+<script src="widget-loop.js"></script>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Module 6 · MIT 18.404J Lectures 17–19 · Sipser §8.1–§8.3</div>
+  <h1>Space complexity, PSPACE &amp; games</h1>
+  <div class="sub">Savitch's theorem visualized as a recursion tree, and games that are provably hard to play perfectly.</div>
+  <div class="tag">BCS 402 · Dr. Arash Kermani · CUD</div>
+</header>
+
+<nav class="tabs">
+  <a href="index.html">← All modules</a>
+  <a class="active" href="#intro">1 · Counting space</a>
+  <a href="#savitch">2 · Savitch's theorem</a>
+  <a href="#tqbf">3 · TQBF game tree</a>
+  <a href="#geo">4 · Geography (playable)</a>
+  <a href="#picture">5 · The picture</a>
+  <a href="#exercises">6 · Practice</a>
+</nav>
+
+<div class="wrap">
+
+<!-- ============================================================ -->
+<section id="intro">
+  <h2>1 · Time vs. space</h2>
+
+  <p>
+    Space complexity counts the number of tape cells a TM uses. The classes are defined just like
+    time:
+  </p>
+  <div class="math-block">
+    SPACE(f(n)) = { L : L decided by some TM using O(f(n)) cells } &nbsp;&nbsp;&nbsp;
+    PSPACE = ⋃<sub>k</sub> SPACE(n<sup>k</sup>)
+  </div>
+
+  <p>
+    The key relationship to time:
+  </p>
+  <div class="math-block">
+    TIME(f(n)) ⊆ SPACE(f(n)) ⊆ TIME(2<sup>O(f(n))</sup>)
+  </div>
+
+  <p>
+    The first inclusion is trivial (can't visit more cells than steps). The second says: a machine
+    using <span class="math">f(n)</span> space has at most exponentially many configurations, and
+    if it halts, it must do so before repeating one — giving a time bound.
+  </p>
+
+  <div class="widget" id="space-vis">
+    <div class="widget-title">Space vs. time on the same problem <span class="pill">Widget 1 · Auto-plays</span></div>
+    <div class="controls">
+      <label>n:
+        <input type="range" id="sp-n" min="4" max="20" value="10">
+        <span id="sp-n-label">10</span>
+      </label>
+      <button class="btn play-btn" id="sp-play">▶ Animate</button>
+    </div>
+    <svg id="sp-svg" viewBox="0 0 760 240" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+    <div class="explain-panel" id="sp-explain">
+      <div class="step-num">Reusable cells</div>
+      Many algorithms can reuse the same memory cells over and over — taking polynomial time but
+      logarithmic space. The graph compares space usage and time usage for typical algorithms.
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="savitch">
+  <h2>2 · Savitch's theorem: NSPACE ⊆ SPACE(f²)</h2>
+
+  <p>
+    A nondeterministic machine using <span class="math">f(n)</span> space can be simulated by a
+    deterministic machine using only <span class="math">O(f(n)<sup>2</sup>)</span> space.
+  </p>
+
+  <p>
+    The trick is recursive: to test whether configuration <span class="math">A</span> can reach
+    <span class="math">B</span> in <span class="math">t</span> steps, guess a midpoint
+    <span class="math">M</span> and recursively test "<span class="math">A</span> reaches
+    <span class="math">M</span> in <span class="math">t/2</span>" AND "<span class="math">M</span>
+    reaches <span class="math">B</span> in <span class="math">t/2</span>." We never need both
+    recursive calls active at once, so the call stack has depth <span class="math">log t = O(f(n))</span>,
+    each frame holding configurations of size <span class="math">O(f(n))</span>. Total:
+    <span class="math">O(f(n)<sup>2</sup>)</span>.
+  </p>
+
+  <div class="widget" id="savitch">
+    <div class="widget-title">Savitch's recursion tree <span class="pill">Widget 2 · Auto-plays</span></div>
+
+    <div class="controls">
+      <label>Depth (= log t):
+        <input type="range" id="sav-d" min="2" max="5" value="4">
+        <span id="sav-d-label">4</span>
+      </label>
+      <button class="btn play-btn" id="sav-play">▶ Animate recursion</button>
+      <button class="btn ghost" id="sav-reset">Reset</button>
+    </div>
+
+    <svg id="sav-svg" viewBox="0 0 760 400" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+
+    <div class="explain-panel" id="sav-explain">
+      <div class="step-num">Recursion tree</div>
+      Watch the tree expand. Each node is a CANYIELD(A, B, t) call. The two children are the same
+      with t/2. We don't store all of them — at any moment only one path is live, so the call stack
+      has depth log t.
+    </div>
+  </div>
+
+  <div class="callout">
+    <h5>Consequence</h5>
+    <p style="margin: 0;">PSPACE = NPSPACE. (For polynomial f, f² is still polynomial.) This makes
+    nondeterminism free in the polynomial-space world.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="tqbf">
+  <h2>3 · TQBF is the canonical PSPACE-complete problem</h2>
+
+  <p>
+    A <strong>quantified Boolean formula</strong> looks like:
+  </p>
+  <div class="math-block">
+    ∃x₁ ∀x₂ ∃x₃ … φ(x₁, x₂, …, x_n)
+  </div>
+  <p>
+    The TRUE-QBF (TQBF) problem asks whether the formula is true. Evaluating it naturally
+    corresponds to a 2-player game: ∃ tries to make φ true, ∀ tries to make it false.
+  </p>
+
+  <div class="widget" id="qbf-tree">
+    <div class="widget-title">TQBF as a game tree <span class="pill">Widget 3 · Auto-plays</span></div>
+
+    <div class="controls">
+      <label>Formula:
+        <select id="qbf-preset">
+          <option value="a">∃x ∀y. (x ∨ y) ∧ (x ∨ ¬y) — TRUE</option>
+          <option value="b">∀x ∃y. (x ↔ y) — TRUE</option>
+          <option value="c">∃x ∃y ∀z. (x ∨ y ∨ z) — TRUE</option>
+          <option value="d">∀x ∃y. (x ∧ y) — FALSE</option>
+        </select>
+      </label>
+      <button class="btn play-btn" id="qbf-play">▶ Evaluate tree</button>
+      <button class="btn ghost" id="qbf-reset">Reset</button>
+    </div>
+
+    <svg id="qbf-svg" viewBox="0 0 760 380" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+
+    <div class="explain-panel" id="qbf-explain">
+      <div class="step-num">Game</div>
+      ∃-nodes (green) want at least one TRUE child. ∀-nodes (orange) need every child TRUE.
+      Watch the tree evaluate bottom-up.
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="geo">
+  <h2>4 · Generalized Geography — play it yourself</h2>
+
+  <p>
+    Two players take turns moving a token along directed edges of a graph. Each vertex can be
+    visited at most once. The player who cannot move loses. This is <strong>Generalized Geography</strong>
+    — and it is PSPACE-complete.
+  </p>
+
+  <div class="widget" id="geo">
+    <div class="widget-title">Play Generalized Geography against the computer <span class="pill">Widget 4 · Interactive</span></div>
+
+    <div class="controls">
+      <label>Map:
+        <select id="geo-map">
+          <option value="0">Small (player 1 wins)</option>
+          <option value="1">Diamond (player 2 wins)</option>
+          <option value="2">Bigger trap</option>
+        </select>
+      </label>
+      <button class="btn ghost" id="geo-reset">Restart</button>
+      <span style="font-family: var(--sans); font-size: 13px; color: var(--muted);">Click a neighbor of the current red token to move.</span>
+    </div>
+
+    <svg id="geo-svg" viewBox="0 0 760 340" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+
+    <div class="status">
+      <div class="stat">Turn <b id="geo-turn">You (Player 1)</b></div>
+      <div class="stat">Visited <b id="geo-visited">{start}</b></div>
+      <div class="stat">Verdict <b id="geo-verdict">in progress</b></div>
+    </div>
+
+    <div class="explain-panel" id="geo-explain">
+      <div class="step-num">How to play</div>
+      Click any node that has an arrow from the current red token. Then the computer (Player 2)
+      plays optimally. If you can force the computer to face no moves, you win.
+    </div>
+  </div>
+
+  <div class="key-idea">
+    <strong>Why Geography is PSPACE-complete.</strong> Any TQBF formula can be encoded as a
+    geography graph where the ∃ player chooses vertices for existential variables and the ∀ player
+    for universals. The game forces both players to commit to a deepening play tree of total depth
+    polynomial in the formula.
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="picture">
+  <h2>5 · The big picture</h2>
+
+  <svg viewBox="0 0 880 480" class="svg-anim" style="background:#fcfbf7;border-radius:6px;">
+    <defs>
+      <marker id="m6-arr" markerWidth="11" markerHeight="11" refX="10" refY="4" orient="auto">
+        <polygon points="0 0, 11 4, 0 8" fill="#8a6a2c"/>
+      </marker>
+    </defs>
+
+    <!-- PSPACE region (outer) -->
+    <ellipse cx="440" cy="220" rx="400" ry="180" fill="#fffdf3" stroke="#b58b00" stroke-width="2.5"/>
+    <text x="60" y="58" font-family="var(--sans), sans-serif" font-size="22" font-weight="700" fill="#b58b00" letter-spacing="0.05em">PSPACE</text>
+    <text x="60" y="78" font-family="var(--sans), sans-serif" font-size="11" fill="#b58b00" opacity="0.75">= NPSPACE &nbsp;(Savitch's theorem)</text>
+
+    <!-- NP region -->
+    <ellipse cx="335" cy="240" rx="220" ry="115" fill="#ffffff" stroke="#666" stroke-width="2"/>
+    <text x="155" y="160" font-family="var(--sans), sans-serif" font-size="18" font-weight="700" fill="#444">NP</text>
+    <text x="155" y="176" font-family="var(--sans), sans-serif" font-size="10" fill="#777">verifier-defined</text>
+
+    <!-- P region -->
+    <ellipse cx="305" cy="255" rx="135" ry="65" fill="#d6ebe4" stroke="#2a6f5f" stroke-width="2.5"/>
+    <text x="305" y="259" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="22" font-weight="700" fill="#1c4a3f">P</text>
+
+    <!-- Strictness annotations between layers -->
+    <text x="450" y="160" font-family="var(--sans), sans-serif" font-size="11" fill="#666" font-style="italic">P ⊆ NP ⊆ PSPACE</text>
+    <text x="450" y="176" font-family="var(--sans), sans-serif" font-size="10" fill="#999">(strict containment open)</text>
+
+    <!-- PSPACE-complete cluster header -->
+    <text x="720" y="105" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" font-weight="700" fill="#7a3a18">PSPACE-complete</text>
+    <text x="720" y="121" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="11" fill="#a05a30" opacity="0.85" font-style="italic">games of perfect play</text>
+
+    <!-- PSPACE-complete problems — clustered cleanly at the right of PSPACE -->
+    <g font-family="ui-monospace, monospace" font-weight="700">
+      <circle cx="660" cy="175" r="34" fill="var(--warn-soft)" stroke="var(--warn)" stroke-width="2.5"/>
+      <text x="660" y="180" text-anchor="middle" font-size="13" fill="#7a3a18">TQBF</text>
+
+      <circle cx="755" cy="230" r="34" fill="var(--warn-soft)" stroke="var(--warn)" stroke-width="2.5"/>
+      <text x="755" y="226" text-anchor="middle" font-size="11" fill="#7a3a18">GENER.</text>
+      <text x="755" y="240" text-anchor="middle" font-size="11" fill="#7a3a18">GEOGR.</text>
+
+      <circle cx="700" cy="305" r="34" fill="var(--warn-soft)" stroke="var(--warn)" stroke-width="2.5"/>
+      <text x="700" y="301" text-anchor="middle" font-size="11" fill="#7a3a18">CHESS</text>
+      <text x="700" y="315" text-anchor="middle" font-size="9" fill="#7a3a18">(generalized)</text>
+
+      <circle cx="595" cy="345" r="34" fill="var(--warn-soft)" stroke="var(--warn)" stroke-width="2.5"/>
+      <text x="595" y="349" text-anchor="middle" font-size="13" fill="#7a3a18">GO</text>
+    </g>
+
+    <!-- All PSPACE-complete reduce to each other (bidirectional arrows hint at equivalence) -->
+    <g fill="none" stroke="#8a6a2c" stroke-width="1.6" stroke-dasharray="0">
+      <path d="M 690 195 C 715 200, 730 210, 728 215" marker-end="url(#m6-arr)"/>
+      <path d="M 738 260 C 720 285, 712 295, 712 295" marker-end="url(#m6-arr)"/>
+      <path d="M 672 326 C 655 340, 640 345, 631 345" marker-end="url(#m6-arr)"/>
+    </g>
+
+    <!-- Inline caption inside SVG so it stays contained -->
+    <text x="440" y="442" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" fill="var(--muted)">
+      PSPACE-complete problems are the natural "games of perfect play":
+    </text>
+    <text x="440" y="460" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" fill="var(--muted)">
+      <tspan font-weight="700" fill="#7a3a18">TQBF</tspan>, <tspan font-weight="700" fill="#7a3a18">Generalized Geography</tspan>, <tspan font-weight="700" fill="#7a3a18">generalized Chess</tspan>, <tspan font-weight="700" fill="#7a3a18">Go</tspan>.
+    </text>
+  </svg>
+</section>
+
+<!-- ============================================================ -->
+<section id="exercises">
+  <h2>6 · Practice (Sipser §8.1–§8.3)</h2>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 8.1</div>
+    <p>Show that <span class="math">{0<sup>k</sup> : k = 2<sup>j</sup>} ∈ SPACE(log n)</span>.</p>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">Count input length n in binary (log n bits). Repeatedly check if it's even and divide by 2; accept if you reach 1, reject if odd > 1.</div>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 8.4</div>
+    <p>Show that <span class="math">A<sub>DFA</sub> ∈ L</span> (logarithmic space).</p>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">Store only the current DFA state (log(|Q|) bits) and an index into the input (log n bits). Read one symbol, update state, repeat. Total log space.</div>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 8.8</div>
+    <p>Show that <span class="math">PATH ∈ NL</span>.</p>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">Nondeterministic log-space algorithm: store current vertex (log n bits) and step count (log n bits). At each step, guess a neighbor; accept if target reached within n steps.</div>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 8.13</div>
+    <p>Show that PSPACE is closed under union, complement, and Kleene star.</p>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">Complement: flip accept/reject (deterministic machine; works directly). Union: run both deciders in turn. Star: a polynomial-space algorithm guesses splits and recurses.</div>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 8.21</div>
+    <p>The cat and mouse game: two players move on a graph, cat caught if same vertex. Show this problem is PSPACE-complete.</p>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">In PSPACE: minimax game tree of polynomial depth, recurse in polynomial space. PSPACE-hard: reduce from Generalized Geography by encoding moves as cat/mouse positions.</div>
+    </details>
+  </div>
+</section>
+
+<section>
+  <h2>One-sentence summary</h2>
+  <div class="key-idea">
+    PSPACE = NPSPACE (Savitch), and the "natural" games — TQBF, Generalized Geography — are
+    PSPACE-complete; equivalently, PSPACE is the class of decision problems whose solutions look
+    like perfect play in a polynomial-depth game.
+  </div>
+  <p style="text-align:center;margin-top:24px;">
+    <a class="btn" href="module-7-l-nl-hierarchy.html" style="display:inline-block;padding:10px 18px;background:var(--accent);color:white;border-radius:4px;text-decoration:none;border:0;">
+      Next → Module 7: L, NL &amp; Hierarchy theorems
+    </a>
+  </p>
+</section>
+
+</div>
+
+<footer class="foot">Module 6 of 7 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<script>
+// =================================================================
+// Module 6 — Animation-heavy widgets
+// =================================================================
+
+// ----- Space vs. time bar chart (Widget 1) -----
+(function(){
+  let n = 10, raf = null, t = 0;
+  function render(progress) {
+    const W = 760, H = 240;
+    const algos = [
+      {name: 'PATH (BFS)', time: n*n, space: n, color: 'var(--accent)'},
+      {name: 'CYK (parsing)', time: n*n*n, space: n*n, color: 'var(--info)'},
+      {name: 'TQBF (recursive)', time: Math.pow(2, Math.min(n, 20)), space: n*n, color: 'var(--gold)'},
+      {name: '2-SAT', time: n, space: n, color: 'var(--accent-strong)'},
+      {name: 'GAME tree', time: Math.pow(2, Math.min(n, 20)), space: n, color: 'var(--warn)'}
+    ];
+    let maxT = Math.max(...algos.map(a => a.time));
+    let maxS = Math.max(...algos.map(a => a.space));
+    const w = (W - 200) / algos.length;
+    let s = '';
+    s += `<text x="${W/2}" y="20" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" fill="var(--muted)">Time (top) vs. Space (bottom), log-scale, n = ${n}</text>`;
+    for (let i = 0; i < algos.length; i++) {
+      const a = algos[i];
+      const x = 50 + i * w;
+      const tH = (Math.log10(Math.max(1, a.time)) / Math.log10(Math.max(2, maxT))) * 80 * (progress/100);
+      const sH = (Math.log10(Math.max(1, a.space)) / Math.log10(Math.max(2, maxS))) * 80 * (progress/100);
+      // time bar
+      s += `<rect x="${x}" y="${130 - tH}" width="${w-15}" height="${tH}" fill="${a.color}" opacity="0.7"/>`;
+      s += `<text x="${x + (w-15)/2}" y="${135 - tH - 4}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="9" fill="${a.color}" font-weight="bold">${a.time.toLocaleString()}</text>`;
+      // space bar
+      s += `<rect x="${x}" y="${145}" width="${w-15}" height="${sH}" fill="${a.color}" opacity="0.4"/>`;
+      s += `<text x="${x + (w-15)/2}" y="${145 + sH + 14}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="9" fill="${a.color}">${a.space}</text>`;
+      // label
+      s += `<text x="${x + (w-15)/2}" y="${H - 6}" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="11" fill="#444">${a.name}</text>`;
+    }
+    // baseline
+    s += `<line x1="40" y1="140" x2="${W-40}" y2="140" stroke="#888" stroke-width="0.8"/>`;
+    s += `<text x="36" y="135" text-anchor="end" font-family="var(--sans), sans-serif" font-size="11" fill="#888">time</text>`;
+    s += `<text x="36" y="160" text-anchor="end" font-family="var(--sans), sans-serif" font-size="11" fill="#888">space</text>`;
+    document.getElementById('sp-svg').innerHTML = s;
+  }
+
+  function play() {
+    if (raf) cancelAnimationFrame(raf);
+    t = 0;
+    const tick = () => {
+      t = Math.min(100, t + 4);
+      render(t);
+      if (t < 100) raf = requestAnimationFrame(tick);
+    };
+    tick();
+  }
+  document.getElementById('sp-n').oninput = e => {
+    n = parseInt(e.target.value);
+    document.getElementById('sp-n-label').textContent = n;
+    render(100);
+  };
+  document.getElementById('sp-play').onclick = play;
+  render(100);
+  setTimeout(play, 800);
+})();
+
+// ----- Savitch's recursion tree (Widget 2) -----
+(function(){
+  let depth = 4, raf = null, visible = 0;
+
+  function render() {
+    const W = 760, H = 400;
+    let s = '';
+    const treeNodes = [];
+    function addNode(x, y, label, level, idx) {
+      treeNodes.push({x, y, label, level, idx});
+    }
+    // BFS layout
+    function layout(d, level, x1, x2, idx) {
+      const cx = (x1 + x2) / 2;
+      const y = 40 + level * (H - 80) / d;
+      addNode(cx, y, level === d ? '1 step' : `t=2^${d-level}`, level, idx);
+      if (level < d) {
+        layout(d, level+1, x1, cx, idx*2);
+        layout(d, level+1, cx, x2, idx*2+1);
+      }
+    }
+    layout(depth, 0, 60, W-60, 0);
+
+    // Edges first
+    for (let i = 0; i < treeNodes.length; i++) {
+      const n = treeNodes[i];
+      const c1 = 2*i + 1, c2 = 2*i + 2;
+      if (c2 < treeNodes.length && i < visible) {
+        const ch1 = treeNodes[c1], ch2 = treeNodes[c2];
+        const v1 = (c1 < visible), v2 = (c2 < visible);
+        s += `<line x1="${n.x}" y1="${n.y}" x2="${ch1.x}" y2="${ch1.y}" stroke="${v1?'var(--accent)':'#ddd'}" stroke-width="${v1?1.5:1}" opacity="${v1?1:0.4}"/>`;
+        s += `<line x1="${n.x}" y1="${n.y}" x2="${ch2.x}" y2="${ch2.y}" stroke="${v2?'var(--accent)':'#ddd'}" stroke-width="${v2?1.5:1}" opacity="${v2?1:0.4}"/>`;
+      }
+    }
+    // Nodes
+    for (let i = 0; i < treeNodes.length; i++) {
+      const n = treeNodes[i];
+      const isVisible = i < visible;
+      const isCurrent = i === visible - 1;
+      const fill = isCurrent ? 'var(--gold)' : (isVisible ? 'var(--accent)' : '#f5f5f0');
+      const r = isCurrent ? 14 : 10;
+      s += `<circle cx="${n.x}" cy="${n.y}" r="${r}" fill="${fill}" stroke="${isVisible?'var(--accent-strong)':'#bbb'}" stroke-width="1.5" opacity="${isVisible?1:0.3}"/>`;
+      if (isVisible) {
+        s += `<text x="${n.x}" y="${n.y + 25}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" fill="var(--muted)">${n.label}</text>`;
+      }
+    }
+    // Annotation
+    s += `<text x="40" y="${H-10}" font-family="var(--sans), sans-serif" font-size="12" fill="var(--muted)">depth = ${depth} ⇒ stack height ${depth} ⇒ space O(${depth} · f(n)) = O(f(n)²)</text>`;
+    document.getElementById('sav-svg').innerHTML = s;
+    const total = (1 << (depth+1)) - 1;
+    const curLevel = visible > 0 ? Math.floor(Math.log2(visible)) : 0;
+    let msg;
+    if (visible === 0) {
+      msg = `<p style="margin:4px 0;"><strong>The procedure CANYIELD(A, B, t)</strong> asks: can configuration A reach configuration B within t steps of a nondeterministic machine? Naïvely, you'd track all 2<sup>t</sup> possible execution paths. Savitch's trick avoids that.</p>`;
+    } else if (visible === 1) {
+      msg = `<p style="margin:4px 0;"><strong>Root: CANYIELD(start, accept, 2<sup>${depth}</sup>).</strong> We want to decide reachability in 2<sup>${depth}</sup> steps. Instead of tracking all paths, we'll <em>guess a midpoint</em> and recurse.</p>
+             <p style="margin:4px 0;">The space cost so far: just one configuration on the stack (the root call).</p>`;
+    } else if (visible < total) {
+      msg = `<p style="margin:4px 0;"><strong>Step ${visible}/${total} — expanding the recursion.</strong> We're at level ${curLevel} of the tree. Each node represents a CANYIELD call with time budget 2<sup>${depth - curLevel}</sup>. Its two children try midpoints M with halved budgets.</p>
+             <p style="margin:4px 0;"><strong>The crucial accounting:</strong> the tree has up to 2<sup>${depth+1}</sup>-1 = ${total} <em>calls</em>, but only ${depth+1} can be on the call stack <em>simultaneously</em> (one per level on the current path).</p>
+             <p style="margin:4px 0;">Each stack frame stores: the midpoint configuration (O(f(n)) bits) plus a few counters. Total memory: O(f(n)) per frame × O(log t) = O(log t) frames = O(f(n) · log t) = <strong>O(f(n)²)</strong> for t = 2<sup>f(n)</sup>.</p>`;
+    } else {
+      msg = `<p style="margin:4px 0;"><strong>Tree fully expanded.</strong> Total calls: ${total} = 2<sup>${depth+1}</sup> − 1. But — and this is the punchline — at any instant only <strong>${depth+1}</strong> of them are on the call stack (the path from root to current leaf).</p>
+             <p style="margin:4px 0;"><strong>Conclusion (Savitch's theorem):</strong> NSPACE(f(n)) ⊆ SPACE(f(n)²). Specifically: for f(n) = polynomial, f(n)² is still polynomial, so <strong>PSPACE = NPSPACE</strong>. Nondeterminism is free in the polynomial-space world — unlike polynomial time (P vs NP) where it might not be.</p>
+             <p style="margin:4px 0;"><strong>Why the proof works only in space, not time:</strong> in time, we'd have to actually execute all 2<sup>${depth+1}</sup> branches sequentially, costing exponential time. In space, we can <em>reuse</em> the same memory for each branch.</p>`;
+    }
+    document.getElementById('sav-explain').innerHTML =
+      `<div class="step-num">Step ${visible}/${total}${visible>0 ? ` · Level ${curLevel}` : ''}</div>${msg}`;
+  }
+
+  function play() {
+    if (raf) cancelAnimationFrame(raf);
+    visible = 1;
+    const total = (1 << (depth+1)) - 1;
+    const loop = () => {
+      visible++;
+      render();
+      if (visible <= total) raf = setTimeout(() => requestAnimationFrame(loop), 350);
+    };
+    loop();
+  }
+  document.getElementById('sav-d').oninput = e => {
+    depth = parseInt(e.target.value);
+    document.getElementById('sav-d-label').textContent = depth;
+    visible = (1 << (depth+1)) - 1;
+    render();
+  };
+  document.getElementById('sav-play').onclick = play;
+  document.getElementById('sav-reset').onclick = () => { if (raf) cancelAnimationFrame(raf); visible = 1; render(); };
+  visible = (1 << (depth+1)) - 1; render();
+  setTimeout(play, 1000);
+})();
+
+// ----- QBF game tree (Widget 3) -----
+(function(){
+  const presets = {
+    a: { quantifiers: ['∃','∀'], vars: ['x','y'], evalFn: (vals) => (vals[0]||vals[1]) && (vals[0]||!vals[1]), label: '(x ∨ y) ∧ (x ∨ ¬y)' },
+    b: { quantifiers: ['∀','∃'], vars: ['x','y'], evalFn: (vals) => vals[0] === vals[1], label: 'x ↔ y' },
+    c: { quantifiers: ['∃','∃','∀'], vars: ['x','y','z'], evalFn: (vals) => vals[0] || vals[1] || vals[2], label: 'x ∨ y ∨ z' },
+    d: { quantifiers: ['∀','∃'], vars: ['x','y'], evalFn: (vals) => vals[0] && vals[1], label: 'x ∧ y' }
+  };
+  let cur = 'a', raf = null, revealedNodes = new Set();
+
+  function buildTree() {
+    const p = presets[cur];
+    const tree = [];
+    function build(depth, vals, parent) {
+      const id = tree.length;
+      const node = { id, depth, vals: [...vals], parent, children: [], value: null, isExists: depth < p.vars.length && p.quantifiers[depth] === '∃' };
+      tree.push(node);
+      if (depth === p.vars.length) {
+        node.value = p.evalFn(vals);
+        node.isLeaf = true;
+      } else {
+        node.children.push(build(depth+1, [...vals, false], id));
+        node.children.push(build(depth+1, [...vals, true], id));
+      }
+      return id;
+    }
+    build(0, [], -1);
+    return tree;
+  }
+
+  function evaluate(tree, id) {
+    const node = tree[id];
+    if (node.isLeaf) return node.value;
+    const vals = node.children.map(cid => evaluate(tree, cid));
+    if (node.isExists) node.value = vals.some(v => v);
+    else node.value = vals.every(v => v);
+    return node.value;
+  }
+
+  function render(tree, opts={}) {
+    const p = presets[cur];
+    const W = 760, H = 380;
+    let s = '';
+    const depthSpacing = (H - 80) / (p.vars.length + 1);
+
+    // layout by depth and index
+    function place(id, depth, x1, x2) {
+      const node = tree[id];
+      node.x = (x1 + x2) / 2;
+      node.y = 40 + depth * depthSpacing;
+      if (node.children.length) {
+        place(node.children[0], depth+1, x1, node.x);
+        place(node.children[1], depth+1, node.x, x2);
+      }
+    }
+    place(0, 0, 30, W-30);
+
+    // edges
+    for (const n of tree) {
+      for (const cid of n.children) {
+        const c = tree[cid];
+        const revealed = revealedNodes.has(cid) || revealedNodes.has(n.id);
+        const bit = n.children.indexOf(cid);
+        const stroke = revealed ? (c.value === true ? 'var(--accent)' : c.value === false ? 'var(--warn)' : '#888') : '#ddd';
+        s += `<line x1="${n.x}" y1="${n.y+18}" x2="${c.x}" y2="${c.y-18}" stroke="${stroke}" stroke-width="${revealed?2:1}" opacity="${revealed?1:0.5}"/>`;
+        s += `<text x="${(n.x + c.x)/2 + 4}" y="${(n.y + c.y)/2}" font-family="ui-monospace, monospace" font-size="10" fill="#888">${p.vars[n.depth]}=${bit?'T':'F'}</text>`;
+      }
+    }
+
+    // nodes
+    for (const n of tree) {
+      const revealed = revealedNodes.has(n.id);
+      let fill, stroke;
+      if (n.isLeaf) {
+        fill = revealed ? (n.value ? 'var(--accent)' : 'var(--warn)') : '#f0f0e8';
+        stroke = revealed ? (n.value ? 'var(--accent-strong)' : 'var(--warn)') : '#aaa';
+      } else {
+        fill = revealed ? (n.value === true ? 'var(--accent-soft)' : n.value === false ? 'var(--warn-soft)' : '#fff') :
+               (n.isExists ? '#d6ebe4' : '#f4dfcf');
+        stroke = n.isExists ? 'var(--accent)' : 'var(--warn)';
+      }
+      const opacity = revealed ? 1 : 0.5;
+      s += `<circle cx="${n.x}" cy="${n.y}" r="16" fill="${fill}" stroke="${stroke}" stroke-width="2" opacity="${opacity}"/>`;
+      const label = n.isLeaf ? (revealed ? (n.value?'T':'F') : '?') : (n.isExists ? '∃' : '∀');
+      s += `<text x="${n.x}" y="${n.y+5}" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" font-weight="bold" fill="${n.isLeaf && revealed?'#fff':n.isExists?'var(--accent-strong)':'var(--warn)'}" opacity="${opacity}">${label}</text>`;
+    }
+
+    // legend
+    s += `<text x="20" y="${H-10}" font-family="var(--sans), sans-serif" font-size="11" fill="var(--muted)">∃ (green): true if any child true · ∀ (orange): true if all children true · ${p.label}</text>`;
+    document.getElementById('qbf-svg').innerHTML = s;
+  }
+
+  function play() {
+    if (raf) clearTimeout(raf);
+    revealedNodes = new Set();
+    const tree = buildTree();
+    evaluate(tree, 0);
+    render(tree);
+
+    // reveal leaves first (post-order), then internal nodes
+    const order = [];
+    function postOrder(id) {
+      const n = tree[id];
+      for (const cid of n.children) postOrder(cid);
+      order.push(id);
+    }
+    postOrder(0);
+
+    let i = 0;
+    const loop = () => {
+      const p = presets[cur];
+      if (i >= order.length) {
+        const root = tree[0];
+        document.getElementById('qbf-explain').innerHTML =
+          `<div class="step-num">Formula evaluates to ${root.value ? 'TRUE' : 'FALSE'}</div>
+           ${root.value ?
+             `<p style="margin:4px 0;"><strong>∃-player wins:</strong> from the root, ∃ can pick a child that leads to TRUE. Following the green-bordered children down the tree gives the existential player's <em>winning strategy</em>: for each ∃-variable, choose the value that keeps the formula true regardless of ∀'s response.</p>
+              <p style="margin:4px 0;"><strong>Why this matches PSPACE.</strong> Evaluating a QBF requires this tree walk. Depth = number of variables = n. We don't store the whole tree (2<sup>n</sup> leaves) — we walk one path at a time, recurse, backtrack. Stack depth = n. Each frame stores partial assignment. Total: O(n²) space. PSPACE.</p>` :
+             `<p style="margin:4px 0;"><strong>∀-player wins:</strong> at <em>some</em> ∀-node along every path from root, ∀ can choose a FALSE child. The winning strategy: at each ∀-node, pick the child that the formula evaluator says is false.</p>
+              <p style="margin:4px 0;"><strong>Why this matches PSPACE.</strong> Same as above — tree-walk that explores subtrees one at a time, reusing memory. The TQBF problem (deciding whether a quantified formula is true) is PSPACE-complete.</p>`}`;
+        return;
+      }
+      const id = order[i];
+      const node = tree[id];
+      revealedNodes.add(id);
+      render(tree);
+
+      // narrate this step
+      let msg;
+      if (node.isLeaf) {
+        const assignStr = node.vals.map((v, k) => p.vars[k] + '=' + (v?'T':'F')).join(', ');
+        msg = `<p style="margin:4px 0;"><strong>Leaf evaluated.</strong> With assignment {${assignStr}}, plug into the formula <code>${p.label}</code> — it evaluates to <strong>${node.value?'TRUE':'FALSE'}</strong>. This is the base case: no more quantifiers to unfold, just compute the propositional truth value.</p>`;
+      } else {
+        const childValues = node.children.map(cid => tree[cid].value);
+        if (node.isExists) {
+          msg = `<p style="margin:4px 0;"><strong>∃-node combines children with OR.</strong> Children evaluated to: ${childValues.map(v=>v?'TRUE':'FALSE').join(', ')}. ∃ asks "does ANY child evaluate to true?" Answer: <strong>${node.value?'YES (the node is TRUE)':'NO (the node is FALSE)'}</strong>.</p>
+                 <p style="margin:4px 0;"><strong>Game intuition:</strong> ∃ is the existential player. To win this subtree, ∃ needs only <em>one</em> branch that leads to truth. ${node.value?'A winning branch exists.':'No winning branch exists.'}</p>`;
+        } else {
+          msg = `<p style="margin:4px 0;"><strong>∀-node combines children with AND.</strong> Children evaluated to: ${childValues.map(v=>v?'TRUE':'FALSE').join(', ')}. ∀ asks "do ALL children evaluate to true?" Answer: <strong>${node.value?'YES (the node is TRUE)':'NO (the node is FALSE)'}</strong>.</p>
+                 <p style="margin:4px 0;"><strong>Game intuition:</strong> ∀ is the adversarial player. To force a loss for ∃, ∀ needs only <em>one</em> child that's false. ${node.value?'∀ has no false child available here.':'∀ found a false child — that\'s the move ∀ would play.'}</p>`;
+        }
+      }
+      document.getElementById('qbf-explain').innerHTML =
+        `<div class="step-num">Step ${i+1}/${order.length}: ${node.isLeaf?'leaf':node.isExists?'∃-node':'∀-node'} → ${node.value?'TRUE':'FALSE'}</div>${msg}`;
+      i++;
+      raf = setTimeout(loop, 1200);
+    };
+    document.getElementById('qbf-explain').innerHTML =
+      `<div class="step-num">Reading the tree</div>
+       <p style="margin:4px 0;"><strong>Internal nodes</strong> are quantifiers (green ∃, orange ∀). <strong>Leaves</strong> are propositional formulas with all variables assigned (T/F).</p>
+       <p style="margin:4px 0;"><strong>Edges</strong> are labeled with the variable assignment (e.g., x=T or x=F). Going down the tree, we assign variables in quantifier order from outermost to innermost.</p>
+       <p style="margin:4px 0;"><strong>Evaluation is post-order:</strong> compute leaves first, then propagate up. ∃-nodes take OR of children, ∀-nodes take AND.</p>`;
+    loop();
+  }
+  document.getElementById('qbf-preset').onchange = e => { cur = e.target.value; play(); };
+  document.getElementById('qbf-play').onclick = play;
+  document.getElementById('qbf-reset').onclick = () => { revealedNodes = new Set(); render(buildTree()); };
+  play();
+})();
+
+// ----- Generalized Geography (Widget 4) -----
+(function(){
+  const maps = [
+    // small: player 1 wins by moving to B; computer stuck
+    {
+      nodes: { S: {x:120, y:170}, A: {x:280, y:90}, B: {x:280, y:250}, C: {x:440, y:170}, D: {x:600, y:90}, E: {x:600, y:250} },
+      edges: [['S','A'],['S','B'],['A','C'],['B','C'],['C','D'],['C','E'],['D','E'],['E','D']],
+      start: 'S'
+    },
+    // diamond
+    {
+      nodes: { S: {x:120, y:170}, A: {x:280, y:90}, B: {x:280, y:250}, C: {x:440, y:170}, D: {x:600, y:170} },
+      edges: [['S','A'],['S','B'],['A','C'],['B','C'],['C','D']],
+      start: 'S'
+    },
+    // bigger
+    {
+      nodes: { S: {x:80, y:170}, A: {x:200, y:100}, B: {x:200, y:240}, C: {x:340, y:60}, D: {x:340, y:170}, E: {x:340, y:280}, F: {x:480, y:170}, G: {x:620, y:170} },
+      edges: [['S','A'],['S','B'],['A','C'],['A','D'],['B','D'],['B','E'],['C','F'],['D','F'],['E','F'],['F','G']],
+      start: 'S'
+    }
+  ];
+
+  let mapIdx = 0, currentMap = null;
+  let current = null;
+  let visited = new Set();
+  let turn = 1; // 1 = human, 2 = computer
+  let gameOver = false;
+
+  function initGame() {
+    currentMap = maps[mapIdx];
+    current = currentMap.start;
+    visited = new Set([current]);
+    turn = 1;
+    gameOver = false;
+    render();
+    updateStatus();
+  }
+  function neighbors(v) {
+    return currentMap.edges.filter(([a,b]) => a === v).map(([a,b]) => b);
+  }
+  function canMove(v) {
+    return neighbors(v).some(u => !visited.has(u));
+  }
+
+  // returns {win, move}: optimal move for player about to play (true if player can force a win)
+  const memo = new Map();
+  function optimal(v, visitedSet) {
+    const key = v + '|' + Array.from(visitedSet).sort().join(',');
+    if (memo.has(key)) return memo.get(key);
+    const moves = neighbors(v).filter(u => !visitedSet.has(u));
+    if (moves.length === 0) {
+      const result = { win: false, move: null };
+      memo.set(key, result);
+      return result;
+    }
+    let bestMove = null;
+    for (const u of moves) {
+      const newVis = new Set(visitedSet); newVis.add(u);
+      const opp = optimal(u, newVis);
+      if (!opp.win) {
+        // opponent loses ⇒ I win
+        const result = { win: true, move: u };
+        memo.set(key, result);
+        return result;
+      }
+      bestMove = u; // fallback: any move (we lose either way)
+    }
+    const result = { win: false, move: bestMove };
+    memo.set(key, result);
+    return result;
+  }
+
+  function render() {
+    let s = '';
+    // edges
+    for (const [a, b] of currentMap.edges) {
+      const na = currentMap.nodes[a], nb = currentMap.nodes[b];
+      const dx = nb.x - na.x, dy = nb.y - na.y;
+      const len = Math.hypot(dx, dy);
+      const ux = dx/len, uy = dy/len;
+      const ex = nb.x - ux*28, ey = nb.y - uy*28;
+      const isAvail = (a === current) && !visited.has(b) && !gameOver;
+      const stroke = isAvail ? 'var(--gold)' : '#aaa';
+      const sw = isAvail ? 2.5 : 1.2;
+      s += `<line x1="${na.x + ux*28}" y1="${na.y + uy*28}" x2="${ex}" y2="${ey}" stroke="${stroke}" stroke-width="${sw}"/>`;
+      // arrowhead
+      const ax1 = ex - ux*8 - uy*5, ay1 = ey - uy*8 + ux*5;
+      const ax2 = ex - ux*8 + uy*5, ay2 = ey - uy*8 - ux*5;
+      s += `<polygon points="${ex},${ey} ${ax1},${ay1} ${ax2},${ay2}" fill="${stroke}"/>`;
+    }
+    // nodes
+    for (const [name, p] of Object.entries(currentMap.nodes)) {
+      const isCur = (name === current);
+      const isVis = visited.has(name);
+      const isAvail = (current && neighbors(current).includes(name)) && !isVis && !gameOver && turn === 1;
+      const fill = isCur ? 'var(--warn)' : isVis ? '#ddd' : isAvail ? 'var(--gold-soft)' : '#fff';
+      const stroke = isCur ? 'var(--warn)' : isAvail ? 'var(--gold)' : '#555';
+      const sw = isCur ? 3 : isAvail ? 2.5 : 1.5;
+      s += `<circle class="geo-node" data-name="${name}" cx="${p.x}" cy="${p.y}" r="24" fill="${fill}" stroke="${stroke}" stroke-width="${sw}" style="cursor: ${isAvail?'pointer':'default'};"/>`;
+      s += `<text x="${p.x}" y="${p.y+5}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="14" font-weight="bold" fill="${isCur?'#fff':'#1a1a1a'}" pointer-events="none">${name}</text>`;
+    }
+    document.getElementById('geo-svg').innerHTML = s;
+    document.querySelectorAll('.geo-node').forEach(el => {
+      el.onclick = () => {
+        const name = el.dataset.name;
+        if (turn === 1 && !gameOver && neighbors(current).includes(name) && !visited.has(name)) {
+          humanMove(name);
+        }
+      };
+    });
+  }
+
+  function updateStatus() {
+    document.getElementById('geo-turn').textContent = gameOver ? '—' : (turn === 1 ? 'You (Player 1)' : 'Computer (Player 2)');
+    document.getElementById('geo-visited').textContent = '{' + Array.from(visited).join(', ') + '}';
+    if (gameOver) {
+      const winner = turn === 1 ? 'Computer' : 'You';
+      document.getElementById('geo-verdict').textContent = `${winner} wins (other had no moves)`;
+      document.getElementById('geo-explain').innerHTML =
+        `<div class="step-num">Game over — ${winner} wins</div>
+         <p style="margin:4px 0;">${winner === 'You' ? '<strong>You won.</strong> You moved to a vertex where the computer had no unvisited neighbors. Notice: it is NOT enough to have <em>some</em> winning moves — you need to force the opponent into a losing position every time.' : '<strong>You ran out of moves.</strong> The computer (which plays optimally using a recursive minimax) navigated you into a dead end.'}</p>
+         <p style="margin:4px 0;"><strong>What the Generalized Geography problem asks:</strong> given a graph G and a start vertex s, does the first player have a winning strategy? This is a yes/no question — and it is <strong>PSPACE-complete</strong>.</p>
+         <p style="margin:4px 0;"><strong>Why PSPACE:</strong> a winning strategy is a tree of all opponent responses. The tree has depth ≤ n (number of vertices) and exponential breadth, but we can explore it by depth-first recursion using only O(n) space — same as Savitch.</p>
+         <p style="margin:4px 0;">Switch to a different map to feel how the winning player changes with graph structure.</p>`;
+    } else {
+      document.getElementById('geo-verdict').textContent = 'in progress';
+      if (turn === 1) {
+        const opts = neighbors(current).filter(u => !visited.has(u));
+        document.getElementById('geo-explain').innerHTML =
+          `<div class="step-num">Your turn — pick a neighbor of ${current}</div>
+           <p style="margin:4px 0;">Available moves from <strong>${current}</strong>: ${opts.length ? '{' + opts.join(', ') + '}' : 'none — you lose.'}</p>
+           <p style="margin:4px 0;"><strong>Strategic thinking:</strong> you want to move to a vertex from which the <em>opponent</em> will have either (a) no unvisited neighbors, or (b) only neighbors that lead back to <em>your</em> winning position. This is recursive — exactly how the computer plans its own moves.</p>
+           <p style="margin:4px 0;">Click a node highlighted in gold (= reachable & not visited).</p>`;
+      } else {
+        document.getElementById('geo-explain').innerHTML =
+          `<div class="step-num">Computer thinking…</div>
+           <p style="margin:4px 0;">The computer is running <strong>minimax</strong>: from each possible move, it recursively simulates all future plays under the rule "the current player wins iff they have at least one move to a losing position for the opponent." This recursive call tree may be huge, but the computer uses only stack-depth-many configurations at any one time.</p>
+           <p style="margin:4px 0;"><strong>That's the link to PSPACE.</strong> The minimax tree is huge in time but small in space — same trick as Savitch.</p>`;
+      }
+    }
+  }
+
+  function humanMove(name) {
+    visited.add(name); current = name;
+    if (!canMove(current)) { gameOver = true; render(); updateStatus(); return; }
+    turn = 2;
+    render(); updateStatus();
+    setTimeout(computerMove, 800);
+  }
+
+  function computerMove() {
+    const opt = optimal(current, visited);
+    if (!opt.move) { gameOver = true; turn = 1; render(); updateStatus(); return; }
+    visited.add(opt.move); current = opt.move;
+    if (!canMove(current)) { gameOver = true; render(); updateStatus(); return; }
+    turn = 1;
+    render(); updateStatus();
+  }
+
+  document.getElementById('geo-map').onchange = e => { mapIdx = parseInt(e.target.value); memo.clear(); initGame(); };
+  document.getElementById('geo-reset').onclick = () => { memo.clear(); initGame(); };
+  initGame();
+})();
+</script>
+
+</body>
+</html>

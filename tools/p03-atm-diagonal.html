@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P3 · A_TM diagonalization</title>
+<link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css">
+<script src="../widget-loop.js"></script></head><body>
+
+<header class="tool-header">
+<div class="crumb"><a href="index.html">← Student tools</a> · Problem 3 · Lecture 5 · Round 1 (30 pts)</div>
+<h1>A<sub>TM</sub> is undecidable · the contradiction machine</h1>
+<p class="sub">Walk the M<sub>i</sub>×⟨M<sub>j</sub>⟩ acceptance matrix, build D, watch the contradiction.</p>
+<div class="tags"><span class="tag-pill">CLO-1</span><span class="tag-pill warn">R1·30 pts</span><span class="tag-pill info">L5</span></div>
+</header>
+
+<div class="wrap">
+
+<section><div class="section-label">1 · Why this matters · the BIG picture</div>
+<p>
+This is the <strong>most important undecidability proof</strong> in computer science. Every other "you cannot
+write a program to detect X" theorem ultimately reduces to this one. Compilers cannot tell you whether your loop
+terminates; static analyzers cannot prove arbitrary correctness; antivirus software cannot detect every possible
+malware behavior — all of it traces back to the impossibility shown here.
+</p>
+<p>
+We proved (Problem 2) that <span class="math">A<sub>TM</sub></span> is <em>recognizable</em>: simulate, see what happens.
+Today we prove it is <strong>not decidable</strong>: no algorithm always halts with the correct yes/no answer.
+That is the cleanest possible gap between "recognize" and "decide".
+</p>
+<div class="theorem-box">
+<div class="theorem-label">What we are about to prove</div>
+<p style="margin:4px 0;">There is <strong>no Turing machine H</strong> such that, for every ⟨M, w⟩, H halts and accepts iff M accepts w.
+Equivalently: <em>no general-purpose halting checker can possibly exist.</em></p>
+</div>
+<p style="font-size:13.5px;color:var(--ink-soft);">
+The proof technique — <strong>diagonalization</strong> — is the same one Cantor used (Problem 1) to show
+the reals are uncountable. Same trick, different victim: now the diagonal kills a hypothetical decider.
+</p>
+</section>
+
+<section><div class="section-label">2 · Setup · the assumption we are about to break</div>
+<p><strong>Assume for contradiction</strong> that some TM H decides A<sub>TM</sub>. That means:</p>
+<ul style="font-size:14px;line-height:1.65;">
+<li>H always halts on every input.</li>
+<li>H(⟨M, w⟩) = <strong>accept</strong> iff M accepts w.</li>
+<li>H(⟨M, w⟩) = <strong>reject</strong> iff M does <em>not</em> accept w (either rejects or loops).</li>
+</ul>
+<p>From H we will <strong>construct a new TM D</strong> that does this:</p>
+<div class="theorem-box" style="background:#fffaf3;">
+<div class="theorem-label">The contradiction machine D</div>
+<p style="margin:4px 0;font-family:var(--mono);font-size:13.5px;">
+D = "on input ⟨M⟩:<br>
+&nbsp;&nbsp;&nbsp;1. run H(⟨M, ⟨M⟩⟩) — does M accept its own description?<br>
+&nbsp;&nbsp;&nbsp;2. if H accepts: <strong>reject</strong>;<br>
+&nbsp;&nbsp;&nbsp;3. if H rejects: <strong>accept</strong>."
+</p>
+</div>
+<p>
+Key point: <strong>D is itself a TM</strong>. We built it from H using two simple steps (run, flip). Since D is a TM,
+it has its own encoding ⟨D⟩. Now we feed ⟨D⟩ to D itself. Watch what happens.
+</p>
+
+<div class="theorem-box" style="background:#f3f8f3;">
+<div class="theorem-label">Vocabulary check</div>
+<ul style="margin:4px 0;padding-left:22px;font-size:13.5px;">
+<li><strong>Decider</strong> · TM that halts on every input. Outputs accept or reject.</li>
+<li><strong>⟨M⟩</strong> · M's description, as a finite string.</li>
+<li><strong>Diagonal cell (i, i)</strong> · row i = machine M<sub>i</sub>, column i = input ⟨M<sub>i</sub>⟩ — the case where the machine is fed itself.</li>
+</ul>
+</div>
+</section>
+
+<section><div class="section-label">3 · The proof · feed D to itself</div>
+<p>Compute D(⟨D⟩) two ways and watch them disagree.</p>
+<table style="font-size:13.5px;width:100%;border-collapse:collapse;margin:10px 0;">
+<thead><tr style="background:var(--gold-soft);">
+<th style="padding:6px;border:1px solid var(--rule);text-align:left;">Case</th>
+<th style="padding:6px;border:1px solid var(--rule);text-align:left;">By definition of D</th>
+<th style="padding:6px;border:1px solid var(--rule);text-align:left;">But also (D is a TM)</th>
+</tr></thead>
+<tbody>
+<tr><td style="padding:6px;border:1px solid var(--rule);"><strong>D accepts ⟨D⟩</strong></td><td style="padding:6px;border:1px solid var(--rule);">⇒ H said D rejects ⟨D⟩<br>⇒ D rejects ⟨D⟩.</td><td style="padding:6px;border:1px solid var(--rule);">Direct contradiction.</td></tr>
+<tr><td style="padding:6px;border:1px solid var(--rule);"><strong>D rejects ⟨D⟩</strong></td><td style="padding:6px;border:1px solid var(--rule);">⇒ H said D accepts ⟨D⟩<br>⇒ D accepts ⟨D⟩.</td><td style="padding:6px;border:1px solid var(--rule);">Direct contradiction.</td></tr>
+</tbody>
+</table>
+<p>
+Either way D contradicts itself. The only assumption we made was the existence of H. So H cannot exist. <span class="math">∎</span>
+</p>
+<p>
+The visualization below makes this concrete: we list TMs M<sub>1</sub>, M<sub>2</sub>, … as rows and their encodings
+⟨M<sub>1</sub>⟩, ⟨M<sub>2</sub>⟩, … as columns. Cell (i, j) records whether M<sub>i</sub> accepts ⟨M<sub>j</sub>⟩.
+D's behavior is the <em>flipped diagonal</em>. Since D is a TM, D must appear somewhere as a row in this table —
+and that row contradicts the flipped diagonal at its own column. No such row can exist.
+</p>
+</section>
+
+<section><div class="section-label">4 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Walk the diagonal, then meet D <span class="pill">Auto-plays</span></div>
+<div class="controls">
+<button class="btn play-btn" id="r-run">⏸ Pause</button><button class="btn ghost" id="r-step">Step</button><button class="btn ghost" id="r-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="r-speed" min="0.25" max="3" step="0.25" value="1"><span id="r-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label>
+</div>
+<div id="r-table-wrap"></div>
+<div class="explain-panel" id="r-explain"></div>
+</div></section>
+
+<section><div class="section-label">5 · Worked example · a tiny "what if H existed" trace</div>
+<p>
+Suppose H existed and let's imagine 4 specific TMs M<sub>1</sub>…M<sub>4</sub> with this acceptance behavior on their own descriptions:
+</p>
+<table style="font-size:13.5px;width:100%;border-collapse:collapse;margin:10px 0;">
+<thead><tr style="background:var(--gold-soft);">
+<th style="padding:6px;border:1px solid var(--rule);">i</th>
+<th style="padding:6px;border:1px solid var(--rule);">M<sub>i</sub>(⟨M<sub>i</sub>⟩) (what H says)</th>
+<th style="padding:6px;border:1px solid var(--rule);">D(⟨M<sub>i</sub>⟩) (flipped)</th>
+</tr></thead>
+<tbody>
+<tr><td style="padding:6px;border:1px solid var(--rule);">1</td><td style="padding:6px;border:1px solid var(--rule);color:var(--accent);"><b>accept</b></td><td style="padding:6px;border:1px solid var(--rule);color:var(--warn);"><b>reject</b></td></tr>
+<tr><td style="padding:6px;border:1px solid var(--rule);">2</td><td style="padding:6px;border:1px solid var(--rule);color:var(--warn);"><b>reject</b></td><td style="padding:6px;border:1px solid var(--rule);color:var(--accent);"><b>accept</b></td></tr>
+<tr><td style="padding:6px;border:1px solid var(--rule);">3</td><td style="padding:6px;border:1px solid var(--rule);color:var(--accent);"><b>accept</b></td><td style="padding:6px;border:1px solid var(--rule);color:var(--warn);"><b>reject</b></td></tr>
+<tr><td style="padding:6px;border:1px solid var(--rule);">4</td><td style="padding:6px;border:1px solid var(--rule);color:var(--warn);"><b>reject</b></td><td style="padding:6px;border:1px solid var(--rule);color:var(--accent);"><b>accept</b></td></tr>
+</tbody>
+</table>
+<p>
+D's row of answers is <span style="color:var(--warn);"><b>reject</b></span>, <span style="color:var(--accent);"><b>accept</b></span>,
+<span style="color:var(--warn);"><b>reject</b></span>, <span style="color:var(--accent);"><b>accept</b></span>.
+Since D is a TM, it sits in the list at some index — say D = M<sub>3</sub>. Then row 3 says
+D(⟨M<sub>3</sub>⟩) = accept, but D's row also says D(⟨M<sub>3</sub>⟩) = reject. Same input, two answers. Impossible.
+The exact index does not matter; the contradiction lives at <em>wherever D appears</em>.
+</p>
+</section>
+
+<section><div class="section-label">6 · Connections · the cascade of undecidability</div>
+<ul style="font-size:14px;line-height:1.7;">
+<li><strong>HALT<sub>TM</sub></strong> · undecidable. Reduce A<sub>TM</sub> to it (Problem 5).</li>
+<li><strong>E<sub>TM</sub></strong> (is M's language empty?) · undecidable. Reduce A<sub>TM</sub> via a "filter" trick (Problem 6).</li>
+<li><strong>EQ<sub>TM</sub></strong> (do two TMs accept the same language?) · undecidable, and not even recognizable (Problem 8).</li>
+<li><strong>Rice's theorem</strong> · <em>every</em> non-trivial language property of TMs is undecidable. Diagonal is the engine (Problem 14).</li>
+<li><strong>Gödel's incompleteness</strong> · the same self-reference and diagonal pattern proves no consistent strong-enough axiom system can prove all true arithmetic statements.</li>
+</ul>
+</section>
+
+<section><div class="section-label">7 · Common pitfalls · what students miss</div>
+<ol style="font-size:14px;line-height:1.7;">
+<li><strong>"But D might not exist as a TM."</strong> It does: D is just "run H, flip the answer." H is a TM, flipping a bit is trivial, composition of TMs is a TM.</li>
+<li><strong>"Maybe H is just very slow."</strong> The proof allows H to take arbitrarily long. It only requires H to <em>always halt</em>. Any decider faces the contradiction.</li>
+<li><strong>Confusing the diagonal flip with simulation.</strong> The diagonal cell M<sub>i</sub>(⟨M<sub>i</sub>⟩) is a yes/no fact, decided by H by hypothesis. D consults H, it does <em>not</em> simulate M<sub>i</sub>.</li>
+<li><strong>"This only kills decidability for one input."</strong> One contradiction is enough. Mathematics does not allow even one inconsistency.</li>
+<li><strong>"What about a probabilistic H?"</strong> Same argument applies to any always-halting procedure. Randomness does not help; the diagonal still flips.</li>
+</ol>
+</section>
+
+<section><div class="section-label">8 · Q&amp;A defence notes</div>
+<ul class="qa-list">
+<li><div class="q">Q1. Why is D itself a Turing machine?</div><div class="a">D is built from H by composition: run H, flip the bit. If H is a TM, D is too. Every effectively-computable procedure is a TM (Church–Turing).</div></li>
+<li><div class="q">Q2. Why does the diagonal cell create a contradiction?</div><div class="a">It's the unique cell where D's input is its own description. D is forced to disagree with itself there.</div></li>
+<li><div class="q">Q3. Compare with Cantor's diagonal (Problem 1).</div><div class="a">Same structure. Cantor disagrees with f<sub>i</sub> at column i for arbitrary functions. Here we disagree with the TM at column = its own description.</div></li>
+<li><div class="q">Q4. Why does this not also kill the universal TM?</div><div class="a">The universal TM is a recognizer, not a decider. Recognizers may loop. The contradiction in D depends on H being a decider — always halting.</div></li>
+<li><div class="q">Q5 (bonus). Is A<sub>TM</sub> co-recognizable?</div><div class="a">No. If it were, we could combine the recognizer (U) and the co-recognizer to decide A<sub>TM</sub>. Since it's undecidable, the complement of A<sub>TM</sub> is not recognizable.</div></li>
+</ul></section>
+
+<section><div class="section-label">9 · How to present this in class</div>
+<p style="font-size:13.5px;"><strong>Total time: 12 minutes.</strong></p>
+<ul style="font-size:13.5px;line-height:1.7;">
+<li><strong>(1 min)</strong> Recap Problem 1 (Cantor) and Problem 2 (recognizable). State the goal: A<sub>TM</sub> is recognizable but <em>not</em> decidable.</li>
+<li><strong>(2 min)</strong> Write the assumption: H decides A<sub>TM</sub>. Emphasize "always halts".</li>
+<li><strong>(2 min)</strong> Construct D on the board: 3-line pseudocode.</li>
+<li><strong>(3 min)</strong> Run the visualization. Pause at the moment D appears in gold below the table.</li>
+<li><strong>(2 min)</strong> Do the worked example as a case split: D accepts ⟨D⟩ ⇒ … ; D rejects ⟨D⟩ ⇒ …</li>
+<li><strong>(2 min)</strong> Tie it back to compilers / static analysis. "This is why your IDE cannot warn you that your loop never terminates — for every input."</li>
+</ul>
+</section>
+
+</div>
+
+<footer class="foot">Problem 3 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<script>
+(function(){
+const n = 6;
+const M = [];
+let seed = 12345;
+for (let i = 0; i < n; i++) { const row = []; for (let j = 0; j < n; j++) { seed = (seed * 1103515245 + 12345) & 0x7fffffff; row.push(seed%2 ? 'A' : 'R'); } M.push(row); }
+let walked = 0, showD = false;
+
+function render() {
+  let html = '<table class="data" style="font-family:ui-monospace,monospace;text-align:center;"><thead><tr><th></th>';
+  for (let j = 0; j < n; j++) html += `<th>⟨M<sub>${j+1}</sub>⟩</th>`;
+  if (showD) html += `<th style="background:var(--gold-soft);">D (= flip diag)</th>`;
+  html += '</tr></thead><tbody>';
+  for (let i = 0; i < n; i++) {
+    html += `<tr><th>M<sub>${i+1}</sub></th>`;
+    for (let j = 0; j < n; j++) {
+      const isDiag = i === j, inspected = isDiag && i < walked;
+      const v = M[i][j], color = v === 'A' ? 'var(--accent)' : 'var(--warn)';
+      const hl = isDiag ? `background:${inspected?'var(--warn-soft)':'var(--accent-soft)'};font-weight:bold;` : '';
+      html += `<td style="${hl}"><span style="color:${color};">${v}</span></td>`;
+    }
+    if (showD) { const f = M[i][i] === 'A' ? 'R' : 'A'; html += `<td style="background:var(--gold-soft);font-weight:bold;color:${f==='A'?'var(--accent)':'var(--warn)'};">${f}</td>`; }
+    html += '</tr>';
+  }
+  if (showD) {
+    html += '<tr style="border-top:2px solid var(--gold);"><th style="color:var(--gold);"><b>D</b></th>';
+    for (let j = 0; j < n; j++) { const f = M[j][j] === 'A' ? 'R' : 'A'; html += `<td style="background:var(--gold-soft);font-weight:bold;color:${f==='A'?'var(--accent)':'var(--warn)'};">${f}</td>`; }
+    html += '<td style="background:var(--gold-soft);font-size:11px;">≠ every row at its diagonal</td></tr>';
+  }
+  html += '</tbody></table>';
+  document.getElementById('r-table-wrap').innerHTML = html;
+  const el = document.getElementById('r-explain');
+  if (walked === 0 && !showD) el.innerHTML = `<div class="step-num">Setup</div><p style="margin:4px 0;"><strong>Assume H decides A<sub>TM</sub>.</strong> Cell (i, j) = does M<sub>i</sub> accept ⟨M<sub>j</sub>⟩? <span style="color:var(--accent);font-weight:bold;">A</span> = accepts, <span style="color:var(--warn);font-weight:bold;">R</span> = rejects/loops.</p><p style="margin:4px 0;">D will disagree with M<sub>i</sub> on input ⟨M<sub>i</sub>⟩ for every i. Watch the diagonal.</p>`;
+  else if (!showD) { const v = M[walked-1][walked-1]; el.innerHTML = `<div class="step-num">Step ${walked} · M<sub>${walked}</sub>(⟨M<sub>${walked}</sub>⟩) = <span style="color:${v==='A'?'var(--accent)':'var(--warn)'};font-weight:bold;">${v}</span></div><p style="margin:4px 0;">D will do the <strong>opposite</strong> on this input: ${v==='A'?'<span style="color:var(--warn);font-weight:bold;">R</span>':'<span style="color:var(--accent);font-weight:bold;">A</span>'}.</p>`; }
+  else el.innerHTML = `<div class="step-num">Contradiction · H cannot exist</div><p style="margin:4px 0;"><strong>Gold row D</strong> disagrees with each M<sub>i</sub> at column i. D is itself a TM, so D = M<sub>k</sub> for some k. Then column k says M<sub>k</sub>(⟨M<sub>k</sub>⟩) equals AND-not-equals D(⟨M<sub>k</sub>⟩). Impossible.</p><p style="margin:4px 0;"><strong>So H — the assumed decider for A<sub>TM</sub> — does not exist. A<sub>TM</sub> is undecidable.</strong></p>`;
+}
+function step() { if (walked < n) walked++; else if (!showD) showD = true; render(); }
+function reset() { walked = 0; showD = false; render(); }
+function atEnd() { return walked >= n && showD; }
+WidgetLoop.create({runBtn:document.getElementById('r-run'),stepBtn:document.getElementById('r-step'),resetBtn:document.getElementById('r-reset'),speedSlider:document.getElementById('r-speed'),speedLabel:document.getElementById('r-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:1500,baseLoopMs:5500,autoStartMs:1300});
+reset();
+})();
+</script><script src="../presentation.js"></script>
+</body></html>

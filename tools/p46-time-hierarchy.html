@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>P46 · Time hierarchy</title><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css"><script src="../widget-loop.js"></script></head><body>
+<header class="tool-header"><div class="crumb"><a href="index.html">← Student tools</a> · Problem 46 · Lecture 16 · Round 3 (40 pts)</div>
+<h1>Time hierarchy theorem · TIME(f) ⊊ TIME(f log f)</h1><p class="sub">Diagonalize against time-bounded TMs.</p>
+<div class="tags"><span class="tag-pill">CLO-1</span><span class="tag-pill">CLO-5</span><span class="tag-pill warn">R3·40 pts</span><span class="tag-pill info">L16</span></div></header>
+<div class="wrap">
+<section><div class="section-label">1 · Theory</div>
+<div class="theorem-box"><div class="theorem-label">Theorem (Hartmanis &amp; Stearns, 1965)</div><p style="margin:4px 0;">If f(n) ≥ n log n is time-constructible, then <strong>TIME(f) ⊊ TIME(f · log f)</strong>. The log overhead is the cost of simulation.</p></div>
+<p>Implication: TIME(n) ⊊ TIME(n log² n), so P contains strictly more languages than linear-time. Direct consequence: <strong>P ⊊ EXPTIME</strong>.</p></section>
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Diagonalizer D times out at f(n)·log f(n) <span class="pill">Auto-plays</span></div>
+<div class="controls"><button class="btn play-btn" id="th-run">⏸ Pause</button><button class="btn ghost" id="th-step">Step</button><button class="btn ghost" id="th-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="th-speed" min="0.25" max="3" step="0.25" value="1"><span id="th-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
+<svg id="th-svg" viewBox="0 0 760 280" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="th-explain"></div></div></section>
+<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why log f overhead?</div><div class="a">A universal TM simulating a TIME(f) machine needs log f extra time for bookkeeping (tape head moves, state tracking).</div></li>
+<li><div class="q">Q2. Why "time-constructible"?</div><div class="a">D must compute f(n) on its own clock to know when to stop. Time-constructibility says f(n) can be computed in O(f(n)) time.</div></li>
+<li><div class="q">Q3. Does this prove P ⊊ NP?</div><div class="a">No — P and NP differ in determinism, not in resource amount. Time hierarchy compares time bounds, not (deterministic vs nondeterministic).</div></li>
+</ul></section></div><footer class="foot">P46 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<script>(function(){
+let stage=0; const T=5;
+function render(){
+  let s=''; s+=`<text x="380" y="30" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="700">Diagonalizer D vs TIME(f) machines</text>`;
+  const stages=['On input ⟨M⟩, D simulates M(⟨M⟩) with a clock.','If clock exceeds f(|⟨M⟩|)·log f, D outputs 0.','Otherwise D outputs opposite of M(⟨M⟩).','D runs in time O(f · log f). D ∉ TIME(f) (else D differs from itself).','Therefore TIME(f) ⊊ TIME(f·log f).'];
+  stages.forEach((step,i)=>{const y=70+i*38, shown=i<=stage;
+    s+=`<text x="80" y="${y}" font-family="var(--sans), sans-serif" font-size="14" fill="${shown?'var(--ink)':'#bbb'}" opacity="${shown?1:0.3}"><tspan font-weight="bold" fill="${shown?'var(--accent)':'#bbb'}">${i+1}.</tspan> ${step}</text>`;
+  });
+  document.getElementById('th-svg').innerHTML=s;
+  document.getElementById('th-explain').innerHTML=`<div class="step-num">Step ${stage+1}/${T}</div><p style="margin:4px 0;">${stages[Math.min(stage,stages.length-1)]}</p>`;
+}
+function step(){ if(stage<T-1)stage++; render(); }
+function reset(){ stage=0; render(); }
+function atEnd(){ return stage>=T-1; }
+WidgetLoop.create({runBtn:document.getElementById('th-run'),stepBtn:document.getElementById('th-step'),resetBtn:document.getElementById('th-reset'),speedSlider:document.getElementById('th-speed'),speedLabel:document.getElementById('th-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:2500,baseLoopMs:5500,autoStartMs:1500});
+reset();
+})();</script><script src="../presentation.js"></script>
+</body></html>

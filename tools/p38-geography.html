@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>P38 · Generalized Geography</title><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css"><script src="../widget-loop.js"></script></head><body>
+<header class="tool-header"><div class="crumb"><a href="index.html">← Student tools</a> · Problem 38 · Lecture 14 · Round 3 (40 pts)</div>
+<h1>Generalized Geography · play against the computer</h1><p class="sub">Two players move a token along a directed graph. No vertex repeats. Last mover wins.</p>
+<div class="tags"><span class="tag-pill">CLO-4</span><span class="tag-pill warn">R3·40 pts</span><span class="tag-pill info">L14</span></div></header>
+<div class="wrap">
+<section><div class="section-label">1 · Theory</div>
+<div class="theorem-box"><div class="theorem-label">PSPACE-complete</div><p style="margin:4px 0;">Generalized Geography (GG) = {⟨G, s⟩ : Player 1 has a winning strategy on G starting at s}. Reduction from TQBF.</p></div>
+<p>Why PSPACE: minimax tree has depth ≤ n. Stack ≤ n. O(n) space.</p></section>
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Watch optimal play from a fixed graph <span class="pill">Auto-plays</span></div>
+<div class="controls"><button class="btn play-btn" id="gg-run">⏸ Pause</button><button class="btn ghost" id="gg-step">Step</button><button class="btn ghost" id="gg-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="gg-speed" min="0.25" max="3" step="0.25" value="1"><span id="gg-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
+<svg id="gg-svg" viewBox="0 0 760 280" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="gg-explain"></div></div></section>
+<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why does no vertex repeat?</div><div class="a">Without that rule, players could loop forever. With it, the game terminates after at most |V| moves.</div></li>
+<li><div class="q">Q2. PSPACE-completeness proof?</div><div class="a">Reduce TQBF: build a graph where ∃-player picks variable values and ∀-player tries to falsify. Game corresponds exactly to the QBF evaluation.</div></li>
+<li><div class="q">Q3. Time vs space for the minimax algorithm?</div><div class="a">Exponential time (visit every reachable game state) but polynomial space (just the current path).</div></li>
+</ul></section></div><footer class="foot">P38 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<script>(function(){
+const nodes={S:{x:120,y:140},A:{x:280,y:80},B:{x:280,y:200},C:{x:440,y:140},D:{x:600,y:80},E:{x:600,y:200}};
+const edges=[['S','A'],['S','B'],['A','C'],['B','C'],['C','D'],['C','E'],['D','E'],['E','D']];
+const play=['S','A','C','D','E'];
+let stage=0;
+function render(){
+  let s='';
+  edges.forEach(([a,b])=>{const onP=play.slice(0,stage).includes(a)&&play.slice(0,stage).includes(b)&&Math.abs(play.indexOf(a)-play.indexOf(b))===1;
+    s+=`<line x1="${nodes[a].x}" y1="${nodes[a].y}" x2="${nodes[b].x}" y2="${nodes[b].y}" stroke="${onP?'var(--accent)':'#888'}" stroke-width="${onP?2.5:1.2}"/>`;
+    const dx=nodes[b].x-nodes[a].x, dy=nodes[b].y-nodes[a].y, len=Math.hypot(dx,dy);
+    const ex=nodes[b].x-dx/len*24, ey=nodes[b].y-dy/len*24;
+    s+=`<polygon points="${ex},${ey} ${ex-dx/len*8-dy/len*4},${ey-dy/len*8+dx/len*4} ${ex-dx/len*8+dy/len*4},${ey-dy/len*8-dx/len*4}" fill="${onP?'var(--accent)':'#888'}"/>`;
+  });
+  for(const[n,p] of Object.entries(nodes)){const cur=play[stage-1]===n, vis=play.slice(0,stage).includes(n);
+    s+=`<circle cx="${p.x}" cy="${p.y}" r="24" fill="${cur?'var(--warn)':(vis?'#ddd':'#fff')}" stroke="${cur?'var(--warn)':'var(--accent-strong)'}" stroke-width="${cur?3:1.5}"/><text x="${p.x}" y="${p.y+5}" text-anchor="middle" font-family="ui-monospace,monospace" font-size="14" font-weight="bold" fill="${cur?'#fff':'#1a1a1a'}">${n}</text>`;
+  }
+  document.getElementById('gg-svg').innerHTML=s;
+  const msgs=['<div class="step-num">Setup</div><p style="margin:4px 0;">Token starts at S. Players alternate moves along directed edges. No revisits.</p>','<div class="step-num">Move 1 · Player 1 moves S → A</div><p style="margin:4px 0;">Player 1 picks A (a winning choice).</p>','<div class="step-num">Move 2 · Player 2 moves A → C</div><p style="margin:4px 0;">Player 2 has only one move from A.</p>','<div class="step-num">Move 3 · Player 1 moves C → D</div><p style="margin:4px 0;">Player 1 picks D, trying to force a corner.</p>','<div class="step-num">Move 4 · Player 2 moves D → E</div><p style="margin:4px 0;">Forced.</p>','<div class="step-num">Move 5 · Player 1 stuck?</div><p style="margin:4px 0;">From E, only outgoing edge is to D — already visited. Player 1 cannot move ⇒ Player 1 loses.</p>'];
+  document.getElementById('gg-explain').innerHTML=msgs[Math.min(stage,msgs.length-1)];
+}
+function step(){ if(stage<play.length)stage++; render(); }
+function reset(){ stage=0; render(); }
+function atEnd(){ return stage>=play.length; }
+WidgetLoop.create({runBtn:document.getElementById('gg-run'),stepBtn:document.getElementById('gg-step'),resetBtn:document.getElementById('gg-reset'),speedSlider:document.getElementById('gg-speed'),speedLabel:document.getElementById('gg-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:1800,baseLoopMs:5500,autoStartMs:1500});
+reset();
+})();</script><script src="../presentation.js"></script>
+</body></html>

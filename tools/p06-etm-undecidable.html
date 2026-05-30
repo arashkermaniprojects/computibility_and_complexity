@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P6 · E_TM is undecidable</title>
+<link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css">
+<script src="../widget-loop.js"></script></head><body>
+
+<header class="tool-header">
+<div class="crumb"><a href="index.html">← Student tools</a> · Problem 6 · Lecture 6 · Round 1 (30 pts)</div>
+<h1>E<sub>TM</sub> is undecidable</h1>
+<p class="sub">Reduce A<sub>TM</sub> to ¬E<sub>TM</sub>: build M' whose language is Σ* iff M accepts w.</p>
+<div class="tags"><span class="tag-pill">CLO-2</span><span class="tag-pill warn">R1·30 pts</span><span class="tag-pill info">L6</span></div>
+</header>
+
+<div class="wrap">
+
+<section><div class="section-label">1 · Why this matters · the BIG picture</div>
+<p>
+"Is this program's language empty?" is one of the most basic questions you can ask about a TM — and it is undecidable.
+This means: there is no algorithm that, given an arbitrary program, can tell you whether it ever produces any output
+on any input. Practical examples: "does this regex with backreferences match any string?" "does this program have
+any reachable accepting path?" — undecidable in general.
+</p>
+<div class="theorem-box"><div class="theorem-label">What we prove</div>
+<p style="margin:4px 0;"><span class="math">E<sub>TM</sub> = {⟨M⟩ : L(M) = ∅}</span> is not decidable. We give a mapping reduction A<sub>TM</sub> ≤<sub>m</sub> ¬E<sub>TM</sub>, showing E<sub>TM</sub> is at least as hard as A<sub>TM</sub>.</p></div>
+</section>
+
+<section><div class="section-label">2 · Setup · the construction</div>
+<p>We turn a question about M accepting one specific input w into a question about a new machine M' accepting <em>anything at all</em>. The trick: hard-code w inside M', and have M' ignore its input.</p>
+<div class="theorem-box" style="background:#fffaf3;"><div class="theorem-label">Construction of M' (from ⟨M, w⟩)</div>
+<p style="margin:4px 0;font-family:var(--mono);font-size:13.5px;">
+M' = "on input x:<br>
+&nbsp;&nbsp;1. ignore x;<br>
+&nbsp;&nbsp;2. simulate M on w;<br>
+&nbsp;&nbsp;3. if M accepts: accept x."
+</p>
+</div>
+<p>Note ⟨M, w⟩ is finite, so writing M' down is computable. The map ⟨M, w⟩ ↦ ⟨M'⟩ is the reduction.</p>
+</section>
+
+<section><div class="section-label">3 · The proof · L(M') is all-or-nothing</div>
+<p>Two cases:</p>
+<ul style="font-size:14px;line-height:1.65;">
+<li><strong>If M accepts w</strong> · Every x triggers the accept branch ⇒ L(M') = Σ* ⇒ ⟨M'⟩ ∉ E<sub>TM</sub>.</li>
+<li><strong>If M does NOT accept w</strong> (rejects or loops) · Every x makes M' reject or loop ⇒ L(M') = ∅ ⇒ ⟨M'⟩ ∈ E<sub>TM</sub>.</li>
+</ul>
+<p>So ⟨M, w⟩ ∈ A<sub>TM</sub> ⇔ ⟨M'⟩ ∉ E<sub>TM</sub>. If we had a decider for E<sub>TM</sub>, we could build a decider for A<sub>TM</sub> (run the E<sub>TM</sub>-decider, flip the answer). Impossible ⇒ E<sub>TM</sub> is undecidable. <span class="math">∎</span></p>
+</section>
+
+<section><div class="section-label">4 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Construct M' stage by stage <span class="pill">Auto-plays</span></div>
+<div class="controls">
+<button class="btn play-btn" id="e-run">⏸ Pause</button><button class="btn ghost" id="e-step">Step</button><button class="btn ghost" id="e-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="e-speed" min="0.25" max="3" step="0.25" value="1"><span id="e-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label>
+</div>
+<svg id="e-svg" viewBox="0 0 760 280" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="e-explain"></div>
+</div></section>
+
+<section><div class="section-label">5 · Worked example · concrete M and w</div>
+<p>Take M = "accept iff input length is a multiple of 3", w = "aaaaaa" (length 6).</p>
+<ul style="font-size:14px;line-height:1.65;">
+<li>M(w) = accept (6 ≡ 0 mod 3).</li>
+<li>So M' on any x: runs M on "aaaaaa", which accepts, then M' accepts x.</li>
+<li>L(M') = Σ*. ⟨M'⟩ ∉ E<sub>TM</sub>.</li>
+</ul>
+<p>Now change w to "aaaaa" (length 5).</p>
+<ul style="font-size:14px;line-height:1.65;">
+<li>M(w) = reject.</li>
+<li>M' on any x: runs M on "aaaaa", which rejects, M' never accepts.</li>
+<li>L(M') = ∅. ⟨M'⟩ ∈ E<sub>TM</sub>.</li>
+</ul>
+<p>The "membership in A<sub>TM</sub>" question (does M accept w?) became "is L(M') empty?" — a question about E<sub>TM</sub>.</p>
+</section>
+
+<section><div class="section-label">6 · Connections · related undecidable language properties</div>
+<ul style="font-size:14px;line-height:1.7;">
+<li><strong>REGULAR<sub>TM</sub></strong> (Problem 7) · "Is L(M) regular?" Same construction trick: make L(M') simple iff M accepts w.</li>
+<li><strong>EQ<sub>TM</sub></strong> (Problem 8) · "Do M<sub>1</sub>, M<sub>2</sub> recognize the same language?" Even stronger — not even recognizable.</li>
+<li><strong>Rice's theorem</strong> (Problem 14) · The grand generalization: any non-trivial property of L(M) is undecidable.</li>
+<li><strong>Halting</strong> · A<sub>TM</sub> ≤<sub>m</sub> HALT<sub>TM</sub> ≤<sub>m</sub> E<sub>TM</sub> — a chain of reductions all going through the same trick.</li>
+</ul>
+</section>
+
+<section><div class="section-label">7 · Common pitfalls · what students miss</div>
+<ol style="font-size:14px;line-height:1.7;">
+<li><strong>"M' runs M on x, not on w."</strong> No! M' runs M on the <em>fixed</em> w that's hard-coded inside M'. Otherwise the trick fails.</li>
+<li><strong>Reducing the wrong direction.</strong> We need A<sub>TM</sub> ≤ E<sub>TM</sub>, not the other way. The known-undecidable problem must be the source.</li>
+<li><strong>Confusing ¬E<sub>TM</sub> with E<sub>TM</sub>.</strong> The reduction gives M accepts w ⇔ L(M') = Σ*, which is ⟨M'⟩ ∉ E<sub>TM</sub>. So we reduce to the complement; that still shows E<sub>TM</sub> undecidable.</li>
+<li><strong>"M' must halt to be a valid TM."</strong> No — a TM is valid even if it loops on every input. L(M') = ∅ is perfectly legal.</li>
+<li><strong>Trying to make L(M') = {w}.</strong> Tempting but wrong. The trick is L(M') = Σ* vs ∅, because that's the question E<sub>TM</sub> asks about.</li>
+</ol>
+</section>
+
+<section><div class="section-label">8 · Q&amp;A defence notes</div>
+<ul class="qa-list">
+<li><div class="q">Q1. Why does M' "ignore" its input?</div><div class="a">Because we want L(M') to be either everything or nothing — a binary signal mirroring M's acceptance of the fixed w. Ignoring x kills any dependence on x.</div></li>
+<li><div class="q">Q2. Does this construction halt?</div><div class="a">M' halts (and accepts) iff M halts (and accepts) on w. If M loops on w, M' loops on every x. That's fine — we only need ⟨M'⟩ to encode the membership question.</div></li>
+<li><div class="q">Q3. Is this a mapping reduction or Turing reduction?</div><div class="a">Mapping reduction. The function ⟨M, w⟩ ↦ ⟨M'⟩ is computable and preserves the membership question.</div></li>
+<li><div class="q">Q4. Is E<sub>TM</sub> co-recognizable?</div><div class="a">Yes. ¬E<sub>TM</sub> is recognizable: enumerate strings w<sub>1</sub>, w<sub>2</sub>, …; run M on each in parallel; accept as soon as any one accepts.</div></li>
+<li><div class="q">Q5 (bonus). Place E<sub>TM</sub> in the Venn diagram (Problem 4).</div><div class="a">co-Rec \\ Dec. Because ¬E<sub>TM</sub> is recognizable (Q4) and E<sub>TM</sub> is undecidable (proven here).</div></li>
+</ul></section>
+
+<section><div class="section-label">9 · How to present this in class</div>
+<p style="font-size:13.5px;"><strong>Total time: 10 minutes.</strong></p>
+<ul style="font-size:13.5px;line-height:1.7;">
+<li><strong>(1 min)</strong> State the question: "is L(M) empty?" Hook: connect to "does this program ever produce output?"</li>
+<li><strong>(2 min)</strong> Write the construction of M' on the board. Stress: x ignored, w hard-coded.</li>
+<li><strong>(2 min)</strong> Run the visualization. Pause when M' is constructed and L(M') is computed.</li>
+<li><strong>(2 min)</strong> Work out the two cases explicitly: L(M') = Σ* vs L(M') = ∅.</li>
+<li><strong>(2 min)</strong> Worked example with concrete M and w.</li>
+<li><strong>(1 min)</strong> Forward link to Rice's theorem.</li>
+</ul>
+</section>
+
+</div>
+<footer class="foot">Problem 6 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<script>
+(function(){
+let stage = 0; const T = 5;
+function render() {
+  const W=760, H=280; let s='';
+  s+=`<defs><marker id="a6" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0,10 3,0 6" fill="var(--accent)"/></marker></defs>`;
+  const box = (x,y,w,h,t,sub,col,on) => { const op=on?1:0.3; s+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="8" fill="white" stroke="${on?col:'#bbb'}" stroke-width="${on?2.5:1}" opacity="${op}"/><text x="${x+w/2}" y="${y+22}" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="700" fill="${on?col:'#bbb'}" opacity="${op}">${t}</text>${sub?`<text x="${x+w/2}" y="${y+42}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="${on?col:'#bbb'}" opacity="${op}">${sub}</text>`:''}`; };
+  const arr = (x1,y1,x2,y2,on,lbl) => { const op=on?1:0.2; s+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${on?'var(--accent)':'#bbb'}" stroke-width="${on?2.5:1}" marker-end="url(#a6)" opacity="${op}"/>${lbl?`<text x="${(x1+x2)/2}" y="${(y1+y2)/2-6}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="var(--accent)" opacity="${op}">${lbl}</text>`:''}`; };
+
+  box(30, 110, 110, 60, '⟨M, w⟩', 'input', 'var(--info)', true);
+  box(190, 50, 380, 180, "Constructed M'", 'TM that ignores x', 'var(--accent)', stage >= 1);
+  box(230, 110, 80, 60, 'ignore x', '', 'var(--gold)', stage >= 2);
+  box(340, 110, 100, 60, 'run M on w', '', 'var(--warn)', stage >= 3);
+  box(470, 110, 80, 60, 'accept', 'if M acc.', 'var(--accent)', stage >= 4);
+  box(610, 110, 120, 60, "L(M')", stage >= 5 ? 'Σ* or ∅' : '?', 'var(--accent-strong)', stage >= 4);
+
+  arr(140, 140, 190, 140, stage >= 1, '');
+  arr(310, 140, 340, 140, stage >= 3, '');
+  arr(440, 140, 470, 140, stage >= 4, '');
+  arr(550, 140, 610, 140, stage >= 4, '');
+
+  document.getElementById('e-svg').innerHTML = s;
+  const m = [
+    `<div class="step-num">Stage 0 · Goal</div><p style="margin:4px 0;">Given an arbitrary ⟨M, w⟩, construct a new TM M' such that L(M') is either Σ* (every string) or ∅ — depending on whether M accepts w.</p>`,
+    `<div class="step-num">Stage 1 · M' is born</div><p style="margin:4px 0;">M' will be hard-coded to use the fixed string w. Its input parameter x will be ignored.</p>`,
+    `<div class="step-num">Stage 2 · Ignore x</div><p style="margin:4px 0;">No matter what x is, M' does the same thing. So L(M') depends only on M and w.</p>`,
+    `<div class="step-num">Stage 3 · Run M on w</div><p style="margin:4px 0;">M' invokes M, but on the fixed w (not on x). If M accepts: M' accepts x. If M rejects or loops: M' rejects/loops x.</p>`,
+    `<div class="step-num">Stage 4 · L(M') is Σ* or ∅</div><p style="margin:4px 0;">If M accepts w: M' accepts every x ⇒ L(M') = Σ*. If M does not accept w: M' accepts nothing ⇒ L(M') = ∅.</p>`,
+    `<div class="step-num">Stage 5 · The reduction works</div><p style="margin:4px 0;">⟨M, w⟩ ∈ A<sub>TM</sub> ⇔ L(M') = Σ* ⇔ ⟨M'⟩ ∉ E<sub>TM</sub>. So a decider for E<sub>TM</sub> would decide A<sub>TM</sub>. Impossible. <strong>E<sub>TM</sub> is undecidable.</strong></p>`
+  ];
+  document.getElementById('e-explain').innerHTML = m[Math.min(stage, m.length-1)];
+}
+function step() { if (stage < T) stage++; render(); }
+function reset() { stage = 0; render(); }
+function atEnd() { return stage >= T; }
+WidgetLoop.create({runBtn:document.getElementById('e-run'),stepBtn:document.getElementById('e-step'),resetBtn:document.getElementById('e-reset'),speedSlider:document.getElementById('e-speed'),speedLabel:document.getElementById('e-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:2500,baseLoopMs:5500,autoStartMs:1500});
+reset();
+})();
+</script><script src="../presentation.js"></script>
+</body></html>

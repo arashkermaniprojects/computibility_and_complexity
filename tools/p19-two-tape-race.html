@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>P19 · Single vs Two-tape race</title><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css"><script src="../widget-loop.js"></script></head><body>
+<header class="tool-header"><div class="crumb"><a href="index.html">← Student tools</a> · Problem 19 · Lecture 9 · Round 2 (30 pts)</div>
+<h1>Single-tape vs Two-tape · {0ⁿ1ⁿ} race</h1><p class="sub">Same problem. Different machine model. O(n²) vs O(n).</p>
+<div class="tags"><span class="tag-pill">CLO-3</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L9</span></div></header>
+<div class="wrap">
+<section><div class="section-label">1 · Theory</div><p>Two-tape strategy: copy the 0s to tape 2; then march tape 1 right through the 1s while tape 2 marches left through the copied 0s. Both in sync. O(n) steps.</p>
+<div class="theorem-box"><div class="theorem-label">Robustness theorem</div><p style="margin:4px 0;">A k-tape TM running in time t(n) can be simulated by a single-tape TM in time O(t(n)²). So polynomial stays polynomial across reasonable models.</p></div></section>
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Two tape models racing on the same input <span class="pill">Auto-plays</span></div>
+<div class="controls"><label>n: <input type="range" id="r-n" min="3" max="10" value="5" style="width:120px;"> <span id="r-nl">5</span></label>
+<button class="btn play-btn" id="r-run">⏸ Pause</button><button class="btn ghost" id="r-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="r-speed" min="0.25" max="3" step="0.25" value="1"><span id="r-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px;">
+<div style="min-width:0;"><h4>Single-tape · O(n²)</h4><svg id="r-s1" viewBox="0 0 400 80" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg><div style="font-family:var(--sans),sans-serif;font-size:12px;color:var(--muted);">Steps: <b id="r-st1" style="font-family:var(--mono);">0</b></div></div>
+<div style="min-width:0;"><h4>Two-tape · O(n)</h4><svg id="r-s2" viewBox="0 0 400 120" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg><div style="font-family:var(--sans),sans-serif;font-size:12px;color:var(--muted);">Steps: <b id="r-st2" style="font-family:var(--mono);">0</b></div></div>
+</div>
+<div class="explain-panel" id="r-explain"></div></div></section>
+<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why does two-tape win so much?</div><div class="a">It uses tape 2 as a stack/queue, eliminating the need to shuttle the head back and forth.</div></li>
+<li><div class="q">Q2. Why doesn't this break P?</div><div class="a">The simulation cost is at most squared — polynomial blowup. P is defined modulo polynomial differences in machine model.</div></li>
+<li><div class="q">Q3. What's the limit of multi-tape speedup?</div><div class="a">Some problems get linear speedups from multi-tape; others (like sorting) require Ω(n log n) regardless of tapes.</div></li>
+</ul></section></div><footer class="foot">P19 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<script>(function(){
+let n=5, s1=null, s2=null, raf1=null, raf2=null;
+function init(){ const inp='0'.repeat(n)+'1'.repeat(n);
+  s1={tape:inp.split(''),head:0,steps:0,phase:'find0',halted:false};
+  s2={t1:inp.split(''),t2:['_'],h1:0,h2:0,steps:0,phase:'copy',halted:false};
+}
+function step1(){ if(s1.halted)return false; s1.steps++; const r=s1.tape[s1.head];
+  if(s1.phase==='find0'){ if(r==='0'){s1.tape[s1.head]='X';s1.phase='find1';s1.head++;} else if(r==='X'||r==='Y'){s1.head++;} else{s1.halted=true;} }
+  else if(s1.phase==='find1'){ if(s1.head>=s1.tape.length){s1.halted=true;return true;} if(r==='0'||r==='Y'){s1.head++;} else if(r==='1'){s1.tape[s1.head]='Y';s1.phase='rewind';s1.head--;} else{s1.halted=true;} }
+  else if(s1.phase==='rewind'){ if(s1.head<=0){s1.phase='find0';} else{s1.head--;} }
+  return true;
+}
+function step2(){ if(s2.halted)return false; s2.steps++;
+  if(s2.phase==='copy'){ const r=s2.t1[s2.h1]; if(r==='0'){s2.t2[s2.h2]='0'; s2.h1++;s2.h2++; if(s2.h2>=s2.t2.length)s2.t2.push('_');} else if(r==='1'){s2.phase='rw';} else{s2.halted=true;} }
+  else if(s2.phase==='rw'){ if(s2.h2>0)s2.h2--; else s2.phase='match'; }
+  else if(s2.phase==='match'){ const a=s2.t1[s2.h1],b=s2.t2[s2.h2]; if(a==='1'&&b==='0'){s2.h1++;s2.h2++;} else if(a===undefined&&b==='_'){s2.halted=true;} else{s2.halted=true;} }
+  return true;
+}
+function r1(){const cw=30,sx=20,y=30; let s='';
+  for(let i=0;i<s1.tape.length;i++){const ch=s1.tape[i],x=sx+i*cw,h=i===s1.head;
+    s+=`<rect x="${x}" y="${y}" width="${cw}" height="32" fill="${ch==='X'||ch==='Y'?'var(--gold-soft)':(h?'var(--accent-soft)':'#fff')}" stroke="${h?'var(--accent)':'var(--rule-strong)'}" stroke-width="${h?2:1}"/><text x="${x+cw/2}" y="${y+22}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="14" font-weight="${h?'bold':'normal'}">${ch}</text>`;
+  }
+  document.getElementById('r-s1').innerHTML=s; document.getElementById('r-st1').textContent=s1.steps;
+}
+function r2(){const cw=30,sx=20; let s='';
+  for(let i=0;i<s2.t1.length;i++){const ch=s2.t1[i],x=sx+i*cw,h=i===s2.h1;
+    s+=`<rect x="${x}" y="20" width="${cw}" height="30" fill="${h?'var(--accent-soft)':'#fff'}" stroke="${h?'var(--accent)':'var(--rule-strong)'}" stroke-width="${h?2:1}"/><text x="${x+cw/2}" y="40" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13">${ch}</text>`;
+  }
+  for(let i=0;i<Math.max(s2.t2.length,n+1);i++){const ch=s2.t2[i]||'_',x=sx+i*cw,h=i===s2.h2;
+    s+=`<rect x="${x}" y="70" width="${cw}" height="30" fill="${h?'var(--info-soft)':'#fff'}" stroke="${h?'var(--info)':'var(--rule-strong)'}" stroke-width="${h?2:1}"/><text x="${x+cw/2}" y="90" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13" fill="${ch==='_'?'#888':'#1a1a1a'}">${ch}</text>`;
+  }
+  document.getElementById('r-s2').innerHTML=s; document.getElementById('r-st2').textContent=s2.steps;
+}
+function speed(){return parseFloat(document.getElementById('r-speed').value)||1;}
+function play(){
+  if(raf1)clearTimeout(raf1); if(raf2)clearTimeout(raf2);
+  init(); r1(); r2();
+  document.getElementById('r-explain').innerHTML=`<div class="step-num">Both starting on 0<sup>${n}</sup>1<sup>${n}</sup></div><p style="margin:4px 0;">Single-tape: pair-off strategy. Two-tape: copy then match.</p>`;
+  function l1(){ if(step1())r1(); if(!s1.halted) raf1=setTimeout(l1,500/speed()); else done(); }
+  function l2(){ if(step2())r2(); if(!s2.halted) raf2=setTimeout(l2,500/speed()); else done(); }
+  l1(); l2();
+}
+function done(){ if(s1.halted&&s2.halted){
+  document.getElementById('r-explain').innerHTML=`<div class="step-num">Both halted</div><p style="margin:4px 0;"><strong>Single-tape: ${s1.steps} steps. Two-tape: ${s2.steps} steps.</strong> Ratio ${(s1.steps/s2.steps).toFixed(1)}× — and grows with n.</p>`;
+}}
+document.getElementById('r-n').oninput=e=>{n=parseInt(e.target.value);document.getElementById('r-nl').textContent=n;play();};
+let looping=true, loopT=null;
+function setBtn(){document.getElementById('r-run').textContent=looping?'⏸ Pause':'▶ Play';}
+function stop(){looping=false;if(raf1)clearTimeout(raf1);if(raf2)clearTimeout(raf2);if(loopT)clearTimeout(loopT);raf1=raf2=loopT=null;setBtn();}
+document.getElementById('r-run').onclick=()=>{if(looping||raf1||raf2)stop(); else{looping=true;setBtn();play();}};
+document.getElementById('r-reset').onclick=()=>{stop();init();r1();r2();};
+function watch(){ if(looping&&!raf1&&!raf2&&!loopT&&s1&&s1.halted&&s2&&s2.halted){loopT=setTimeout(()=>{loopT=null;if(looping)play();},5000/speed());} setTimeout(watch,800);}
+play(); setTimeout(watch,2000);
+})();</script><script src="../presentation.js"></script>
+</body></html>

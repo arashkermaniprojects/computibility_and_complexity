@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>P29 · 3SAT → SUBSET-SUM</title><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css"><script src="../widget-loop.js"></script></head><body>
+<header class="tool-header"><div class="crumb"><a href="index.html">← Student tools</a> · Problem 29 · Lecture 12 · Round 2 (30 pts)</div>
+<h1>3SAT → SUBSET-SUM · the digit-position trick</h1><p class="sub">Build numbers whose digits encode variables and clauses; a subset sums to target iff formula is satisfiable.</p>
+<div class="tags"><span class="tag-pill">CLO-4</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L12</span></div></header>
+<div class="wrap">
+<section><div class="section-label">1 · Theory</div>
+<div class="theorem-box"><div class="theorem-label">Construction</div><p style="margin:4px 0;">For n variables, m clauses, build 2n + 2m numbers in base 10: n digits for variables (one bit each) + m digits for clauses (clause-satisfaction count).</p></div>
+<p>Target has 1s in variable positions (exactly one chosen per variable) and 3s in clause positions (clause covered, padded by slack).</p></section>
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Tiny instance · 2 vars, 2 clauses <span class="pill">Auto-plays</span></div>
+<div class="controls"><button class="btn play-btn" id="ss-run">⏸ Pause</button><button class="btn ghost" id="ss-step">Step</button><button class="btn ghost" id="ss-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="ss-speed" min="0.25" max="3" step="0.25" value="1"><span id="ss-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
+<div id="ss-display" style="min-height:280px;padding:14px;"></div>
+<div class="explain-panel" id="ss-explain"></div></div></section>
+<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why base 10 (not binary)?</div><div class="a">Base ≥ 4 avoids carries when columns sum to ≤ 3. Base 10 is convenient for humans.</div></li>
+<li><div class="q">Q2. Why slack numbers?</div><div class="a">A clause may have 1, 2, or 3 true literals. Slacks pad each clause sum to exactly 3 regardless.</div></li>
+<li><div class="q">Q3. Size of the reduction?</div><div class="a">2n + 2m numbers, each n + m digits ⇒ O((n+m)²) total. Polynomial in formula size.</div></li>
+</ul></section></div><footer class="foot">P29 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<script>(function(){
+const stages=[
+  {html:`<div style="font-family:ui-monospace,monospace;font-size:15px;text-align:center;">Formula: (x ∨ y) ∧ (¬x ∨ y)</div><div style="font-family:var(--sans),sans-serif;font-size:13px;color:var(--muted);text-align:center;margin-top:6px;">2 vars + 2 clauses = 4 digit positions</div>`,note:'Start: tiny 3SAT instance.'},
+  {html:`<table class="data" style="font-family:ui-monospace,monospace;font-size:13px;margin:auto;"><tr><th></th><th>x</th><th>y</th><th>c₁</th><th>c₂</th></tr><tr><th>x=T</th><td>1</td><td>0</td><td>1</td><td>0</td></tr><tr><th>x=F</th><td>1</td><td>0</td><td>0</td><td>1</td></tr><tr><th>y=T</th><td>0</td><td>1</td><td>1</td><td>1</td></tr><tr><th>y=F</th><td>0</td><td>1</td><td>0</td><td>0</td></tr><tr><th>slack a</th><td>0</td><td>0</td><td>1</td><td>0</td></tr><tr><th>slack b</th><td>0</td><td>0</td><td>1</td><td>0</td></tr><tr><th>slack c</th><td>0</td><td>0</td><td>0</td><td>1</td></tr><tr><th>slack d</th><td>0</td><td>0</td><td>0</td><td>1</td></tr><tr style="background:var(--gold-soft);font-weight:bold;"><th>TARGET</th><td>1</td><td>1</td><td>3</td><td>3</td></tr></table>`,note:'Build numbers · target column.'},
+  {html:`<div style="font-family:var(--sans),sans-serif;font-size:13px;color:var(--muted);max-width:480px;margin:auto;"><div style="font-family:ui-monospace,monospace;margin-bottom:8px;">Pick: {x=T, y=T, slack a, slack c}</div><div style="font-family:ui-monospace,monospace;font-size:12px;">x col: 1 + 0 = <b>1</b> ✓<br>y col: 0 + 1 = <b>1</b> ✓<br>c₁ col: 1 + 1 + 1 = <b>3</b> ✓<br>c₂ col: 0 + 1 + 1 = <b>2</b> · need slack d</div><div style="margin-top:10px;color:var(--accent);font-weight:bold;">Subset sum = target ⇒ formula satisfiable.</div></div>`,note:'Witness subset = satisfying assignment.'}
+];
+let i=0;
+function render(){
+  document.getElementById('ss-display').innerHTML=stages[i].html;
+  document.getElementById('ss-explain').innerHTML=`<div class="step-num">Stage ${i+1}/${stages.length}</div><p style="margin:4px 0;">${stages[i].note}</p>`;
+}
+function step(){ if(i<stages.length-1)i++; render(); }
+function reset(){ i=0; render(); }
+function atEnd(){ return i>=stages.length-1; }
+WidgetLoop.create({runBtn:document.getElementById('ss-run'),stepBtn:document.getElementById('ss-step'),resetBtn:document.getElementById('ss-reset'),speedSlider:document.getElementById('ss-speed'),speedLabel:document.getElementById('ss-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:4000,baseLoopMs:5500,autoStartMs:1500});
+reset();
+})();</script><script src="../presentation.js"></script>
+</body></html>

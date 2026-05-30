@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>P23 · HAMPATH verifier</title><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css"><script src="../widget-loop.js"></script></head><body>
+<header class="tool-header"><div class="crumb"><a href="index.html">← Student tools</a> · Problem 23 · Lecture 10 · Round 2 (30 pts)</div>
+<h1>HAMPATH ∈ NP · verifying a Hamiltonian path</h1><p class="sub">Certificate = a vertex sequence; verifier checks length, distinctness, edges.</p>
+<div class="tags"><span class="tag-pill">CLO-3</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L10</span></div></header>
+<div class="wrap">
+<section><div class="section-label">1 · Theory</div><p>HAMPATH = {⟨G, s, t⟩ : G has a Hamiltonian path from s to t}. NP-complete. Verifier is easy; finding the path seems hard.</p>
+<div class="theorem-box"><div class="theorem-label">Verifier in poly time</div><p style="margin:4px 0;">Given (G, s, t, π = v₁ v₂ … v_n): check |π| = n, all distinct, v₁ = s, v_n = t, every (v_i, v_{i+1}) is an edge. O(n²).</p></div></section>
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Step through verification of a candidate path <span class="pill">Auto-plays</span></div>
+<div class="controls"><button class="btn play-btn" id="h-run">⏸ Pause</button><button class="btn ghost" id="h-step">Step</button><button class="btn ghost" id="h-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="h-speed" min="0.25" max="3" step="0.25" value="1"><span id="h-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
+<svg id="h-svg" viewBox="0 0 760 280" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="h-explain"></div></div></section>
+<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why O(n²)?</div><div class="a">For n vertices: n length checks, n² distinctness checks (or n with a hash), n−1 edge lookups.</div></li>
+<li><div class="q">Q2. Why is finding hard?</div><div class="a">Brute force tries n! paths. No poly-time algorithm known. HAMPATH is NP-complete (3SAT reduces to it).</div></li>
+<li><div class="q">Q3. What's the certificate size?</div><div class="a">n vertex labels, each O(log n) bits. Total O(n log n) — polynomial in input size.</div></li>
+</ul></section></div><footer class="foot">P23 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<script>(function(){
+const nodes={S:{x:90,y:140},A:{x:230,y:80},B:{x:230,y:200},C:{x:380,y:140},D:{x:520,y:80},T:{x:660,y:140}};
+const edges=[['S','A'],['S','B'],['A','C'],['B','C'],['C','D'],['D','T'],['C','T'],['A','D']];
+const path=['S','A','C','D','T'];
+let stage=0;
+function render(){
+  let s='';
+  edges.forEach(([a,b])=>{const inP=path.includes(a)&&path.includes(b)&&Math.abs(path.indexOf(a)-path.indexOf(b))===1&&stage>=Math.max(path.indexOf(a),path.indexOf(b));
+    s+=`<line x1="${nodes[a].x}" y1="${nodes[a].y}" x2="${nodes[b].x}" y2="${nodes[b].y}" stroke="${inP?'var(--accent)':'#bbb'}" stroke-width="${inP?3:1.2}"/>`;
+  });
+  for(const[n,p] of Object.entries(nodes)){const onP=path.slice(0,stage+1).includes(n);
+    s+=`<circle cx="${p.x}" cy="${p.y}" r="24" fill="${onP?'var(--accent)':'#fff'}" stroke="var(--accent-strong)" stroke-width="2"/><text x="${p.x}" y="${p.y+5}" text-anchor="middle" font-family="ui-monospace,monospace" font-size="14" font-weight="bold" fill="${onP?'#fff':'#1a1a1a'}">${n}</text>`;
+  }
+  s+=`<text x="380" y="260" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13">Certificate path: ${path.join(' → ')}</text>`;
+  document.getElementById('h-svg').innerHTML=s;
+  const msgs=[
+    `<div class="step-num">Setup</div><p style="margin:4px 0;">Graph G with 6 vertices. Certificate is the sequence ${path.join(' → ')}. Verifier checks step by step.</p>`,
+    `<div class="step-num">Vertex 1: ${path[0]}</div><p style="margin:4px 0;">Starts at S. ✓</p>`,
+    `<div class="step-num">Edge (${path[0]}, ${path[1]})</div><p style="margin:4px 0;">Is (S,A) ∈ E? Yes. ✓ Advance.</p>`,
+    `<div class="step-num">Edge (${path[1]}, ${path[2]})</div><p style="margin:4px 0;">Is (A,C) ∈ E? Yes. ✓</p>`,
+    `<div class="step-num">Edge (${path[2]}, ${path[3]})</div><p style="margin:4px 0;">Is (C,D) ∈ E? Yes. ✓</p>`,
+    `<div class="step-num">Edge (${path[3]}, ${path[4]})</div><p style="margin:4px 0;">Is (D,T) ∈ E? Yes. Ends at T. ✓</p>`,
+    `<div class="step-num">All checks passed</div><p style="margin:4px 0;">All distinct, all edges valid, starts at S, ends at T, length = |V|. <strong>Valid Hamiltonian path.</strong> Verification took O(n²). HAMPATH ∈ NP.</p>`
+  ];
+  document.getElementById('h-explain').innerHTML=msgs[Math.min(stage,msgs.length-1)];
+}
+function step(){ if(stage<6)stage++; render(); }
+function reset(){ stage=0; render(); }
+function atEnd(){ return stage>=6; }
+WidgetLoop.create({runBtn:document.getElementById('h-run'),stepBtn:document.getElementById('h-step'),resetBtn:document.getElementById('h-reset'),speedSlider:document.getElementById('h-speed'),speedLabel:document.getElementById('h-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:1800,baseLoopMs:5000,autoStartMs:1300});
+reset();
+})();</script><script src="../presentation.js"></script>
+</body></html>

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>P55 · Cook-Levin specific</title><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css"><script src="../widget-loop.js"></script></head><body>
+<header class="tool-header"><div class="crumb"><a href="index.html">← Student tools</a> · Problem 55 · Lecture 11 · Round 2 (30 pts)</div>
+<h1>Cook–Levin on a concrete NP language</h1><p class="sub">Encode the HAMPATH verifier as a SAT formula for a tiny instance.</p>
+<div class="tags"><span class="tag-pill">CLO-4</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L11</span></div></header>
+<div class="wrap">
+<section><div class="section-label">1 · Theory</div><p>For a specific NP language (HAMPATH), walk through the four clause families that build φ<sub>x</sub>.</p>
+<div class="theorem-box"><div class="theorem-label">Four clause families</div><p style="margin:4px 0;">φ<sub>cell</sub>: each cell has exactly one symbol/state.<br>φ<sub>start</sub>: row 0 = start config on (G, π).<br>φ<sub>accept</sub>: some row contains q<sub>accept</sub>.<br>φ<sub>move</sub>: every 2×3 window matches δ.</p></div></section>
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Reveal each clause family <span class="pill">Auto-plays</span></div>
+<div class="controls"><button class="btn play-btn" id="r-run">⏸ Pause</button><button class="btn ghost" id="r-step">Step</button><button class="btn ghost" id="r-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="r-speed" min="0.25" max="3" step="0.25" value="1"><span id="r-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
+<svg id="r-svg" viewBox="0 0 760 320" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="r-explain"></div></div></section>
+<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why is φ<sub>cell</sub> needed?</div><div class="a">Without it, SAT variables could "claim" a cell holds multiple symbols, which is meaningless.</div></li>
+<li><div class="q">Q2. How big is the formula?</div><div class="a">O(n<sup>2k</sup>) clauses for a TM running in time n<sup>k</sup>. Polynomial.</div></li>
+<li><div class="q">Q3. Why is this a polynomial reduction?</div><div class="a">The formula is constructed by a procedure whose running time is polynomial in |x|. So if SAT were in P, every NP language would be too.</div></li>
+</ul></section></div><footer class="foot">P55 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<script>(function(){
+const families=[
+  {n:'φ_cell',desc:'each cell has exactly one symbol/state',ex:'⋁<sub>s∈Γ∪Q</sub> x[r,c,s] ∧ ⋀ ¬(x[r,c,s] ∧ x[r,c,s\'])',color:'var(--accent)'},
+  {n:'φ_start',desc:'row 0 = start configuration on (G, π)',ex:'x[0,0,q₀] ∧ x[0,1,#] ∧ x[0,2,(input bit)] ∧ …',color:'var(--info)'},
+  {n:'φ_accept',desc:'some row contains q_accept',ex:'⋁<sub>r,c</sub> x[r,c,q_accept]',color:'var(--gold)'},
+  {n:'φ_move',desc:'every 2×3 window is δ-legal',ex:'⋀<sub>r,c</sub> (window[r,c] is one of |δ| legal patterns)',color:'var(--warn)'}
+];
+let i=-1;
+function render(){
+  let s=''; s+=`<text x="380" y="32" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="700">φ_x = φ_cell ∧ φ_start ∧ φ_accept ∧ φ_move</text>`;
+  families.forEach((f,k)=>{const y=70+k*60, shown=k<=i;
+    s+=`<rect x="40" y="${y}" width="680" height="48" rx="6" fill="white" stroke="${shown?f.color:'#ccc'}" stroke-width="${shown?2.5:1}" opacity="${shown?1:0.25}"/>`;
+    s+=`<text x="60" y="${y+18}" font-family="var(--sans), sans-serif" font-size="13" font-weight="700" fill="${shown?f.color:'#888'}" opacity="${shown?1:0.25}">${f.n}</text>`;
+    s+=`<text x="160" y="${y+18}" font-family="var(--sans), sans-serif" font-size="12" fill="${shown?'var(--ink)':'#bbb'}" opacity="${shown?1:0.25}">${f.desc}</text>`;
+    s+=`<text x="60" y="${y+38}" font-family="ui-monospace, monospace" font-size="11" fill="${shown?'var(--muted)':'#bbb'}" opacity="${shown?1:0.25}">${f.ex}</text>`;
+  });
+  document.getElementById('r-svg').innerHTML=s;
+  if(i<0) document.getElementById('r-explain').innerHTML=`<div class="step-num">Setup</div><p style="margin:4px 0;">Four clause families assemble into a SAT formula φ_x. Reveal one at a time.</p>`;
+  else if(i>=families.length-1) document.getElementById('r-explain').innerHTML=`<div class="step-num">All families revealed</div><p style="margin:4px 0;"><strong>φ_x = φ_cell ∧ φ_start ∧ φ_accept ∧ φ_move.</strong> Each family is polynomial in |x|. φ_x satisfiable ⇔ x has a certificate ⇔ x ∈ HAMPATH (or whatever NP language we picked).</p>`;
+  else { const f=families[i]; document.getElementById('r-explain').innerHTML=`<div class="step-num">${f.n}</div><p style="margin:4px 0;">${f.desc}.</p>`; }
+}
+function step(){ if(i<families.length-1)i++; render(); }
+function reset(){ i=-1; render(); }
+function atEnd(){ return i>=families.length-1; }
+WidgetLoop.create({runBtn:document.getElementById('r-run'),stepBtn:document.getElementById('r-step'),resetBtn:document.getElementById('r-reset'),speedSlider:document.getElementById('r-speed'),speedLabel:document.getElementById('r-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:2200,baseLoopMs:5000,autoStartMs:1500});
+reset();
+})();</script><script src="../presentation.js"></script>
+</body></html>

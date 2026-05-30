@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P45 · Space hierarchy diagonalization</title>
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css">
+<script src="../widget-loop.js"></script>
+</head>
+<body>
+
+<header class="tool-header">
+  <div class="crumb"><a href="index.html">← Student tools</a> · Problem 45 · Lecture 16 · Round 3 (40 pts)</div>
+  <h1>The space hierarchy theorem · via diagonalization</h1>
+  <p class="sub">More space = strictly more languages. The cleanest separation theorem we can actually prove.</p>
+  <div class="tags">
+    <span class="tag-pill">CLO-1 · Diagonalization</span>
+    <span class="tag-pill">CLO-5 · Hierarchy</span>
+    <span class="tag-pill warn">Round 3 · 40 pts</span>
+    <span class="tag-pill info">Lecture 16</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+<section>
+  <div class="section-label">1 · Why this matters · the BIG picture</div>
+  <p>
+    The hierarchy theorems are the only <strong>unconditional separation results</strong> in complexity theory.
+    Every famous open problem — P vs NP, P vs PSPACE, NL vs L — asks whether two classes are equal. We don't know.
+    But we <em>do</em> know, for sure, that <strong>strictly more space (or time) gives strictly more power</strong>,
+    as long as the gap is big enough.
+  </p>
+  <p>
+    These are the theorems that anchor the complexity zoo. Without them, the picture L ⊆ NL ⊆ P ⊆ NP ⊆ PSPACE ⊆ EXPTIME
+    would have no proven inequalities at all. The hierarchy theorems guarantee at least one strict containment
+    in every "long enough" stretch of the chain.
+  </p>
+  <div class="theorem-box">
+    <div class="theorem-label">Space hierarchy theorem</div>
+    <p style="margin:4px 0;">If <span class="math">f(n) ≥ log n</span> is space-constructible, then
+      <span class="math">SPACE(f(n)) ⊊ SPACE(f(n) · log f(n))</span>.</p>
+    <p style="margin:4px 0;"><strong>Corollaries:</strong> L ⊊ PSPACE · NL ⊊ PSPACE · P ⊊ EXPSPACE · NP ⊊ EXPSPACE.</p>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">2 · Setup · the diagonal recipe</div>
+  <p>The recipe is Cantor's, with three new ingredients:</p>
+  <ol style="font-size:14px;line-height:1.7;">
+    <li><strong>Enumerate the machines</strong> we want to defeat: M<sub>1</sub>, M<sub>2</sub>, … = all TMs using ≤ f(n) space. (We can list TM descriptions lexicographically.)</li>
+    <li><strong>Build D</strong> = "on input ⟨M⟩: simulate M(⟨M⟩) using a counter to enforce f(n) space; if M halts with answer b, output 1-b."</li>
+    <li><strong>Argue D's resources</strong>: D uses f(n) for the simulated tape, plus O(log f(n)) for a counter, total O(f(n) · log f(n)).</li>
+  </ol>
+
+  <div class="theorem-box" style="background:#f3f8f3;"><div class="theorem-label">Vocabulary</div>
+    <ul style="margin:4px 0;padding-left:22px;font-size:13.5px;">
+      <li><strong>Space-constructible</strong> · there's a TM that on 1<sup>n</sup> writes f(n) on its tape in O(f(n)) space. Almost any "reasonable" function (n, n², 2<sup>n</sup>, log n, …) is space-constructible.</li>
+      <li><strong>Simulation overhead</strong> · the log factor. To simulate M's f(n)-space tape, D needs to track head positions, current state, and step count. That's an extra log f(n) factor.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">3 · The proof · two claims to verify</div>
+  <p><strong>Claim 1.</strong> D ∉ SPACE(f). Suppose, for contradiction, D ∈ SPACE(f). Then D = M<sub>k</sub> for some k. Run D on input ⟨M<sub>k</sub>⟩ = ⟨D⟩:</p>
+  <ul style="font-size:14px;line-height:1.65;">
+    <li>By the table, M<sub>k</sub>(⟨M<sub>k</sub>⟩) = some bit b.</li>
+    <li>By D's construction, D(⟨M<sub>k</sub>⟩) = 1 − b.</li>
+    <li>But D = M<sub>k</sub>. So b = 1 − b. Contradiction.</li>
+  </ul>
+  <p><strong>Claim 2.</strong> D ∈ SPACE(f · log f). The simulation uses f(n) tape cells for M's tape and O(log f(n)) for head/state/counter. Total: O(f · log f). <span class="math">∎</span></p>
+  <p>The animation walks the diagonal: row by row, watch the cell where M<sub>i</sub> meets ⟨M<sub>i</sub>⟩, then watch D's row appear in gold flipping every diagonal answer.</p>
+</section>
+
+<section>
+  <div class="section-label">4 · Animated demo · auto-plays · loops</div>
+
+  <div class="widget">
+    <div class="widget-title">Build D by walking the diagonal · escape every SPACE(f) machine <span class="pill">Auto-plays</span></div>
+
+    <div class="controls">
+      <button class="btn play-btn" id="hi-run">⏸ Pause</button>
+      <button class="btn ghost" id="hi-step">Step</button>
+      <button class="btn ghost" id="hi-reset">Reset</button>
+      <label class="speed-control">Speed
+        <input type="range" id="hi-speed" min="0.25" max="3" step="0.25" value="1">
+        <span id="hi-speed-label" style="font-family: var(--mono); min-width: 28px;">1×</span>
+      </label>
+    </div>
+
+    <svg id="hi-svg" viewBox="0 0 760 360" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+
+    <div class="explain-panel" id="hi-explain"></div>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">5 · Worked example · numbers behind L ⊊ PSPACE</div>
+  <p>Apply the theorem with f(n) = log n (i.e. L):</p>
+  <ul style="font-size:14px;line-height:1.65;">
+    <li>SPACE(log n) = L ⊊ SPACE(log n · log log n) ⊆ SPACE(log² n).</li>
+    <li>Keep iterating: SPACE(log² n) ⊊ SPACE(log² · log log²) ⊆ SPACE(log³).</li>
+    <li>Eventually we cross into SPACE(n) and beyond. SPACE(n) ⊊ SPACE(n²) ⊊ … ⊊ SPACE(n^k) for any growing k.</li>
+  </ul>
+  <p>So L is strictly inside PSPACE = ∪<sub>k</sub> SPACE(n^k). Each strict step is small (log factor), but a chain of strict steps eventually crosses any polynomial gap.</p>
+
+  <table style="font-size:13.5px;width:100%;border-collapse:collapse;margin:10px 0;">
+    <thead><tr style="background:var(--gold-soft);">
+      <th style="padding:6px;border:1px solid var(--rule);">Class</th>
+      <th style="padding:6px;border:1px solid var(--rule);">Space</th>
+      <th style="padding:6px;border:1px solid var(--rule);">Hierarchy gap to next</th>
+    </tr></thead>
+    <tbody>
+      <tr><td style="padding:6px;border:1px solid var(--rule);">L</td><td style="padding:6px;border:1px solid var(--rule);">O(log n)</td><td style="padding:6px;border:1px solid var(--rule);">⊊ SPACE(log² n)</td></tr>
+      <tr><td style="padding:6px;border:1px solid var(--rule);">SPACE(n)</td><td style="padding:6px;border:1px solid var(--rule);">O(n)</td><td style="padding:6px;border:1px solid var(--rule);">⊊ SPACE(n²)</td></tr>
+      <tr><td style="padding:6px;border:1px solid var(--rule);">PSPACE</td><td style="padding:6px;border:1px solid var(--rule);">poly(n)</td><td style="padding:6px;border:1px solid var(--rule);">⊊ EXPSPACE = SPACE(2<sup>poly</sup>)</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <div class="section-label">6 · Connections · the hierarchy family</div>
+  <ul style="font-size:14px;line-height:1.7;">
+    <li><strong>Time hierarchy theorem</strong> · TIME(t) ⊊ TIME(t · log t). Same diagonal idea, time-clocked simulation. P ⊊ EXPTIME via this.</li>
+    <li><strong>Nondeterministic hierarchy</strong> · NTIME(t) ⊊ NTIME(t · log t) (Cook 1972, Seiferas–Fischer–Meyer 1978). NP ⊊ NEXPTIME.</li>
+    <li><strong>Gap theorem</strong> · Borodin/Constable: there exist computable f such that TIME(f) = TIME(2<sup>f</sup>). The hierarchy is not entirely smooth.</li>
+    <li><strong>Speedup theorem</strong> · Blum: for some L, every TM solving L has a faster TM solving L. Resource bounds aren't always achievable optimally.</li>
+    <li><strong>Open: P ⊊ PSPACE</strong> · believed true but unproven. The hierarchy theorems give P ⊊ EXPSPACE but cannot squeeze between P and PSPACE.</li>
+  </ul>
+</section>
+
+<section>
+  <div class="section-label">7 · Common pitfalls · what students miss</div>
+  <ol style="font-size:14px;line-height:1.7;">
+    <li><strong>"Hierarchy proves P ≠ NP."</strong> No. P and NP are <em>not</em> separated by hierarchy: both are bounded by polynomial resources. The diagonal needs a <em>resource gap</em>.</li>
+    <li><strong>Ignoring constructibility.</strong> Without f being space-constructible, D doesn't know when to stop simulating. The theorem genuinely needs the hypothesis.</li>
+    <li><strong>Confusing the log f gap with log n.</strong> The simulation overhead depends on f, not n directly. For f = n, the gap is log n. For f = log n, the gap is log log n.</li>
+    <li><strong>"D's contradiction is M<sub>k</sub>(⟨M<sub>k</sub>⟩) = M<sub>k</sub>(⟨M<sub>k</sub>⟩) + 1."</strong> Almost — it's b = 1−b, which means 2b = 1, impossible for a bit.</li>
+    <li><strong>"This needs Cantor's bijection."</strong> No, just a TM enumeration. We never need to enumerate all reals.</li>
+  </ol>
+</section>
+
+<section>
+  <div class="section-label">8 · Q&amp;A defence notes</div>
+  <ul class="qa-list">
+    <li>
+      <div class="q">Q1. Why "space-constructible"?</div>
+      <div class="a">D needs to compute f(n) on its own work-tape to know when to stop simulating. f(n) being space-constructible means there's a TM that on input 1ⁿ computes f(n) using O(f(n)) space. Every standard function (n, n², 2ⁿ, …) qualifies.</div>
+    </li>
+    <li>
+      <div class="q">Q2. Why exactly the f · log f gap, not f?</div>
+      <div class="a">D must simulate any SPACE(f) machine. A space-f simulation needs a small log f overhead to track the simulated machine's tape head, state, and clock. That's where the log factor comes from.</div>
+    </li>
+    <li>
+      <div class="q">Q3. Why doesn't this prove P ⊊ NP?</div>
+      <div class="a">The hierarchy theorem only separates classes that differ in their resource bound. P and NP both use polynomial resources — they differ in determinism, not in resource amount. The diagonal trick doesn't directly compare deterministic vs nondeterministic.</div>
+    </li>
+    <li>
+      <div class="q">Q4. Can you state the time hierarchy theorem and the analogous proof?</div>
+      <div class="a">If t(n) ≥ n log n is time-constructible, then TIME(t(n)) ⊊ TIME(t(n) · log t(n)). Proof: build a time-diagonalizer that simulates each TIME(t) machine on its own description, with a clock that times out after t(n)·log t(n) steps. The log overhead is for the simulation bookkeeping.</div>
+    </li>
+    <li>
+      <div class="q">Q5. What known separation comes out of this?</div>
+      <div class="a">NL ⊆ SPACE(log²) (Savitch) ⊆ SPACE(log² · log log²) ⊊ SPACE(log³) ⊆ … ⊊ SPACE(n^k) = PSPACE. So NL ⊊ PSPACE strictly. Similarly P ⊊ EXPTIME by time hierarchy.</div>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <div class="section-label">9 · How to present this in class</div>
+  <p style="font-size:13.5px;"><strong>Total time: 12 minutes.</strong></p>
+  <ul style="font-size:13.5px;line-height:1.7;">
+    <li><strong>(1 min)</strong> Hook: "Among all the unproven separations (P vs NP, L vs NL, …), is there <em>any</em> separation we can actually prove?"</li>
+    <li><strong>(2 min)</strong> State the theorem. Emphasize "f · log f" — small but non-trivial gap.</li>
+    <li><strong>(3 min)</strong> Construct D on the board. Three lines: enumerate, simulate, flip.</li>
+    <li><strong>(3 min)</strong> Run the visualization. Pause when D's row appears in gold. Walk through the "b = 1 − b" contradiction.</li>
+    <li><strong>(2 min)</strong> List the corollaries: L ⊊ PSPACE, NL ⊊ PSPACE, P ⊊ EXPTIME, NP ⊊ NEXPTIME.</li>
+    <li><strong>(1 min)</strong> Close with the limit: hierarchy cannot give P ≠ NP — different determinism, same resource bound.</li>
+  </ul>
+</section>
+
+</div>
+
+<footer class="foot">Problem 45 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<script>
+(function(){
+  const n = 8;
+  const M = [];
+  let seed = 7777;
+  for (let i = 0; i < n; i++) {
+    const row = [];
+    for (let j = 0; j < n; j++) {
+      seed = (seed * 1664525 + 1013904223) >>> 0;
+      row.push((seed >> 16) & 1);
+    }
+    M.push(row);
+  }
+  let walked = 0;
+  let showD = false;
+
+  function render() {
+    const W=760, H=360;
+    let s = '';
+    const startX = 90, startY = 50;
+    const cellW = (W-180)/(n+1), cellH = (H-90)/(n+1);
+
+    s += `<text x="${W/2}" y="22" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" fill="var(--muted)">Rows = SPACE(f) machines M_i. Columns = inputs ⟨M_j⟩.</text>`;
+
+    // headers
+    for (let j = 0; j < n; j++) s += `<text x="${startX + j*cellW + cellW/2}" y="${startY-8}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="var(--muted)">⟨M_${j+1}⟩</text>`;
+    if (showD) s += `<text x="${startX + n*cellW + cellW/2}" y="${startY-8}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="var(--gold)" font-weight="bold">D's row</text>`;
+    for (let i = 0; i < n; i++) s += `<text x="${startX-10}" y="${startY + i*cellH + cellH/2 + 4}" text-anchor="end" font-family="ui-monospace, monospace" font-size="11" fill="var(--muted)">M_${i+1}</text>`;
+    if (showD) s += `<text x="${startX-10}" y="${startY + n*cellH + cellH/2 + 4}" text-anchor="end" font-family="ui-monospace, monospace" font-size="11" fill="var(--gold)" font-weight="bold">D</text>`;
+
+    // cells
+    for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) {
+      const isDiag = i === j, inspected = isDiag && i < walked;
+      const x = startX + j*cellW, y = startY + i*cellH;
+      const bg = isDiag ? (inspected ? 'var(--warn-soft)' : 'var(--accent-soft)') : '#fff';
+      s += `<rect x="${x}" y="${y}" width="${cellW-2}" height="${cellH-2}" fill="${bg}" stroke="#ddd" stroke-width="0.7"/>`;
+      const v = M[i][j], color = v ? 'var(--accent)' : 'var(--warn)';
+      s += `<text x="${x+(cellW-2)/2}" y="${y+(cellH-2)/2+4}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="12" font-weight="${isDiag?'bold':'normal'}" fill="${color}">${v?'A':'R'}</text>`;
+    }
+    // D column
+    if (showD) for (let i = 0; i < n; i++) {
+      const flip = M[i][i] === 1 ? 0 : 1;
+      const x = startX + n*cellW, y = startY + i*cellH;
+      s += `<rect x="${x}" y="${y}" width="${cellW-2}" height="${cellH-2}" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1"/>`;
+      const color = flip ? 'var(--accent)' : 'var(--warn)';
+      s += `<text x="${x+(cellW-2)/2}" y="${y+(cellH-2)/2+4}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="12" font-weight="bold" fill="${color}">${flip?'A':'R'}</text>`;
+    }
+    // D row
+    if (showD) {
+      for (let j = 0; j < n; j++) {
+        const flip = M[j][j] === 1 ? 0 : 1;
+        const x = startX + j*cellW, y = startY + n*cellH;
+        s += `<rect x="${x}" y="${y}" width="${cellW-2}" height="${cellH-2}" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1"/>`;
+        const color = flip ? 'var(--accent)' : 'var(--warn)';
+        s += `<text x="${x+(cellW-2)/2}" y="${y+(cellH-2)/2+4}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="12" font-weight="bold" fill="${color}">${flip?'A':'R'}</text>`;
+      }
+      const x = startX + n*cellW, y = startY + n*cellH;
+      s += `<rect x="${x}" y="${y}" width="${cellW-2}" height="${cellH-2}" fill="white" stroke="var(--gold)" stroke-width="1"/>`;
+      s += `<text x="${x+(cellW-2)/2}" y="${y+(cellH-2)/2+4}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" fill="var(--muted)">≠ self</text>`;
+    }
+    document.getElementById('hi-svg').innerHTML = s;
+
+    const el = document.getElementById('hi-explain');
+    if (walked === 0 && !showD) {
+      el.innerHTML = `<div class="step-num">Setup</div>
+        <p style="margin: 4px 0;"><strong>Suppose</strong> we list every TM M<sub>1</sub>, M<sub>2</sub>, … that uses ≤ f(n) space.</p>
+        <p style="margin: 4px 0;">Cell (i, j) shows whether M<sub>i</sub> accepts the description ⟨M<sub>j</sub>⟩.</p>
+        <p style="margin: 4px 0;">We will build D = a diagonalizer that disagrees with M<sub>i</sub> on input ⟨M<sub>i</sub>⟩ for every i.</p>`;
+    } else if (!showD) {
+      const i = walked - 1, diag = M[i][i];
+      el.innerHTML = `<div class="step-num">Step ${walked} · diagonal cell M<sub>${walked}</sub>(⟨M<sub>${walked}</sub>⟩)</div>
+        <p style="margin: 4px 0;">M<sub>${walked}</sub> on input ⟨M<sub>${walked}</sub>⟩ <strong>${diag ? 'accepts' : 'rejects'}</strong> (cell = ${diag ? 'A' : 'R'}).</p>
+        <p style="margin: 4px 0;"><strong>D will do the opposite on the same input.</strong> To do this, D must simulate M<sub>${walked}</sub> — which takes a bit more than f(n) space.</p>`;
+    } else {
+      el.innerHTML = `<div class="step-num">D is built · the punchline</div>
+        <p style="margin: 4px 0;"><strong>Gold row = D's behavior.</strong> By construction D disagrees with every M<sub>i</sub> at column i.</p>
+        <p style="margin: 4px 0;"><strong>Why D ∉ SPACE(f):</strong> if D = M<sub>k</sub>, then column k would say M<sub>k</sub>(⟨M<sub>k</sub>⟩) equals BOTH itself (table) and its opposite (D's definition). Impossible.</p>
+        <p style="margin: 4px 0;"><strong>Why D ∈ SPACE(f·log f):</strong> D simulates M(⟨M⟩) in space O(f(n)·log f(n)) — log factor for simulation bookkeeping.</p>
+        <p style="margin: 4px 0;"><strong>So SPACE(f) ⊊ SPACE(f·log f). ∎</strong></p>`;
+    }
+  }
+
+  function step() {
+    if (walked < n) walked++;
+    else if (!showD) showD = true;
+    render();
+  }
+  function reset() { walked = 0; showD = false; render(); }
+  function atEnd() { return walked >= n && showD; }
+
+  WidgetLoop.create({
+    runBtn: document.getElementById('hi-run'),
+    stepBtn: document.getElementById('hi-step'),
+    resetBtn: document.getElementById('hi-reset'),
+    speedSlider: document.getElementById('hi-speed'),
+    speedLabel: document.getElementById('hi-speed-label'),
+    doStep: step,
+    atEnd,
+    doReset: reset,
+    baseStepMs: 1800,
+    baseLoopMs: 6000,
+    autoStartMs: 1500
+  });
+
+  reset();
+})();
+</script>
+
+<script src="../presentation.js"></script>
+</body>
+</html>

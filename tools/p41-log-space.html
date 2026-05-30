@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>P41 · Log-space machine</title><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css"><script src="../widget-loop.js"></script></head><body>
+<header class="tool-header"><div class="crumb"><a href="index.html">← Student tools</a> · Problem 41 · Lecture 15 · Round 3 (40 pts)</div>
+<h1>Log-space machine · palindromes ∈ L</h1><p class="sub">Two pointers into the input, that's all the memory needed.</p>
+<div class="tags"><span class="tag-pill">CLO-3</span><span class="tag-pill">CLO-5</span><span class="tag-pill warn">R3·40 pts</span><span class="tag-pill info">L15</span></div></header>
+<div class="wrap">
+<section><div class="section-label">1 · Theory</div><p>L = class of problems decidable by a deterministic TM using O(log n) work-tape space. The input is on a read-only tape (doesn't count).</p>
+<div class="theorem-box"><div class="theorem-label">Palindrome ∈ L</div><p style="margin:4px 0;">Two pointers i (left) and j (right). Compare input[i] with input[j]. Advance toward middle. Each pointer takes ⌈log₂ n⌉ bits. Total: 2 log n + O(1) = O(log n).</p></div></section>
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Watch the two pointers converge <span class="pill">Auto-plays</span></div>
+<div class="controls"><label>Input: <input type="text" id="l-input" value="abcba" maxlength="12" style="width:120px;"></label>
+<button class="btn play-btn" id="l-run">⏸ Pause</button><button class="btn ghost" id="l-step">Step</button><button class="btn ghost" id="l-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="l-speed" min="0.25" max="3" step="0.25" value="1"><span id="l-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
+<svg id="l-svg" viewBox="0 0 760 240" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="status"><div class="stat">i,j <b id="l-ij">0,0</b></div><div class="stat">Cells <b id="l-cells">0</b></div><div class="stat">Verdict <b id="l-verdict">—</b></div></div>
+<div class="explain-panel" id="l-explain"></div></div></section>
+<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why is the input tape "free"?</div><div class="a">L is defined with two tapes: read-only input + work tape. Only the work tape counts toward the space bound. This matches the intuition of "pointers into the input."</div></li>
+<li><div class="q">Q2. Why 2 pointers fit in log n bits?</div><div class="a">Each pointer is an integer in [0, n-1], so ⌈log₂ n⌉ bits. Total for two pointers: 2 log n.</div></li>
+<li><div class="q">Q3. What's the time complexity?</div><div class="a">O(n) — each pair compared once. Polynomial in input size.</div></li>
+</ul></section></div><footer class="foot">P41 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<script>(function(){
+let input='abcba', i=0, j=4, halted=false, ok=null;
+function reset(){ input=document.getElementById('l-input').value; i=0; j=input.length-1; halted=false; ok=null; render(); }
+function render(){
+  const cw=36, sx=40, y=50; let s='';
+  for(let k=0;k<input.length;k++){const ch=input[k], x=sx+k*cw, isI=k===i, isJ=k===j;
+    const fill=isI?'var(--accent-soft)':(isJ?'var(--info-soft)':'#fff'); const stroke=isI?'var(--accent)':(isJ?'var(--info)':'var(--rule-strong)');
+    s+=`<rect x="${x}" y="${y}" width="${cw}" height="38" fill="${fill}" stroke="${stroke}" stroke-width="${isI||isJ?2:1}"/><text x="${x+cw/2}" y="${y+25}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="15" font-weight="${isI||isJ?'bold':'normal'}">${ch}</text>`;
+    if(isI) s+=`<text x="${x+cw/2}" y="${y-6}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="bold" fill="var(--accent)">i=${i}</text>`;
+    if(isJ) s+=`<text x="${x+cw/2}" y="${y+58}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="bold" fill="var(--info)">j=${j}</text>`;
+  }
+  // work tape representation (binary)
+  s+=`<text x="40" y="150" font-family="var(--sans), sans-serif" font-size="11" fill="var(--muted)">work tape (i, j in binary):</text>`;
+  const iB=i.toString(2).padStart(3,'0'), jB=j.toString(2).padStart(3,'0');
+  for(let k=0;k<iB.length;k++){s+=`<rect x="${50+k*30}" y="${165}" width="${30}" height="${28}" fill="var(--accent-soft)" stroke="var(--accent)"/><text x="${65+k*30}" y="${184}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13" fill="var(--accent-strong)">${iB[k]}</text>`;}
+  for(let k=0;k<jB.length;k++){s+=`<rect x="${50+(k+4)*30}" y="${165}" width="${30}" height="${28}" fill="var(--info-soft)" stroke="var(--info)"/><text x="${65+(k+4)*30}" y="${184}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13" fill="var(--info)">${jB[k]}</text>`;}
+  document.getElementById('l-svg').innerHTML=s;
+  document.getElementById('l-ij').textContent=`${i},${j}`;
+  document.getElementById('l-cells').textContent=2*Math.ceil(Math.log2(Math.max(2,input.length)))+' bits';
+  document.getElementById('l-verdict').textContent=halted?(ok?'ACCEPT':'REJECT'):'—';
+  if(!halted) document.getElementById('l-explain').innerHTML=`<div class="step-num">Compare input[${i}] and input[${j}]</div><p style="margin:4px 0;">Pointers store position only — input itself is read-only. Work tape uses only ${2*Math.ceil(Math.log2(Math.max(2,input.length)))} bits.</p>`;
+  else document.getElementById('l-explain').innerHTML=`<div class="step-num">${ok?'ACCEPT · palindrome':'REJECT · not a palindrome'}</div><p style="margin:4px 0;">Done in ${2*Math.ceil(Math.log2(Math.max(2,input.length)))} bits of work-tape memory. <strong>Palindromes ∈ L.</strong></p>`;
+}
+function step(){ if(halted)return; if(i>=j){halted=true;ok=true;render();return;} if(input[i]!==input[j]){halted=true;ok=false;render();return;} i++; j--; render(); }
+function atEnd(){ return halted; }
+document.getElementById('l-input').oninput=reset;
+WidgetLoop.create({runBtn:document.getElementById('l-run'),stepBtn:document.getElementById('l-step'),resetBtn:document.getElementById('l-reset'),speedSlider:document.getElementById('l-speed'),speedLabel:document.getElementById('l-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:1500,baseLoopMs:5000,autoStartMs:1300});
+reset();
+})();</script><script src="../presentation.js"></script>
+</body></html>

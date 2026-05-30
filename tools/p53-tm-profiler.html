@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>P53 · TM running-time profiler</title><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css"><script src="../widget-loop.js"></script></head><body>
+<header class="tool-header"><div class="crumb"><a href="index.html">← Student tools</a> · Problem 53 · Lecture 9 · Round 2 (30 pts)</div>
+<h1>TM running-time profiler · empirical n vs steps</h1><p class="sub">Run the same TM on inputs of various lengths and plot steps vs n.</p>
+<div class="tags"><span class="tag-pill">CLO-3</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L9</span></div></header>
+<div class="wrap">
+<section><div class="section-label">1 · Theory</div><p>Theoretical analysis predicts O(n²) for the {0<sup>n</sup>1<sup>n</sup>} single-tape decider. Empirical: plot actual step counts. The data points should lie on or under a parabola.</p>
+<div class="theorem-box"><div class="theorem-label">What you should see</div><p style="margin:4px 0;">A quadratic fit cleanly through the data. Doubling n quadruples steps.</p></div></section>
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Add data points one at a time <span class="pill">Auto-plays</span></div>
+<div class="controls"><button class="btn play-btn" id="p-run">⏸ Pause</button><button class="btn ghost" id="p-step">Step</button><button class="btn ghost" id="p-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="p-speed" min="0.25" max="3" step="0.25" value="1"><span id="p-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
+<svg id="p-svg" viewBox="0 0 760 320" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="p-explain"></div></div></section>
+<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. How does empirical data confirm an O(n²) bound?</div><div class="a">Doubling n should ≈ quadruple steps. Plotting steps/n² should give a roughly flat line.</div></li>
+<li><div class="q">Q2. Could there be a constant factor we miss?</div><div class="a">Yes — Big-O ignores constants. But the SHAPE (linear in n² when plotted against n) is the asymptotic claim.</div></li>
+<li><div class="q">Q3. What would fail this empirical check?</div><div class="a">If the algorithm secretly took O(n²·log n) — extra log factor — you'd see slight upward curvature in steps/n² as n grows.</div></li>
+</ul></section></div><footer class="foot">P53 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<script>(function(){
+// simulate {0^n1^n} single-tape pair-off
+function simulate(n){ let tape='0'.repeat(n)+'1'.repeat(n); let arr=tape.split(''); let head=0,steps=0,phase='find0';
+  while(steps<20000){ steps++; const r=arr[head]||'_';
+    if(phase==='find0'){ if(r==='0'){arr[head]='X';phase='find1';head++;} else if(r==='X'||r==='Y'){head++;} else{return steps;} }
+    else if(phase==='find1'){ if(head>=arr.length)return steps; if(r==='0'||r==='Y'){head++;} else if(r==='1'){arr[head]='Y';phase='rewind';head--;} else{return steps;} }
+    else if(phase==='rewind'){ if(head<=0){phase='find0';} else{head--;} }
+  } return steps;
+}
+let data=[]; const ns=[2,4,6,8,10,12,14,16,20,24];
+function render(){
+  const W=760,H=320,pad={l:60,r:50,t:30,b:40};
+  let s=`<text x="${W/2}" y="22" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="700">Steps vs n on input 0ⁿ1ⁿ</text>`;
+  s+=`<line x1="${pad.l}" y1="${H-pad.b}" x2="${W-pad.r}" y2="${H-pad.b}" stroke="#888"/>`;
+  s+=`<line x1="${pad.l}" y1="${pad.t}" x2="${pad.l}" y2="${H-pad.b}" stroke="#888"/>`;
+  s+=`<text x="${(W+pad.l-pad.r)/2}" y="${H-10}" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="11" fill="#888">n</text>`;
+  s+=`<text x="${pad.l-30}" y="${(H+pad.t)/2}" font-family="var(--sans), sans-serif" font-size="11" fill="#888" transform="rotate(-90 ${pad.l-30} ${(H+pad.t)/2})">steps</text>`;
+  const nmax=Math.max(...ns), smax=Math.max(...ns.map(n=>n*n*3));
+  // n² reference line
+  let ref=[]; for(let n=1;n<=nmax;n++){const x=pad.l+(n/nmax)*(W-pad.l-pad.r);const y=(H-pad.b)-(n*n*3/smax)*(H-pad.b-pad.t);ref.push(`${x},${y}`);}
+  s+=`<polyline points="${ref.join(' ')}" fill="none" stroke="#ddd" stroke-width="1.5" stroke-dasharray="5 4"/><text x="${W-pad.r-5}" y="${pad.t+15}" text-anchor="end" font-family="ui-monospace, monospace" font-size="11" fill="#888">≈ 3n² ref</text>`;
+  // data points
+  data.forEach(d=>{const x=pad.l+(d.n/nmax)*(W-pad.l-pad.r);const y=(H-pad.b)-(d.s/smax)*(H-pad.b-pad.t);
+    s+=`<circle cx="${x}" cy="${y}" r="5" fill="var(--accent)" stroke="var(--accent-strong)" stroke-width="1.5"/><text x="${x+8}" y="${y+4}" font-family="ui-monospace, monospace" font-size="10" fill="var(--accent-strong)">n=${d.n}, s=${d.s}</text>`;
+  });
+  document.getElementById('p-svg').innerHTML=s;
+  if(data.length===0) document.getElementById('p-explain').innerHTML=`<div class="step-num">Setup</div><p style="margin:4px 0;">Watch data points appear at n = ${ns.join(', ')}. They should lie roughly on the dashed reference parabola 3n².</p>`;
+  else if(data.length>=ns.length) document.getElementById('p-explain').innerHTML=`<div class="step-num">All ${ns.length} points</div><p style="margin:4px 0;">Data hugs the parabola: <strong>empirical confirmation of O(n²)</strong>. Ratios steps/n² ≈ ${(data[data.length-1].s/(data[data.length-1].n*data[data.length-1].n)).toFixed(2)} (constant).</p>`;
+  else document.getElementById('p-explain').innerHTML=`<div class="step-num">n = ${data[data.length-1].n} · ${data[data.length-1].s} steps</div><p style="margin:4px 0;">${data.length}/${ns.length} measured. Steps/n² = ${(data[data.length-1].s/(data[data.length-1].n*data[data.length-1].n)).toFixed(2)}. Should stay roughly constant.</p>`;
+}
+function step(){ if(data.length<ns.length){const n=ns[data.length];data.push({n,s:simulate(n)});} render(); }
+function reset(){ data=[]; render(); }
+function atEnd(){ return data.length>=ns.length; }
+WidgetLoop.create({runBtn:document.getElementById('p-run'),stepBtn:document.getElementById('p-step'),resetBtn:document.getElementById('p-reset'),speedSlider:document.getElementById('p-speed'),speedLabel:document.getElementById('p-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:1100,baseLoopMs:5000,autoStartMs:1500});
+reset();
+})();</script><script src="../presentation.js"></script>
+</body></html>

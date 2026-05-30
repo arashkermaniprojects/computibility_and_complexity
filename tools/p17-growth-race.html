@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>P17 · Growth races</title><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css"><script src="../widget-loop.js"></script></head><body>
+<header class="tool-header"><div class="crumb"><a href="index.html">← Student tools</a> · Problem 17 · Lecture 9 · Round 2 (30 pts)</div>
+<h1>Growth-rate race · log n vs n² vs 2ⁿ</h1><p class="sub">Six complexity functions race; pinpoint where exponential overtakes polynomial.</p>
+<div class="tags"><span class="tag-pill">CLO-3</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L9</span></div></header>
+<div class="wrap">
+<section><div class="section-label">1 · Theory</div><p>Complexity classes are about <em>asymptotic</em> growth. Polynomials live in P; exponentials don't. Watch the gap appear visually.</p>
+<div class="theorem-box"><div class="theorem-label">Big-O totals at n = 40</div><p style="margin:4px 0;">log n ≈ 5 · n = 40 · n log n ≈ 213 · n² = 1,600 · n³ = 64,000 · 2ⁿ ≈ 10<sup>12</sup>. Trillion-fold gap.</p></div></section>
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Six curves race <span class="pill">Auto-plays</span></div>
+<div class="controls"><button class="btn play-btn" id="g-run">⏸ Pause</button><button class="btn ghost" id="g-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="g-speed" min="0.25" max="3" step="0.25" value="1"><span id="g-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
+<svg id="g-svg" viewBox="0 0 760 380" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="g-explain"></div></div></section>
+<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why use a log scale?</div><div class="a">Because 2ⁿ at n=40 is ~10¹², while n² is 1600. Linear scale would crush all polynomials to a single line at the bottom.</div></li>
+<li><div class="q">Q2. Where does 2ⁿ overtake n³?</div><div class="a">Around n = 10. After that 2ⁿ grows roughly 2× per step; n³ only grows like (n+1)³/n³ ≈ 1 + 3/n.</div></li>
+<li><div class="q">Q3. Why is polynomial vs exponential the "right" boundary?</div><div class="a">Polynomials are closed under composition; exponentials are not. Robust across reasonable machine models (Cobham-Edmonds thesis).</div></li>
+</ul></section></div><footer class="foot">P17 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<script>(function(){
+const funcs={'log n':n=>Math.log2(Math.max(2,n)),'n':n=>n,'n log n':n=>n*Math.log2(Math.max(2,n)),'n²':n=>n*n,'n³':n=>n*n*n,'2ⁿ':n=>Math.pow(2,Math.min(n,60))};
+const colors={'log n':'#2a6f5f','n':'#2f60a8','n log n':'#9b59b6','n²':'#b58b00','n³':'#b95825','2ⁿ':'#c0392b'};
+let cur=1; const nmax=40;
+function render() {
+  const W=760,H=380,pad={l:50,r:80,t:20,b:30}; let s='';
+  let vmax=1; for (const f of Object.keys(funcs)) vmax=Math.max(vmax,funcs[f](nmax));
+  s+=`<line x1="${pad.l}" y1="${H-pad.b}" x2="${W-pad.r}" y2="${H-pad.b}" stroke="#888"/>`;
+  s+=`<line x1="${pad.l}" y1="${pad.t}" x2="${pad.l}" y2="${H-pad.b}" stroke="#888"/>`;
+  for (const fn of Object.keys(funcs)) {
+    let pts=[];
+    for (let n=1;n<=cur;n++) { const v=funcs[fn](n); const y=(H-pad.b)-(Math.log10(Math.max(1,v))/Math.log10(Math.max(2,vmax)))*(H-pad.b-pad.t); const x=pad.l+(n/nmax)*(W-pad.l-pad.r); pts.push(`${x},${y}`); }
+    if (pts.length>=2) {
+      s+=`<polyline points="${pts.join(' ')}" fill="none" stroke="${colors[fn]}" stroke-width="2"/>`;
+      const[lx,ly]=pts[pts.length-1].split(',');
+      s+=`<circle cx="${lx}" cy="${ly}" r="4" fill="${colors[fn]}"/><text x="${parseFloat(lx)+10}" y="${parseFloat(ly)+4}" font-family="var(--sans), sans-serif" font-size="12" fill="${colors[fn]}" font-weight="bold">${fn}</text>`;
+    }
+  }
+  document.getElementById('g-svg').innerHTML=s;
+  document.getElementById('g-explain').innerHTML=`<div class="step-num">n = ${cur} / ${nmax}</div><p style="margin:4px 0;">log n ≈ ${funcs['log n'](cur).toFixed(1)}, n² = ${cur*cur}, 2ⁿ ≈ ${funcs['2ⁿ'](cur).toExponential(2)}. ${cur>=10?'<strong>2ⁿ has now overtaken n³.</strong>':''} ${cur>=20?'<strong>Exponential is now astronomically larger.</strong>':''}</p>`;
+}
+function step() { if (cur<nmax) cur++; render(); }
+function reset() { cur=1; render(); }
+function atEnd() { return cur>=nmax; }
+WidgetLoop.create({runBtn:document.getElementById('g-run'),resetBtn:document.getElementById('g-reset'),speedSlider:document.getElementById('g-speed'),speedLabel:document.getElementById('g-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:250,baseLoopMs:5000,autoStartMs:1200});
+reset();
+})();</script><script src="../presentation.js"></script>
+</body></html>

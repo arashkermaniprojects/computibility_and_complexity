@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>P56 · SET-COVER NP-complete</title><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css"><script src="../widget-loop.js"></script></head><body>
+<header class="tool-header"><div class="crumb"><a href="index.html">← Student tools</a> · Problem 56 · Lecture 12 · Round 2 (30 pts)</div>
+<h1>SET-COVER is NP-complete</h1><p class="sub">VERTEX-COVER ≤<sub>p</sub> SET-COVER · direct one-edge ↦ one-element correspondence.</p>
+<div class="tags"><span class="tag-pill">CLO-4</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L12</span></div></header>
+<div class="wrap">
+<section><div class="section-label">1 · Theory</div><p>SET-COVER: given a universe U and a family {S<sub>1</sub>, …, S<sub>m</sub>} of subsets, is there a sub-family of size ≤ k that covers U?</p>
+<div class="theorem-box"><div class="theorem-label">VC ≤<sub>p</sub> SET-COVER</div><p style="margin:4px 0;">Given (G, k) where G = (V, E): let U = E. For each v ∈ V, let S<sub>v</sub> = {edges incident to v}. Then a vertex cover of size k corresponds to a set cover of size k.</p></div></section>
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Edges become elements; vertices become sets <span class="pill">Auto-plays</span></div>
+<div class="controls"><button class="btn play-btn" id="sc-run">⏸ Pause</button><button class="btn ghost" id="sc-step">Step</button><button class="btn ghost" id="sc-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="sc-speed" min="0.25" max="3" step="0.25" value="1"><span id="sc-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
+<svg id="sc-svg" viewBox="0 0 760 320" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="sc-explain"></div></div></section>
+<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why is the correspondence one-to-one?</div><div class="a">Each vertex maps to a set; each edge maps to an element. Covering all edges in G = covering all elements of U. Same k.</div></li>
+<li><div class="q">Q2. Why is SET-COVER even more general?</div><div class="a">Not every set system comes from a graph. SET-COVER captures arbitrary covering problems; VERTEX-COVER is the graph special case.</div></li>
+<li><div class="q">Q3. Greedy approximation?</div><div class="a">Picking the set that covers the most uncovered elements gives an O(log n) approximation to SET-COVER — and that's optimal under standard assumptions.</div></li>
+</ul></section></div><footer class="foot">P56 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<script>(function(){
+const nodes=[{x:130,y:100,l:'A'},{x:130,y:240,l:'B'},{x:280,y:170,l:'C'}];
+const edges=[[0,2,'e₁'],[1,2,'e₂']];
+let stage=0; const T=4;
+function render(){
+  let s=''; s+=`<text x="200" y="40" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="bold">Graph G</text>`;
+  s+=`<text x="560" y="40" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="bold">Set system</text>`;
+  edges.forEach(([a,b,n])=>{s+=`<line x1="${nodes[a].x}" y1="${nodes[a].y}" x2="${nodes[b].x}" y2="${nodes[b].y}" stroke="${stage>=1?'#666':'#ccc'}" stroke-width="${stage>=1?2:1}"/>`;
+    s+=`<text x="${(nodes[a].x+nodes[b].x)/2+10}" y="${(nodes[a].y+nodes[b].y)/2}" font-family="ui-monospace, monospace" font-size="11" fill="${stage>=2?'var(--warn)':'#888'}">${n}</text>`;
+  });
+  nodes.forEach((n,i)=>{const hi=stage>=3&&i===2; // C is the cover
+    s+=`<circle cx="${n.x}" cy="${n.y}" r="22" fill="${hi?'var(--accent)':'#fff'}" stroke="var(--accent-strong)" stroke-width="2"/><text x="${n.x}" y="${n.y+5}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="14" font-weight="bold" fill="${hi?'#fff':'#1a1a1a'}">${n.l}</text>`;
+  });
+  if(stage>=2){
+    s+=`<text x="480" y="80" font-family="ui-monospace, monospace" font-size="13">U = {e₁, e₂}</text>`;
+    s+=`<text x="480" y="110" font-family="ui-monospace, monospace" font-size="13">S_A = {e₁}</text>`;
+    s+=`<text x="480" y="135" font-family="ui-monospace, monospace" font-size="13">S_B = {e₂}</text>`;
+    s+=`<text x="480" y="160" font-family="ui-monospace, monospace" font-size="13" font-weight="${stage>=3?'bold':'normal'}" fill="${stage>=3?'var(--accent)':'#1a1a1a'}">S_C = {e₁, e₂}</text>`;
+    if(stage>=3) s+=`<text x="480" y="200" font-family="var(--sans), sans-serif" font-size="13" fill="var(--accent)" font-weight="bold">Cover {C} ⇒ {S_C} ⇒ covers U</text>`;
+  }
+  document.getElementById('sc-svg').innerHTML=s;
+  const m=[
+    `<div class="step-num">Graph G with 3 vertices A, B, C</div><p style="margin:4px 0;">We'll show that a vertex cover of G corresponds to a set cover of an associated set system.</p>`,
+    `<div class="step-num">Edges of G</div><p style="margin:4px 0;">G has 2 edges: e₁ = (A, C), e₂ = (B, C).</p>`,
+    `<div class="step-num">Build the set system</div><p style="margin:4px 0;">Universe U = edges of G. Each vertex v becomes a set S<sub>v</sub> = edges incident to v.</p>`,
+    `<div class="step-num">Vertex cover ⇔ set cover</div><p style="margin:4px 0;">{C} covers both edges in G ⇔ {S_C} = {e₁, e₂} covers U. <strong>VC ≤ SET-COVER ⇒ SET-COVER is NP-hard.</strong></p>`
+  ];
+  document.getElementById('sc-explain').innerHTML=m[Math.min(stage,m.length-1)];
+}
+function step(){ if(stage<T-1)stage++; render(); }
+function reset(){ stage=0; render(); }
+function atEnd(){ return stage>=T-1; }
+WidgetLoop.create({runBtn:document.getElementById('sc-run'),stepBtn:document.getElementById('sc-step'),resetBtn:document.getElementById('sc-reset'),speedSlider:document.getElementById('sc-speed'),speedLabel:document.getElementById('sc-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:3000,baseLoopMs:5500,autoStartMs:1500});
+reset();
+})();</script><script src="../presentation.js"></script>
+</body></html>

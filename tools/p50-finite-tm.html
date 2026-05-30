@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P50 · FINITE_TM</title>
+<link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css">
+<script src="../widget-loop.js"></script></head><body>
+
+<header class="tool-header">
+<div class="crumb"><a href="index.html">← Student tools</a> · Problem 50 · Lecture 6 · Round 1 (30 pts)</div>
+<h1>FINITE<sub>TM</sub> is undecidable</h1>
+<p class="sub">Reduce A<sub>TM</sub>: build M' whose language is finite iff M does NOT accept w.</p>
+<div class="tags"><span class="tag-pill">CLO-2</span><span class="tag-pill warn">R1·30 pts</span><span class="tag-pill info">L6</span></div>
+</header>
+
+<div class="wrap">
+
+<section><div class="section-label">1 · Theory</div>
+<p>FINITE<sub>TM</sub> = {⟨M⟩ : L(M) is finite}. Direct application of Rice (Problem 14): "finite" is a nontrivial property of L(M), so FINITE<sub>TM</sub> is undecidable.</p>
+<div class="theorem-box"><div class="theorem-label">Explicit reduction · A<sub>TM</sub> ≤<sub>m</sub> ¬FINITE<sub>TM</sub></div>
+<pre style="font-size:13px;">M' on input x:
+  if |x| ≤ 10 then accept           // finite chunk: ≤ 10
+  else run M on w
+       if M accepts then accept x</pre>
+<p style="margin:4px 0;">If M accepts w: L(M') = Σ* — infinite. If M doesn't accept w: L(M') ⊆ {x : |x| ≤ 10} — finite. So M accepts w ⇔ ⟨M'⟩ ∉ FINITE<sub>TM</sub>.</p></div>
+</section>
+
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Two scenarios for L(M') <span class="pill">Auto-plays</span></div>
+<div class="controls">
+<button class="btn play-btn" id="ft-run">⏸ Pause</button><button class="btn ghost" id="ft-step">Step</button><button class="btn ghost" id="ft-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="ft-speed" min="0.25" max="3" step="0.25" value="1"><span id="ft-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label>
+</div>
+<svg id="ft-svg" viewBox="0 0 760 280" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="ft-explain"></div>
+</div></section>
+
+<section><div class="section-label">3 · Q&amp;A defence notes</div>
+<ul class="qa-list">
+<li><div class="q">Q1. Why use a fixed finite chunk like {|x| ≤ 10}?</div><div class="a">It ensures L(M') is non-empty in both cases, but finite or infinite depending on M(w). The "10" is arbitrary.</div></li>
+<li><div class="q">Q2. Could we use any finite set?</div><div class="a">Yes — {ε}, {0, 1}, anything explicitly enumerable.</div></li>
+<li><div class="q">Q3. Apply Rice directly.</div><div class="a">"L(M) is finite" depends only on L(M) (semantic) and is nontrivial (some TMs have finite languages, some don't). Rice ⇒ undecidable. The explicit construction is what Rice's proof builds anyway.</div></li>
+</ul></section>
+
+</div>
+<footer class="foot">Problem 50 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<script>
+(function(){
+let phase = 0;
+function render() {
+  let s = '';
+  s += `<text x="380" y="32" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="700">Two scenarios for L(M')</text>`;
+  const c1 = phase === 1, c2 = phase === 2;
+  s += `<rect x="60" y="60" width="300" height="180" rx="10" fill="white" stroke="${c1?'var(--accent)':'#ccc'}" stroke-width="${c1?2.5:1.4}"/>`;
+  s += `<text x="210" y="90" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" font-weight="bold" fill="${c1?'var(--accent)':'#888'}">M does NOT accept w</text>`;
+  s += `<text x="210" y="120" text-anchor="middle" font-family="ui-monospace, monospace" font-size="14" fill="${c1?'#1a1a1a':'#888'}">L(M') ⊆ {x : |x| ≤ 10}</text>`;
+  s += `<text x="210" y="155" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="700" fill="${c1?'var(--accent)':'#888'}">FINITE</text>`;
+  s += `<text x="210" y="190" text-anchor="middle" font-family="ui-monospace, monospace" font-size="12" fill="${c1?'#1a1a1a':'#888'}">⟨M'⟩ ∈ FINITE<tspan dy="3" font-size="9">TM</tspan></text>`;
+  s += `<rect x="400" y="60" width="300" height="180" rx="10" fill="white" stroke="${c2?'var(--warn)':'#ccc'}" stroke-width="${c2?2.5:1.4}"/>`;
+  s += `<text x="550" y="90" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" font-weight="bold" fill="${c2?'var(--warn)':'#888'}">M accepts w</text>`;
+  s += `<text x="550" y="120" text-anchor="middle" font-family="ui-monospace, monospace" font-size="14" fill="${c2?'#1a1a1a':'#888'}">L(M') = Σ*</text>`;
+  s += `<text x="550" y="155" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="700" fill="${c2?'var(--warn)':'#888'}">INFINITE</text>`;
+  s += `<text x="550" y="190" text-anchor="middle" font-family="ui-monospace, monospace" font-size="12" fill="${c2?'#1a1a1a':'#888'}">⟨M'⟩ ∉ FINITE<tspan dy="3" font-size="9">TM</tspan></text>`;
+  document.getElementById('ft-svg').innerHTML = s;
+  const m = [
+    `<div class="step-num">Setup</div><p style="margin:4px 0;">M' has two paths: short inputs auto-accept; long inputs defer to M(w). Watch how the path determines finiteness.</p>`,
+    `<div class="step-num">Case A · M does NOT accept w</div><p style="margin:4px 0;">Long inputs are NOT accepted. So L(M') is a subset of the finite set {|x| ≤ 10}. <strong>Finite.</strong></p>`,
+    `<div class="step-num">Case B · M accepts w</div><p style="margin:4px 0;">Every long input is accepted via the second branch. L(M') = Σ* — <strong>infinite</strong>. So FINITE<sub>TM</sub> decides ¬A<sub>TM</sub>, which is undecidable.</p>`
+  ];
+  document.getElementById('ft-explain').innerHTML = m[phase];
+}
+function step() { phase = (phase + 1) % 3; render(); }
+function reset() { phase = 0; render(); }
+function atEnd() { return phase === 2; }
+WidgetLoop.create({runBtn:document.getElementById('ft-run'),stepBtn:document.getElementById('ft-step'),resetBtn:document.getElementById('ft-reset'),speedSlider:document.getElementById('ft-speed'),speedLabel:document.getElementById('ft-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:3000,baseLoopMs:5000,autoStartMs:1500});
+reset();
+})();
+</script><script src="../presentation.js"></script>
+</body></html>

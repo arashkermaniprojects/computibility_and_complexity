@@ -36,6 +36,8 @@
     function titleFor(section, idx) {
       const h2 = section.querySelector('h2');
       if (h2) return h2.textContent.trim();
+      const lbl = section.querySelector('.section-label');
+      if (lbl) return lbl.textContent.trim();
       const h3 = section.querySelector('h3');
       if (h3) return h3.textContent.trim();
       return 'Slide ' + (idx + 1);

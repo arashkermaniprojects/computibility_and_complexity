@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>P28 · CLIQUE → VC</title><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css"><script src="../widget-loop.js"></script></head><body>
+<header class="tool-header"><div class="crumb"><a href="index.html">← Student tools</a> · Problem 28 · Lecture 11 · Round 2 (30 pts)</div>
+<h1>CLIQUE → VERTEX-COVER via complement</h1><p class="sub">A k-clique in G ⇔ a (n−k)-vertex-cover in G̅.</p>
+<div class="tags"><span class="tag-pill">CLO-4</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L11</span></div></header>
+<div class="wrap">
+<section><div class="section-label">1 · Theory</div>
+<div class="theorem-box"><div class="theorem-label">Lemma</div><p style="margin:4px 0;">Let G be a graph on n vertices. S is a clique of size k in G ⇔ V \ S is a vertex cover of size n − k in G̅ (the complement graph).</p></div>
+<p>Reduction (G, k) ↦ (G̅, n − k) is polynomial and preserves the answer. Hence VERTEX-COVER is NP-hard.</p></section>
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Same vertices, complement edges, complement set <span class="pill">Auto-plays</span></div>
+<div class="controls"><button class="btn play-btn" id="v-run">⏸ Pause</button><button class="btn ghost" id="v-step">Step</button><button class="btn ghost" id="v-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="v-speed" min="0.25" max="3" step="0.25" value="1"><span id="v-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
+<svg id="v-svg" viewBox="0 0 760 300" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="v-explain"></div></div></section>
+<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why does the complement work?</div><div class="a">Edges of G connect clique-members (forming the clique). Edges of G̅ are everything else — and a vertex cover of those is precisely the complement of the clique.</div></li>
+<li><div class="q">Q2. How long does the reduction take?</div><div class="a">Computing G̅ is O(n²). Computing n − k is O(1). Polynomial.</div></li>
+<li><div class="q">Q3. Is this also a reduction from VC to CLIQUE?</div><div class="a">Yes, by symmetry: VC(G, m) ⇔ CLIQUE(G̅, n − m). The two problems are equivalent up to complement.</div></li>
+</ul></section></div><footer class="foot">P28 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<script>(function(){
+const nodes=[{x:200,y:80,l:'A'},{x:350,y:80,l:'B'},{x:500,y:80,l:'C'},{x:200,y:220,l:'D'},{x:350,y:220,l:'E'},{x:500,y:220,l:'F'}];
+const edgesG=[[0,1],[1,2],[0,3],[1,4],[2,5],[3,4],[4,5]];
+const stages=[
+  {show:'G',hi:[],label:'Original graph G · find a clique of size 3?'},
+  {show:'G',hi:[0,1,3],label:'Clique {A, B, D} of size 3 in G.'},
+  {show:'compl',hi:[],label:'Complement G̅: edges NOT in G.'},
+  {show:'compl',hi:[2,4,5],label:'Vertex cover {C, E, F} of size 3 in G̅. Every edge has an endpoint in the cover.'}
+];
+let stage=0;
+function render(){
+  const st=stages[stage]; let s='';
+  let edges; if(st.show==='G')edges=edgesG;
+  else{edges=[]; for(let i=0;i<6;i++)for(let j=i+1;j<6;j++)if(!edgesG.some(([a,b])=>(a===i&&b===j)||(a===j&&b===i)))edges.push([i,j]);}
+  for(const[a,b] of edges){const cov=st.show==='compl'&&(st.hi.includes(a)||st.hi.includes(b));
+    s+=`<line x1="${nodes[a].x}" y1="${nodes[a].y}" x2="${nodes[b].x}" y2="${nodes[b].y}" stroke="${cov?'var(--gold)':'#888'}" stroke-width="${cov?2.5:1.5}"/>`;
+  }
+  nodes.forEach((n,i)=>{const hi=st.hi.includes(i);
+    s+=`<circle cx="${n.x}" cy="${n.y}" r="24" fill="${hi?'var(--gold)':'#fff'}" stroke="${hi?'var(--gold)':'#666'}" stroke-width="2"/><text x="${n.x}" y="${n.y+5}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="16" font-weight="bold" fill="${hi?'#fff':'#1a1a1a'}">${n.l}</text>`;
+  });
+  s+=`<text x="380" y="270" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" fill="var(--muted)">${st.show==='G'?'graph G':'complement graph G̅'}</text>`;
+  document.getElementById('v-svg').innerHTML=s;
+  document.getElementById('v-explain').innerHTML=`<div class="step-num">Stage ${stage+1}/4</div><p style="margin:4px 0;">${st.label}</p>`;
+}
+function step(){ if(stage<3)stage++; render(); }
+function reset(){ stage=0; render(); }
+function atEnd(){ return stage>=3; }
+WidgetLoop.create({runBtn:document.getElementById('v-run'),stepBtn:document.getElementById('v-step'),resetBtn:document.getElementById('v-reset'),speedSlider:document.getElementById('v-speed'),speedLabel:document.getElementById('v-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:3500,baseLoopMs:5500,autoStartMs:1500});
+reset();
+})();</script><script src="../presentation.js"></script>
+</body></html>

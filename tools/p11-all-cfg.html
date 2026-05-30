@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P11 · ALL_CFG</title>
+<link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css">
+<script src="../widget-loop.js"></script></head><body>
+
+<header class="tool-header">
+<div class="crumb"><a href="index.html">← Student tools</a> · Problem 11 · Lecture 7 · Round 1 (30 pts)</div>
+<h1>ALL<sub>CFG</sub> is undecidable</h1>
+<p class="sub">Build a CFG G<sub>M,w</sub> that generates everything EXCEPT accepting computation histories of M.</p>
+<div class="tags"><span class="tag-pill">CLO-2</span><span class="tag-pill warn">R1·30 pts</span><span class="tag-pill info">L7</span></div>
+</header>
+
+<div class="wrap">
+
+<section><div class="section-label">1 · Theory</div>
+<p>A CFG cannot check that "C<sub>i+1</sub> follows from C<sub>i</sub>" because matching positions requires unbounded memory. But it CAN check the NEGATION: find <em>one</em> local violation.</p>
+<div class="theorem-box"><div class="theorem-label">Reduction A<sub>TM</sub> ≤ ¬ALL<sub>CFG</sub></div>
+<p style="margin:4px 0;">Build CFG G<sub>M,w</sub> that generates strings x with at least one local violation:</p>
+<ul style="margin:4px 0;"><li>x doesn't parse as a history, OR</li><li>C<sub>1</sub> isn't the start, OR</li><li>some (C<sub>i</sub>, C<sub>i+1</sub>) violates δ, OR</li><li>C<sub>ℓ</sub> isn't accepting.</li></ul>
+<p style="margin:4px 0;">L(G<sub>M,w</sub>) = Σ* iff <strong>no</strong> accepting history exists iff M does not accept w. So a decider for ALL<sub>CFG</sub> would decide ¬A<sub>TM</sub>.</p></div>
+</section>
+
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">The CFG works by guessing where a history goes wrong <span class="pill">Auto-plays</span></div>
+<div class="controls">
+<button class="btn play-btn" id="ac-run">⏸ Pause</button><button class="btn ghost" id="ac-step">Step</button><button class="btn ghost" id="ac-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="ac-speed" min="0.25" max="3" step="0.25" value="1"><span id="ac-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label>
+</div>
+<svg id="ac-svg" viewBox="0 0 760 280" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="ac-explain"></div>
+</div></section>
+
+<section><div class="section-label">3 · Q&amp;A defence notes</div>
+<ul class="qa-list">
+<li><div class="q">Q1. Why is "find ONE violation" easier than "check ALL pairs are correct"?</div><div class="a">Existential vs universal. A CFG can nondeterministically pick a position and locally verify a problem there. Checking "no problems anywhere" requires global consistency, beyond CFG power.</div></li>
+<li><div class="q">Q2. Why is the trick: write C<sub>i+1</sub> backwards?</div><div class="a">In the standard construction, alternate configurations are written reversed, so a comparison between adjacent configs becomes a palindrome-like local match — within CFG capability.</div></li>
+<li><div class="q">Q3. What's EQ<sub>CFG</sub>?</div><div class="a">{⟨G₁, G₂⟩ : L(G₁) = L(G₂)}. Undecidable as a corollary: fix G* with L(G*) = Σ*; then ALL<sub>CFG</sub>(G) iff EQ<sub>CFG</sub>(G, G*).</div></li>
+</ul></section>
+
+</div>
+<footer class="foot">Problem 11 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<script>
+(function(){
+const violations = [
+  {t: 'Not formatted as C₁ # C₂ # … # Cₗ', good: false},
+  {t: 'First config ≠ start config', good: false},
+  {t: 'Some (Cᵢ, Cᵢ₊₁) violates δ', good: false},
+  {t: 'Last config not accepting', good: false},
+  {t: '(All checks pass · valid history)', good: true}
+];
+let stage = 0;
+function render() {
+  let s = '';
+  s += `<text x="380" y="30" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="700">CFG G_{M,w} generates strings with at least one local violation</text>`;
+  violations.forEach((v, i) => {
+    const y = 60 + i*42;
+    const shown = i <= stage;
+    const inLang = v.good ? false : shown; // valid histories are NOT in L(G)
+    const fill = !shown ? '#fafafa' : v.good ? '#fff' : 'var(--warn-soft)';
+    const stroke = !shown ? '#eee' : v.good ? '#ccc' : 'var(--warn)';
+    s += `<rect x="80" y="${y}" width="600" height="34" rx="6" fill="${fill}" stroke="${stroke}" stroke-width="${shown && !v.good ? 2 : 1}" opacity="${shown ? 1 : 0.3}"/>`;
+    s += `<text x="100" y="${y+22}" font-family="ui-monospace, monospace" font-size="13" fill="${shown ? (v.good ? '#888' : '#7a3a18') : '#bbb'}" opacity="${shown ? 1 : 0.3}">${v.t}</text>`;
+    if (shown && !v.good) s += `<text x="660" y="${y+22}" text-anchor="end" font-family="var(--sans), sans-serif" font-size="12" font-weight="700" fill="var(--warn)">∈ L(G)</text>`;
+    if (shown && v.good) s += `<text x="660" y="${y+22}" text-anchor="end" font-family="var(--sans), sans-serif" font-size="12" font-weight="700" fill="var(--accent)">∉ L(G)</text>`;
+  });
+  document.getElementById('ac-svg').innerHTML = s;
+  const el = document.getElementById('ac-explain');
+  if (stage < 4) el.innerHTML = `<div class="step-num">Violation type ${stage + 1}/5 revealed</div><p style="margin:4px 0;">The CFG generates strings exhibiting this kind of local error. Each violation is checkable by a small grammar gadget.</p>`;
+  else el.innerHTML = `<div class="step-num">L(G) = Σ* iff no valid history exists</div><p style="margin:4px 0;">Every string is either valid (rejected by G) or has some violation (accepted). <strong>L(G) = Σ* iff M does NOT accept w</strong> ⇒ ALL<sub>CFG</sub> is undecidable.</p>`;
+}
+function step() { if (stage < 4) stage++; render(); }
+function reset() { stage = 0; render(); }
+function atEnd() { return stage >= 4; }
+WidgetLoop.create({runBtn:document.getElementById('ac-run'),stepBtn:document.getElementById('ac-step'),resetBtn:document.getElementById('ac-reset'),speedSlider:document.getElementById('ac-speed'),speedLabel:document.getElementById('ac-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:1800,baseLoopMs:5500,autoStartMs:1500});
+reset();
+})();
+</script><script src="../presentation.js"></script>
+</body></html>

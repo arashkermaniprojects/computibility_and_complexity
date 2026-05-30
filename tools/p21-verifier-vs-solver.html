@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P21 · Verifier vs. brute-force solver</title>
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css">
+<script src="../widget-loop.js"></script>
+</head>
+<body>
+
+<header class="tool-header">
+  <div class="crumb"><a href="index.html">← Student tools</a> · Problem 21 · Lecture 10 · Round 2 (30 pts)</div>
+  <h1>Verifier vs. brute-force solver</h1>
+  <p class="sub">The asymmetry that defines NP: checking a witness is easy, finding one is (apparently) hard.</p>
+  <div class="tags">
+    <span class="tag-pill">CLO-3 · Find vs verify</span>
+    <span class="tag-pill warn">Round 2 · 30 pts</span>
+    <span class="tag-pill info">Lecture 10</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+<section>
+  <div class="section-label">1 · Theory</div>
+  <p>
+    A language <span class="math">L</span> is in <strong>NP</strong> if there is a polynomial-time
+    <em>verifier</em> <span class="math">V</span> such that
+  </p>
+  <div class="math-block">
+    x ∈ L &nbsp;⇔&nbsp; ∃ certificate c, |c| ≤ poly(|x|), with V(x, c) accepting in poly(|x|) time.
+  </div>
+
+  <div class="theorem-box">
+    <div class="theorem-label">Definition · NP via verifiers</div>
+    <p style="margin: 4px 0;">SAT ∈ NP. Certificate: a satisfying assignment. Verifier: plug in, check each clause. Time: O(m) where m = clauses.
+    Solver (brute force): try all 2<sup>n</sup> assignments. Exponential.</p>
+  </div>
+
+  <p>
+    The gap between O(m) and 2<sup>n</sup> is the <strong>P vs NP question</strong>: is there ever a polynomial-time algorithm
+    that <em>finds</em> the witness, not just checks it? Nobody knows. A million-dollar problem.
+  </p>
+</section>
+
+<section>
+  <div class="section-label">2 · Animated demo · auto-plays · loops</div>
+
+  <div class="widget">
+    <div class="widget-title">Same 3SAT instance · two algorithms race <span class="pill">Auto-plays</span></div>
+
+    <div class="controls">
+      <label>Variables n: <input type="range" id="vs-n" min="3" max="8" value="5" style="width: 130px;"> <span id="vs-n-label">5</span></label>
+      <button class="btn play-btn" id="vs-run">⏸ Pause</button>
+      <button class="btn ghost" id="vs-reset">Reset</button>
+      <label class="speed-control">Speed
+        <input type="range" id="vs-speed" min="0.25" max="3" step="0.25" value="1">
+        <span id="vs-speed-label" style="font-family: var(--mono); min-width: 28px;">1×</span>
+      </label>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+      <div style="min-width: 0;">
+        <h4>Solver: brute force (2<sup>n</sup>)</h4>
+        <svg id="vs-solver" viewBox="0 0 400 220" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+        <div style="font-family: var(--sans); font-size: 12px; color: var(--muted); margin-top: 4px;">Tested: <b id="vs-solver-count" style="font-family: var(--mono);">0</b></div>
+      </div>
+      <div style="min-width: 0;">
+        <h4>Verifier: given witness, check</h4>
+        <svg id="vs-checker" viewBox="0 0 400 220" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+        <div style="font-family: var(--sans); font-size: 12px; color: var(--muted); margin-top: 4px;">Checks: <b id="vs-checker-count" style="font-family: var(--mono);">0</b></div>
+      </div>
+    </div>
+
+    <div class="explain-panel" id="vs-explain"></div>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">3 · Q&amp;A defence notes</div>
+  <ul class="qa-list">
+    <li>
+      <div class="q">Q1. Why does the verifier finish in m steps, not 2<sup>n</sup>?</div>
+      <div class="a">Because the verifier doesn't search — it is handed the satisfying assignment and just plugs it in. m clauses × O(1) literal-checks each = O(m). The certificate replaces the search.</div>
+    </li>
+    <li>
+      <div class="q">Q2. What if the verifier is sometimes given a wrong certificate?</div>
+      <div class="a">Then at least one clause evaluates to false and the verifier rejects. NP is one-sided: a yes-instance has SOME certificate that works; the verifier doesn't have to handle all possible certificates correctly, just identify the good ones.</div>
+    </li>
+    <li>
+      <div class="q">Q3. Why is UNSAT (the complement of SAT) thought NOT to be in NP?</div>
+      <div class="a">To certify "no assignment works", you'd have to rule out all 2<sup>n</sup>. There is no known polynomial-size certificate. UNSAT ∈ coNP. Whether NP = coNP is open.</div>
+    </li>
+    <li>
+      <div class="q">Q4. Can the solver be smarter than brute force?</div>
+      <div class="a">Yes — DPLL, CDCL, etc. all run faster in practice. But no algorithm is known whose worst-case runtime is polynomial. The asymptotic worst-case bound remains 2<sup>O(n)</sup>.</div>
+    </li>
+    <li>
+      <div class="q">Q5. Compare with PRIMES.</div>
+      <div class="a">PRIMES was thought to be only in NP for decades. In 2002 (AKS) it was shown PRIMES ∈ P. So "in NP" doesn't mean "no polynomial algorithm exists" — only that one isn't <em>obviously</em> there.</div>
+    </li>
+  </ul>
+</section>
+
+</div>
+
+<footer class="foot">Problem 21 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<script>
+(function(){
+  let n = 5, solverIdx = 0, formula = null, answer = null;
+
+  function makeFormula(nn) {
+    answer = Array.from({length: nn}, () => Math.random() < 0.5);
+    const m = nn + 2;
+    const f = [];
+    for (let i = 0; i < m; i++) {
+      const satVar = i % nn;
+      const lit = answer[satVar] ? (satVar+1) : -(satVar+1);
+      const cl = [lit];
+      for (let j = 0; j < 2; j++) {
+        const v = Math.floor(Math.random() * nn);
+        const sign = Math.random() < 0.5 ? 1 : -1;
+        cl.push(sign * (v+1));
+      }
+      f.push(cl);
+    }
+    return f;
+  }
+
+  function evaluate(a) {
+    for (const cl of formula) {
+      let ok = false;
+      for (const lit of cl) {
+        const v = a[Math.abs(lit)-1];
+        if (lit > 0 ? v : !v) { ok = true; break; }
+      }
+      if (!ok) return false;
+    }
+    return true;
+  }
+
+  function renderSolver() {
+    const W=400, H=220, total=1<<n;
+    let s = `<text x="${W/2}" y="20" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" fill="var(--muted)">Trial ${solverIdx+1} / ${total}</text>`;
+    const cellW = (W-40)/n, cellH = 14, startY = 32;
+    const maxRows = Math.min(11, Math.floor((H-startY)/(cellH+2)));
+    const startIdx = Math.max(0, Math.min(solverIdx - maxRows + 1, total - maxRows));
+    for (let r = 0; r < maxRows; r++) {
+      const idx = startIdx + r; if (idx >= total) break;
+      const y = startY + r*(cellH+2);
+      const a = []; for (let i = 0; i < n; i++) a.push((idx >> i) & 1);
+      const sat = evaluate(a);
+      const cur = idx === solverIdx;
+      const bg = cur ? (sat ? 'var(--accent-soft)' : '#fff8f3') : (idx < solverIdx ? '#f5f5f0' : '#fff');
+      s += `<rect x="20" y="${y}" width="${W-40}" height="${cellH}" fill="${bg}" stroke="${cur?'var(--accent)':'#ddd'}" stroke-width="${cur?1.5:0.5}"/>`;
+      for (let i = 0; i < n; i++) {
+        const cx = 20 + i*cellW + cellW/2;
+        s += `<text x="${cx}" y="${y+10}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" fill="${a[i]?'var(--accent)':'#888'}">${a[i]?'T':'F'}</text>`;
+      }
+      if (idx <= solverIdx) s += `<text x="${W-30}" y="${y+10}" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="11" font-weight="bold" fill="${sat?'var(--accent)':'var(--warn)'}">${sat?'✓':'✗'}</text>`;
+    }
+    document.getElementById('vs-solver').innerHTML = s;
+    document.getElementById('vs-solver-count').textContent = solverIdx + 1;
+  }
+
+  function renderChecker() {
+    const W=400;
+    let s = `<text x="${W/2}" y="20" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" fill="var(--muted)">Certificate: ${answer.map(b=>b?'T':'F').join(' ')}</text>`;
+    s += `<text x="${W/2}" y="38" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="12" fill="var(--muted)">Plug in &amp; check each clause</text>`;
+    const cellH = 22, startY = 56;
+    for (let c = 0; c < Math.min(formula.length, 7); c++) {
+      const y = startY + c*(cellH+4);
+      const cl = formula[c];
+      const sat = cl.some(lit => { const v = answer[Math.abs(lit)-1]; return lit>0 ? v : !v; });
+      const shown = c <= solverIdx;
+      const op = shown ? '1' : '0.2';
+      s += `<rect x="20" y="${y}" width="${W-40}" height="${cellH}" fill="${shown?(sat?'var(--accent-soft)':'var(--warn-soft)'):'#fff'}" stroke="${shown?(sat?'var(--accent)':'var(--warn)'):'#ccc'}" stroke-width="1" opacity="${op}"/>`;
+      s += `<text x="30" y="${y+15}" font-family="ui-monospace, monospace" font-size="11" opacity="${op}">cl ${c+1}: ${cl.map(l => (l<0?'¬':'')+'x'+Math.abs(l)).join(' ∨ ')}</text>`;
+      if (shown) s += `<text x="${W-30}" y="${y+15}" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="bold" fill="${sat?'var(--accent)':'var(--warn)'}">${sat?'✓':'✗'}</text>`;
+    }
+    document.getElementById('vs-checker').innerHTML = s;
+    document.getElementById('vs-checker-count').textContent = Math.min(solverIdx+1, formula.length);
+  }
+
+  function step() {
+    const cur = []; for (let i = 0; i < n; i++) cur.push((solverIdx >> i) & 1);
+    const sat = evaluate(cur);
+    renderSolver(); renderChecker();
+    if (sat) {
+      document.getElementById('vs-explain').innerHTML = `<div class="step-num">Solver found witness · ${solverIdx+1} trials</div>
+        <p style="margin: 4px 0;"><strong>Solver:</strong> burned ${solverIdx+1} of ${1<<n} possible assignments to stumble on one that works.</p>
+        <p style="margin: 4px 0;"><strong>Verifier:</strong> finished ${formula.length} clause-checks. <em>Done.</em></p>
+        <p style="margin: 4px 0;"><strong>Gap:</strong> O(m) vs O(2<sup>n</sup>). NP captures exactly this asymmetry.</p>`;
+      solverIdx = (1<<n); // mark done
+      return;
+    }
+    const assignStr = cur.map((v, i) => 'x'+(i+1)+'='+(v?'T':'F')).join(', ');
+    document.getElementById('vs-explain').innerHTML = `<div class="step-num">Trial ${solverIdx+1}/${1<<n} · ${assignStr}</div>
+      <p style="margin: 4px 0;"><strong>Solver fails:</strong> at least one clause evaluates to false. Try next.</p>
+      <p style="margin: 4px 0;"><strong>Verifier (right) is already done</strong> — checked all ${formula.length} clauses with the real certificate.</p>`;
+    solverIdx++;
+  }
+
+  function reset() {
+    formula = makeFormula(n); solverIdx = 0;
+    renderSolver(); renderChecker();
+    document.getElementById('vs-explain').innerHTML = `<div class="step-num">Same instance, two algorithms</div>
+      <p style="margin: 4px 0;"><strong>Left:</strong> solver has no information — must enumerate 2<sup>${n}</sup> = ${1<<n} assignments.</p>
+      <p style="margin: 4px 0;"><strong>Right:</strong> verifier is given the satisfying assignment as a certificate. Just plugs in and checks ${formula.length} clauses.</p>
+      <p style="margin: 4px 0;"><strong>Watch how many rows the solver burns through before stumbling on the answer the verifier already had.</strong></p>`;
+  }
+  function atEnd() { return solverIdx >= (1<<n); }
+
+  document.getElementById('vs-n').oninput = e => { n = parseInt(e.target.value); document.getElementById('vs-n-label').textContent = n; reset(); };
+
+  WidgetLoop.create({
+    runBtn: document.getElementById('vs-run'),
+    resetBtn: document.getElementById('vs-reset'),
+    speedSlider: document.getElementById('vs-speed'),
+    speedLabel: document.getElementById('vs-speed-label'),
+    doStep: step,
+    atEnd,
+    doReset: reset,
+    baseStepMs: 1200,
+    baseLoopMs: 5000,
+    autoStartMs: 1500
+  });
+
+  reset();
+})();
+</script>
+
+<script src="../presentation.js"></script>
+</body>
+</html>

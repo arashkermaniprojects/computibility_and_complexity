@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>P42 · NL PATH</title><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css"><script src="../widget-loop.js"></script></head><body>
+<header class="tool-header"><div class="crumb"><a href="index.html">← Student tools</a> · Problem 42 · Lecture 15 · Round 3 (40 pts)</div>
+<h1>PATH ∈ NL · nondeterministic guess-the-path</h1><p class="sub">Guess a neighbour each step; log n bits suffice per branch.</p>
+<div class="tags"><span class="tag-pill">CLO-5</span><span class="tag-pill warn">R3·40 pts</span><span class="tag-pill info">L15</span></div></header>
+<div class="wrap">
+<section><div class="section-label">1 · Theory</div>
+<div class="theorem-box"><div class="theorem-label">NL algorithm for PATH</div><pre style="font-size:13px;margin:4px 0;">v ← s; counter ← 0
+while counter ≤ |V|:
+   if v = t accept
+   v ← nondet. choice from neighbours of v
+   counter += 1
+reject</pre><p style="margin:4px 0;">Memory: v (log n bits) + counter (log n bits) = O(log n). Hence PATH ∈ NL.</p></div></section>
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Multiple branches explored in parallel · each log-n memory <span class="pill">Auto-plays</span></div>
+<div class="controls"><button class="btn play-btn" id="n-run">⏸ Pause</button><button class="btn ghost" id="n-step">Step</button><button class="btn ghost" id="n-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="n-speed" min="0.25" max="3" step="0.25" value="1"><span id="n-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
+<svg id="n-svg" viewBox="0 0 760 280" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="n-explain"></div></div></section>
+<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why nondeterministic and not deterministic?</div><div class="a">A deterministic log-space machine doesn't have enough memory to remember which neighbours have been tried. Nondeterminism lets us "magically" guess the right neighbour.</div></li>
+<li><div class="q">Q2. Why must counter ≤ |V|?</div><div class="a">If a path exists, it has length ≤ |V|−1 (no repeats needed). So we cap to avoid infinite loops.</div></li>
+<li><div class="q">Q3. Is PATH in L?</div><div class="a">Open! Showing PATH ∈ L is equivalent to L = NL, one of the major open questions.</div></li>
+</ul></section></div><footer class="foot">P42 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<script>(function(){
+const nodes={S:{x:80,y:140},A:{x:200,y:80},B:{x:200,y:200},C:{x:340,y:140},D:{x:480,y:140},T:{x:620,y:140}};
+const edges=[['S','A'],['S','B'],['A','C'],['B','C'],['C','D'],['D','T']];
+let frontier=[['S']], cfgCount=1;
+function render(){
+  let s='';
+  for(const[a,b] of edges){const onF=frontier.some(p=>p.includes(a)&&p.includes(b)&&p.indexOf(b)===p.indexOf(a)+1);
+    s+=`<line x1="${nodes[a].x}" y1="${nodes[a].y}" x2="${nodes[b].x}" y2="${nodes[b].y}" stroke="${onF?'var(--gold)':'#bbb'}" stroke-width="${onF?2.5:1.2}"/>`;
+    const dx=nodes[b].x-nodes[a].x, dy=nodes[b].y-nodes[a].y, len=Math.hypot(dx,dy);
+    const ex=nodes[b].x-dx/len*22, ey=nodes[b].y-dy/len*22;
+    s+=`<polygon points="${ex},${ey} ${ex-dx/len*8-dy/len*4},${ey-dy/len*8+dx/len*4} ${ex-dx/len*8+dy/len*4},${ey-dy/len*8-dx/len*4}" fill="${onF?'var(--gold)':'#bbb'}"/>`;
+  }
+  const heads=new Set(frontier.map(p=>p[p.length-1]));
+  for(const[n,p] of Object.entries(nodes)){const isH=heads.has(n), isT=n==='T';
+    const fill=isT&&isH?'var(--accent)':(isH?'var(--gold)':'#fff'); const stroke=isT?'var(--accent)':(isH?'var(--gold)':'#666');
+    s+=`<circle cx="${p.x}" cy="${p.y}" r="22" fill="${fill}" stroke="${stroke}" stroke-width="2"/><text x="${p.x}" y="${p.y+5}" text-anchor="middle" font-family="ui-monospace,monospace" font-size="14" font-weight="bold" fill="${isH?'#fff':'#1a1a1a'}">${n}</text>`;
+  }
+  s+=`<text x="20" y="260" font-family="var(--sans), sans-serif" font-size="11" fill="var(--muted)">Branches: ${frontier.slice(0,4).map(p=>p.join('→')).join(' · ')}${frontier.length>4?' …':''}</text>`;
+  document.getElementById('n-svg').innerHTML=s;
+  document.getElementById('n-explain').innerHTML=`<div class="step-num">${frontier.length} branch(es) · ${cfgCount} configurations explored</div><p style="margin:4px 0;">Each branch needs only log n bits to track its current vertex. Branches expand in parallel (or via nondet. guessing). If any reaches T, NL accepts.</p>`;
+}
+function step(){ const newF=[]; for(const p of frontier){const last=p[p.length-1]; for(const[a,b] of edges){if(a===last&&!p.includes(b)){newF.push([...p,b]); cfgCount++;}}} frontier=newF.slice(0,8); render(); }
+function reset(){ frontier=[['S']]; cfgCount=1; render(); }
+function atEnd(){ return frontier.some(p=>p.includes('T')) || frontier.length===0; }
+WidgetLoop.create({runBtn:document.getElementById('n-run'),stepBtn:document.getElementById('n-step'),resetBtn:document.getElementById('n-reset'),speedSlider:document.getElementById('n-speed'),speedLabel:document.getElementById('n-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:1800,baseLoopMs:5500,autoStartMs:1500});
+reset();
+})();</script><script src="../presentation.js"></script>
+</body></html>

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>P22 · Interactive SAT</title><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css"><script src="../widget-loop.js"></script></head><body>
+<header class="tool-header"><div class="crumb"><a href="index.html">← Student tools</a> · Problem 22 · Lecture 10 · Round 2 (30 pts)</div>
+<h1>SAT · click variables, watch clauses turn green</h1><p class="sub">Flip variables and visually verify or break clauses.</p>
+<div class="tags"><span class="tag-pill">CLO-3</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L10</span></div></header>
+<div class="wrap">
+<section><div class="section-label">1 · Theory</div><p>SAT = {⟨φ⟩ : Boolean formula φ is satisfiable}. A clause is green (satisfied) iff at least one literal is true under the current assignment.</p>
+<div class="theorem-box"><div class="theorem-label">NP definition for SAT</div><p style="margin:4px 0;">Certificate = satisfying assignment; verifier checks each clause in O(m) time.</p></div></section>
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Auto-solver tries assignments in order <span class="pill">Auto-plays</span></div>
+<div class="controls"><button class="btn play-btn" id="s-run">⏸ Pause</button><button class="btn ghost" id="s-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="s-speed" min="0.25" max="3" step="0.25" value="1"><span id="s-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
+<div id="s-vars" style="display:flex;gap:12px;flex-wrap:wrap;margin:14px 0;"></div>
+<div id="s-clauses" style="display:flex;gap:10px;flex-wrap:wrap;"></div>
+<div class="explain-panel" id="s-explain"></div></div></section>
+<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. What's the worst case?</div><div class="a">2<sup>n</sup> trials. For n=20, that's a million; for n=30, a billion.</div></li>
+<li><div class="q">Q2. Is there a smart algorithm?</div><div class="a">DPLL, CDCL — practically fast but worst-case still exponential.</div></li>
+<li><div class="q">Q3. How does a verifier differ from a solver?</div><div class="a">Verifier gets the assignment; just checks. Solver searches.</div></li>
+</ul></section></div><footer class="foot">P22 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<script>(function(){
+const vars=['x','y','z']; const clauses=[[1,2,3],[-1,2],[-2,3]];
+let assn=[false,false,false],idx=0;
+function evl(){ for(const cl of clauses){let ok=false; for(const l of cl){const v=assn[Math.abs(l)-1]; if(l>0?v:!v){ok=true;break;}} if(!ok)return false;} return true; }
+function render(){
+  let h=''; for(let i=0;i<vars.length;i++){h+=`<button class="btn ghost" style="background:${assn[i]?'var(--accent)':'#fff'};color:${assn[i]?'#fff':'var(--accent)'};font-family:ui-monospace,monospace;font-size:15px;min-width:70px;">${vars[i]}=${assn[i]?'T':'F'}</button>`;}
+  document.getElementById('s-vars').innerHTML=h;
+  let ch=''; let okAll=true;
+  for(const cl of clauses){let ok=false; for(const l of cl){const v=assn[Math.abs(l)-1]; if(l>0?v:!v){ok=true;break;}} if(!ok)okAll=false;
+    const lbl=cl.map(l=>(l<0?'¬':'')+vars[Math.abs(l)-1]).join(' ∨ ');
+    ch+=`<div style="padding:8px 14px;background:${ok?'var(--accent-soft)':'var(--warn-soft)'};color:${ok?'var(--accent)':'var(--warn)'};border-radius:4px;font-family:ui-monospace,monospace;font-size:14px;">${ok?'✓':'✗'} (${lbl})</div>`;}
+  document.getElementById('s-clauses').innerHTML=ch;
+  document.getElementById('s-explain').innerHTML=`<div class="step-num">Trial ${idx+1}/${1<<vars.length}: ${vars.map((v,k)=>v+'='+(assn[k]?'T':'F')).join(', ')}</div><p style="margin:4px 0;">${okAll?'<strong>All clauses green — formula satisfied.</strong>':`${clauses.length-clauses.filter(cl=>{for(const l of cl){const v=assn[Math.abs(l)-1];if(l>0?v:!v)return true;}return false;}).length} clause(s) red.`}</p>`;
+}
+function step(){ idx++; if(idx>=(1<<vars.length))idx=0; for(let i=0;i<vars.length;i++)assn[i]=!!(idx&(1<<i)); render(); }
+function reset(){ idx=0; assn=[false,false,false]; render(); }
+function atEnd(){ return evl(); }
+WidgetLoop.create({runBtn:document.getElementById('s-run'),resetBtn:document.getElementById('s-reset'),speedSlider:document.getElementById('s-speed'),speedLabel:document.getElementById('s-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:1400,baseLoopMs:5000,autoStartMs:1500});
+reset();
+})();</script><script src="../presentation.js"></script>
+</body></html>

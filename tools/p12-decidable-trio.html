@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P12 · A_DFA, E_DFA, A_CFG</title>
+<link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css">
+<script src="../widget-loop.js"></script></head><body>
+
+<header class="tool-header">
+<div class="crumb"><a href="index.html">← Student tools</a> · Problem 12 · Lecture 7 · Round 1 (30 pts)</div>
+<h1>A<sub>DFA</sub>, E<sub>DFA</sub>, A<sub>CFG</sub> are all decidable</h1>
+<p class="sub">Three poly-time deciders side by side: simulation, reachability, CYK.</p>
+<div class="tags"><span class="tag-pill">CLO-1</span><span class="tag-pill">CLO-2</span><span class="tag-pill warn">R1·30 pts</span><span class="tag-pill info">L7</span></div>
+</header>
+
+<div class="wrap">
+
+<section><div class="section-label">1 · Theory</div>
+<p>Three "easy" questions about finite/context-free models, all polynomial-time decidable. Contrast with their TM cousins, which are all undecidable.</p>
+<div class="theorem-box"><div class="theorem-label">Three deciders</div>
+<ul style="margin:4px 0;"><li><strong>A<sub>DFA</sub></strong>: simulate the DFA on the input. O(n).</li>
+<li><strong>E<sub>DFA</sub></strong>: BFS from start; non-empty iff some accept state is reachable. O(|Q|).</li>
+<li><strong>A<sub>CFG</sub></strong>: convert to CNF; run CYK dynamic programming. O(n³).</li></ul></div>
+<p>Why are these decidable while their TM versions aren't? Because DFAs and CFGs are <em>finite-state</em>: bounded configurations, bounded derivations.</p>
+</section>
+
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Three deciders, three patterns <span class="pill">Auto-plays</span></div>
+<div class="controls">
+<button class="btn play-btn" id="t-run">⏸ Pause</button><button class="btn ghost" id="t-step">Step</button><button class="btn ghost" id="t-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="t-speed" min="0.25" max="3" step="0.25" value="1"><span id="t-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label>
+</div>
+<svg id="t-svg" viewBox="0 0 760 280" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="t-explain"></div>
+</div></section>
+
+<section><div class="section-label">3 · Q&amp;A defence notes</div>
+<ul class="qa-list">
+<li><div class="q">Q1. Why is A<sub>DFA</sub> decidable but A<sub>TM</sub> isn't?</div><div class="a">DFA has |Q| configurations, all reachable in |w| steps. TM can loop indefinitely.</div></li>
+<li><div class="q">Q2. Why is E<sub>DFA</sub> O(|Q|) but E<sub>TM</sub> undecidable?</div><div class="a">For DFA: reachability is a simple graph problem on finitely many vertices. For TM: would require ranging over all possible inputs.</div></li>
+<li><div class="q">Q3. Where does the O(n³) for CYK come from?</div><div class="a">Table T[i,j] has O(n²) entries; computing each tries O(n) split points and a constant number of rules.</div></li>
+<li><div class="q">Q4. Is EQ<sub>DFA</sub> decidable?</div><div class="a">Yes — symmetric difference of two DFAs is empty iff they're equivalent; use E<sub>DFA</sub> on the product construction.</div></li>
+</ul></section>
+
+</div>
+<footer class="foot">Problem 12 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<script>
+(function(){
+const probs = [
+  {name: 'A_DFA', algo: 'Simulate DFA on input', time: 'O(n)', why: 'One state at a time, n transitions.'},
+  {name: 'E_DFA', algo: 'BFS from start state', time: 'O(|Q|·|Σ|)', why: 'Reachable accept state ⇔ non-empty.'},
+  {name: 'A_CFG', algo: 'CYK on CNF grammar', time: 'O(n³)', why: 'Filling O(n²) cells, n splits each.'}
+];
+let revealed = -1;
+function render() {
+  let s = '';
+  s += `<text x="380" y="30" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="700">All three: polynomial decidable. TM cousins: undecidable.</text>`;
+  probs.forEach((p, i) => {
+    const x = 60 + i * 230;
+    const shown = i <= revealed;
+    const op = shown ? 1 : 0.25;
+    s += `<rect x="${x}" y="70" width="200" height="180" rx="10" fill="white" stroke="${shown ? 'var(--accent)' : '#ccc'}" stroke-width="${shown ? 2.5 : 1}" opacity="${op}"/>`;
+    s += `<text x="${x+100}" y="100" text-anchor="middle" font-family="ui-monospace, monospace" font-size="16" font-weight="bold" fill="${shown ? 'var(--accent-strong)' : '#888'}" opacity="${op}">${p.name}</text>`;
+    s += `<text x="${x+100}" y="135" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" fill="${shown ? '#1a1a1a' : '#888'}" opacity="${op}">${p.algo}</text>`;
+    s += `<text x="${x+100}" y="172" text-anchor="middle" font-family="ui-monospace, monospace" font-size="14" font-weight="bold" fill="${shown ? 'var(--gold)' : '#bbb'}" opacity="${op}">${p.time}</text>`;
+    s += `<text x="${x+100}" y="200" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="11" fill="${shown ? 'var(--muted)' : '#bbb'}" opacity="${op}">${p.why}</text>`;
+    s += `<text x="${x+100}" y="225" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="12" font-weight="700" fill="${shown ? 'var(--accent)' : '#bbb'}" opacity="${op}">DECIDABLE</text>`;
+  });
+  document.getElementById('t-svg').innerHTML = s;
+  if (revealed < 0) document.getElementById('t-explain').innerHTML = `<div class="step-num">Three decidable problems</div><p style="margin:4px 0;">For each, watch the algorithm and time complexity appear.</p>`;
+  else if (revealed >= 2) document.getElementById('t-explain').innerHTML = `<div class="step-num">All three decidable in polynomial time</div><p style="margin:4px 0;">Decidability boundary: finite-state ⇒ decidable. Adding TM = unbounded memory ⇒ undecidable for the same questions.</p>`;
+  else { const p = probs[revealed]; document.getElementById('t-explain').innerHTML = `<div class="step-num">${p.name} — ${p.algo}</div><p style="margin:4px 0;">${p.why} Time: ${p.time}.</p>`; }
+}
+function step() { if (revealed < 2) revealed++; render(); }
+function reset() { revealed = -1; render(); }
+function atEnd() { return revealed >= 2; }
+WidgetLoop.create({runBtn:document.getElementById('t-run'),stepBtn:document.getElementById('t-step'),resetBtn:document.getElementById('t-reset'),speedSlider:document.getElementById('t-speed'),speedLabel:document.getElementById('t-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:2200,baseLoopMs:5000,autoStartMs:1500});
+reset();
+})();
+</script><script src="../presentation.js"></script>
+</body></html>

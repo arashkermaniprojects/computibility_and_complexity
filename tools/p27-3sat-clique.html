@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P27 · 3SAT → CLIQUE</title>
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css">
+<script src="../widget-loop.js"></script>
+</head>
+<body>
+
+<header class="tool-header">
+  <div class="crumb"><a href="index.html">← Student tools</a> · Problem 27 · Lecture 11 · Round 2 (30 pts)</div>
+  <h1>3SAT → CLIQUE reduction</h1>
+  <p class="sub">From a Boolean formula to a graph: satisfiability becomes "is there a clique of size m?".</p>
+  <div class="tags">
+    <span class="tag-pill">CLO-4 · Mapping reduction</span>
+    <span class="tag-pill warn">Round 2 · 30 pts</span>
+    <span class="tag-pill info">Lecture 11</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+<section>
+  <div class="section-label">1 · Theory</div>
+  <p>
+    <strong>CLIQUE</strong> = {⟨G, k⟩ : G has a complete subgraph on k vertices}. We show it is NP-complete by
+    reducing 3SAT to it. The reduction is purely combinatorial.
+  </p>
+
+  <div class="theorem-box">
+    <div class="theorem-label">Reduction · φ ∈ 3SAT ⇔ (G<sub>φ</sub>, m) ∈ CLIQUE</div>
+    <p style="margin: 4px 0;">Given a 3CNF formula φ with m clauses:</p>
+    <ol style="margin: 4px 0;">
+      <li><strong>Nodes:</strong> one per literal-occurrence (3 per clause; 3m nodes total).</li>
+      <li><strong>Edges:</strong> between two nodes iff they are in <em>different</em> clauses AND their literals are not negations of each other.</li>
+      <li><strong>Witness:</strong> a clique of size m corresponds to one literal per clause, all simultaneously truth-able. That's exactly a satisfying assignment.</li>
+    </ol>
+  </div>
+
+  <p>
+    The reduction is polynomial: G<sub>φ</sub> has 3m nodes and ≤ 9m² edges. Construction is straightforward. <em>Correctness</em>:
+    φ is satisfiable ⇒ pick a true literal in each clause ⇒ those m nodes form a clique. Conversely a clique of size m must
+    pick one node per cluster (no intra-cluster edges) and the pairwise compatibility means the chosen literals can all be set true.
+  </p>
+</section>
+
+<section>
+  <div class="section-label">2 · Animated demo · auto-plays · loops</div>
+
+  <div class="widget">
+    <div class="widget-title">Build the graph G<sub>φ</sub>, find the 3-clique <span class="pill">Auto-plays</span></div>
+
+    <div class="controls">
+      <button class="btn play-btn" id="c-run">⏸ Pause</button>
+      <button class="btn ghost" id="c-step">Step</button>
+      <button class="btn ghost" id="c-reset">Reset</button>
+      <label class="speed-control">Speed
+        <input type="range" id="c-speed" min="0.25" max="3" step="0.25" value="1">
+        <span id="c-speed-label" style="font-family: var(--mono); min-width: 28px;">1×</span>
+      </label>
+    </div>
+
+    <svg id="c-svg" viewBox="0 0 760 320" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+
+    <div class="explain-panel" id="c-explain"></div>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">3 · Q&amp;A defence notes</div>
+  <ul class="qa-list">
+    <li>
+      <div class="q">Q1. Why no edges within a clause's cluster?</div>
+      <div class="a">Because a satisfying assignment makes one literal per clause true. We don't need (and can't use) two literals from the same clause. Removing intra-cluster edges forces the clique to pick exactly one per cluster.</div>
+    </li>
+    <li>
+      <div class="q">Q2. Why "not negations" between clusters?</div>
+      <div class="a">If two nodes are x and ¬x, no consistent assignment makes both true. Excluding them from the edge set prevents a clique from picking incompatible literals.</div>
+    </li>
+    <li>
+      <div class="q">Q3. What if the formula has clauses with fewer than 3 literals?</div>
+      <div class="a">The reduction also handles 2-literal and 1-literal clauses (just smaller clusters). For 3SAT specifically we always have 3 literals per clause.</div>
+    </li>
+    <li>
+      <div class="q">Q4. Why does this prove CLIQUE is NP-complete?</div>
+      <div class="a">Two parts: (a) CLIQUE ∈ NP (the clique itself is a polynomial-size witness). (b) 3SAT ≤<sub>p</sub> CLIQUE (this reduction). 3SAT is NP-complete, so CLIQUE is too.</div>
+    </li>
+    <li>
+      <div class="q">Q5. Polynomial bound on the reduction size?</div>
+      <div class="a">3m nodes, ≤ (3m choose 2) ≈ O(m²) edges. Construction takes O(m²) time. Polynomial in the formula size.</div>
+    </li>
+  </ul>
+</section>
+
+</div>
+
+<footer class="foot">Problem 27 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<script>
+(function(){
+  const clauses = [['x','y','¬z'],['¬x','y','z'],['x','¬y','¬z']];
+  const groupX = [150, 380, 610], groupYs = [100, 180, 260];
+  const nodes = [];
+  for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++)
+    nodes.push({lit: clauses[i][j], cluster: i, x: groupX[i], y: groupYs[j], id: i*3+j});
+  function compat(a, b) {
+    if (a.startsWith('¬') && b === a.slice(1)) return false;
+    if (b.startsWith('¬') && a === b.slice(1)) return false;
+    return true;
+  }
+  const edges = [];
+  for (let i = 0; i < nodes.length; i++)
+    for (let j = i+1; j < nodes.length; j++)
+      if (nodes[i].cluster !== nodes[j].cluster && compat(nodes[i].lit, nodes[j].lit))
+        edges.push([i, j]);
+
+  // Find a 3-clique by brute force across compatible triples
+  let cliqueIdx = [];
+  outer: for (let i = 0; i < 3; i++) for (let j = 3; j < 6; j++) for (let k = 6; k < 9; k++) {
+    if (compat(nodes[i].lit, nodes[j].lit) && compat(nodes[i].lit, nodes[k].lit) && compat(nodes[j].lit, nodes[k].lit)) {
+      cliqueIdx = [i, j, k]; break outer;
+    }
+  }
+
+  let stage = 0;
+  const TOTAL = 4;
+
+  function render() {
+    const W=760, H=320;
+    let s = '';
+    s += `<text x="${W/2}" y="28" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="700" fill="var(--ink)">φ = (x ∨ y ∨ ¬z) ∧ (¬x ∨ y ∨ z) ∧ (x ∨ ¬y ∨ ¬z)</text>`;
+
+    // clause labels
+    for (let i = 0; i < 3; i++) {
+      s += `<text x="${groupX[i]}" y="62" text-anchor="middle" font-family="ui-monospace, monospace" font-size="12" font-weight="bold" fill="var(--muted)">clause ${i+1}</text>`;
+    }
+
+    // edges (stage >= 2)
+    if (stage >= 2) {
+      for (const [a, b] of edges) {
+        const inClique = stage >= 3 && cliqueIdx.includes(a) && cliqueIdx.includes(b);
+        s += `<line x1="${nodes[a].x}" y1="${nodes[a].y}" x2="${nodes[b].x}" y2="${nodes[b].y}" stroke="${inClique?'var(--gold)':'#ccc'}" stroke-width="${inClique?2.8:1}" opacity="${inClique?1:0.6}"/>`;
+      }
+    }
+
+    // nodes (stage >= 1)
+    if (stage >= 1) {
+      for (let i = 0; i < nodes.length; i++) {
+        const n = nodes[i];
+        const inClique = stage >= 3 && cliqueIdx.includes(i);
+        s += `<circle cx="${n.x}" cy="${n.y}" r="25" fill="${inClique?'var(--gold)':'#fff'}" stroke="${inClique?'var(--gold)':'#666'}" stroke-width="${inClique?3:1.8}"/>`;
+        s += `<text x="${n.x}" y="${n.y+5}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13" font-weight="bold" fill="${inClique?'#fff':'#1a1a1a'}">${n.lit}</text>`;
+      }
+    }
+
+    document.getElementById('c-svg').innerHTML = s;
+
+    const msgs = [
+      `<div class="step-num">Stage 0 · The formula</div>
+       <p style="margin: 4px 0;"><strong>φ has 3 clauses</strong>, each with 3 literals over {x, y, z}. We want to test whether φ is satisfiable — equivalently, whether the graph G<sub>φ</sub> we build has a 3-clique.</p>`,
+      `<div class="step-num">Stage 1 · Make 9 nodes · one per literal occurrence</div>
+       <p style="margin: 4px 0;"><strong>3 clauses × 3 literals = 9 nodes</strong>, grouped visually by clause. Why one per occurrence (not per literal)? Because x may appear in multiple clauses, and we may pick it true in any of them — independent choices.</p>`,
+      `<div class="step-num">Stage 2 · Add edges between compatible literal-occurrences</div>
+       <p style="margin: 4px 0;"><strong>Rule:</strong> edge between nodes in DIFFERENT clusters AND compatible literals (not x with ¬x). <strong>${edges.length}</strong> edges in total. Inside a cluster: no edges (forces clique to pick one per clause). Across clusters: edge unless the literals would clash on the same variable.</p>`,
+      `<div class="step-num">Stage 3 · Find the 3-clique · {${cliqueIdx.map(i => nodes[i].lit).join(', ')}}</div>
+       <p style="margin: 4px 0;"><strong>Gold-highlighted</strong>: three vertices, all pairwise connected. By construction, picking these literals true satisfies all three clauses (each picks one of its literals; pairwise compatible means no conflict).</p>
+       <p style="margin: 4px 0;"><strong>So φ ∈ 3SAT ⇔ G<sub>φ</sub> has a 3-clique.</strong> Polynomial reduction. CLIQUE is NP-hard.</p>`
+    ];
+    document.getElementById('c-explain').innerHTML = msgs[Math.min(stage, msgs.length-1)];
+  }
+
+  function step() { if (stage < TOTAL-1) { stage++; render(); } }
+  function reset() { stage = 0; render(); }
+  function atEnd() { return stage >= TOTAL - 1; }
+
+  WidgetLoop.create({
+    runBtn: document.getElementById('c-run'),
+    stepBtn: document.getElementById('c-step'),
+    resetBtn: document.getElementById('c-reset'),
+    speedSlider: document.getElementById('c-speed'),
+    speedLabel: document.getElementById('c-speed-label'),
+    doStep: step,
+    atEnd,
+    doReset: reset,
+    baseStepMs: 3000,
+    baseLoopMs: 6000,
+    autoStartMs: 1500
+  });
+
+  reset();
+})();
+</script>
+
+<script src="../presentation.js"></script>
+</body>
+</html>

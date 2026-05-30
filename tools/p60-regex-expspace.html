@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>P60 · REGEX-EQ EXPSPACE-complete</title><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css"><script src="../widget-loop.js"></script></head><body>
+<header class="tool-header"><div class="crumb"><a href="index.html">← Student tools</a> · Problem 60 · Lecture 16 · Round 3 (40 pts)</div>
+<h1>REGEX equivalence is EXPSPACE-complete</h1><p class="sub">Adding squaring (R²) to regex turns equivalence checking into exponential space.</p>
+<div class="tags"><span class="tag-pill">CLO-5</span><span class="tag-pill warn">R3·40 pts</span><span class="tag-pill info">L16</span></div></header>
+<div class="wrap">
+<section><div class="section-label">1 · Theory</div>
+<div class="theorem-box"><div class="theorem-label">Stockmeyer–Meyer (1973)</div><p style="margin:4px 0;">For regular expressions extended with squaring (R² = RR), deciding equivalence is <strong>EXPSPACE-complete</strong>. Lower bound: encode an EXPSPACE TM's computation as regex.</p></div>
+<p>Why squaring? Because a regex with squaring can describe languages requiring exponential-size minimal DFA — pushing the equivalence test to exponential space.</p></section>
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Regex with squaring · exponential blowup <span class="pill">Auto-plays</span></div>
+<div class="controls"><button class="btn play-btn" id="re-run">⏸ Pause</button><button class="btn ghost" id="re-step">Step</button><button class="btn ghost" id="re-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="re-speed" min="0.25" max="3" step="0.25" value="1"><span id="re-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
+<svg id="re-svg" viewBox="0 0 760 280" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="re-explain"></div></div></section>
+<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why is plain regex equivalence in PSPACE?</div><div class="a">Convert to NFAs (polynomial). Equivalence ⇔ symmetric difference is empty. Subset construction may blow up but PSPACE suffices.</div></li>
+<li><div class="q">Q2. What does squaring add?</div><div class="a">R² doubles the language length. Iterated squaring (R^(2^k)) creates exponentially long languages from polynomial-size regex.</div></li>
+<li><div class="q">Q3. Practical implication?</div><div class="a">Real-world regex engines avoid squaring/back-references for this reason. Java/Python regex with backrefs is NP-hard for matching.</div></li>
+</ul></section></div><footer class="foot">P60 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<script>(function(){
+let i=0;
+const steps=['Take regex R of size n.','R² describes R·R · same language, doubled.','((R)²)² describes R⁴.','Iterating k times: R^(2^k) — exponential length described in regex of size O(k·n).','Deciding equivalence between such regex requires EXPSPACE in general.'];
+function render(){
+  let s=''; s+=`<text x="380" y="30" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="700">Squaring creates exponential blowup</text>`;
+  steps.forEach((step,k)=>{const y=70+k*38, shown=k<=i;
+    s+=`<text x="60" y="${y}" font-family="var(--sans), sans-serif" font-size="14" fill="${shown?'var(--ink)':'#bbb'}" opacity="${shown?1:0.3}"><tspan font-weight="bold" fill="${shown?'var(--accent)':'#bbb'}">${k+1}.</tspan> ${step}</text>`;
+  });
+  document.getElementById('re-svg').innerHTML=s;
+  document.getElementById('re-explain').innerHTML=`<div class="step-num">Step ${i+1}/${steps.length}</div><p style="margin:4px 0;">${steps[Math.min(i,steps.length-1)]}</p>`;
+}
+function step(){ if(i<steps.length-1)i++; render(); }
+function reset(){ i=0; render(); }
+function atEnd(){ return i>=steps.length-1; }
+WidgetLoop.create({runBtn:document.getElementById('re-run'),stepBtn:document.getElementById('re-step'),resetBtn:document.getElementById('re-reset'),speedSlider:document.getElementById('re-speed'),speedLabel:document.getElementById('re-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:2500,baseLoopMs:5500,autoStartMs:1500});
+reset();
+})();</script><script src="../presentation.js"></script>
+</body></html>

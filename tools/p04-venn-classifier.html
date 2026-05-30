@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P4 · Decidable / Recognizable Venn</title>
+<link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css">
+<script src="../widget-loop.js"></script></head><body>
+
+<header class="tool-header">
+<div class="crumb"><a href="index.html">← Student tools</a> · Problem 4 · Lecture 5 · Round 1 (30 pts)</div>
+<h1>Decidable / Recognizable / co-Recognizable</h1>
+<p class="sub">Place classic languages in the right region of the Venn diagram.</p>
+<div class="tags"><span class="tag-pill">CLO-1</span><span class="tag-pill warn">R1·30 pts</span><span class="tag-pill info">L5</span></div>
+</header>
+
+<div class="wrap">
+
+<section><div class="section-label">1 · Why this matters · the BIG picture</div>
+<p>
+This Venn diagram is the <strong>map of computability</strong>. Once you have proved a few landmark theorems
+(A<sub>TM</sub> recognizable but undecidable; co-A<sub>TM</sub> not even recognizable; EQ<sub>TM</sub> neither),
+every other classification result is about placing new languages into the right region of this diagram.
+</p>
+<p>
+Pedagogically, this is the cleanest organizing picture in the course. When a student asks "what does it mean for
+a language to be undecidable?", the answer is a finger pointing at the recognizable-but-not-decidable crescent.
+</p>
+<div class="theorem-box"><div class="theorem-label">The four regions</div>
+<ul style="margin:4px 0;padding-left:22px;font-size:13.5px;">
+<li><strong>Decidable</strong> · TM always halts with correct answer. Closed under complement, union, intersection.</li>
+<li><strong>Recognizable \\ Decidable</strong> · TM accepts yes-inputs, may loop on no-inputs (e.g. A<sub>TM</sub>, HALT<sub>TM</sub>).</li>
+<li><strong>co-Rec \\ Decidable</strong> · complement is recognizable (e.g. ¬A<sub>TM</sub>, ¬HALT<sub>TM</sub>).</li>
+<li><strong>Neither</strong> · neither L nor L̅ is recognizable (e.g. EQ<sub>TM</sub>).</li>
+</ul></div>
+</section>
+
+<section><div class="section-label">2 · Setup · the bridge theorem</div>
+<p>The central observation that organizes everything:</p>
+<div class="theorem-box"><div class="theorem-label">Bridge theorem</div>
+<p style="margin:4px 0;"><strong>L is decidable ⇔ both L and L̅ are recognizable.</strong></p>
+<p style="margin:4px 0;font-size:13.5px;">Proof (⇐): run the recognizers in parallel; one of them must accept. Whichever fires first tells you the answer. (⇒) trivial.</p></div>
+<p>
+Contrapositive form: <strong>if L is undecidable but recognizable, then L̅ is not recognizable</strong>. This is how we
+locate co-A<sub>TM</sub> in the diagram: A<sub>TM</sub> sits in "recognizable \\ decidable" ⇒ co-A<sub>TM</sub> sits in "co-rec \\ decidable", and ¬A<sub>TM</sub> ∉ recognizable at all.
+</p>
+</section>
+
+<section><div class="section-label">3 · How to classify · the decision tree</div>
+<ol style="font-size:14px;line-height:1.7;">
+<li>Can you give a TM that <em>always halts</em>? → Decidable. Done.</li>
+<li>Can you give a TM that accepts yes-inputs (may loop on no)? → Recognizable.</li>
+<li>Can you give a TM that accepts no-inputs (may loop on yes)? → co-Recognizable.</li>
+<li>Both 2 and 3? → Decidable (bridge theorem) — go back to 1.</li>
+<li>Neither? → Neither region.</li>
+</ol>
+<p>The tricky step is always #5 — proving non-recognizability typically requires a <em>reduction</em> from co-A<sub>TM</sub> or similar.</p>
+</section>
+
+<section><div class="section-label">4 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Cycle through languages, watch the placement <span class="pill">Auto-plays</span></div>
+<div class="controls">
+<button class="btn play-btn" id="v-run">⏸ Pause</button>
+<button class="btn ghost" id="v-step">Step</button>
+<button class="btn ghost" id="v-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="v-speed" min="0.25" max="3" step="0.25" value="1"><span id="v-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label>
+</div>
+<svg id="v-svg" viewBox="0 0 760 340" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="v-explain"></div>
+</div></section>
+
+<section><div class="section-label">5 · Worked example · classifying ¬E<sub>TM</sub></div>
+<p>Let's place ¬E<sub>TM</sub> = {⟨M⟩ : L(M) ≠ ∅} in the diagram. Is it recognizable?</p>
+<div class="theorem-box" style="background:#fffaf3;"><div class="theorem-label">Recognizer for ¬E<sub>TM</sub></div>
+<p style="margin:4px 0;font-family:var(--mono);font-size:13.5px;">
+N = "on input ⟨M⟩:<br>
+&nbsp;&nbsp;1. enumerate strings w<sub>1</sub>, w<sub>2</sub>, … in shortlex order;<br>
+&nbsp;&nbsp;2. for k = 1, 2, …:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;simulate M on w<sub>1</sub>, …, w<sub>k</sub> for k steps each;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if any simulation accepts: accept ⟨M⟩."
+</p>
+</div>
+<p>This dovetailing trick is the canonical way to show "exists w such that M(w) accepts" languages are recognizable. So ¬E<sub>TM</sub> is recognizable. E<sub>TM</sub> itself is not (it would be decidable by the bridge theorem, which it isn't — see Problem 6).</p>
+</section>
+
+<section><div class="section-label">6 · Connections · the placement of every famous language</div>
+<table style="font-size:13.5px;width:100%;border-collapse:collapse;margin:10px 0;">
+<thead><tr style="background:var(--gold-soft);">
+<th style="padding:6px;border:1px solid var(--rule);">Language</th>
+<th style="padding:6px;border:1px solid var(--rule);">Region</th>
+<th style="padding:6px;border:1px solid var(--rule);">Reason</th>
+</tr></thead>
+<tbody>
+<tr><td style="padding:6px;border:1px solid var(--rule);">A<sub>DFA</sub>, E<sub>DFA</sub>, EQ<sub>DFA</sub></td><td style="padding:6px;border:1px solid var(--rule);">Decidable</td><td style="padding:6px;border:1px solid var(--rule);">Simulate / graph reachability</td></tr>
+<tr><td style="padding:6px;border:1px solid var(--rule);">A<sub>CFG</sub>, E<sub>CFG</sub></td><td style="padding:6px;border:1px solid var(--rule);">Decidable</td><td style="padding:6px;border:1px solid var(--rule);">CYK / emptiness checking</td></tr>
+<tr><td style="padding:6px;border:1px solid var(--rule);">A<sub>TM</sub>, HALT<sub>TM</sub></td><td style="padding:6px;border:1px solid var(--rule);">Rec \\ Dec</td><td style="padding:6px;border:1px solid var(--rule);">Universal TM; diagonal kills decider</td></tr>
+<tr><td style="padding:6px;border:1px solid var(--rule);">¬A<sub>TM</sub>, ¬HALT<sub>TM</sub></td><td style="padding:6px;border:1px solid var(--rule);">co-Rec \\ Dec</td><td style="padding:6px;border:1px solid var(--rule);">Bridge theorem</td></tr>
+<tr><td style="padding:6px;border:1px solid var(--rule);">E<sub>TM</sub></td><td style="padding:6px;border:1px solid var(--rule);">co-Rec \\ Dec</td><td style="padding:6px;border:1px solid var(--rule);">¬E<sub>TM</sub> recognizable (dovetail)</td></tr>
+<tr><td style="padding:6px;border:1px solid var(--rule);">EQ<sub>TM</sub></td><td style="padding:6px;border:1px solid var(--rule);">Neither</td><td style="padding:6px;border:1px solid var(--rule);">Two reductions (Problem 8)</td></tr>
+<tr><td style="padding:6px;border:1px solid var(--rule);">All non-trivial properties</td><td style="padding:6px;border:1px solid var(--rule);">≥ Rec \\ Dec</td><td style="padding:6px;border:1px solid var(--rule);">Rice's theorem (Problem 14)</td></tr>
+</tbody>
+</table>
+</section>
+
+<section><div class="section-label">7 · Common pitfalls · what students miss</div>
+<ol style="font-size:14px;line-height:1.7;">
+<li><strong>"Recognizable means decidable."</strong> No — recognizable allows looping. Decidable requires halting on every input.</li>
+<li><strong>Forgetting closure properties differ.</strong> Decidable is closed under complement; recognizable is not.</li>
+<li><strong>Mixing up "L is recognizable" with "L̅ is recognizable".</strong> They are different statements. The bridge theorem says both together is equivalent to decidability.</li>
+<li><strong>"Empty language is recognizable but not decidable."</strong> No — ∅ is decidable (the TM that always rejects).</li>
+<li><strong>Calling something "not recognizable" without proof.</strong> Non-recognizability usually needs a reduction from co-A<sub>TM</sub>.</li>
+</ol>
+</section>
+
+<section><div class="section-label">8 · Q&amp;A defence notes</div>
+<ul class="qa-list">
+<li><div class="q">Q1. Why is A<sub>TM</sub> recognizable but not decidable?</div><div class="a">Universal TM gives the recognizer. Problem 3 shows no decider can exist.</div></li>
+<li><div class="q">Q2. Why is the complement of A<sub>TM</sub> not recognizable?</div><div class="a">If it were, both A<sub>TM</sub> and its complement would be recognizable. By the bridge theorem, A<sub>TM</sub> would then be decidable. Contradiction.</div></li>
+<li><div class="q">Q3. Give an example outside both circles.</div><div class="a">EQ<sub>TM</sub> = {⟨M<sub>1</sub>, M<sub>2</sub>⟩ : L(M<sub>1</sub>) = L(M<sub>2</sub>)}. Neither EQ<sub>TM</sub> nor its complement is recognizable.</div></li>
+<li><div class="q">Q4. Is every finite language decidable?</div><div class="a">Yes — hard-code the membership check as a lookup.</div></li>
+<li><div class="q">Q5 (bonus). Are there languages outside even "Neither"?</div><div class="a">Yes — there are uncountably many languages over {0,1}* but only countably many TM descriptions. Most languages are not even definable, let alone recognizable.</div></li>
+</ul></section>
+
+<section><div class="section-label">9 · How to present this in class</div>
+<p style="font-size:13.5px;"><strong>Total time: 10 minutes.</strong></p>
+<ul style="font-size:13.5px;line-height:1.7;">
+<li><strong>(1 min)</strong> Sketch the Venn diagram on the board: outer rectangle = all languages, two overlapping circles = recognizable / co-recognizable, intersection = decidable.</li>
+<li><strong>(3 min)</strong> State and prove the bridge theorem with parallel-simulation argument.</li>
+<li><strong>(3 min)</strong> Run the visualization. Pause on each language. Walk through "what region, what reason".</li>
+<li><strong>(2 min)</strong> Worked example: the dovetail recognizer for ¬E<sub>TM</sub>.</li>
+<li><strong>(1 min)</strong> Tie to Rice's theorem: every non-trivial property is at least Rec \\ Dec.</li>
+</ul>
+</section>
+
+</div>
+
+<footer class="foot">Problem 4 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<script>
+(function(){
+const langs = [
+  {name:'A_DFA', region:'D', why:'Decidable by simulation.'},
+  {name:'E_DFA', region:'D', why:'Decidable by graph reachability.'},
+  {name:'A_CFG', region:'D', why:'Decidable by CYK.'},
+  {name:'A_TM', region:'R', why:'Universal TM recognizes; diagonalization rules out decidability.'},
+  {name:'HALT_TM', region:'R', why:'Recognizable; undecidable by reduction from A_TM.'},
+  {name:'¬A_TM', region:'C', why:'co-recognizable but not recognizable (else A_TM decidable).'},
+  {name:'¬HALT_TM', region:'C', why:'co-recognizable; not recognizable.'},
+  {name:'EQ_TM', region:'N', why:'Neither recognizable nor co-recognizable.'},
+  {name:'¬E_TM', region:'R', why:'Recognizable: enumerate w; accept as soon as M accepts any w.'}
+];
+let idx = -1;
+const positions = { D: [260, 200], R: [430, 130], C: [430, 270], N: [680, 50] };
+
+function render() {
+  let s = '';
+  // outer rect
+  s += `<rect x="20" y="20" width="720" height="300" fill="none" stroke="#1a1a1a" stroke-width="1.4"/>`;
+  s += `<text x="32" y="42" font-family="var(--sans), sans-serif" font-size="11" fill="#888">All languages</text>`;
+  // recognizable
+  s += `<ellipse cx="300" cy="200" rx="220" ry="100" fill="#d6e3f4" stroke="#2f60a8" stroke-width="1.4" opacity="0.7"/>`;
+  s += `<text x="120" y="100" font-family="var(--sans), sans-serif" font-size="14" fill="#2f60a8" font-weight="bold">Recognizable</text>`;
+  // co-recognizable
+  s += `<ellipse cx="430" cy="200" rx="220" ry="100" fill="#f4dfcf" stroke="#b95825" stroke-width="1.4" opacity="0.55"/>`;
+  s += `<text x="630" y="100" text-anchor="end" font-family="var(--sans), sans-serif" font-size="14" fill="#b95825" font-weight="bold">co-Recognizable</text>`;
+  // decidable
+  s += `<ellipse cx="365" cy="200" rx="120" ry="50" fill="#d6ebe4" stroke="#2a6f5f" stroke-width="2"/>`;
+  s += `<text x="365" y="205" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="bold" fill="#1c4a3f">Decidable</text>`;
+  // current language
+  if (idx >= 0 && idx < langs.length) {
+    const L = langs[idx];
+    const [px, py] = positions[L.region];
+    s += `<rect x="${px-50}" y="${py-18}" width="100" height="32" fill="white" stroke="var(--gold)" stroke-width="2.5" rx="6"/>`;
+    s += `<text x="${px}" y="${py+3}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13" font-weight="bold" fill="var(--gold)">${L.name}</text>`;
+  }
+  document.getElementById('v-svg').innerHTML = s;
+  const el = document.getElementById('v-explain');
+  if (idx < 0) el.innerHTML = `<div class="step-num">Watch each language land</div><p style="margin:4px 0;">9 example languages will be placed one at a time in the correct region. Pause to think about why each goes where it does.</p>`;
+  else { const L = langs[idx]; el.innerHTML = `<div class="step-num">${L.name} → ${ {D:'Decidable',R:'Recognizable \\ Decidable',C:'co-Rec \\ Decidable',N:'Neither'}[L.region]}</div><p style="margin:4px 0;">${L.why}</p>`; }
+}
+function step() { if (idx < langs.length - 1) idx++; render(); }
+function reset() { idx = -1; render(); }
+function atEnd() { return idx >= langs.length - 1; }
+WidgetLoop.create({runBtn:document.getElementById('v-run'),stepBtn:document.getElementById('v-step'),resetBtn:document.getElementById('v-reset'),speedSlider:document.getElementById('v-speed'),speedLabel:document.getElementById('v-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:2000,baseLoopMs:5000,autoStartMs:1500});
+reset();
+})();
+</script><script src="../presentation.js"></script>
+</body></html>

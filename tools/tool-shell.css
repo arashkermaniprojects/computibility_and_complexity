@@ -1,0 +1,98 @@
+/* Extra styles for tool pages (additive to ../styles.css) */
+
+.tool-header {
+  background: linear-gradient(180deg, #fffefb 0%, #f5f1e6 100%);
+  padding: 32px 24px 24px;
+  border-bottom: 1px solid var(--rule);
+}
+.tool-header .crumb {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.tool-header .crumb a { color: var(--muted); border-bottom: 0; }
+.tool-header .crumb a:hover { color: var(--accent); }
+.tool-header h1 {
+  font-size: 30px;
+  margin: 4px 0 8px;
+  font-weight: 700;
+}
+.tool-header .sub {
+  color: var(--muted);
+  font-size: 16px;
+  margin: 0 0 10px;
+}
+.tool-header .tags {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-top: 12px;
+}
+.tool-header .tag-pill {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  padding: 4px 10px;
+  border-radius: 99px;
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.tool-header .tag-pill.warn { background: var(--warn-soft); color: var(--warn); }
+.tool-header .tag-pill.gold { background: var(--gold-soft); color: var(--gold); }
+.tool-header .tag-pill.info { background: var(--info-soft); color: var(--info); }
+
+.section-label {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 14px;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 4px;
+}
+
+/* Theorem box */
+.theorem-box {
+  background: #fffdf3;
+  border: 1px solid var(--gold-soft);
+  border-left: 4px solid var(--gold);
+  padding: 14px 18px;
+  border-radius: 6px;
+  margin: 14px 0;
+}
+.theorem-box .theorem-label {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+/* Q&A section */
+.qa-list { padding-left: 0; list-style: none; }
+.qa-list li {
+  margin: 10px 0;
+  padding: 12px 16px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--info);
+  border-radius: 6px;
+}
+.qa-list .q {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--info);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.qa-list .a {
+  font-size: 15px;
+  color: var(--ink);
+}

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P10 · E_LBA</title>
+<link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css">
+<script src="../widget-loop.js"></script></head><body>
+
+<header class="tool-header">
+<div class="crumb"><a href="index.html">← Student tools</a> · Problem 10 · Lecture 7 · Round 1 (30 pts)</div>
+<h1>E<sub>LBA</sub> is undecidable</h1>
+<p class="sub">Build an LBA B<sub>M,w</sub> that recognizes accepting computation histories of M on w.</p>
+<div class="tags"><span class="tag-pill">CLO-2</span><span class="tag-pill warn">R1·30 pts</span><span class="tag-pill info">L7</span></div>
+</header>
+
+<div class="wrap">
+
+<section><div class="section-label">1 · Theory</div>
+<p>An <strong>LBA</strong> is a TM restricted to use only the cells of its input. Surprisingly: <strong>A<sub>LBA</sub> is decidable</strong> (configurations are finite-bounded) but <strong>E<sub>LBA</sub> is undecidable</strong>.</p>
+<div class="theorem-box"><div class="theorem-label">Reduction A<sub>TM</sub> ≤ ¬E<sub>LBA</sub></div>
+<p style="margin:4px 0;">Given ⟨M, w⟩, build LBA B<sub>M,w</sub> on input string x:</p>
+<ol style="margin:4px 0;"><li>Check x parses as C<sub>1</sub> # C<sub>2</sub> # … # C<sub>ℓ</sub></li><li>Check C<sub>1</sub> is the start configuration of M on w</li><li>Check each (C<sub>i</sub>, C<sub>i+1</sub>) follows by one δ-step of M</li><li>Check C<sub>ℓ</sub> contains the accept state</li><li>Accept x iff all checks pass.</li></ol>
+<p style="margin:4px 0;">L(B<sub>M,w</sub>) ≠ ∅ iff M accepts w. So a decider for E<sub>LBA</sub> decides ¬A<sub>TM</sub>. Impossible.</p></div>
+</section>
+
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Inside B<sub>M,w</sub>: what is checked, what is not <span class="pill">Auto-plays</span></div>
+<div class="controls">
+<button class="btn play-btn" id="lb-run">⏸ Pause</button><button class="btn ghost" id="lb-step">Step</button><button class="btn ghost" id="lb-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="lb-speed" min="0.25" max="3" step="0.25" value="1"><span id="lb-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label>
+</div>
+<svg id="lb-svg" viewBox="0 0 760 320" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="lb-explain"></div>
+</div></section>
+
+<section><div class="section-label">3 · Q&amp;A defence notes</div>
+<ul class="qa-list">
+<li><div class="q">Q1. Why CAN an LBA check accepting computation histories?</div><div class="a">Each check is local: parsing, start-config match, adjacent δ-step validity, final-config accept-state check. All can be done by scanning the input multiple times within the original tape — that's the LBA budget.</div></li>
+<li><div class="q">Q2. Why is A<sub>LBA</sub> decidable but E<sub>LBA</sub> isn't?</div><div class="a">A<sub>LBA</sub> has fixed-length input; bounded configurations. E<sub>LBA</sub> asks "is the language empty?" over ALL inputs — that's a quantifier-over-all-strings question, much harder.</div></li>
+<li><div class="q">Q3. What's the size of an LBA computation history?</div><div class="a">If the LBA runs on input of length n, it has at most |Q|·n·|Γ|<sup>n</sup> distinct configurations. Repeats indicate looping. Hence the bound on A<sub>LBA</sub>.</div></li>
+</ul></section>
+
+</div>
+<footer class="foot">Problem 10 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<script>
+(function(){
+const items = [
+  {t: 'Parse input as C₁ # C₂ # … # Cₗ', side: 'in'},
+  {t: 'Check C₁ matches start config of M on w', side: 'in'},
+  {t: 'Check each (Cᵢ, Cᵢ₊₁) follows by δ', side: 'in'},
+  {t: 'Check Cₗ contains q_accept', side: 'in'},
+  {t: 'Actually simulate M from scratch', side: 'out'},
+  {t: 'Decide whether M halts', side: 'out'},
+  {t: 'Search for the right history', side: 'out'}
+];
+let revealed = -1;
+function render() {
+  let s = '';
+  s += `<text x="190" y="30" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="700" fill="var(--accent)">B does:</text>`;
+  s += `<text x="570" y="30" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="700" fill="var(--warn)">B does NOT do:</text>`;
+  // "in" column
+  let yIn = 60, yOut = 60;
+  items.forEach((it, i) => {
+    const shown = i <= revealed;
+    if (it.side === 'in') {
+      const op = shown ? 1 : 0.2;
+      s += `<rect x="40" y="${yIn}" width="320" height="44" rx="6" fill="#fffdf6" stroke="var(--accent)" stroke-width="1.5" opacity="${op}"/><text x="200" y="${yIn+27}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="12" fill="var(--accent-strong)" opacity="${op}">${it.t}</text>`;
+      yIn += 54;
+    } else {
+      const op = shown ? 1 : 0.2;
+      s += `<rect x="420" y="${yOut}" width="320" height="44" rx="6" fill="#fff5ed" stroke="var(--warn)" stroke-width="1.5" opacity="${op}"/><text x="580" y="${yOut+27}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="12" fill="var(--warn)" opacity="${op}">${it.t}</text>`;
+      yOut += 54;
+    }
+  });
+  document.getElementById('lb-svg').innerHTML = s;
+  const total = items.length;
+  if (revealed < 0) document.getElementById('lb-explain').innerHTML = `<div class="step-num">Watch what B does (and doesn't do)</div><p style="margin:4px 0;">B<sub>M,w</sub> is an LBA. It only checks <em>local</em> properties of a candidate computation history given as input. It never simulates M from scratch.</p>`;
+  else if (revealed >= total - 1) document.getElementById('lb-explain').innerHTML = `<div class="step-num">All revealed</div><p style="margin:4px 0;">B accepts x iff x is a valid accepting history of M on w. <strong>L(B) ≠ ∅ ⇔ M accepts w.</strong> So deciding E<sub>LBA</sub> would decide A<sub>TM</sub>. Impossible ⇒ E<sub>LBA</sub> undecidable.</p>`;
+  else { const it = items[revealed]; document.getElementById('lb-explain').innerHTML = `<div class="step-num">${it.side === 'in' ? '✓ B does this' : '✗ B does not do this'}</div><p style="margin:4px 0;">${it.t}</p>`; }
+}
+function step() { if (revealed < items.length - 1) revealed++; render(); }
+function reset() { revealed = -1; render(); }
+function atEnd() { return revealed >= items.length - 1; }
+WidgetLoop.create({runBtn:document.getElementById('lb-run'),stepBtn:document.getElementById('lb-step'),resetBtn:document.getElementById('lb-reset'),speedSlider:document.getElementById('lb-speed'),speedLabel:document.getElementById('lb-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:2200,baseLoopMs:5500,autoStartMs:1500});
+reset();
+})();
+</script><script src="../presentation.js"></script>
+</body></html>

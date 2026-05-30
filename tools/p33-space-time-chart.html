@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>P33 · Space vs Time</title><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css"><script src="../widget-loop.js"></script></head><body>
+<header class="tool-header"><div class="crumb"><a href="index.html">← Student tools</a> · Problem 33 · Lecture 13 · Round 3 (40 pts)</div>
+<h1>Space vs Time · TIME(f) ⊆ SPACE(f) ⊆ TIME(2<sup>O(f)</sup>)</h1><p class="sub">Visualise the time/space tradeoff for typical algorithms.</p>
+<div class="tags"><span class="tag-pill">CLO-5</span><span class="tag-pill warn">R3·40 pts</span><span class="tag-pill info">L13</span></div></header>
+<div class="wrap">
+<section><div class="section-label">1 · Theory</div>
+<div class="theorem-box"><div class="theorem-label">Inclusion theorem</div><p style="margin:4px 0;">For any reasonable f(n) ≥ log n: <strong>TIME(f) ⊆ SPACE(f) ⊆ TIME(2<sup>O(f)</sup>)</strong>. First is trivial (can't visit more cells than steps). Second is because a SPACE(f) machine has at most 2<sup>O(f)</sup> configurations.</p></div></section>
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Bar chart for 5 algorithms <span class="pill">Auto-plays</span></div>
+<div class="controls"><label>n: <input type="range" id="x-n" min="4" max="20" value="10" style="width:130px;"><span id="x-nl">10</span></label>
+<button class="btn play-btn" id="x-run">⏸ Pause</button><button class="btn ghost" id="x-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="x-speed" min="0.25" max="3" step="0.25" value="1"><span id="x-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
+<svg id="x-svg" viewBox="0 0 760 240" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="x-explain"></div></div></section>
+<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why isn't TIME = SPACE?</div><div class="a">Space can be reused; time can't. A SPACE(f) algorithm can revisit the same cells exponentially many times, taking 2<sup>O(f)</sup> time.</div></li>
+<li><div class="q">Q2. Real examples of "space-cheap, time-expensive"?</div><div class="a">Branch-and-bound search trees: O(n) call stack, exponential running time.</div></li>
+<li><div class="q">Q3. Is the second inclusion tight?</div><div class="a">In general yes — Savitch's theorem TQBF runs in PSPACE but takes 2<sup>O(n)</sup> time.</div></li>
+</ul></section></div><footer class="foot">P33 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<script>(function(){
+let n=10, t=0;
+function render(progress){
+  const W=760,H=240;
+  const algos=[{name:'PATH BFS',t:n*n,s:n},{name:'CYK',t:n*n*n,s:n*n},{name:'TQBF',t:Math.pow(2,Math.min(n,20)),s:n*n},{name:'2-SAT',t:n,s:n},{name:'Game tree',t:Math.pow(2,Math.min(n,20)),s:n}];
+  let mT=Math.max(...algos.map(a=>a.t)), mS=Math.max(...algos.map(a=>a.s));
+  const w=(W-200)/algos.length;
+  let s=`<text x="${W/2}" y="20" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" fill="var(--muted)">Time (top, log-scale) vs Space (bottom), n=${n}</text>`;
+  algos.forEach((a,i)=>{const x=50+i*w; const tH=(Math.log10(Math.max(1,a.t))/Math.log10(Math.max(2,mT)))*80*(progress/100); const sH=(Math.log10(Math.max(1,a.s))/Math.log10(Math.max(2,mS)))*60*(progress/100);
+    const col=['var(--accent)','var(--info)','var(--gold)','var(--accent-strong)','var(--warn)'][i];
+    s+=`<rect x="${x}" y="${130-tH}" width="${w-15}" height="${tH}" fill="${col}" opacity="0.7"/><text x="${x+(w-15)/2}" y="${135-tH-4}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="9" fill="${col}" font-weight="bold">${a.t.toLocaleString()}</text>`;
+    s+=`<rect x="${x}" y="145" width="${w-15}" height="${sH}" fill="${col}" opacity="0.4"/><text x="${x+(w-15)/2}" y="${145+sH+14}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="9" fill="${col}">${a.s}</text>`;
+    s+=`<text x="${x+(w-15)/2}" y="${H-6}" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="11" fill="#444">${a.name}</text>`;
+  });
+  s+=`<line x1="40" y1="140" x2="${W-40}" y2="140" stroke="#888" stroke-width="0.8"/>`;
+  s+=`<text x="36" y="135" text-anchor="end" font-family="var(--sans), sans-serif" font-size="11" fill="#888">time</text>`;
+  s+=`<text x="36" y="160" text-anchor="end" font-family="var(--sans), sans-serif" font-size="11" fill="#888">space</text>`;
+  document.getElementById('x-svg').innerHTML=s;
+  document.getElementById('x-explain').innerHTML=`<div class="step-num">Animating at ${progress}%</div><p style="margin:4px 0;"><strong>TQBF and game-tree algorithms</strong> have small space but exponential time — visualize how the bottom bars stay short while top bars are huge.</p>`;
+}
+function step(){ t=Math.min(100,t+5); render(t); }
+function reset(){ t=0; render(0); }
+function atEnd(){ return t>=100; }
+document.getElementById('x-n').oninput=e=>{n=parseInt(e.target.value);document.getElementById('x-nl').textContent=n;render(100);};
+WidgetLoop.create({runBtn:document.getElementById('x-run'),resetBtn:document.getElementById('x-reset'),speedSlider:document.getElementById('x-speed'),speedLabel:document.getElementById('x-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:120,baseLoopMs:4500,autoStartMs:1200});
+render(100);
+})();</script><script src="../presentation.js"></script>
+</body></html>

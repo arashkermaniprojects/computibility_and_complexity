@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P7 · REGULAR_TM</title>
+<link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css">
+<script src="../widget-loop.js"></script></head><body>
+
+<header class="tool-header">
+<div class="crumb"><a href="index.html">← Student tools</a> · Problem 7 · Lecture 6 · Round 1 (30 pts)</div>
+<h1>REGULAR<sub>TM</sub> is undecidable</h1>
+<p class="sub">Use the {0<sup>n</sup>1<sup>n</sup>} gadget to make L(M') regular iff M accepts w.</p>
+<div class="tags"><span class="tag-pill">CLO-2</span><span class="tag-pill warn">R1·30 pts</span><span class="tag-pill info">L6</span></div>
+</header>
+
+<div class="wrap">
+
+<section><div class="section-label">1 · Why this matters · the BIG picture</div>
+<p>
+"Can my program's language be described by a regex?" is a natural classification question. It would be useful to know — regular languages have linear-time matchers, predictable behavior, no need for stack or tape. Sadly, the question is <strong>undecidable</strong> in general. This is the simplest example of a <em>structural</em> language property that Rice's theorem will later unify.
+</p>
+<div class="theorem-box"><div class="theorem-label">What we prove</div>
+<p style="margin:4px 0;">REGULAR<sub>TM</sub> = {⟨M⟩ : L(M) is a regular language} is undecidable.</p></div>
+</section>
+
+<section><div class="section-label">2 · Setup · the gadget trick</div>
+<p>Reduce A<sub>TM</sub> to REGULAR<sub>TM</sub>. Given ⟨M, w⟩, build M' with two branches:</p>
+<div class="theorem-box" style="background:#fffaf3;"><div class="theorem-label">Construction</div>
+<p style="margin:4px 0;font-family:var(--mono);font-size:13.5px;">
+M' = "on input x:<br>
+&nbsp;&nbsp;1. if x has form 0<sup>n</sup>1<sup>n</sup>: accept;<br>
+&nbsp;&nbsp;2. else: simulate M on w; accept x iff M accepts w."
+</p>
+</div>
+<p><strong>Why 0<sup>n</sup>1<sup>n</sup>?</strong> Because it's the canonical non-regular decidable language. The construction needs a "non-regular base case" that M' can recognize on its own; {0<sup>n</sup>1<sup>n</sup>} is the simplest.</p>
+</section>
+
+<section><div class="section-label">3 · The proof · case analysis</div>
+<ul style="font-size:14px;line-height:1.65;">
+<li><strong>If M does NOT accept w</strong> · branch 2 never accepts. So L(M') = {0<sup>n</sup>1<sup>n</sup>} — <em>not</em> regular (pumping lemma).</li>
+<li><strong>If M accepts w</strong> · branch 2 accepts every x. So L(M') = Σ* (everything from branch 1 ∪ branch 2) — <em>regular</em>.</li>
+</ul>
+<p>So ⟨M, w⟩ ∈ A<sub>TM</sub> ⇔ ⟨M'⟩ ∈ REGULAR<sub>TM</sub>. A decider for REGULAR<sub>TM</sub> ⇒ decider for A<sub>TM</sub>. Contradiction ⇒ REGULAR<sub>TM</sub> undecidable. <span class="math">∎</span></p>
+</section>
+
+<section><div class="section-label">4 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">L(M') flips between {0<sup>n</sup>1<sup>n</sup>} and Σ* <span class="pill">Auto-plays</span></div>
+<div class="controls">
+<button class="btn play-btn" id="reg-run">⏸ Pause</button><button class="btn ghost" id="reg-step">Step</button><button class="btn ghost" id="reg-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="reg-speed" min="0.25" max="3" step="0.25" value="1"><span id="reg-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label>
+</div>
+<svg id="reg-svg" viewBox="0 0 760 280" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="reg-explain"></div>
+</div></section>
+
+<section><div class="section-label">5 · Worked example · concrete M and w</div>
+<p>Take M = "always halts and rejects" (so M(w) = reject for every w). Then for every choice of w:</p>
+<ul style="font-size:14px;line-height:1.65;">
+<li>M does not accept w.</li>
+<li>Branch 2 never accepts.</li>
+<li>L(M') = {0<sup>n</sup>1<sup>n</sup>}, non-regular.</li>
+<li>⟨M'⟩ ∉ REGULAR<sub>TM</sub>.</li>
+</ul>
+<p>Take M' = "always halts and accepts everything", w = anything. M accepts w. Branch 2 always accepts. L(M') = Σ*, regular. ⟨M'⟩ ∈ REGULAR<sub>TM</sub>.</p>
+</section>
+
+<section><div class="section-label">6 · Connections · the family of language-property reductions</div>
+<ul style="font-size:14px;line-height:1.7;">
+<li><strong>E<sub>TM</sub></strong> (P6) · same trick, gadget = ∅ vs Σ*.</li>
+<li><strong>CFL<sub>TM</sub></strong> · "is L(M) context-free?" — replace {0<sup>n</sup>1<sup>n</sup>} with a non-CF language like {0<sup>n</sup>1<sup>n</sup>2<sup>n</sup>}.</li>
+<li><strong>FIN<sub>TM</sub></strong> · "is L(M) finite?" — gadget = {ε} vs Σ*.</li>
+<li><strong>Rice's theorem</strong> (P14) · the master pattern: every nontrivial semantic property is undecidable.</li>
+</ul>
+</section>
+
+<section><div class="section-label">7 · Common pitfalls · what students miss</div>
+<ol style="font-size:14px;line-height:1.7;">
+<li><strong>Forgetting branch 1.</strong> Without the unconditional accept of 0<sup>n</sup>1<sup>n</sup>, L(M') = ∅ when M doesn't accept w — and ∅ <em>is</em> regular. The construction fails.</li>
+<li><strong>Confusing "regular" with "decidable".</strong> {0<sup>n</sup>1<sup>n</sup>} is decidable but not regular. The gadget needs decidable + non-regular.</li>
+<li><strong>"M' must be deterministic."</strong> Not required. The TM model here is the standard deterministic TM; M' just uses a polynomial gadget on its input.</li>
+<li><strong>Mixing up the direction.</strong> ⟨M, w⟩ ∈ A<sub>TM</sub> ⇔ L(M') regular. Don't flip it.</li>
+</ol>
+</section>
+
+<section><div class="section-label">8 · Q&amp;A defence notes</div>
+<ul class="qa-list">
+<li><div class="q">Q1. Why {0<sup>n</sup>1<sup>n</sup>}?</div><div class="a">Because it's not regular (pumping lemma) but is decidable. Any non-regular decidable language would work; this is the canonical choice.</div></li>
+<li><div class="q">Q2. What if M loops on w?</div><div class="a">Then for x ∉ {0<sup>n</sup>1<sup>n</sup>}, M' loops. But L(M') = {0<sup>n</sup>1<sup>n</sup>} still — those are exactly the strings M' accepts. Looping on other strings doesn't add them to the language.</div></li>
+<li><div class="q">Q3. Why doesn't this prove REGULAR<sub>TM</sub> is not even recognizable?</div><div class="a">It only shows undecidability. To prove non-recognizability you'd argue: if REGULAR<sub>TM</sub> were recognizable, by symmetric construction so would be ¬REGULAR<sub>TM</sub>, contradicting the bridge theorem.</div></li>
+<li><div class="q">Q4. Generalize: which other properties of L(M) is this proof template good for?</div><div class="a">Any nontrivial semantic property — that's Rice's theorem (Problem 14). Pick any pair of languages, one with property P and one without; build a similar gadget.</div></li>
+</ul></section>
+
+<section><div class="section-label">9 · How to present this in class</div>
+<p style="font-size:13.5px;"><strong>Total time: 8 minutes.</strong></p>
+<ul style="font-size:13.5px;line-height:1.7;">
+<li><strong>(1 min)</strong> Motivate: "Can I tell if my program's language is regular?"</li>
+<li><strong>(2 min)</strong> Construction of M' on the board with two branches.</li>
+<li><strong>(2 min)</strong> Run the visualization. Pause between the two cases.</li>
+<li><strong>(2 min)</strong> Two-case analysis: L(M') = {0<sup>n</sup>1<sup>n</sup>} or Σ*.</li>
+<li><strong>(1 min)</strong> Tease Rice's theorem: this is one of many.</li>
+</ul>
+</section>
+
+</div>
+<footer class="foot">Problem 7 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<script>
+(function(){
+let phase = 0; // 0 setup; 1: shows M rejects → L(M')={0^n1^n}; 2: shows M accepts → L(M')=Σ*
+function render() {
+  let s = '';
+  s += `<text x="380" y="35" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="700">Two scenarios for L(M')</text>`;
+  // Box for M doesn't accept w
+  const c1 = phase === 1, c2 = phase === 2;
+  s += `<rect x="60" y="70" width="300" height="170" rx="10" fill="white" stroke="${c1?'var(--warn)':'#ccc'}" stroke-width="${c1?3:1.4}"/>`;
+  s += `<text x="210" y="100" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" font-weight="bold" fill="${c1?'var(--warn)':'#888'}">If M does NOT accept w</text>`;
+  s += `<text x="210" y="130" text-anchor="middle" font-family="ui-monospace, monospace" font-size="14" fill="${c1?'#1a1a1a':'#888'}">L(M') = {0ⁿ1ⁿ}</text>`;
+  s += `<text x="210" y="160" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" fill="${c1?'var(--warn)':'#888'}">NOT regular</text>`;
+  s += `<text x="210" y="190" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="11" fill="${c1?'var(--muted)':'#bbb'}">M' accepts only the explicit gadget strings</text>`;
+  s += `<text x="210" y="215" text-anchor="middle" font-family="ui-monospace, monospace" font-size="12" fill="${c1?'#1a1a1a':'#888'}">⟨M'⟩ ∉ REGULAR<tspan dy="3" font-size="9">TM</tspan></text>`;
+  // Box for M accepts w
+  s += `<rect x="400" y="70" width="300" height="170" rx="10" fill="white" stroke="${c2?'var(--accent)':'#ccc'}" stroke-width="${c2?3:1.4}"/>`;
+  s += `<text x="550" y="100" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" font-weight="bold" fill="${c2?'var(--accent)':'#888'}">If M accepts w</text>`;
+  s += `<text x="550" y="130" text-anchor="middle" font-family="ui-monospace, monospace" font-size="14" fill="${c2?'#1a1a1a':'#888'}">L(M') = Σ*</text>`;
+  s += `<text x="550" y="160" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" fill="${c2?'var(--accent)':'#888'}">REGULAR</text>`;
+  s += `<text x="550" y="190" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="11" fill="${c2?'var(--muted)':'#bbb'}">M' accepts every string</text>`;
+  s += `<text x="550" y="215" text-anchor="middle" font-family="ui-monospace, monospace" font-size="12" fill="${c2?'#1a1a1a':'#888'}">⟨M'⟩ ∈ REGULAR<tspan dy="3" font-size="9">TM</tspan></text>`;
+  document.getElementById('reg-svg').innerHTML = s;
+  const msg = [
+    `<div class="step-num">Setup</div><p style="margin:4px 0;">M' has two branches: if x = 0<sup>n</sup>1<sup>n</sup>, accept immediately. Otherwise, defer to M(w). Watch how each branch determines L(M').</p>`,
+    `<div class="step-num">Case A · M does NOT accept w</div><p style="margin:4px 0;">M' accepts only the strings 0<sup>n</sup>1<sup>n</sup> (the unconditional branch). For all other x, M(w) doesn't accept, so M' doesn't accept. <strong>L(M') is non-regular ⇒ ⟨M'⟩ ∉ REGULAR<sub>TM</sub>.</strong></p>`,
+    `<div class="step-num">Case B · M accepts w</div><p style="margin:4px 0;">For every x, the second branch eventually accepts (because M(w) accepts). So L(M') = Σ*, which IS regular. <strong>⟨M'⟩ ∈ REGULAR<sub>TM</sub>.</strong></p><p style="margin:4px 0;"><strong>Conclusion:</strong> M accepts w ⇔ ⟨M'⟩ ∈ REGULAR<sub>TM</sub>. A decider for REGULAR<sub>TM</sub> would decide A<sub>TM</sub>. Impossible.</p>`
+  ];
+  document.getElementById('reg-explain').innerHTML = msg[phase];
+}
+function step() { phase = (phase + 1) % 3; render(); }
+function reset() { phase = 0; render(); }
+function atEnd() { return phase === 2; }
+WidgetLoop.create({runBtn:document.getElementById('reg-run'),stepBtn:document.getElementById('reg-step'),resetBtn:document.getElementById('reg-reset'),speedSlider:document.getElementById('reg-speed'),speedLabel:document.getElementById('reg-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:3500,baseLoopMs:5000,autoStartMs:1500});
+reset();
+})();
+</script><script src="../presentation.js"></script>
+</body></html>

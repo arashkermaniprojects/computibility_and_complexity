@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P49 · Closure properties</title>
+<link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css">
+<script src="../widget-loop.js"></script></head><body>
+
+<header class="tool-header">
+<div class="crumb"><a href="index.html">← Student tools</a> · Problem 49 · Lecture 5 · Round 1 (30 pts)</div>
+<h1>Closure properties · Decidable vs Recognizable</h1>
+<p class="sub">Decidable is closed under everything. Recognizable is NOT closed under complement — and that gap is the bridge theorem.</p>
+<div class="tags"><span class="tag-pill">CLO-1</span><span class="tag-pill warn">R1·30 pts</span><span class="tag-pill info">L5</span></div>
+</header>
+
+<div class="wrap">
+
+<section><div class="section-label">1 · Theory</div>
+<div class="theorem-box"><div class="theorem-label">Decidable closures</div>
+<p style="margin:4px 0;">Decidable is closed under ∪, ∩, complement, concatenation, star. Easy: build a decider that runs the constituent deciders and combines results.</p></div>
+<div class="theorem-box"><div class="theorem-label">Recognizable closures</div>
+<p style="margin:4px 0;">Recognizable is closed under ∪, ∩, concatenation, star — but NOT complement. A<sub>TM</sub> is recognizable; ¬A<sub>TM</sub> is not.</p></div>
+<div class="theorem-box"><div class="theorem-label">Bridge theorem</div>
+<p style="margin:4px 0;">L is decidable ⇔ both L and L̅ are recognizable.</p></div>
+</section>
+
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Tour the closure table <span class="pill">Auto-plays</span></div>
+<div class="controls">
+<button class="btn play-btn" id="cp-run">⏸ Pause</button><button class="btn ghost" id="cp-step">Step</button><button class="btn ghost" id="cp-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="cp-speed" min="0.25" max="3" step="0.25" value="1"><span id="cp-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label>
+</div>
+<div id="cp-table"></div>
+<div class="explain-panel" id="cp-explain"></div>
+</div></section>
+
+<section><div class="section-label">3 · Q&amp;A defence notes</div>
+<ul class="qa-list">
+<li><div class="q">Q1. Why is recognizable not closed under complement?</div><div class="a">A recognizer for L may loop on x ∉ L. To recognize ¬L, we'd want to accept x ∉ L, which means detecting that the original recognizer loops — equivalent to halting problem.</div></li>
+<li><div class="q">Q2. Why is recognizable closed under union but the recognizer doesn't just "run both"?</div><div class="a">It does: simulate both in parallel (interleaved), accept if either accepts. Parallel simulation is the standard trick.</div></li>
+<li><div class="q">Q3. Prove the bridge theorem.</div><div class="a">(⇒) Decidable ⇒ recognizable; ¬L also decidable ⇒ recognizable. (⇐) Both L and ¬L recognizable. Simulate both in parallel on any input x; exactly one accepts (it's in L or ¬L). Halt.</div></li>
+</ul></section>
+
+</div>
+<footer class="foot">Problem 49 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<script>
+(function(){
+const rows = [
+  {op: 'Union (L₁ ∪ L₂)', dec: '✓', rec: '✓'},
+  {op: 'Intersection (L₁ ∩ L₂)', dec: '✓', rec: '✓'},
+  {op: 'Complement (L̅)', dec: '✓', rec: '✗ (key!)'},
+  {op: 'Concatenation (L₁ · L₂)', dec: '✓', rec: '✓'},
+  {op: 'Kleene star (L*)', dec: '✓', rec: '✓'}
+];
+let i = -1;
+function render() {
+  let html = '<table class="data" style="font-family:var(--sans),sans-serif;"><thead><tr><th>Operation</th><th>Decidable</th><th>Recognizable</th></tr></thead><tbody>';
+  rows.forEach((r, k) => {
+    const shown = k <= i;
+    const op = shown ? 1 : 0.25;
+    const isCx = r.rec.includes('✗');
+    html += `<tr style="opacity:${op};"><td>${r.op}</td><td style="color:var(--accent);font-weight:bold;">${r.dec}</td><td style="color:${isCx?'var(--warn)':'var(--accent)'};font-weight:bold;">${r.rec}</td></tr>`;
+  });
+  html += '</tbody></table>';
+  document.getElementById('cp-table').innerHTML = html;
+  if (i < 0) document.getElementById('cp-explain').innerHTML = `<div class="step-num">Watch each operation revealed</div><p style="margin:4px 0;">Pay attention to <strong>complement</strong>: the only operation where decidable and recognizable diverge.</p>`;
+  else if (i >= rows.length - 1) document.getElementById('cp-explain').innerHTML = `<div class="step-num">The whole table</div><p style="margin:4px 0;"><strong>Complement is the differentiator.</strong> Bridge theorem: L decidable iff both L and L̅ recognizable. So recognizable but not co-recognizable = not decidable.</p>`;
+  else { const r = rows[i]; document.getElementById('cp-explain').innerHTML = `<div class="step-num">${r.op}</div><p style="margin:4px 0;">Decidable: ${r.dec}. Recognizable: ${r.rec}. ${i === 2 ? 'The critical asymmetry.' : ''}</p>`; }
+}
+function step() { if (i < rows.length - 1) i++; render(); }
+function reset() { i = -1; render(); }
+function atEnd() { return i >= rows.length - 1; }
+WidgetLoop.create({runBtn:document.getElementById('cp-run'),stepBtn:document.getElementById('cp-step'),resetBtn:document.getElementById('cp-reset'),speedSlider:document.getElementById('cp-speed'),speedLabel:document.getElementById('cp-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:1800,baseLoopMs:5000,autoStartMs:1300});
+reset();
+})();
+</script><script src="../presentation.js"></script>
+</body></html>

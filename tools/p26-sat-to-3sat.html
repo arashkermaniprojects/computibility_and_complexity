@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>P26 · SAT → 3SAT</title><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css"><script src="../widget-loop.js"></script></head><body>
+<header class="tool-header"><div class="crumb"><a href="index.html">← Student tools</a> · Problem 26 · Lecture 11 · Round 2 (30 pts)</div>
+<h1>SAT → 3SAT · auxiliary-variable splitting</h1><p class="sub">Every clause with k > 3 literals becomes a chain of 3-literal clauses.</p>
+<div class="tags"><span class="tag-pill">CLO-4</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L11</span></div></header>
+<div class="wrap">
+<section><div class="section-label">1 · Theory</div>
+<div class="theorem-box"><div class="theorem-label">The splitting rule</div><p style="margin:4px 0;">(ℓ<sub>1</sub> ∨ ℓ<sub>2</sub> ∨ ℓ<sub>3</sub> ∨ ℓ<sub>4</sub>) becomes (ℓ<sub>1</sub> ∨ ℓ<sub>2</sub> ∨ a) ∧ (¬a ∨ ℓ<sub>3</sub> ∨ ℓ<sub>4</sub>) with a fresh variable a.</p></div>
+<p>Satisfiability preserved: pick a = (ℓ<sub>3</sub> ∨ ℓ<sub>4</sub>) effectively. Polynomial: k − 2 clauses, k − 3 auxiliary variables.</p></section>
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Split a 4-literal clause <span class="pill">Auto-plays</span></div>
+<div class="controls"><button class="btn play-btn" id="s-run">⏸ Pause</button><button class="btn ghost" id="s-step">Step</button><button class="btn ghost" id="s-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="s-speed" min="0.25" max="3" step="0.25" value="1"><span id="s-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
+<div id="s-display" style="min-height:200px;padding:30px;text-align:center;font-family:ui-monospace,monospace;font-size:18px;"></div>
+<div class="explain-panel" id="s-explain"></div></div></section>
+<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why a fresh variable a?</div><div class="a">A new variable not appearing elsewhere lets us split without affecting other clauses. Each clause-split introduces its own a.</div></li>
+<li><div class="q">Q2. Why is satisfiability preserved?</div><div class="a">If original is satisfied, at least one of ℓ₁…ℓ₄ is true. Set a = whether (ℓ₃∨ℓ₄) is true. That choice satisfies both new clauses. Converse is similar.</div></li>
+<li><div class="q">Q3. What's the running time of the reduction?</div><div class="a">Linear in formula size. Each k-literal clause becomes k−2 clauses with k−3 new variables.</div></li>
+</ul></section></div><footer class="foot">P26 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<script>(function(){
+let stage=0;
+const stages=[
+  `(x ∨ y ∨ z ∨ w)`,
+  `(x ∨ y ∨ <span style="color:var(--accent);font-weight:bold">a</span>) ∧ (<span style="color:var(--accent);font-weight:bold">¬a</span> ∨ z ∨ w)`,
+  `<div style="padding:14px 20px;background:var(--accent-soft);border-radius:6px;display:inline-block;">(x ∨ y ∨ a) ∧ (¬a ∨ z ∨ w)</div><div style="font-family:var(--sans),sans-serif;font-size:13px;color:var(--muted);margin-top:14px;">2 three-literal clauses · 1 auxiliary variable a</div>`
+];
+function render(){
+  document.getElementById('s-display').innerHTML=stages[Math.min(stage,stages.length-1)];
+  const notes=[
+    `<div class="step-num">Start · 4-literal clause</div><p style="margin:4px 0;">We need to convert this into 3SAT — every clause must have exactly 3 literals.</p>`,
+    `<div class="step-num">Split via auxiliary variable a</div><p style="margin:4px 0;">Introduce a new variable a. First clause uses ℓ<sub>1</sub>, ℓ<sub>2</sub>, a. Second clause uses ¬a, ℓ<sub>3</sub>, ℓ<sub>4</sub>. Now every clause has 3 literals.</p>`,
+    `<div class="step-num">Satisfiability preserved</div><p style="margin:4px 0;">If original sat: at least one of x,y,z,w is true. Set a accordingly to satisfy both new clauses. Conversely both new clauses satisfied ⇒ original satisfied.</p>`
+  ];
+  document.getElementById('s-explain').innerHTML=notes[Math.min(stage,notes.length-1)];
+}
+function step(){ if(stage<stages.length-1)stage++; render(); }
+function reset(){ stage=0; render(); }
+function atEnd(){ return stage>=stages.length-1; }
+WidgetLoop.create({runBtn:document.getElementById('s-run'),stepBtn:document.getElementById('s-step'),resetBtn:document.getElementById('s-reset'),speedSlider:document.getElementById('s-speed'),speedLabel:document.getElementById('s-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:3000,baseLoopMs:5000,autoStartMs:1500});
+reset();
+})();</script><script src="../presentation.js"></script>
+</body></html>

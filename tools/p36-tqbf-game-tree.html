@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>P36 · TQBF game tree</title><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css"><script src="../widget-loop.js"></script></head><body>
+<header class="tool-header"><div class="crumb"><a href="index.html">← Student tools</a> · Problem 36 · Lecture 13 · Round 3 (40 pts)</div>
+<h1>TQBF · evaluate quantified formulas as a game tree</h1><p class="sub">∃-nodes take OR, ∀-nodes take AND. Post-order evaluation.</p>
+<div class="tags"><span class="tag-pill">CLO-4</span><span class="tag-pill warn">R3·40 pts</span><span class="tag-pill info">L13</span></div></header>
+<div class="wrap">
+<section><div class="section-label">1 · Theory</div><p>TQBF = {⟨φ⟩ : the quantified Boolean formula φ is true}. PSPACE-complete. Recursive evaluation = game between ∃ and ∀.</p>
+<div class="theorem-box"><div class="theorem-label">Evaluation</div><p style="margin:4px 0;">∃x. ψ(x) is true ⇔ ψ(0) ∨ ψ(1). ∀x. ψ(x) is true ⇔ ψ(0) ∧ ψ(1). Recurse until no quantifiers left, then evaluate the propositional kernel.</p></div></section>
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Tree evaluation for a small QBF <span class="pill">Auto-plays</span></div>
+<div class="controls"><button class="btn play-btn" id="q-run">⏸ Pause</button><button class="btn ghost" id="q-step">Step</button><button class="btn ghost" id="q-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="q-speed" min="0.25" max="3" step="0.25" value="1"><span id="q-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
+<svg id="q-svg" viewBox="0 0 760 320" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="q-explain"></div></div></section>
+<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why is TQBF PSPACE-complete and not just in NP?</div><div class="a">A SAT formula has only one quantifier prefix (existential). TQBF allows alternating ∀∃∀∃… — exponentially more complex.</div></li>
+<li><div class="q">Q2. How does the recursion use polynomial space?</div><div class="a">Depth-first evaluation reuses memory at each level. Only the current path's partial assignment is stored. Depth = n levels × O(1) bits each = O(n).</div></li>
+<li><div class="q">Q3. Total tree size?</div><div class="a">2<sup>n</sup> leaves. Walking them takes 2<sup>n</sup> time. PSPACE-completeness proves no faster algorithm is known.</div></li>
+</ul></section></div><footer class="foot">P36 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<script>(function(){
+// Formula: ∃x ∀y. (x ∨ y) ∧ (x ∨ ¬y)
+const tree=[
+  {id:0,type:'E',depth:0,parent:-1,children:[1,2],val:null}, // ∃x
+  {id:1,type:'A',depth:1,parent:0,children:[3,4],val:null,asn:'x=0'}, // ∀y under x=0
+  {id:2,type:'A',depth:1,parent:0,children:[5,6],val:null,asn:'x=1'}, // ∀y under x=1
+  {id:3,type:'L',depth:2,parent:1,asn:'x=0,y=0',val:false}, // (0∨0)∧(0∨1)=0
+  {id:4,type:'L',depth:2,parent:1,asn:'x=0,y=1',val:false}, // (0∨1)∧(0∨0)=0
+  {id:5,type:'L',depth:2,parent:2,asn:'x=1,y=0',val:true},  // (1∨0)∧(1∨1)=1
+  {id:6,type:'L',depth:2,parent:2,asn:'x=1,y=1',val:true}   // (1∨1)∧(1∨0)=1
+];
+function compute(){
+  tree[3].val=false;tree[4].val=false;tree[5].val=true;tree[6].val=true;
+  tree[1].val=tree[3].val&&tree[4].val; // ∀: AND
+  tree[2].val=tree[5].val&&tree[6].val;
+  tree[0].val=tree[1].val||tree[2].val; // ∃: OR
+}
+compute();
+let order=[3,4,1,5,6,2,0]; // post-order
+let revealed=new Set();
+function pos(id){ const node=tree[id]; const W=760, perDepth=W/4; const xs={2:[150,310,470,630], 1:[230,550], 0:[380]};
+  const cnt={2:[0,1,2,3],1:[0,1],0:[0]}; let n2=tree.filter(t=>t.depth===2).indexOf(node); let n1=tree.filter(t=>t.depth===1).indexOf(node);
+  let xIdx=node.depth===2?(node.id-3):(node.depth===1?(node.id-1):0);
+  return {x:xs[node.depth][xIdx], y:50+node.depth*90};
+}
+function render(){
+  let s='';
+  // edges
+  tree.forEach(n=>{if(n.parent>=0){const p=pos(n.id), pp=pos(n.parent); const rev=revealed.has(n.id);
+    const stroke=rev?(n.val?'var(--accent)':'var(--warn)'):'#ddd';
+    s+=`<line x1="${pp.x}" y1="${pp.y+18}" x2="${p.x}" y2="${p.y-18}" stroke="${stroke}" stroke-width="${rev?2:1}" opacity="${rev?1:0.5}"/>`;
+  }});
+  tree.forEach(n=>{const p=pos(n.id), rev=revealed.has(n.id);
+    let fill,stroke; if(n.type==='L'){fill=rev?(n.val?'var(--accent)':'var(--warn)'):'#f0f0e8'; stroke=rev?(n.val?'var(--accent)':'var(--warn)'):'#aaa';}
+    else{fill=rev?(n.val?'var(--accent-soft)':'var(--warn-soft)'):'#fff'; stroke=n.type==='E'?'var(--accent)':'var(--warn)';}
+    s+=`<circle cx="${p.x}" cy="${p.y}" r="18" fill="${fill}" stroke="${stroke}" stroke-width="2" opacity="${rev?1:0.5}"/>`;
+    const lbl=n.type==='L'?(rev?(n.val?'T':'F'):'?'):(n.type==='E'?'∃':'∀');
+    s+=`<text x="${p.x}" y="${p.y+5}" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="bold" fill="${n.type==='L'&&rev?'#fff':(n.type==='E'?'var(--accent-strong)':'var(--warn)')}" opacity="${rev?1:0.5}">${lbl}</text>`;
+    if(n.asn) s+=`<text x="${p.x}" y="${p.y+34}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" fill="var(--muted)" opacity="${rev?1:0.5}">${n.asn}</text>`;
+  });
+  s+=`<text x="380" y="290" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="12" fill="var(--muted)">∃x ∀y. (x ∨ y) ∧ (x ∨ ¬y)</text>`;
+  document.getElementById('q-svg').innerHTML=s;
+  if(revealed.size===0) document.getElementById('q-explain').innerHTML=`<div class="step-num">Setup</div><p style="margin:4px 0;">Formula: ∃x ∀y. (x ∨ y) ∧ (x ∨ ¬y). Evaluate by walking the game tree post-order.</p>`;
+  else if(revealed.size===order.length) document.getElementById('q-explain').innerHTML=`<div class="step-num">Root evaluates to TRUE</div><p style="margin:4px 0;">∃ chooses x=1; both subtrees true ⇒ ∀ succeeds. <strong>Formula is true.</strong></p>`;
+  else { const last=order[revealed.size-1]; const n=tree[last]; document.getElementById('q-explain').innerHTML=`<div class="step-num">Step ${revealed.size}/${order.length} · ${n.type==='L'?'leaf':n.type==='E'?'∃-node':'∀-node'} → ${n.val?'TRUE':'FALSE'}</div><p style="margin:4px 0;">${n.type==='L'?`Plug in ${n.asn}; evaluate to ${n.val?'TRUE':'FALSE'}.`:n.type==='E'?'∃ combines children with OR.':'∀ combines children with AND.'}</p>`; }
+}
+function step(){ if(revealed.size<order.length)revealed.add(order[revealed.size]); render(); }
+function reset(){ revealed=new Set(); render(); }
+function atEnd(){ return revealed.size>=order.length; }
+WidgetLoop.create({runBtn:document.getElementById('q-run'),stepBtn:document.getElementById('q-step'),resetBtn:document.getElementById('q-reset'),speedSlider:document.getElementById('q-speed'),speedLabel:document.getElementById('q-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:1500,baseLoopMs:5000,autoStartMs:1300});
+reset();
+})();</script><script src="../presentation.js"></script>
+</body></html>

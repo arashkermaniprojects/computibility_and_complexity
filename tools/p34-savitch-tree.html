@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P34 · Savitch's recursion tree</title>
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css">
+<script src="../widget-loop.js"></script>
+</head>
+<body>
+
+<header class="tool-header">
+  <div class="crumb"><a href="index.html">← Student tools</a> · Problem 34 · Lecture 13 · Round 3 (40 pts)</div>
+  <h1>Savitch's theorem · the recursion tree</h1>
+  <p class="sub">A nondeterministic f(n)-space machine can be simulated in O(f(n)²) deterministic space. The reason: an exponential tree with logarithmic depth.</p>
+  <div class="tags">
+    <span class="tag-pill">CLO-4 · Mapping reduction</span>
+    <span class="tag-pill warn">Round 3 · 40 pts</span>
+    <span class="tag-pill info">Lecture 13</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+<section>
+  <div class="section-label">1 · Why this matters · the BIG picture</div>
+  <p>
+    Savitch's theorem (1970) is the single most surprising result in space complexity:
+    <strong>nondeterminism is essentially free in polynomial space</strong>. The space classes P and NP have a
+    long-standing gap (we believe P ≠ NP), but the space classes PSPACE and NPSPACE are <em>equal</em>.
+  </p>
+  <p>
+    This is the inverse of what one would expect. For TIME, a single nondeterministic step can replace exponentially
+    many deterministic steps (that is exactly the P vs NP question). For SPACE, a clever recursion can simulate any
+    nondeterministic choice with only a quadratic blowup.
+  </p>
+  <div class="theorem-box"><div class="theorem-label">Savitch's theorem (1970)</div>
+    <p style="margin:4px 0;">For any function <span class="math">f(n) ≥ log n</span>:
+      <span class="math">NSPACE(f(n)) ⊆ SPACE(f(n)<sup>2</sup>)</span>.</p>
+    <p style="margin:4px 0;"><strong>Consequence:</strong> PSPACE = NPSPACE. Nondeterminism saves no space (up to a polynomial).</p>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">2 · Setup · why simulation is non-trivial</div>
+  <p>
+    A nondeterministic Turing machine N using <span class="math">f(n)</span> space has at most
+    <span class="math">2<sup>O(f(n))</sup></span> distinct configurations (state × tape contents × head position).
+    So if N halts at all, it does so within that many steps.
+  </p>
+  <p>
+    The naive simulation — BFS over configurations — uses linear space in the <em>number</em> of reachable configurations,
+    which is <strong>exponential</strong>. That breaks the bound. We need a smarter way.
+  </p>
+
+  <div class="theorem-box" style="background:#f3f8f3;"><div class="theorem-label">Reformulate as reachability</div>
+    <p style="margin:4px 0;font-family:var(--mono);font-size:13.5px;">
+      CANYIELD(A, B, t) = "can config A reach config B in ≤ t steps?"
+    </p>
+    <p style="margin:4px 0;">N accepts x ⇔ CANYIELD(C<sub>start</sub>(x), C<sub>accept</sub>, 2<sup>O(f)</sup>) returns yes.</p>
+  </div>
+
+  <p style="font-size:13.5px;">
+    Now we have a clean recursive question. The trick is to recurse <em>cleverly</em>.
+  </p>
+</section>
+
+<section>
+  <div class="section-label">3 · The proof · midpoint recursion</div>
+  <p>
+    Savitch's insight: cut t in half by guessing a midpoint configuration M.
+  </p>
+  <div class="theorem-box" style="background:#fffaf3;"><div class="theorem-label">CANYIELD recursion</div>
+    <p style="margin:4px 0;font-family:var(--mono);font-size:13.5px;">
+      CANYIELD(A, B, t):<br>
+      &nbsp;&nbsp;if t = 1: return whether A = B or A → B in one step;<br>
+      &nbsp;&nbsp;for each candidate midpoint M (try all 2<sup>O(f)</sup> of them):<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;if CANYIELD(A, M, t/2) AND CANYIELD(M, B, t/2): return yes;<br>
+      &nbsp;&nbsp;return no.
+    </p>
+  </div>
+  <p>
+    Critically, the two recursive calls run <strong>in sequence</strong>, not in parallel, reusing the same memory.
+    The for-loop also reuses memory: the M slot holds one config at a time.
+  </p>
+
+  <table style="font-size:13.5px;width:100%;border-collapse:collapse;margin:10px 0;">
+    <thead><tr style="background:var(--gold-soft);">
+      <th style="padding:6px;border:1px solid var(--rule);text-align:left;">Resource</th>
+      <th style="padding:6px;border:1px solid var(--rule);text-align:left;">Per recursion level</th>
+      <th style="padding:6px;border:1px solid var(--rule);text-align:left;">Total</th>
+    </tr></thead>
+    <tbody>
+      <tr><td style="padding:6px;border:1px solid var(--rule);">Recursion depth</td><td style="padding:6px;border:1px solid var(--rule);">—</td><td style="padding:6px;border:1px solid var(--rule);">log t = O(f)</td></tr>
+      <tr><td style="padding:6px;border:1px solid var(--rule);">Bits stored on stack</td><td style="padding:6px;border:1px solid var(--rule);">O(f) (one config)</td><td style="padding:6px;border:1px solid var(--rule);"><strong>O(f²)</strong></td></tr>
+      <tr><td style="padding:6px;border:1px solid var(--rule);">Time (sequential)</td><td style="padding:6px;border:1px solid var(--rule);">2 children × 2<sup>O(f)</sup> Ms</td><td style="padding:6px;border:1px solid var(--rule);">(2<sup>O(f)</sup>)<sup>log t</sup> = 2<sup>O(f²)</sup></td></tr>
+    </tbody>
+  </table>
+  <p>
+    <strong>Space O(f²), Time 2<sup>O(f²)</sup>.</strong> Wildly slow but space-efficient. The recursion tree below
+    has exponentially many <em>nodes</em>, yet at any instant only a single root-to-leaf <em>path</em> sits on the stack.
+  </p>
+</section>
+
+<section>
+  <div class="section-label">4 · Animated demo · auto-plays · loops</div>
+
+  <div class="widget">
+    <div class="widget-title">Savitch's recursion · tree expansion <span class="pill">Auto-plays</span></div>
+
+    <div class="controls">
+      <label>Depth (= log t): <input type="range" id="sv-d" min="2" max="5" value="4" style="width: 130px;"> <span id="sv-d-label">4</span></label>
+      <button class="btn play-btn" id="sv-run">⏸ Pause</button>
+      <button class="btn ghost" id="sv-reset">Reset</button>
+      <label class="speed-control">Speed
+        <input type="range" id="sv-speed" min="0.25" max="3" step="0.25" value="1">
+        <span id="sv-speed-label" style="font-family: var(--mono); min-width: 28px;">1×</span>
+      </label>
+    </div>
+
+    <svg id="sv-svg" viewBox="0 0 760 400" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+
+    <div class="explain-panel" id="sv-explain"></div>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">5 · Worked example · f(n) = n (linear space)</div>
+  <p>Suppose N uses n bits of tape. Then:</p>
+  <ul style="font-size:14px;line-height:1.65;">
+    <li>Number of configurations: 2<sup>O(n)</sup>.</li>
+    <li>Maximum t: 2<sup>O(n)</sup>.</li>
+    <li>Recursion depth: log t = O(n).</li>
+    <li>Each stack frame stores one config: O(n) bits.</li>
+    <li>Total deterministic space: O(n · n) = <strong>O(n²)</strong>.</li>
+  </ul>
+  <p>For n = 100: deterministic simulation uses roughly 10 000 bits of memory — but might run for 2<sup>10 000</sup> steps. Space matters, time does not (for this theorem).</p>
+</section>
+
+<section>
+  <div class="section-label">6 · Connections · Savitch in the complexity zoo</div>
+  <ul style="font-size:14px;line-height:1.7;">
+    <li><strong>PSPACE = NPSPACE</strong> · the immediate corollary.</li>
+    <li><strong>NL ⊆ L²</strong> · for f = log n, NSPACE(log n) ⊆ SPACE(log² n). This is the original tight application.</li>
+    <li><strong>TQBF</strong> · the canonical PSPACE-complete problem; Savitch's recursion is what lets us evaluate TQBF in polynomial space.</li>
+    <li><strong>Immerman–Szelepcsényi</strong> (1987/88) · NL = coNL. A different surprise; uses inductive counting, not midpoint recursion.</li>
+    <li><strong>Open question</strong> · is Savitch's f² tight? No improvement has been found in 55+ years.</li>
+  </ul>
+</section>
+
+<section>
+  <div class="section-label">7 · Common pitfalls · what students miss</div>
+  <ol style="font-size:14px;line-height:1.7;">
+    <li><strong>"Just try every config."</strong> That uses exponential space (the list of seen configs). The midpoint trick is what avoids it.</li>
+    <li><strong>"The tree has 2<sup>log t</sup> leaves, so it uses that much space."</strong> No — the tree has that many leaves, but only one path lives on the stack at a time.</li>
+    <li><strong>Confusing log t with t.</strong> log t = O(f), not O(2<sup>f</sup>). Logs of exponentials are linear.</li>
+    <li><strong>"Why doesn't this work for TIME?"</strong> Because both children must actually execute; their times add. log t × 2 child evaluations × loop over M = exponential time. Space, by contrast, gets reused.</li>
+    <li><strong>Forgetting the floor of log t.</strong> If t is not a power of 2, round t/2 to ⌈t/2⌉ for the first half and ⌊t/2⌋ for the second. Doesn't affect asymptotics.</li>
+  </ol>
+</section>
+
+<section>
+  <div class="section-label">8 · Q&amp;A defence notes</div>
+  <ul class="qa-list">
+    <li>
+      <div class="q">Q1. Why doesn't Savitch's theorem prove P = NP?</div>
+      <div class="a">It only works for SPACE. The trick uses log t recursion depth — fine for space because each level reuses memory. But in TIME, we have to actually execute both children, so the running time multiplies and we get 2<sup>log t</sup> = t total time. No speedup.</div>
+    </li>
+    <li>
+      <div class="q">Q2. Where does the f² come from?</div>
+      <div class="a">log t = log(2<sup>O(f)</sup>) = O(f) recursion levels. Each level stores one configuration = O(f) bits. f levels × f bits = f² total.</div>
+    </li>
+    <li>
+      <div class="q">Q3. What's the midpoint M? How do we "guess" it?</div>
+      <div class="a">M ranges over all 2<sup>O(f)</sup> possible configurations. We try them one by one in a deterministic loop. For each candidate M, recursively check both halves. If both succeed for some M, accept; if no M works, reject. The loop reuses the same M-slot in memory.</div>
+    </li>
+    <li>
+      <div class="q">Q4. Is Savitch's bound tight?</div>
+      <div class="a">Open question. We don't know if NSPACE(f) ⊆ SPACE(f<sup>1.99</sup>) or even SPACE(f). Improving Savitch in any way is one of the great open questions of complexity theory.</div>
+    </li>
+    <li>
+      <div class="q">Q5. What problem in PSPACE actually motivates this?</div>
+      <div class="a">TQBF (true quantified Boolean formulas). Solving TQBF naïvely is exponential time. Savitch's idea applied directly: we can solve TQBF in PSPACE by alternating quantifier evaluation depth-first, reusing memory at each level.</div>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <div class="section-label">9 · How to present this in class</div>
+  <p style="font-size:13.5px;"><strong>Total time: 12 minutes.</strong></p>
+  <ul style="font-size:13.5px;line-height:1.7;">
+    <li><strong>(2 min)</strong> Hook: "Nondeterminism is free in space — but not in time." Pose the contrast with P vs NP.</li>
+    <li><strong>(2 min)</strong> Define CANYIELD on the board. Argue: solving it solves the simulation problem.</li>
+    <li><strong>(3 min)</strong> Walk through the midpoint recursion. Stress the two key ideas: sequential calls, looping over M.</li>
+    <li><strong>(3 min)</strong> Run the visualization with depth 4 then depth 5. Pause when the explain panel mentions "only one root-to-leaf path on the stack".</li>
+    <li><strong>(2 min)</strong> Resource accounting: log t × O(f) bits = O(f²). Write it on the board.</li>
+  </ul>
+</section>
+
+</div>
+
+<footer class="foot">Problem 34 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<script>
+(function(){
+  let depth = 4, visible = 0;
+
+  function render() {
+    const W=760, H=400;
+    let s = '';
+    const tree = [];
+    function layout(d, lvl, x1, x2) {
+      const cx = (x1+x2)/2, y = 40 + lvl*(H-80)/d;
+      tree.push({x: cx, y, lvl, label: lvl===d ? '1 step' : `t=2^${d-lvl}`});
+      if (lvl < d) { layout(d, lvl+1, x1, cx); layout(d, lvl+1, cx, x2); }
+    }
+    layout(depth, 0, 60, W-60);
+    // edges
+    for (let i = 0; i < tree.length; i++) {
+      const c1 = 2*i+1, c2 = 2*i+2;
+      if (c2 < tree.length && i < visible) {
+        for (const c of [c1, c2]) {
+          const v = c < visible;
+          s += `<line x1="${tree[i].x}" y1="${tree[i].y}" x2="${tree[c].x}" y2="${tree[c].y}" stroke="${v?'var(--accent)':'#ddd'}" stroke-width="${v?1.5:1}" opacity="${v?1:0.4}"/>`;
+        }
+      }
+    }
+    // nodes
+    for (let i = 0; i < tree.length; i++) {
+      const n = tree[i], isV = i < visible, isCur = i === visible-1;
+      const fill = isCur ? 'var(--gold)' : (isV ? 'var(--accent)' : '#f5f5f0');
+      const r = isCur ? 14 : 10;
+      s += `<circle cx="${n.x}" cy="${n.y}" r="${r}" fill="${fill}" stroke="${isV?'var(--accent-strong)':'#bbb'}" stroke-width="1.5" opacity="${isV?1:0.3}"/>`;
+      if (isV) s += `<text x="${n.x}" y="${n.y+25}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" fill="var(--muted)">${n.label}</text>`;
+    }
+    s += `<text x="40" y="${H-10}" font-family="var(--sans), sans-serif" font-size="12" fill="var(--muted)">depth = ${depth} ⇒ stack height ${depth} ⇒ space O(${depth} · f(n)) = O(f²)</text>`;
+    document.getElementById('sv-svg').innerHTML = s;
+
+    const total = (1<<(depth+1))-1;
+    const el = document.getElementById('sv-explain');
+    const curLevel = visible > 0 ? Math.floor(Math.log2(visible)) : 0;
+    if (visible === 0) {
+      el.innerHTML = `<div class="step-num">Setup</div>
+        <p style="margin: 4px 0;"><strong>CANYIELD(A, B, t)</strong> asks: does the start config A reach the accept config B in ≤ t nondeterministic steps?</p>
+        <p style="margin: 4px 0;">Tree root has time budget t = 2<sup>${depth}</sup>. Each level halves the budget.</p>`;
+    } else if (visible < total) {
+      el.innerHTML = `<div class="step-num">Expanding · level ${curLevel} · ${visible} of ${total} nodes</div>
+        <p style="margin: 4px 0;"><strong>Each node is a CANYIELD call</strong> with time budget 2<sup>${depth-curLevel}</sup>. Its two children try midpoints M with halved budgets.</p>
+        <p style="margin: 4px 0;"><strong>Key:</strong> at any instant, only ${depth+1} nodes are on the call stack (the current root-to-leaf path), not all ${total}.</p>`;
+    } else {
+      el.innerHTML = `<div class="step-num">Tree fully expanded</div>
+        <p style="margin: 4px 0;"><strong>Total calls:</strong> ${total} = 2<sup>${depth+1}</sup>−1. <strong>Max stack depth at any moment:</strong> ${depth+1}.</p>
+        <p style="margin: 4px 0;"><strong>Space cost:</strong> ${depth+1} stack frames × O(f) bits each = O(f²).</p>
+        <p style="margin: 4px 0;"><strong>This proves NSPACE(f) ⊆ SPACE(f²) ⇒ PSPACE = NPSPACE.</strong></p>`;
+    }
+  }
+
+  function step() { visible++; render(); }
+  function reset() { visible = 1; render(); }
+  function atEnd() { return visible >= (1<<(depth+1))-1; }
+
+  document.getElementById('sv-d').oninput = e => { depth = parseInt(e.target.value); document.getElementById('sv-d-label').textContent = depth; reset(); };
+
+  WidgetLoop.create({
+    runBtn: document.getElementById('sv-run'),
+    resetBtn: document.getElementById('sv-reset'),
+    speedSlider: document.getElementById('sv-speed'),
+    speedLabel: document.getElementById('sv-speed-label'),
+    doStep: step,
+    atEnd,
+    doReset: reset,
+    baseStepMs: 700,
+    baseLoopMs: 5000,
+    autoStartMs: 1500
+  });
+
+  reset();
+})();
+</script>
+
+<script src="../presentation.js"></script>
+</body>
+</html>

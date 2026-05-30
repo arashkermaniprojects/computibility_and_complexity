@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P2 · Universal Turing machine</title>
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css">
+<script src="../widget-loop.js"></script>
+</head>
+<body>
+
+<header class="tool-header">
+  <div class="crumb"><a href="index.html">← Student tools</a> · Problem 2 · Lecture 5 · Round 1 (30 pts)</div>
+  <h1>The universal Turing machine</h1>
+  <p class="sub">One TM that simulates every other TM — the reason A<sub>TM</sub> is Turing-recognizable.</p>
+  <div class="tags">
+    <span class="tag-pill">CLO-1 · Diagonalization (recognizable side)</span>
+    <span class="tag-pill warn">Round 1 · 30 pts</span>
+    <span class="tag-pill info">Lecture 5</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+<section>
+  <div class="section-label">1 · Why this matters · the BIG picture</div>
+  <p>
+    A universal Turing machine is the theoretical ancestor of every general-purpose computer you have ever used.
+    It says: <strong>one fixed program can run any other program</strong>. Your laptop's CPU is a (fast, finite-memory)
+    universal machine; an interpreter like Python is a universal machine written in software; even a browser running
+    JavaScript is yet another universal machine on top.
+  </p>
+  <p>
+    The mathematical version was given by Turing in 1936 — a decade before the first stored-program computer was built.
+    It is the single most important idea connecting computability theory to real machines.
+  </p>
+  <div class="theorem-box">
+    <div class="theorem-label">The big consequence we care about today</div>
+    <p style="margin: 4px 0;">
+      Because a universal TM exists, the language <span class="math">A<sub>TM</sub> = {⟨M, w⟩ : M accepts w}</span>
+      is <strong>Turing-recognizable</strong>. Combined with Problem 3 (A<sub>TM</sub> is <em>not</em> decidable),
+      this gives the cleanest example of the gap between "recognize" and "decide" — the gap on which all of
+      undecidability rests.
+    </p>
+  </div>
+  <p style="font-size: 13.5px; color: var(--ink-soft);">
+    <strong>Chain of consequences:</strong> Universal TM exists ⇒ A<sub>TM</sub> is recognizable
+    ⇒ recognizable ≠ decidable ⇒ a recognizable language whose complement is also recognizable must be decidable
+    ⇒ co-A<sub>TM</sub> is <em>not</em> recognizable ⇒ a concrete non-recognizable language exists.
+  </p>
+</section>
+
+<section>
+  <div class="section-label">2 · Setup · what we're trying to build</div>
+  <p>
+    Recall a Turing machine M is a tuple <span class="math">(Q, Σ, Γ, δ, q<sub>0</sub>, q<sub>a</sub>, q<sub>r</sub>)</span>.
+    The <em>only</em> infinite ingredient is the tape — everything else (states, alphabet, transitions) is a finite table.
+  </p>
+  <p>
+    So M can be written down as a finite string <span class="math">⟨M⟩</span>. We pick an encoding — for example,
+    list every transition <code>(state, read) → (state, write, dir)</code> on one line. That string is just data.
+  </p>
+
+  <div class="theorem-box" style="background: #f3f8f3;">
+    <div class="theorem-label">Vocabulary refresher</div>
+    <ul style="margin: 4px 0; padding-left: 22px; font-size: 13.5px;">
+      <li><strong>⟨M⟩</strong> · the encoding of TM M as a binary (or text) string.</li>
+      <li><strong>⟨M, w⟩</strong> · the encoded pair: M's description followed by input w, separated by a delimiter.</li>
+      <li><strong>Universal TM (U)</strong> · a single fixed TM that takes ⟨M, w⟩ and behaves the same as M on w.</li>
+      <li><strong>Recognizer</strong> · halts and accepts on yes-inputs. May loop on no-inputs.</li>
+      <li><strong>Decider</strong> · halts on every input. Accepts yes, rejects no — always.</li>
+    </ul>
+  </div>
+
+  <p>
+    The job of U is to simulate. Given <span class="math">⟨M, w⟩</span> on its tape, U keeps three regions
+    on its (multi-track / multi-tape) working tape:
+  </p>
+  <ol style="font-size: 14px; line-height: 1.65;">
+    <li><strong>Program region:</strong> the encoded transitions of M, used as a lookup table.</li>
+    <li><strong>Tape region:</strong> M's current tape contents, evolving as the simulation proceeds.</li>
+    <li><strong>State region:</strong> a small scratch area holding M's current state and head position.</li>
+  </ol>
+</section>
+
+<section>
+  <div class="section-label">3 · The construction, step by step</div>
+  <p>The simulation loop is a fixed program — the heart of U:</p>
+  <ol style="font-size: 14px; line-height: 1.7;">
+    <li>Read M's current state q and the symbol s under M's head (both stored on U's tape).</li>
+    <li>Scan the program region for a line matching <code>(q, s) → (q', s', d)</code>.</li>
+    <li>If none found: M is stuck. U halts with whatever verdict M would give (typically reject).</li>
+    <li>If found: write s' onto M's tape, update M's state to q', move M's simulated head one cell in direction d.</li>
+    <li>If q' = q<sub>accept</sub>: U accepts. If q' = q<sub>reject</sub>: U rejects.</li>
+    <li>Otherwise, go back to step 1.</li>
+  </ol>
+
+  <div class="theorem-box">
+    <div class="theorem-label">Theorem · A<sub>TM</sub> is Turing-recognizable</div>
+    <p style="margin: 4px 0;">
+      <strong>Proof.</strong> Define recognizer R = "on input ⟨M, w⟩: run U on ⟨M, w⟩; accept if U accepts; reject if U rejects."
+      If M accepts w, then U accepts (after finitely many steps), so R accepts. If M rejects w, R rejects.
+      If M loops on w, U loops, R loops — but R is allowed to loop on no-inputs, since R is only required to recognize.
+      <span class="math">∎</span>
+    </p>
+  </div>
+
+  <p>
+    <strong>This is the precise spot where recognizability and decidability separate.</strong> A recognizer
+    is allowed the luxury of looping forever on rejected inputs. A decider is not. We do not yet know whether
+    a clever decider for A<sub>TM</sub> might exist — Problem 3 will prove it cannot.
+  </p>
+</section>
+
+<section>
+  <div class="section-label">4 · Animated demo · auto-plays · loops</div>
+
+  <div class="widget">
+    <div class="widget-title">Universal TM running a small machine <span class="pill">Auto-plays</span></div>
+
+    <div class="controls">
+      <label>Preset:
+        <select id="u-preset">
+          <option value="accept">Accepts strings of 0s of even length</option>
+          <option value="reject">Always rejects</option>
+          <option value="loop">Loops forever on input '1'</option>
+        </select>
+      </label>
+      <button class="btn ghost" id="u-load">Load</button>
+    </div>
+
+    <div style="background: #fffdf3; border: 1px solid var(--gold-soft); border-left: 3px solid var(--gold); border-radius: 6px; padding: 12px 16px; margin-top: 14px; font-size: 13.5px;">
+      <strong>TM description format · one transition per line:</strong>
+      <div style="font-family: var(--mono); margin: 6px 0; padding: 6px 10px; background: white; border-radius: 4px;">
+        state, symbol_read → next_state, write, L|R
+      </div>
+      <code>_</code> = blank · <code>q0</code> = start · <code>qa</code> / <code>qr</code> = accept / reject.
+    </div>
+
+    <textarea id="u-prog" rows="6" style="width:100%;font-family:var(--mono);font-size:14px;padding:10px;border:2px solid var(--gold);border-radius:6px;background:#fffdf6;line-height:1.7;margin-top:10px;"></textarea>
+
+    <div class="controls">
+      <label>Input <input type="text" id="u-input" value="0000" maxlength="20" style="width: 160px;"></label>
+      <button class="btn play-btn" id="u-run">⏸ Pause</button>
+      <button class="btn ghost" id="u-step">Step</button>
+      <button class="btn ghost" id="u-reset">Reset</button>
+      <label class="speed-control">Speed
+        <input type="range" id="u-speed" min="0.25" max="3" step="0.25" value="1">
+        <span id="u-speed-label" style="font-family: var(--mono); min-width: 28px;">1×</span>
+      </label>
+    </div>
+
+    <h4>Tape</h4>
+    <div class="tape" id="u-tape"></div>
+
+    <div class="status">
+      <div class="stat">State <b id="u-state">q0</b></div>
+      <div class="stat">Steps <b id="u-steps">0</b></div>
+      <div class="stat">Verdict <b id="u-verdict">running…</b></div>
+    </div>
+
+    <div class="explain-panel" id="u-explain"></div>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">5 · Worked example · "even number of 0s"</div>
+  <p>
+    Let's hand-trace the "accept" preset on input <code>0000</code> so the simulation is no longer mysterious.
+    The machine M has two non-halting states: <code>q0</code> ("seen even") and <code>q1</code> ("seen odd").
+  </p>
+
+  <table style="font-size: 13.5px; width: 100%; border-collapse: collapse; margin: 10px 0;">
+    <thead>
+      <tr style="background: var(--gold-soft);">
+        <th style="padding: 6px; text-align: left; border: 1px solid var(--rule);">Step</th>
+        <th style="padding: 6px; text-align: left; border: 1px solid var(--rule);">Tape</th>
+        <th style="padding: 6px; text-align: left; border: 1px solid var(--rule);">State</th>
+        <th style="padding: 6px; text-align: left; border: 1px solid var(--rule);">Rule used</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td style="padding:6px;border:1px solid var(--rule);">0</td><td style="padding:6px;border:1px solid var(--rule);font-family:var(--mono);">[0]000_</td><td style="padding:6px;border:1px solid var(--rule);">q0</td><td style="padding:6px;border:1px solid var(--rule);">—</td></tr>
+      <tr><td style="padding:6px;border:1px solid var(--rule);">1</td><td style="padding:6px;border:1px solid var(--rule);font-family:var(--mono);">0[0]00_</td><td style="padding:6px;border:1px solid var(--rule);">q1</td><td style="padding:6px;border:1px solid var(--rule);">(q0,0)→(q1,0,R)</td></tr>
+      <tr><td style="padding:6px;border:1px solid var(--rule);">2</td><td style="padding:6px;border:1px solid var(--rule);font-family:var(--mono);">00[0]0_</td><td style="padding:6px;border:1px solid var(--rule);">q0</td><td style="padding:6px;border:1px solid var(--rule);">(q1,0)→(q0,0,R)</td></tr>
+      <tr><td style="padding:6px;border:1px solid var(--rule);">3</td><td style="padding:6px;border:1px solid var(--rule);font-family:var(--mono);">000[0]_</td><td style="padding:6px;border:1px solid var(--rule);">q1</td><td style="padding:6px;border:1px solid var(--rule);">(q0,0)→(q1,0,R)</td></tr>
+      <tr><td style="padding:6px;border:1px solid var(--rule);">4</td><td style="padding:6px;border:1px solid var(--rule);font-family:var(--mono);">0000[_]_</td><td style="padding:6px;border:1px solid var(--rule);">q0</td><td style="padding:6px;border:1px solid var(--rule);">(q1,0)→(q0,0,R)</td></tr>
+      <tr><td style="padding:6px;border:1px solid var(--rule);">5</td><td style="padding:6px;border:1px solid var(--rule);font-family:var(--mono);">0000_[_]</td><td style="padding:6px;border:1px solid var(--rule);"><strong>qa</strong></td><td style="padding:6px;border:1px solid var(--rule);">(q0,_)→(qa,_,R)</td></tr>
+    </tbody>
+  </table>
+  <p>
+    Four 0s → even → q0 at blank → accept. The universal TM has simply walked through the table above, doing exactly
+    the same five state changes. <strong>That is all "simulation" means.</strong>
+  </p>
+</section>
+
+<section>
+  <div class="section-label">6 · Connections · where U shows up again</div>
+  <ul style="font-size: 14px; line-height: 1.7;">
+    <li><strong>Halting problem.</strong> HALT<sub>TM</sub> = {⟨M, w⟩ : M halts on w} is also recognizable for the same reason — just simulate.</li>
+    <li><strong>Recursion theorem.</strong> U is the foundation of self-reference: any TM can compute its own description and use it.</li>
+    <li><strong>Time complexity.</strong> A universal TM can simulate t steps of M in <em>O(t log t)</em> steps. This is the constant-factor result behind the time hierarchy theorem.</li>
+    <li><strong>Cook-Levin theorem.</strong> The simulation tableau of U on ⟨M, w⟩ becomes the SAT instance.</li>
+    <li><strong>Real-world.</strong> Every interpreter (CPython, JVM, V8) is a universal simulator. The argument used here applies to them too — they cannot decide whether arbitrary code will terminate.</li>
+  </ul>
+</section>
+
+<section>
+  <div class="section-label">7 · Common pitfalls · what students miss</div>
+  <ol style="font-size: 14px; line-height: 1.7;">
+    <li><strong>"U decides A<sub>TM</sub>."</strong> No. U <em>recognizes</em> it. The distinction matters because a decider must halt on every input — and on looping M, U loops.</li>
+    <li><strong>"Each M needs its own simulator."</strong> No. U is <em>one fixed</em> machine; ⟨M⟩ is just input data to U.</li>
+    <li><strong>Confusing M's state with U's state.</strong> U has its own (constant-size) state set; M's current state is written on U's tape as data.</li>
+    <li><strong>"Universal means efficient."</strong> No. Simulation overhead is real (polynomial in M's description, sometimes logarithmic in time). U is universal, not free.</li>
+    <li><strong>Forgetting the alphabet.</strong> M might use symbols U has never seen. The standard trick: encode all M-symbols in binary on U's tape, with a fixed delimiter.</li>
+  </ol>
+</section>
+
+<section>
+  <div class="section-label">8 · Q&amp;A defence notes</div>
+  <ul class="qa-list">
+    <li>
+      <div class="q">Q1. Why doesn't the universal TM decide A<sub>TM</sub>?</div>
+      <div class="a">Because if M loops on w, U also loops. A decider must always halt. The simulator can recognize "yes" but cannot certify "no" without the risk of waiting forever.</div>
+    </li>
+    <li>
+      <div class="q">Q2. Is U one specific TM, or a family?</div>
+      <div class="a">One specific TM, fixed once and for all. Its alphabet is large enough to encode any other TM's tape symbols and states. Given ⟨M, w⟩, U knows how to step through M's transitions on its own tape.</div>
+    </li>
+    <li>
+      <div class="q">Q3. How does U store M's state during simulation?</div>
+      <div class="a">On its tape, in a "scratch" region: U writes M's current state next to the simulated tape head position. Reading a step of M = looking up M's transition table from the encoded ⟨M⟩ portion of the tape.</div>
+    </li>
+    <li>
+      <div class="q">Q4. Load the "loops forever" preset and explain.</div>
+      <div class="a">U keeps stepping; verdict stays "running…". Cap hits at 200 steps. We cannot tell whether the machine will halt eventually or never. That's the halting problem in action — exactly why deciding A<sub>TM</sub> would require solving it.</div>
+    </li>
+    <li>
+      <div class="q">Q5 (bonus). Is your laptop a universal Turing machine?</div>
+      <div class="a">Morally yes; literally no. A real computer has finite memory, so it is technically a (very large) finite automaton. Universality is a statement in the limit. The distinction rarely matters in practice, but matters a lot in theory.</div>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <div class="section-label">9 · How to present this in class</div>
+  <p style="font-size: 13.5px;">
+    <strong>Total time: 10 minutes.</strong>
+  </p>
+  <ul style="font-size: 13.5px; line-height: 1.7;">
+    <li><strong>(1 min)</strong> Open with the analogy: "Python is a universal machine written in C; the C runtime is a universal machine written in machine code; the CPU is a universal machine in silicon."</li>
+    <li><strong>(2 min)</strong> State the theorem: A<sub>TM</sub> is recognizable. Write the recognizer R on the board.</li>
+    <li><strong>(3 min)</strong> Run the "accept" preset live. Pause once mid-simulation and point at the explain panel.</li>
+    <li><strong>(2 min)</strong> Switch to the "loop" preset. Let it run past 50 steps. Ask: "How long do we wait before concluding it loops?" Answer: forever — that is the problem.</li>
+    <li><strong>(2 min)</strong> Tie back to the bigger arc: this is recognizability without decidability, and Problem 3 will close the door on a possible decider.</li>
+  </ul>
+</section>
+
+</div>
+
+<footer class="foot">Problem 2 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<script>
+(function(){
+  const presets = {
+    accept: `q0, 0 -> q1, 0, R
+q0, _ -> qa, _, R
+q1, 0 -> q0, 0, R
+q1, _ -> qr, _, R`,
+    reject: `q0, 0 -> qr, 0, R
+q0, 1 -> qr, 1, R
+q0, _ -> qr, _, R`,
+    loop: `q0, 0 -> qa, 0, R
+q0, 1 -> q0, 1, R
+q0, _ -> qr, _, R`
+  };
+  document.getElementById('u-prog').value = presets.accept;
+
+  let prog = null, tape = [], head = 0, state = 'q0', steps = 0, halted = false, verdict = 'running…';
+
+  function parseProg() {
+    const rules = {};
+    for (const raw of document.getElementById('u-prog').value.split('\n')) {
+      const m = raw.trim().match(/^(\w+)\s*,\s*(\S)\s*->\s*(\w+)\s*,\s*(\S)\s*,\s*([LRS])$/);
+      if (!m) continue;
+      if (!rules[m[1]]) rules[m[1]] = {};
+      rules[m[1]][m[2]] = { ns: m[3], w: m[4], d: m[5] };
+    }
+    return rules;
+  }
+  function setTape(s) { tape = s.split(''); if (!tape.length) tape = ['_']; head = 0; state = 'q0'; steps = 0; halted = false; verdict = 'running…'; }
+  function renderTape() {
+    let html = '';
+    for (let i = -1; i < tape.length + 2; i++) {
+      const ch = (i >= 0 && i < tape.length) ? tape[i] : '_';
+      const cls = `cell${i === head ? ' head' : ''}${ch === '_' ? ' blank' : ''}`;
+      html += `<div class="${cls}">${ch}</div>`;
+    }
+    document.getElementById('u-tape').innerHTML = html;
+    document.getElementById('u-state').textContent = state;
+    document.getElementById('u-steps').textContent = steps;
+    document.getElementById('u-verdict').textContent = verdict;
+  }
+  function step() {
+    if (halted) return;
+    if (state === 'qa') { verdict = 'ACCEPT'; halted = true; renderTape(); explainHalt(true); return; }
+    if (state === 'qr') { verdict = 'REJECT'; halted = true; renderTape(); explainHalt(false); return; }
+    const r = tape[head] || '_';
+    if (!prog[state] || !prog[state][r]) {
+      verdict = `stuck (no rule for ${state}, ${r})`; halted = true; renderTape();
+      document.getElementById('u-explain').innerHTML = `<div class="step-num">Halted — no transition</div>U cannot find a rule for (${state}, ${r}). The simulated TM is stuck.`;
+      return;
+    }
+    const {ns, w, d} = prog[state][r];
+    const prevState = state, prevHead = head;
+    tape[head] = w;
+    if (d === 'R') { head++; if (head >= tape.length) tape.push('_'); }
+    else if (d === 'L') head = Math.max(0, head - 1);
+    state = ns; steps++;
+    renderTape();
+    const dirWord = d === 'R' ? 'right' : d === 'L' ? 'left' : 'stay';
+    document.getElementById('u-explain').innerHTML = `<div class="step-num">Step ${steps} · δ(${prevState}, ${r}) = (${ns}, ${w}, ${d})</div>
+      <p style="margin: 4px 0;"><strong>Read:</strong> at position ${prevHead}, the tape held <code>${r}</code>.</p>
+      <p style="margin: 4px 0;"><strong>Action:</strong> overwrite with <code>${w}</code>, change state ${prevState} → ${ns}, move head ${dirWord}.</p>
+      <p style="margin: 4px 0;">U has simulated ${steps} step${steps===1?'':'s'} of the machine M.</p>`;
+  }
+  function explainHalt(acc) {
+    document.getElementById('u-explain').innerHTML = `<div class="step-num">Halted · ${acc ? 'ACCEPT' : 'REJECT'}</div>
+      <p style="margin: 4px 0;">M entered state <code>${acc ? 'qa' : 'qr'}</code>. The simulation halts. U returns the same answer.</p>
+      <p style="margin: 4px 0;">Total steps: ${steps}. <strong>If M had looped, U would still be running.</strong></p>`;
+  }
+
+  function reset() {
+    prog = parseProg();
+    setTape(document.getElementById('u-input').value);
+    renderTape();
+    document.getElementById('u-explain').innerHTML = `<div class="step-num">Ready</div>
+      <p style="margin: 4px 0;"><strong>U will now simulate the machine described above.</strong> The tape shows the input you provided; the head is on position 0.</p>
+      <p style="margin: 4px 0;">Try the three presets. The "loops forever" preset is the critical one — it shows why A<sub>TM</sub> is recognizable but not decidable.</p>`;
+  }
+  function atEnd() { return halted; }
+
+  document.getElementById('u-load').onclick = () => {
+    const choice = document.getElementById('u-preset').value;
+    document.getElementById('u-prog').value = presets[choice];
+    if (choice === 'loop') document.getElementById('u-input').value = '1';
+    else document.getElementById('u-input').value = '0000';
+    reset();
+  };
+  document.getElementById('u-input').oninput = reset;
+
+  WidgetLoop.create({
+    runBtn: document.getElementById('u-run'),
+    stepBtn: document.getElementById('u-step'),
+    resetBtn: document.getElementById('u-reset'),
+    speedSlider: document.getElementById('u-speed'),
+    speedLabel: document.getElementById('u-speed-label'),
+    doStep: step,
+    atEnd,
+    doReset: reset,
+    baseStepMs: 1400,
+    baseLoopMs: 4500,
+    autoStartMs: 1200
+  });
+
+  reset();
+})();
+</script>
+
+<script src="../presentation.js"></script>
+</body>
+</html>

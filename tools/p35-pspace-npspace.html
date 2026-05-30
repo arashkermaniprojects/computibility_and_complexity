@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>P35 · PSPACE = NPSPACE</title><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css"><script src="../widget-loop.js"></script></head><body>
+<header class="tool-header"><div class="crumb"><a href="index.html">← Student tools</a> · Problem 35 · Lecture 13 · Round 3 (40 pts)</div>
+<h1>PSPACE = NPSPACE · the proof walker</h1><p class="sub">Apply Savitch step-by-step on a small NSPACE machine.</p>
+<div class="tags"><span class="tag-pill">CLO-5</span><span class="tag-pill warn">R3·40 pts</span><span class="tag-pill info">L13</span></div></header>
+<div class="wrap">
+<section><div class="section-label">1 · Theory</div>
+<div class="theorem-box"><div class="theorem-label">Theorem (Savitch)</div><p style="margin:4px 0;">For f(n) ≥ log n: NSPACE(f) ⊆ SPACE(f²). Hence <strong>PSPACE = NPSPACE</strong>.</p></div>
+<p>Strategy: nondeterministic acceptance ⇔ reachability in the configuration graph. CANYIELD recursively halves the time budget.</p></section>
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Apply Savitch's CANYIELD to a config graph <span class="pill">Auto-plays</span></div>
+<div class="controls"><button class="btn play-btn" id="p-run">⏸ Pause</button><button class="btn ghost" id="p-step">Step</button><button class="btn ghost" id="p-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="p-speed" min="0.25" max="3" step="0.25" value="1"><span id="p-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
+<svg id="p-svg" viewBox="0 0 760 320" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="p-explain"></div></div></section>
+<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why f² and not just f?</div><div class="a">Recursion depth = log t = O(f) levels. Each frame stores O(f) bits. Total = f · f = f².</div></li>
+<li><div class="q">Q2. Why doesn't this work in TIME?</div><div class="a">Time can't be reused. In space we reuse cells; in time we'd have to actually execute both halves of CANYIELD, summing time.</div></li>
+<li><div class="q">Q3. So NTIME(f) ⊆ TIME(f²)?</div><div class="a">No — that's an open question (related to P vs NP). The proof technique fundamentally relies on space reusability.</div></li>
+</ul></section></div><footer class="foot">P35 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<script>(function(){
+let stage=0;
+const stages=[
+  'Start: NSPACE(f) machine M on input w. Has 2^O(f) configurations.',
+  'Build config graph: nodes = configs, edges = nondet δ-steps.',
+  'Reachability: does start config reach accept config in ≤ 2^O(f) steps?',
+  'CANYIELD(A, B, t): try every midpoint M; recurse on halves.',
+  'Recursion depth = log t = O(f). Stack frames × O(f) cells each = O(f²).',
+  'PSPACE = NPSPACE: for polynomial f, f² is still polynomial.'
+];
+function render(){
+  let s='';
+  s+=`<text x="380" y="40" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="16" font-weight="700" fill="var(--accent-strong)">Savitch's recursive simulation</text>`;
+  stages.forEach((step,i)=>{const y=80+i*36, shown=i<=stage;
+    s+=`<text x="80" y="${y}" font-family="var(--sans), sans-serif" font-size="14" fill="${shown?'var(--ink)':'#bbb'}" opacity="${shown?1:0.3}"><tspan font-weight="bold" fill="${shown?'var(--accent)':'#bbb'}">${i+1}.</tspan> ${step}</text>`;
+  });
+  document.getElementById('p-svg').innerHTML=s;
+  document.getElementById('p-explain').innerHTML=`<div class="step-num">Step ${stage+1}/${stages.length}</div><p style="margin:4px 0;">${stages[Math.min(stage,stages.length-1)]}</p>`;
+}
+function step(){ if(stage<stages.length-1)stage++; render(); }
+function reset(){ stage=0; render(); }
+function atEnd(){ return stage>=stages.length-1; }
+WidgetLoop.create({runBtn:document.getElementById('p-run'),stepBtn:document.getElementById('p-step'),resetBtn:document.getElementById('p-reset'),speedSlider:document.getElementById('p-speed'),speedLabel:document.getElementById('p-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:2200,baseLoopMs:5500,autoStartMs:1500});
+reset();
+})();</script><script src="../presentation.js"></script>
+</body></html>

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>P39 · TQBF → Geography</title><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css"><script src="../widget-loop.js"></script></head><body>
+<header class="tool-header"><div class="crumb"><a href="index.html">← Student tools</a> · Problem 39 · Lecture 14 · Round 3 (40 pts)</div>
+<h1>TQBF ≤<sub>p</sub> Generalized Geography</h1><p class="sub">Encode a QBF as a game graph. ∃-moves and ∀-moves alternate.</p>
+<div class="tags"><span class="tag-pill">CLO-4</span><span class="tag-pill warn">R3·40 pts</span><span class="tag-pill info">L14</span></div></header>
+<div class="wrap">
+<section><div class="section-label">1 · Theory</div>
+<div class="theorem-box"><div class="theorem-label">Reduction</div><p style="margin:4px 0;">For each variable in the QBF, add a "choice" gadget. ∃-variables: Player 1 chooses truth value. ∀-variables: Player 2 chooses. The final propositional matrix is encoded as a path-of-no-return; Player 2 wins iff some clause is unsatisfied.</p></div>
+<p>So Player 1 wins the game ⇔ ∃-player can satisfy the QBF ⇔ QBF is true.</p></section>
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Build the graph for ∃x ∀y. (x ∨ y) <span class="pill">Auto-plays</span></div>
+<div class="controls"><button class="btn play-btn" id="tg-run">⏸ Pause</button><button class="btn ghost" id="tg-step">Step</button><button class="btn ghost" id="tg-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="tg-speed" min="0.25" max="3" step="0.25" value="1"><span id="tg-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
+<svg id="tg-svg" viewBox="0 0 760 280" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="tg-explain"></div></div></section>
+<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why is the move-direction tied to the quantifier?</div><div class="a">At ∃-gadgets, Player 1 (∃) makes a binary choice. At ∀-gadgets, Player 2 (∀) makes the choice. The "current mover" alternates with the quantifier alternation.</div></li>
+<li><div class="q">Q2. How does the propositional matrix get encoded?</div><div class="a">After all variables are chosen, the game reaches a "clause selection" gadget. Player 2 picks a clause; if all literals in it are false, Player 1 has no move ⇒ loses.</div></li>
+<li><div class="q">Q3. Size?</div><div class="a">O(n + m) nodes per variable/clause. Polynomial in formula size.</div></li>
+</ul></section></div><footer class="foot">P39 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<script>(function(){
+let stage=0; const T=4;
+function render(){
+  let s='';
+  s+=`<text x="380" y="30" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="700">QBF: ∃x ∀y. (x ∨ y)</text>`;
+  if(stage>=1){
+    s+=`<circle cx="120" cy="140" r="22" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><text x="120" y="146" text-anchor="middle" font-family="var(--sans),sans-serif" font-size="14" font-weight="bold" fill="var(--accent-strong)">∃</text>`;
+    s+=`<text x="120" y="180" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="var(--muted)">∃x · P1 chooses</text>`;
+  }
+  if(stage>=2){
+    s+=`<circle cx="260" cy="100" r="20" fill="white" stroke="var(--accent)" stroke-width="1.5"/><text x="260" y="105" text-anchor="middle" font-family="ui-monospace, monospace" font-size="12" font-weight="bold">x=T</text>`;
+    s+=`<circle cx="260" cy="180" r="20" fill="white" stroke="var(--accent)" stroke-width="1.5"/><text x="260" y="185" text-anchor="middle" font-family="ui-monospace, monospace" font-size="12" font-weight="bold">x=F</text>`;
+    s+=`<line x1="142" y1="130" x2="240" y2="105" stroke="#888" stroke-width="1.5"/><line x1="142" y1="150" x2="240" y2="180" stroke="#888" stroke-width="1.5"/>`;
+  }
+  if(stage>=3){
+    s+=`<circle cx="400" cy="140" r="22" fill="var(--warn-soft)" stroke="var(--warn)" stroke-width="2"/><text x="400" y="146" text-anchor="middle" font-family="var(--sans),sans-serif" font-size="14" font-weight="bold" fill="var(--warn)">∀</text>`;
+    s+=`<text x="400" y="180" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="var(--muted)">∀y · P2 chooses</text>`;
+    s+=`<line x1="280" y1="100" x2="378" y2="135" stroke="#888" stroke-width="1.5"/><line x1="280" y1="180" x2="378" y2="145" stroke="#888" stroke-width="1.5"/>`;
+    s+=`<circle cx="540" cy="100" r="20" fill="white" stroke="var(--warn)" stroke-width="1.5"/><text x="540" y="105" text-anchor="middle" font-family="ui-monospace, monospace" font-size="12" font-weight="bold">y=T</text>`;
+    s+=`<circle cx="540" cy="180" r="20" fill="white" stroke="var(--warn)" stroke-width="1.5"/><text x="540" y="185" text-anchor="middle" font-family="ui-monospace, monospace" font-size="12" font-weight="bold">y=F</text>`;
+    s+=`<line x1="422" y1="130" x2="520" y2="105" stroke="#888" stroke-width="1.5"/><line x1="422" y1="150" x2="520" y2="180" stroke="#888" stroke-width="1.5"/>`;
+    s+=`<circle cx="680" cy="140" r="22" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2"/><text x="680" y="146" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="bold">clause</text>`;
+    s+=`<line x1="560" y1="100" x2="658" y2="135" stroke="#888" stroke-width="1.5"/><line x1="560" y1="180" x2="658" y2="145" stroke="#888" stroke-width="1.5"/>`;
+  }
+  document.getElementById('tg-svg').innerHTML=s;
+  const m=['Build the graph encoding the QBF.','∃-gadget for x · Player 1 picks the value.','Choices: x=T or x=F. Player 1 picks one.','∀-gadget for y · Player 2 picks. Then a clause-check gadget. Player 2 picks a clause; if all literals false, Player 1 can\'t move.'];
+  document.getElementById('tg-explain').innerHTML=`<div class="step-num">Stage ${stage+1}/${T}</div><p style="margin:4px 0;">${m[Math.min(stage,m.length-1)]}</p>`;
+}
+function step(){ if(stage<T-1)stage++; render(); }
+function reset(){ stage=0; render(); }
+function atEnd(){ return stage>=T-1; }
+WidgetLoop.create({runBtn:document.getElementById('tg-run'),stepBtn:document.getElementById('tg-step'),resetBtn:document.getElementById('tg-reset'),speedSlider:document.getElementById('tg-speed'),speedLabel:document.getElementById('tg-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:3000,baseLoopMs:5500,autoStartMs:1500});
+reset();
+})();</script><script src="../presentation.js"></script>
+</body></html>

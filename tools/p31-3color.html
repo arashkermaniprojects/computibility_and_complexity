@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>P31 · 3SAT → 3COLOR</title><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css"><script src="../widget-loop.js"></script></head><body>
+<header class="tool-header"><div class="crumb"><a href="index.html">← Student tools</a> · Problem 31 · Lecture 12 · Round 2 (30 pts)</div>
+<h1>3COLOR is NP-complete · 3SAT → 3COLOR</h1><p class="sub">Variable gadgets + OR-gadgets. Graph is 3-colorable iff formula is satisfiable.</p>
+<div class="tags"><span class="tag-pill">CLO-4</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L12</span></div></header>
+<div class="wrap">
+<section><div class="section-label">1 · Theory</div>
+<div class="theorem-box"><div class="theorem-label">Gadget pieces</div><p style="margin:4px 0;">3 base colors: T (true), F (false), B (base reference). Variable gadget: triangle (x, ¬x, B) — forces x and ¬x to take T and F. OR-gadget for clause (a ∨ b ∨ c): a specific 5-node graph forcing at least one of a, b, c to be T.</p></div>
+<p>Polynomial-size graph; 3-colorable iff formula satisfiable.</p></section>
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Build the gadget piece by piece <span class="pill">Auto-plays</span></div>
+<div class="controls"><button class="btn play-btn" id="c3-run">⏸ Pause</button><button class="btn ghost" id="c3-step">Step</button><button class="btn ghost" id="c3-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="c3-speed" min="0.25" max="3" step="0.25" value="1"><span id="c3-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
+<svg id="c3-svg" viewBox="0 0 760 320" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="c3-explain"></div></div></section>
+<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why a triangle for variable gadget?</div><div class="a">Three mutually-connected nodes need three different colors. With one fixed to B (base), the other two are forced to be {T, F} — encoding x and ¬x.</div></li>
+<li><div class="q">Q2. What's the OR-gadget structure?</div><div class="a">A small 5-node graph with inputs a, b, c connected such that the graph is 3-colorable iff at least one of a, b, c is colored T.</div></li>
+<li><div class="q">Q3. Polynomial?</div><div class="a">n variable gadgets (constant size) + m OR-gadgets (constant size each) = O(n+m) nodes. Edges: O(n+m). Polynomial.</div></li>
+</ul></section></div><footer class="foot">P31 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<script>(function(){
+let stage=0; const T=4;
+function render(){
+  let s=''; s+=`<text x="380" y="30" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="700">3-colorable iff formula satisfiable</text>`;
+  // base palette
+  s+=`<text x="120" y="65" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="12" fill="var(--muted)">Colors</text>`;
+  s+=`<circle cx="80" cy="80" r="14" fill="var(--accent)"/><text x="80" y="84" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" font-weight="bold" fill="white">T</text>`;
+  s+=`<circle cx="120" cy="80" r="14" fill="var(--warn)"/><text x="120" y="84" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" font-weight="bold" fill="white">F</text>`;
+  s+=`<circle cx="160" cy="80" r="14" fill="var(--gold)"/><text x="160" y="84" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" font-weight="bold" fill="white">B</text>`;
+  if(stage>=1){
+    // variable gadget triangle
+    s+=`<text x="380" y="80" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" fill="var(--accent-strong)" font-weight="bold">Variable gadget</text>`;
+    s+=`<line x1="340" y1="170" x2="420" y2="170" stroke="#666" stroke-width="2"/><line x1="340" y1="170" x2="380" y2="100" stroke="#666" stroke-width="2"/><line x1="420" y1="170" x2="380" y2="100" stroke="#666" stroke-width="2"/>`;
+    s+=`<circle cx="340" cy="170" r="20" fill="${stage>=2?'var(--accent)':'#fff'}" stroke="#666" stroke-width="2"/><text x="340" y="175" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13" font-weight="bold" fill="${stage>=2?'white':'#1a1a1a'}">x</text>`;
+    s+=`<circle cx="420" cy="170" r="20" fill="${stage>=2?'var(--warn)':'#fff'}" stroke="#666" stroke-width="2"/><text x="420" y="175" text-anchor="middle" font-family="ui-monospace, monospace" font-size="12" font-weight="bold" fill="${stage>=2?'white':'#1a1a1a'}">¬x</text>`;
+    s+=`<circle cx="380" cy="100" r="20" fill="${stage>=2?'var(--gold)':'#fff'}" stroke="#666" stroke-width="2"/><text x="380" y="105" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13" font-weight="bold" fill="${stage>=2?'white':'#1a1a1a'}">B</text>`;
+  }
+  if(stage>=3){
+    s+=`<text x="600" y="80" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" fill="var(--gold)" font-weight="bold">OR-gadget</text>`;
+    s+=`<text x="600" y="180" text-anchor="middle" font-family="ui-monospace, monospace" font-size="12">(a ∨ b ∨ c)</text>`;
+    s+=`<text x="600" y="200" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="11" fill="var(--muted)">5-node graph forcing</text>`;
+    s+=`<text x="600" y="216" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="11" fill="var(--muted)">at least one input = T</text>`;
+  }
+  document.getElementById('c3-svg').innerHTML=s;
+  const m=[
+    `<div class="step-num">3 colors</div><p style="margin:4px 0;">T (accept), F (reject), B (base reference). Adjacent nodes get different colors.</p>`,
+    `<div class="step-num">Variable gadget · uncolored</div><p style="margin:4px 0;">Triangle with vertices x, ¬x, B. Mutually adjacent.</p>`,
+    `<div class="step-num">Variable gadget · forced coloring</div><p style="margin:4px 0;">Triangle = 3 mutually adjacent ⇒ 3 different colors. B fixed; x and ¬x must take {T, F} in some order. <strong>x and ¬x are opposite, just like in logic.</strong></p>`,
+    `<div class="step-num">OR-gadget for clauses</div><p style="margin:4px 0;">For each clause (a ∨ b ∨ c), a 5-node graph with three input nodes (the clause's literals). Graph is 3-colorable iff at least one input is colored T.</p>`,
+    `<div class="step-num">Conclusion</div><p style="margin:4px 0;"><strong>Graph G is 3-colorable ⇔ formula is satisfiable.</strong> Polynomial reduction ⇒ 3COLOR is NP-hard.</p>`
+  ];
+  document.getElementById('c3-explain').innerHTML=m[Math.min(stage,m.length-1)];
+}
+function step(){ if(stage<T)stage++; render(); }
+function reset(){ stage=0; render(); }
+function atEnd(){ return stage>=T; }
+WidgetLoop.create({runBtn:document.getElementById('c3-run'),stepBtn:document.getElementById('c3-step'),resetBtn:document.getElementById('c3-reset'),speedSlider:document.getElementById('c3-speed'),speedLabel:document.getElementById('c3-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:2700,baseLoopMs:5500,autoStartMs:1500});
+reset();
+})();</script><script src="../presentation.js"></script>
+</body></html>

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>P47 · NL ⊊ PSPACE</title><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css"><script src="../widget-loop.js"></script></head><body>
+<header class="tool-header"><div class="crumb"><a href="index.html">← Student tools</a> · Problem 47 · Lecture 16 · Round 3 (40 pts)</div>
+<h1>NL ⊊ PSPACE · proven strict</h1><p class="sub">Via the space hierarchy theorem.</p>
+<div class="tags"><span class="tag-pill">CLO-5</span><span class="tag-pill warn">R3·40 pts</span><span class="tag-pill info">L16</span></div></header>
+<div class="wrap">
+<section><div class="section-label">1 · Theory</div>
+<div class="theorem-box"><div class="theorem-label">Proof</div><p style="margin:4px 0;">Savitch: NL ⊆ SPACE(log²n). Space hierarchy: SPACE(log²n) ⊊ SPACE(log² n · log log²n) ⊊ … ⊊ SPACE(n) ⊊ … ⊊ PSPACE. So strict containment NL ⊊ PSPACE.</p></div></section>
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Strict separation through the chain <span class="pill">Auto-plays</span></div>
+<div class="controls"><button class="btn play-btn" id="np-run">⏸ Pause</button><button class="btn ghost" id="np-step">Step</button><button class="btn ghost" id="np-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="np-speed" min="0.25" max="3" step="0.25" value="1"><span id="np-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
+<svg id="np-svg" viewBox="0 0 760 280" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="np-explain"></div></div></section>
+<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why Savitch?</div><div class="a">NL = NSPACE(log n) ⊆ SPACE(log² n) by Savitch. Without it, we'd need a different bound to get inside PSPACE.</div></li>
+<li><div class="q">Q2. Why is the chain "strict everywhere"?</div><div class="a">Each step is a space-hierarchy inclusion: a slightly larger space bound strictly contains the smaller one.</div></li>
+<li><div class="q">Q3. Why don't we know if NL ⊊ P or P ⊊ NP?</div><div class="a">Those compare differently-resourced classes (nondet space vs det time vs nondet time). Hierarchy theorems compare same-resource bounds.</div></li>
+</ul></section></div><footer class="foot">P47 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<script>(function(){
+const classes=[{name:'NL',time:'NSPACE(log n)'},{name:'SPACE(log²n)',time:'Savitch'},{name:'SPACE(log³n)',time:'hierarchy'},{name:'SPACE(n)',time:'L = NSPACE(n) ⊆ SPACE(n²) etc.'},{name:'PSPACE',time:'⋃ SPACE(n^k)'}];
+let i=0;
+function render(){
+  let s=''; s+=`<text x="380" y="30" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="700">NL ⊆ SPACE(log²n) ⊊ … ⊊ PSPACE</text>`;
+  classes.forEach((c,k)=>{const y=70+k*38, shown=k<=i;
+    s+=`<text x="120" y="${y}" font-family="ui-monospace, monospace" font-size="14" font-weight="bold" fill="${shown?'var(--accent-strong)':'#bbb'}" opacity="${shown?1:0.3}">${c.name}</text>`;
+    s+=`<text x="300" y="${y}" font-family="var(--sans), sans-serif" font-size="12" fill="${shown?'var(--muted)':'#bbb'}" opacity="${shown?1:0.3}">${c.time}</text>`;
+    if(k<classes.length-1 && k<i) s+=`<text x="400" y="${y+18}" font-family="var(--sans), sans-serif" font-size="14" fill="var(--accent)">⊊</text>`;
+  });
+  document.getElementById('np-svg').innerHTML=s;
+  const m=['NL = nondet log space.','Savitch: NL ⊆ SPACE(log²n).','Hierarchy: SPACE(log²n) ⊊ SPACE(log³n).','SPACE(log³n) ⊊ SPACE(n).','SPACE(n) ⊊ … ⊊ PSPACE. <strong>So NL ⊊ PSPACE strictly.</strong>'];
+  document.getElementById('np-explain').innerHTML=`<div class="step-num">Step ${i+1}/${classes.length}</div><p style="margin:4px 0;">${m[Math.min(i,m.length-1)]}</p>`;
+}
+function step(){ if(i<classes.length-1)i++; render(); }
+function reset(){ i=0; render(); }
+function atEnd(){ return i>=classes.length-1; }
+WidgetLoop.create({runBtn:document.getElementById('np-run'),stepBtn:document.getElementById('np-step'),resetBtn:document.getElementById('np-reset'),speedSlider:document.getElementById('np-speed'),speedLabel:document.getElementById('np-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:2500,baseLoopMs:5500,autoStartMs:1500});
+reset();
+})();</script><script src="../presentation.js"></script>
+</body></html>

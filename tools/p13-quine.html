@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P13 · Quine</title>
+<link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css">
+<script src="../widget-loop.js"></script></head><body>
+
+<header class="tool-header">
+<div class="crumb"><a href="index.html">← Student tools</a> · Problem 13 · Lecture 8 · Round 1 (30 pts)</div>
+<h1>Quine · a program that prints itself</h1>
+<p class="sub">The cleanest demonstration of the recursion theorem.</p>
+<div class="tags"><span class="tag-pill">CLO-1</span><span class="tag-pill warn">R1·30 pts</span><span class="tag-pill info">L8</span></div>
+</header>
+
+<div class="wrap">
+
+<section><div class="section-label">1 · Theory</div>
+<p>A <strong>quine</strong> is a program that, when executed, prints its own source code. Quines exist in every Turing-complete language; their existence is the simplest consequence of the recursion theorem.</p>
+<div class="theorem-box"><div class="theorem-label">The data/code split</div>
+<p style="margin:4px 0;">A quine has two parts: a string <strong>S</strong> containing the source with a placeholder, and a <strong>printer</strong> that emits S with the placeholder replaced by a quoted copy of S itself. Because the printer's behaviour is described in S, the output reproduces the source.</p></div>
+<p>This is the construction underlying the recursion theorem: any TM can effectively obtain its own description.</p>
+</section>
+
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Run a quine, then compare with its source <span class="pill">Auto-plays</span></div>
+
+<div class="controls">
+<button class="btn play-btn" id="qq-run">⏸ Pause</button><button class="btn ghost" id="qq-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="qq-speed" min="0.25" max="3" step="0.25" value="1"><span id="qq-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px;">
+<div style="min-width:0;"><h4>Source code</h4><pre id="qq-src" style="height:200px;overflow:auto;white-space:pre-wrap;word-break:break-all;font-size:12px;"></pre></div>
+<div style="min-width:0;"><h4>Output after running</h4><pre id="qq-out" style="height:200px;overflow:auto;white-space:pre-wrap;word-break:break-all;font-size:12px;background:var(--accent-soft);border-color:var(--accent);"></pre></div>
+</div>
+
+<div class="explain-panel" id="qq-explain"></div>
+</div></section>
+
+<section><div class="section-label">3 · Q&amp;A defence notes</div>
+<ul class="qa-list">
+<li><div class="q">Q1. Isn't this cheating — reading its own source file?</div><div class="a">No file I/O. The program only operates on the string variable S, which happens to encode the source. The match is forced by the construction.</div></li>
+<li><div class="q">Q2. How does this relate to the recursion theorem?</div><div class="a">The recursion theorem says any TM can effectively access its own description. The quine is the special case where the TM uses that description to print itself.</div></li>
+<li><div class="q">Q3. Why is the recursion theorem useful for proving undecidability?</div><div class="a">It lets a hypothetical TM M reason about its own description ⟨M⟩. We construct M to do the opposite of what a hypothetical decider D(⟨M⟩) says — the standard diagonal argument made cleaner.</div></li>
+<li><div class="q">Q4. Write the simplest quine you know.</div><div class="a">Lisp: ((lambda (x) (list x (list (quote quote) x))) (quote (lambda (x) (list x (list (quote quote) x))))). Python: <code>s='s=%r;print(s%%s)';print(s%s)</code>.</div></li>
+</ul></section>
+
+</div>
+<footer class="foot">Problem 13 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<script>
+(function(){
+const src = `// Quine: prints itself
+const S = "// Quine: prints itself\\nconst S = ###;\\nprint(S.replace('###', JSON.stringify(S)));";
+print(S.replace('###', JSON.stringify(S)));`;
+document.getElementById('qq-src').textContent = src;
+let output = '';
+function runQuine() {
+  output = '';
+  try {
+    const printFn = s => { output += s; };
+    new Function('print', src.replace(/print/g, '__p__').replace(/__p__/g, 'print'))(printFn);
+  } catch (e) { output = '(error: ' + e.message + ')'; }
+  document.getElementById('qq-out').textContent = output;
+  document.getElementById('qq-explain').innerHTML = `<div class="step-num">Output reproduces source</div>
+<p style="margin:4px 0;"><strong>The two panels match</strong> (modulo escaping). The program never read its source file — it only used the string variable S, designed to look like the program.</p>
+<p style="margin:4px 0;"><strong>Recursion theorem corollary:</strong> for any computable function t(x), there exists a program p with p ≡ t(⟨p⟩). Quines are t = identity on the description.</p>`;
+}
+function reset() { document.getElementById('qq-out').textContent = ''; document.getElementById('qq-explain').innerHTML = `<div class="step-num">Press play</div><p style="margin:4px 0;">The right panel will fill with the output. The two should be identical (modulo escape conventions).</p>`; }
+let played = false;
+function step() { if (!played) { runQuine(); played = true; } }
+function atEnd() { return played; }
+document.getElementById('qq-reset').onclick = () => { played = false; reset(); };
+WidgetLoop.create({runBtn:document.getElementById('qq-run'),speedSlider:document.getElementById('qq-speed'),speedLabel:document.getElementById('qq-speed-label'),doStep:step,atEnd,doReset:()=>{played=false;reset();},baseStepMs:2500,baseLoopMs:5000,autoStartMs:1500});
+reset();
+})();
+</script><script src="../presentation.js"></script>
+</body></html>

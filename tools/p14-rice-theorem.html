@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P14 · Rice's theorem</title>
+<link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css">
+<script src="../widget-loop.js"></script></head><body>
+
+<header class="tool-header">
+<div class="crumb"><a href="index.html">← Student tools</a> · Problem 14 · Lecture 8 · Round 1 (30 pts)</div>
+<h1>Rice's theorem · which TM properties are decidable?</h1>
+<p class="sub">Every nontrivial semantic property of L(M) is undecidable.</p>
+<div class="tags"><span class="tag-pill">CLO-1</span><span class="tag-pill">CLO-2</span><span class="tag-pill warn">R1·30 pts</span><span class="tag-pill info">L8</span></div>
+</header>
+
+<div class="wrap">
+
+<section><div class="section-label">1 · Why this matters · the BIG picture</div>
+<p>
+Rice's theorem is the <strong>master undecidability theorem</strong>. After proving a handful of specific languages
+undecidable (E<sub>TM</sub>, REGULAR<sub>TM</sub>, EQ<sub>TM</sub>, …), one starts to wonder: is there a unifying
+reason? Rice's answer is yes — and it is sweeping. <strong>Every nontrivial property of what a program <em>does</em>
+is undecidable.</strong>
+</p>
+<p>
+This is why static-analysis tools always say "may be" rather than "is". A linter can tell you "this variable is unused"
+(syntactic, decidable). It cannot tell you "this function returns prime numbers" (semantic, undecidable by Rice).
+</p>
+<div class="theorem-box"><div class="theorem-label">Rice's theorem (1953)</div>
+<p style="margin:4px 0;">Let P be a property of recognizable languages such that (1) P is <strong>nontrivial</strong> (some L(M) has it, some doesn't) and (2) P depends only on L(M), not on the particular description of M. Then <strong>L<sub>P</sub> = {⟨M⟩ : L(M) has P} is undecidable</strong>.</p></div>
+<p style="font-size:13.5px;color:var(--ink-soft);">
+The theorem is one line, but its consequences span every introductory undecidability lecture in computer science.
+</p>
+</section>
+
+<section><div class="section-label">2 · Setup · semantic vs syntactic properties</div>
+<p>The crucial dichotomy:</p>
+<table style="font-size:13.5px;width:100%;border-collapse:collapse;margin:10px 0;">
+<thead><tr style="background:var(--gold-soft);">
+<th style="padding:6px;border:1px solid var(--rule);">Type</th>
+<th style="padding:6px;border:1px solid var(--rule);">About</th>
+<th style="padding:6px;border:1px solid var(--rule);">Examples</th>
+<th style="padding:6px;border:1px solid var(--rule);">Decidable?</th>
+</tr></thead>
+<tbody>
+<tr><td style="padding:6px;border:1px solid var(--rule);"><strong>Syntactic</strong></td><td style="padding:6px;border:1px solid var(--rule);">M itself</td><td style="padding:6px;border:1px solid var(--rule);">"M has 5 states", "M's alphabet is binary"</td><td style="padding:6px;border:1px solid var(--rule);"><strong>Yes</strong> — just inspect ⟨M⟩</td></tr>
+<tr><td style="padding:6px;border:1px solid var(--rule);"><strong>Semantic</strong></td><td style="padding:6px;border:1px solid var(--rule);">L(M)</td><td style="padding:6px;border:1px solid var(--rule);">"L(M) is empty", "L(M) is finite", "L(M) ∋ ε"</td><td style="padding:6px;border:1px solid var(--rule);"><strong>No</strong> — Rice (if nontrivial)</td></tr>
+</tbody>
+</table>
+<p>"Depends only on L(M)" means: if L(M<sub>1</sub>) = L(M<sub>2</sub>), then P(M<sub>1</sub>) = P(M<sub>2</sub>). This is the formal definition of semantic.</p>
+</section>
+
+<section><div class="section-label">3 · The proof · reduction from A<sub>TM</sub></div>
+<p>Assume L<sub>P</sub> is decidable. Take a TM T<sub>∅</sub> with L(T<sub>∅</sub>) = ∅, and another TM T<sub>P</sub> with L(T<sub>P</sub>) having property P. (WLOG ∅ does not have P; otherwise apply to ¬P.) Build M' from ⟨M, w⟩:</p>
+<div class="theorem-box" style="background:#fffaf3;"><div class="theorem-label">Construction of M'</div>
+<p style="margin:4px 0;font-family:var(--mono);font-size:13.5px;">
+M' = "on input x:<br>
+&nbsp;&nbsp;1. simulate M on w;<br>
+&nbsp;&nbsp;2. if M accepts w: simulate T<sub>P</sub> on x;<br>
+&nbsp;&nbsp;3. accept x iff T<sub>P</sub> accepts."
+</p>
+</div>
+<p>If M accepts w: L(M') = L(T<sub>P</sub>) has P. If M does not accept w: L(M') = ∅ does not have P. So ⟨M, w⟩ ∈ A<sub>TM</sub> ⇔ ⟨M'⟩ ∈ L<sub>P</sub>. A decider for L<sub>P</sub> ⇒ decider for A<sub>TM</sub>. Contradiction. <span class="math">∎</span></p>
+</section>
+
+<section><div class="section-label">4 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Decide if Rice applies <span class="pill">Auto-plays</span></div>
+<div class="controls">
+<button class="btn play-btn" id="rc-run">⏸ Pause</button><button class="btn ghost" id="rc-step">Step</button><button class="btn ghost" id="rc-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="rc-speed" min="0.25" max="3" step="0.25" value="1"><span id="rc-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label>
+</div>
+<div id="rc-list" style="margin-top:10px;"></div>
+<div class="explain-panel" id="rc-explain"></div>
+</div></section>
+
+<section><div class="section-label">5 · Worked example · "Does M accept any prime?"</div>
+<p>Apply Rice to the property P = "L(M) contains the binary encoding of some prime."</p>
+<ol style="font-size:14px;line-height:1.65;">
+<li>Nontrivial? Yes — TM<sub>1</sub> = "accept only 10" has P (10 = 2 is prime). TM<sub>2</sub> = "accept only 1" lacks P.</li>
+<li>Semantic? Yes — depends only on L(M), not on how M is written.</li>
+</ol>
+<p>So "does this program ever accept a prime?" is <strong>undecidable</strong>. By the same argument, every program-behavior question about output is undecidable in general. This is why pattern-matching and runtime testing replace formal verification in everyday practice.</p>
+</section>
+
+<section><div class="section-label">6 · Connections · Rice's many children</div>
+<ul style="font-size:14px;line-height:1.7;">
+<li><strong>E<sub>TM</sub></strong> · P = "L(M) is empty" — special case.</li>
+<li><strong>REGULAR<sub>TM</sub></strong> · P = "L(M) is regular" — special case.</li>
+<li><strong>EQ<sub>TM</sub></strong> · Not directly Rice (it's about pairs), but provable via the same technique.</li>
+<li><strong>Software verification</strong> · Every interesting correctness property of a program is undecidable by Rice. Tools work around this with approximation, restricted languages, or interactive proof.</li>
+<li><strong>Theorem-proving</strong> · The set of TM descriptions whose languages contain some valid theorem is undecidable.</li>
+</ul>
+</section>
+
+<section><div class="section-label">7 · Common pitfalls · what students miss</div>
+<ol style="font-size:14px;line-height:1.7;">
+<li><strong>"Rice says everything is undecidable."</strong> No — only nontrivial <em>semantic</em> properties. Syntactic and trivial ones can be decidable.</li>
+<li><strong>Confusing "M halts on w" with "L(M) ∋ w".</strong> Different! "M halts" includes rejecting halts; "w ∈ L(M)" means M accepts. The first is HALT<sub>TM</sub>, the second is A<sub>TM</sub> — both undecidable by reduction, but different statements.</li>
+<li><strong>"P is nontrivial" must check both sides.</strong> Some L(M) has P <em>and</em> some L(M) doesn't. If P is true of every recognizable language (e.g. "L(M) is recognizable"), it's trivial.</li>
+<li><strong>Forgetting the construction direction.</strong> Reduce A<sub>TM</sub> to L<sub>P</sub>, not the reverse.</li>
+<li><strong>"Recursion theorem is needed."</strong> Not for the reduction proof. The recursion theorem gives an alternative shorter proof but isn't required.</li>
+</ol>
+</section>
+
+<section><div class="section-label">8 · Q&amp;A defence notes</div>
+<ul class="qa-list">
+<li><div class="q">Q1. Why must P be nontrivial?</div><div class="a">A trivial property (true for all TMs or for none) is trivially decidable. Rice's theorem only kicks in once there are both yes-TMs and no-TMs.</div></li>
+<li><div class="q">Q2. Why must P depend only on L(M)?</div><div class="a">If two TMs with the same language can differ on P (e.g., "M has 5 states"), then P isn't a property of the language at all — and Rice doesn't apply.</div></li>
+<li><div class="q">Q3. Sketch the proof.</div><div class="a">Suppose D decides L<sub>P</sub>. By recursion theorem, build M that asks "what does D(⟨M⟩) say?" and then has language designed to contradict D's answer. Contradiction.</div></li>
+<li><div class="q">Q4. Give a decidable property of TMs.</div><div class="a">Any structural one: number of states, alphabet size, whether M has a transition on input 0. None of these are properties of L(M).</div></li>
+<li><div class="q">Q5 (bonus). Does Rice apply to NFA / DFA / CFG?</div><div class="a">No — these models have <em>decidable</em> language properties (emptiness, equivalence for DFA, etc.). Rice needs the full power of TMs, where simulating arbitrary computation makes everything semantic undecidable.</div></li>
+</ul></section>
+
+<section><div class="section-label">9 · How to present this in class</div>
+<p style="font-size:13.5px;"><strong>Total time: 12 minutes.</strong></p>
+<ul style="font-size:13.5px;line-height:1.7;">
+<li><strong>(1 min)</strong> Motivation: "We've seen E<sub>TM</sub>, REGULAR<sub>TM</sub>, etc. all undecidable. Why?"</li>
+<li><strong>(2 min)</strong> State Rice's theorem. Define semantic vs syntactic via table on the board.</li>
+<li><strong>(3 min)</strong> Sketch the construction of M' and the reduction.</li>
+<li><strong>(3 min)</strong> Run the visualization. For each property, ask the audience to vote "applies / doesn't apply" before revealing.</li>
+<li><strong>(2 min)</strong> Worked example: "is there a program that checks if any program ever outputs a prime?" No.</li>
+<li><strong>(1 min)</strong> Real-world bridge: this is the formal reason static analyzers are conservative.</li>
+</ul>
+</section>
+
+</div>
+<footer class="foot">Problem 14 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<script>
+(function(){
+const items = [
+  {p: 'L(M) is empty', applies: true, why: 'Property of L(M); nontrivial.'},
+  {p: 'L(M) is regular', applies: true, why: 'Property of L(M); nontrivial.'},
+  {p: 'M has at least 5 states', applies: false, why: 'Property of M, not L(M).'},
+  {p: 'L(M) = {0, 1}*', applies: true, why: 'Property of L(M); nontrivial.'},
+  {p: 'L(M) is recognizable', applies: false, why: 'Trivial — every L(M) is recognizable.'},
+  {p: 'M halts on input "abc"', applies: false, why: 'Behaviour on specific input, not L(M).'},
+  {p: 'L(M) contains ε', applies: true, why: 'Property of L(M); nontrivial.'},
+  {p: 'L(M) is decidable', applies: true, why: 'Property of L(M); nontrivial.'}
+];
+let i = -1;
+function render() {
+  let html = '';
+  items.forEach((it, k) => {
+    const shown = k <= i;
+    const op = shown ? 1 : 0.25;
+    const col = !shown ? '#fafafa' : it.applies ? 'var(--warn-soft)' : 'var(--accent-soft)';
+    const border = !shown ? '#eee' : it.applies ? 'var(--warn)' : 'var(--accent)';
+    const verdict = !shown ? '?' : it.applies ? 'Rice applies → undecidable' : 'Rice does NOT apply';
+    html += `<div style="padding:10px 14px;background:${col};border:1px solid ${border};border-radius:6px;margin:6px 0;opacity:${op};display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-family:ui-monospace,monospace;font-size:13px;">${it.p}</span>
+      <span style="font-family:var(--sans),sans-serif;font-size:12px;font-weight:bold;color:${it.applies?'var(--warn)':'var(--accent)'};">${verdict}</span>
+    </div>`;
+  });
+  document.getElementById('rc-list').innerHTML = html;
+  if (i < 0) document.getElementById('rc-explain').innerHTML = `<div class="step-num">Watch each property revealed</div><p style="margin:4px 0;">For each, decide whether Rice applies. Two conditions: nontrivial AND about L(M) (not about M itself or behaviour on specific inputs).</p>`;
+  else if (i >= items.length - 1) document.getElementById('rc-explain').innerHTML = `<div class="step-num">All 8 classified</div><p style="margin:4px 0;">Rice's theorem rules out a vast space of "natural-sounding" questions about TM programs. To find decidable properties, ask about <em>syntactic</em> features of M, not <em>semantic</em> features of L(M).</p>`;
+  else { const it = items[i]; document.getElementById('rc-explain').innerHTML = `<div class="step-num">${it.p}</div><p style="margin:4px 0;">${it.why}</p>`; }
+}
+function step() { if (i < items.length - 1) i++; render(); }
+function reset() { i = -1; render(); }
+function atEnd() { return i >= items.length - 1; }
+WidgetLoop.create({runBtn:document.getElementById('rc-run'),stepBtn:document.getElementById('rc-step'),resetBtn:document.getElementById('rc-reset'),speedSlider:document.getElementById('rc-speed'),speedLabel:document.getElementById('rc-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:1800,baseLoopMs:5000,autoStartMs:1300});
+reset();
+})();
+</script><script src="../presentation.js"></script>
+</body></html>

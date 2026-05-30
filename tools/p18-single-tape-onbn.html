@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>P18 · Single-tape {0ⁿ1ⁿ}</title><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css"><script src="../widget-loop.js"></script></head><body>
+<header class="tool-header"><div class="crumb"><a href="index.html">← Student tools</a> · Problem 18 · Lecture 9 · Round 2 (30 pts)</div>
+<h1>Single-tape TM on {0ⁿ1ⁿ} · O(n²) by pairing</h1><p class="sub">Watch a single-tape TM shuttle back and forth; step counter grows quadratically.</p>
+<div class="tags"><span class="tag-pill">CLO-3</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L9</span></div></header>
+<div class="wrap">
+<section><div class="section-label">1 · Theory</div><p>{0<sup>n</sup>1<sup>n</sup>} requires equal counts. With ONE tape and ONE head, the only strategy is: pair off 0s with 1s by marking. Each pair costs an O(n) round-trip. n/2 pairs ⇒ O(n²) steps total.</p>
+<div class="theorem-box"><div class="theorem-label">Claim</div><p style="margin:4px 0;">Single-tape TM deciding {0<sup>n</sup>1<sup>n</sup>} requires Θ(n²) time. Two-tape: O(n).</p></div></section>
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Watch the pair-off strategy <span class="pill">Auto-plays</span></div>
+<div class="controls"><label>Input <input type="text" id="o-input" value="000111" maxlength="20" style="width:120px;"></label>
+<button class="btn play-btn" id="o-run">⏸ Pause</button><button class="btn ghost" id="o-step">Step</button><button class="btn ghost" id="o-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="o-speed" min="0.25" max="3" step="0.25" value="1"><span id="o-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
+<svg id="o-svg" viewBox="0 0 760 180" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="status"><div class="stat">Step <b id="o-steps">0</b></div><div class="stat">Phase <b id="o-phase">find0</b></div><div class="stat">Verdict <b id="o-verdict">—</b></div></div>
+<div class="explain-panel" id="o-explain"></div></div></section>
+<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why exactly O(n²)?</div><div class="a">n/2 pairs × O(n) per pair = O(n²). The O(n) per pair is the head's round-trip across the input.</div></li>
+<li><div class="q">Q2. Can a single-tape TM do better than O(n²)?</div><div class="a">No — proven by a crossing-sequence argument. Two-tape, two-head, etc. can do O(n).</div></li>
+<li><div class="q">Q3. Why doesn't this break P?</div><div class="a">O(n²) is still polynomial. P is robust across reasonable machine models — multi-tape ↔ single-tape costs at most quadratic blowup.</div></li>
+</ul></section></div><footer class="foot">P18 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<script>(function(){
+let tape=[], head=0, steps=0, phase='find0', halted=false, input='000111';
+function reset(){ input=document.getElementById('o-input').value; tape=input.split(''); if(!tape.length)tape=['_']; head=0; steps=0; phase='find0'; halted=false; render(); }
+function render(){
+  const cellW=36, sx=20, y=60; let s='';
+  for(let i=0;i<Math.max(tape.length,8);i++){
+    const ch=tape[i]||'_', x=sx+i*cellW, isH=i===head;
+    s+=`<rect x="${x}" y="${y}" width="${cellW}" height="40" fill="${isH?'var(--accent-soft)':(ch==='X'||ch==='Y'?'var(--gold-soft)':'#fff')}" stroke="${isH?'var(--accent)':'var(--rule-strong)'}" stroke-width="${isH?2:1}"/><text x="${x+cellW/2}" y="${y+27}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="16" font-weight="${isH?'bold':'normal'}" fill="${ch==='_'?'#888':'#1a1a1a'}">${ch}</text>`;
+  }
+  const hx=sx+head*cellW+cellW/2;
+  s+=`<path d="M ${hx-6} ${y-12} L ${hx+6} ${y-12} L ${hx} ${y-2} Z" fill="var(--accent)"/>`;
+  document.getElementById('o-svg').innerHTML=s;
+  document.getElementById('o-steps').textContent=steps;
+  document.getElementById('o-phase').textContent=phase;
+  document.getElementById('o-verdict').textContent=halted?(phase==='accept'?'ACCEPT':'REJECT'):'—';
+  const phaseDoc={find0:'Look for leftmost unmarked 0',find1:'Look for unmarked 1 to pair',rewind:'Walk back to the left',accept:'All pairs matched, all consumed',reject:'Order violation'}[phase];
+  document.getElementById('o-explain').innerHTML=`<div class="step-num">Phase: ${phase}</div><p style="margin:4px 0;">${phaseDoc}. Steps so far: ${steps}. Empirical: steps grow ≈ n²/2.</p>`;
+}
+function step(){ if(halted)return;
+  const r=tape[head]||'_'; steps++;
+  if(phase==='find0'){ if(r==='0'){tape[head]='X';phase='find1';head++;} else if(r==='X'||r==='Y'){head++;} else if(r==='_'){halted=true;phase='accept';} else if(r==='1'){halted=true;phase='reject';} }
+  else if(phase==='find1'){ if(r==='0'||r==='Y'){head++;} else if(r==='1'){tape[head]='Y';phase='rewind';head--;} else {halted=true;phase='reject';} }
+  else if(phase==='rewind'){ if(head===0){phase='find0';} else if(r==='_'||r==='0'||r==='X'||r==='Y'){head--;} else{halted=true;phase='reject';} }
+  render();
+}
+function atEnd(){ return halted; }
+document.getElementById('o-input').oninput=reset;
+WidgetLoop.create({runBtn:document.getElementById('o-run'),stepBtn:document.getElementById('o-step'),resetBtn:document.getElementById('o-reset'),speedSlider:document.getElementById('o-speed'),speedLabel:document.getElementById('o-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:450,baseLoopMs:4500,autoStartMs:1300});
+reset();
+})();</script><script src="../presentation.js"></script>
+</body></html>

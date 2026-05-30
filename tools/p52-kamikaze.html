@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P52 · Self-destructing TM</title>
+<link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css">
+<script src="../widget-loop.js"></script></head><body>
+
+<header class="tool-header">
+<div class="crumb"><a href="index.html">← Student tools</a> · Problem 52 · Lecture 8 · Round 1 (30 pts)</div>
+<h1>The "kamikaze" TM · self-reference for fun</h1>
+<p class="sub">A TM that prints its own description, then enters a "fictitious erased" state. Pure recursion-theorem theatre.</p>
+<div class="tags"><span class="tag-pill">CLO-1</span><span class="tag-pill warn">R1·30 pts</span><span class="tag-pill info">L8</span></div>
+</header>
+
+<div class="wrap">
+
+<section><div class="section-label">1 · Theory</div>
+<p>The recursion theorem doesn't only give us quines. It lets us build TMs that inspect, modify, and react to their own description in any computable way. This problem demonstrates one such construction.</p>
+<div class="theorem-box"><div class="theorem-label">The kamikaze construction</div>
+<p style="margin:4px 0;">M on any input w:</p>
+<ol style="margin:4px 0;"><li>Print ⟨M⟩ on the tape (recursion-theorem guarantee).</li><li>Append "I have shown my source. Now I erase." to the tape.</li><li>Enter a special "qkz" state — effectively halt with the tape cleared.</li></ol>
+<p style="margin:4px 0;">M's existence shows: <strong>"self-aware" TMs aren't theoretical artefacts</strong> — they can be concretely constructed via the recursion theorem.</p></div>
+</section>
+
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">The 3-stage lifecycle <span class="pill">Auto-plays</span></div>
+<div class="controls">
+<button class="btn play-btn" id="kz-run">⏸ Pause</button><button class="btn ghost" id="kz-step">Step</button><button class="btn ghost" id="kz-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="kz-speed" min="0.25" max="3" step="0.25" value="1"><span id="kz-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label>
+</div>
+<svg id="kz-svg" viewBox="0 0 760 240" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="kz-explain"></div>
+</div></section>
+
+<section><div class="section-label">3 · Q&amp;A defence notes</div>
+<ul class="qa-list">
+<li><div class="q">Q1. Is "erasing" really meaningful in a TM?</div><div class="a">TMs don't have file-system erasure. The kamikaze just enters a halt state with a marker. The "erasure" is conceptual — used to make a pedagogical point.</div></li>
+<li><div class="q">Q2. Could a TM modify its own transition function during execution?</div><div class="a">No — δ is fixed. But the TM can <em>simulate</em> a different machine using its tape, effectively running a modified version of itself.</div></li>
+<li><div class="q">Q3. How does the recursion theorem guarantee step 1?</div><div class="a">Apply the s-m-n theorem to construct a function q such that q(⟨P⟩) is a TM that writes ⟨q(⟨P⟩)⟩ on tape, then runs P. With P = "append text and halt", we get our kamikaze.</div></li>
+</ul></section>
+
+</div>
+<footer class="foot">Problem 52 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<script>
+(function(){
+let stage = 0; const T = 3;
+function render() {
+  let s = '';
+  s += `<text x="380" y="30" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="700">M's three stages</text>`;
+  const boxes = [
+    {x: 30,  label: 'Stage 1 · Print ⟨M⟩', sub: 'recursion theorem', color: 'var(--gold)'},
+    {x: 270, label: 'Stage 2 · Append message', sub: '"I have shown my source"', color: 'var(--accent)'},
+    {x: 510, label: 'Stage 3 · Enter qkz', sub: 'halt, mark erased', color: 'var(--warn)'}
+  ];
+  boxes.forEach((b, i) => {
+    const on = stage > i;
+    const op = on ? 1 : 0.25;
+    s += `<rect x="${b.x}" y="60" width="220" height="100" rx="10" fill="white" stroke="${on?b.color:'#bbb'}" stroke-width="${on?2.5:1}" opacity="${op}"/>`;
+    s += `<text x="${b.x+110}" y="95" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" font-weight="700" fill="${on?b.color:'#888'}" opacity="${op}">${b.label}</text>`;
+    s += `<text x="${b.x+110}" y="125" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="${on?'#1a1a1a':'#bbb'}" opacity="${op}">${b.sub}</text>`;
+  });
+  document.getElementById('kz-svg').innerHTML = s;
+  const m = [
+    `<div class="step-num">Setup</div><p style="margin:4px 0;">M is built once via the recursion theorem; the same M runs the same way on any input w.</p>`,
+    `<div class="step-num">Stage 1 · Print ⟨M⟩</div><p style="margin:4px 0;">M writes its own description on tape — like a quine. Recursion theorem makes this constructible.</p>`,
+    `<div class="step-num">Stage 2 · Append a message</div><p style="margin:4px 0;">M adds "I have shown my source. Now I erase." after ⟨M⟩.</p>`,
+    `<div class="step-num">Stage 3 · Enter qkz</div><p style="margin:4px 0;">M halts in a special state, fictitiously marking itself as "erased". <strong>What it really shows:</strong> recursion theorem is no longer mysterious — we can build TMs that inspect themselves and act accordingly.</p>`
+  ];
+  document.getElementById('kz-explain').innerHTML = m[Math.min(stage, m.length-1)];
+}
+function step() { if (stage < T) stage++; render(); }
+function reset() { stage = 0; render(); }
+function atEnd() { return stage >= T; }
+WidgetLoop.create({runBtn:document.getElementById('kz-run'),stepBtn:document.getElementById('kz-step'),resetBtn:document.getElementById('kz-reset'),speedSlider:document.getElementById('kz-speed'),speedLabel:document.getElementById('kz-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:2500,baseLoopMs:5000,autoStartMs:1500});
+reset();
+})();
+</script><script src="../presentation.js"></script>
+</body></html>

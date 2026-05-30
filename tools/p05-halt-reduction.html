@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P5 · HALT_TM via reduction</title>
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css">
+<script src="../widget-loop.js"></script>
+</head>
+<body>
+
+<header class="tool-header">
+  <div class="crumb"><a href="index.html">← Student tools</a> · Problem 5 · Lecture 6 · Round 1 (30 pts)</div>
+  <h1>HALT<sub>TM</sub> is undecidable</h1>
+  <p class="sub">Reduce A<sub>TM</sub> to HALT<sub>TM</sub>. The first reduction proof in the course.</p>
+  <div class="tags">
+    <span class="tag-pill">CLO-2 · Reductions</span>
+    <span class="tag-pill warn">Round 1 · 30 pts</span>
+    <span class="tag-pill info">Lecture 6</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+<section>
+  <div class="section-label">1 · Why this matters · the BIG picture</div>
+  <p>
+    The halting problem is the most famous undecidable problem in computer science. Every introductory book mentions it.
+    Here is the precise statement: <strong>no program can examine an arbitrary program + input and reliably tell you whether
+    that program will eventually halt or run forever.</strong>
+  </p>
+  <p>
+    Practically, this means:
+  </p>
+  <ul style="font-size:14px;line-height:1.65;">
+    <li>Compilers cannot warn about every infinite loop.</li>
+    <li>Static analyzers cannot guarantee termination of arbitrary code.</li>
+    <li>"Will this regex match?" or "Will this script finish?" — undecidable in general.</li>
+  </ul>
+  <div class="theorem-box">
+    <div class="theorem-label">What we are about to prove</div>
+    <p style="margin:4px 0;">
+      <span class="math">HALT<sub>TM</sub> = {⟨M, w⟩ : M halts on w}</span> is <strong>not Turing-decidable</strong>.
+      Strategy: assume a decider R for HALT<sub>TM</sub> exists, then build a decider S for A<sub>TM</sub> using R as a subroutine.
+      We already know A<sub>TM</sub> has no decider — contradiction.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">2 · Setup · what is a "reduction"?</div>
+  <p>
+    A <strong>reduction</strong> is the workhorse of complexity theory. We say "problem A reduces to problem B"
+    if a solver for B gives us a solver for A. Notation: <span class="math">A ≤ B</span>.
+  </p>
+  <p>
+    The contrapositive is what we exploit: <strong>if A is unsolvable, then B is unsolvable too</strong>
+    (because solving B would solve A — but A cannot be solved).
+  </p>
+
+  <div class="theorem-box" style="background:#f3f8f3;">
+    <div class="theorem-label">Two flavors of reduction</div>
+    <ul style="margin:4px 0;padding-left:22px;font-size:13.5px;">
+      <li><strong>Turing reduction (≤<sub>T</sub>)</strong> · A's decider is allowed to call B's decider as a subroutine
+      any number of times and do additional computation around the calls.</li>
+      <li><strong>Mapping (many-one) reduction (≤<sub>m</sub>)</strong> · A's decider produces one input for B; that one
+      yes/no answer is exactly A's answer. Stricter, cleaner, preserves recognizability.</li>
+    </ul>
+  </div>
+
+  <p>For HALT<sub>TM</sub> we present the Turing reduction first (intuitive), then the mapping reduction
+  (in Q4 below) for completeness.</p>
+</section>
+
+<section>
+  <div class="section-label">3 · The proof · the contradiction machine S</div>
+  <p>
+    Assume <strong>R is a decider for HALT<sub>TM</sub></strong>. Define:
+  </p>
+  <div class="theorem-box" style="background:#fffaf3;">
+    <div class="theorem-label">Decider S for A<sub>TM</sub></div>
+    <p style="margin:4px 0;font-family:var(--mono);font-size:13.5px;">
+      S = "on input ⟨M, w⟩:<br>
+      &nbsp;&nbsp;1. run R(⟨M, w⟩) — does M halt on w?<br>
+      &nbsp;&nbsp;2. if R rejects: <strong>reject</strong> (M loops, so M does not accept).<br>
+      &nbsp;&nbsp;3. if R accepts: simulate M on w directly (guaranteed to halt).<br>
+      &nbsp;&nbsp;4. accept iff the simulation accepts."
+    </p>
+  </div>
+  <p>
+    <strong>S decides A<sub>TM</sub>:</strong> it always halts (step 3 is safe because R confirmed M halts),
+    and it outputs the correct answer. But Problem 3 told us no decider for A<sub>TM</sub> exists.
+    Contradiction ⇒ R does not exist ⇒ <strong>HALT<sub>TM</sub> is undecidable</strong>. <span class="math">∎</span>
+  </p>
+</section>
+
+<section>
+  <div class="section-label">4 · Animated demo · auto-plays · loops</div>
+
+  <div class="widget">
+    <div class="widget-title">The reduction A<sub>TM</sub> ≤ HALT<sub>TM</sub> · stage by stage <span class="pill">Auto-plays</span></div>
+
+    <div class="controls">
+      <button class="btn play-btn" id="h-run">⏸ Pause</button>
+      <button class="btn ghost" id="h-step">Step</button>
+      <button class="btn ghost" id="h-reset">Reset</button>
+      <label class="speed-control">Speed
+        <input type="range" id="h-speed" min="0.25" max="3" step="0.25" value="1">
+        <span id="h-speed-label" style="font-family: var(--mono); min-width: 28px;">1×</span>
+      </label>
+    </div>
+
+    <svg id="h-svg" viewBox="0 0 760 320" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+
+    <div class="explain-panel" id="h-explain"></div>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">5 · Worked example · trace through two inputs</div>
+  <p>Suppose we have these two specific inputs:</p>
+  <table style="font-size:13.5px;width:100%;border-collapse:collapse;margin:10px 0;">
+    <thead><tr style="background:var(--gold-soft);">
+      <th style="padding:6px;border:1px solid var(--rule);">⟨M, w⟩</th>
+      <th style="padding:6px;border:1px solid var(--rule);">M's actual behavior on w</th>
+      <th style="padding:6px;border:1px solid var(--rule);">R's answer (step 1)</th>
+      <th style="padding:6px;border:1px solid var(--rule);">S's answer (final)</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td style="padding:6px;border:1px solid var(--rule);">M<sub>1</sub> = "always loop", w = ε</td>
+        <td style="padding:6px;border:1px solid var(--rule);">loops forever</td>
+        <td style="padding:6px;border:1px solid var(--rule);color:var(--warn);"><b>reject</b></td>
+        <td style="padding:6px;border:1px solid var(--rule);color:var(--warn);"><b>reject</b> (step 2)</td>
+      </tr>
+      <tr>
+        <td style="padding:6px;border:1px solid var(--rule);">M<sub>2</sub> = "check parity", w = 0000</td>
+        <td style="padding:6px;border:1px solid var(--rule);">halts, accepts (even length)</td>
+        <td style="padding:6px;border:1px solid var(--rule);color:var(--accent);"><b>accept</b></td>
+        <td style="padding:6px;border:1px solid var(--rule);color:var(--accent);"><b>accept</b> (sim accepts)</td>
+      </tr>
+      <tr>
+        <td style="padding:6px;border:1px solid var(--rule);">M<sub>3</sub> = "check parity", w = 000</td>
+        <td style="padding:6px;border:1px solid var(--rule);">halts, rejects (odd length)</td>
+        <td style="padding:6px;border:1px solid var(--rule);color:var(--accent);"><b>accept</b></td>
+        <td style="padding:6px;border:1px solid var(--rule);color:var(--warn);"><b>reject</b> (sim rejects)</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>
+    Every row terminates with a definite yes or no. Look closely at row 1: <strong>S never tried to simulate M<sub>1</sub></strong>.
+    R told us up front it would loop, so we shortcut to reject without ever running M<sub>1</sub>. That shortcut is what
+    makes S a decider rather than just a recognizer.
+  </p>
+</section>
+
+<section>
+  <div class="section-label">6 · Connections · the reduction graph</div>
+  <ul style="font-size:14px;line-height:1.7;">
+    <li><strong>E<sub>TM</sub></strong> (Problem 6) · undecidable. Reduce A<sub>TM</sub> by building M' that accepts only w.</li>
+    <li><strong>REGULAR<sub>TM</sub></strong>, <strong>CFL<sub>TM</sub></strong> (Problem 7) · undecidable via similar reductions.</li>
+    <li><strong>EQ<sub>TM</sub></strong> · not recognizable, not co-recognizable. Reduces both ways.</li>
+    <li><strong>PCP, tiling, word problem for groups</strong> · all reduce from A<sub>TM</sub> or HALT<sub>TM</sub>.</li>
+    <li><strong>Rice's theorem</strong> (Problem 14) · the master generalization: every non-trivial language property reduces from A<sub>TM</sub>.</li>
+  </ul>
+  <p style="font-size:13.5px;color:var(--ink-soft);">
+    All of these proofs share the structure: <em>"If you could solve me, you could solve A<sub>TM</sub> — which you can't."</em>
+  </p>
+</section>
+
+<section>
+  <div class="section-label">7 · Common pitfalls · what students miss</div>
+  <ol style="font-size:14px;line-height:1.7;">
+    <li><strong>Reducing in the wrong direction.</strong> To prove B undecidable, reduce a known undecidable problem
+    <em>to</em> B (not the other way around). "A ≤ B" means B is at least as hard as A.</li>
+    <li><strong>Forgetting why simulation is now safe.</strong> Direct simulation of M(w) only terminates because R already
+    confirmed M halts. Without R, step 3 could loop.</li>
+    <li><strong>Believing HALT is even harder than A<sub>TM</sub>.</strong> Both have the same degree of unsolvability; reductions go both ways.</li>
+    <li><strong>"R rejected, so M halts but rejects."</strong> No — R rejecting means M does <em>not</em> halt at all.
+    R is a decider for HALT, not for accept.</li>
+    <li><strong>Mixing up Turing and mapping reductions.</strong> Turing reductions can do extra work after the call; mapping reductions cannot. For undecidability, either kind suffices.</li>
+  </ol>
+</section>
+
+<section>
+  <div class="section-label">8 · Q&amp;A defence notes</div>
+  <ul class="qa-list">
+    <li>
+      <div class="q">Q1. What if M loops? Why is step 3 safe?</div>
+      <div class="a">We reach step 3 only when R said M halts. So the direct simulation is guaranteed to terminate. The danger of looping is fully absorbed by R.</div>
+    </li>
+    <li>
+      <div class="q">Q2. Could we skip R and just simulate M directly?</div>
+      <div class="a">No — if M loops on w, the simulation never returns. Without R there is no way to tell halting from "not yet halted". R is what makes S a <em>decider</em>, not just a recognizer.</div>
+    </li>
+    <li>
+      <div class="q">Q3. Why is this a "Turing reduction" and not a mapping reduction?</div>
+      <div class="a">S calls R as a subroutine and then does more work (step 3). A mapping reduction would produce a single ⟨M', w'⟩ from ⟨M, w⟩ such that membership in HALT<sub>TM</sub> directly answers membership in A<sub>TM</sub>. Both kinds of reduction show undecidability; mapping reductions are stricter.</div>
+    </li>
+    <li>
+      <div class="q">Q4. Construct a mapping reduction A<sub>TM</sub> ≤<sub>m</sub> HALT<sub>TM</sub>.</div>
+      <div class="a">Given ⟨M, w⟩, output ⟨M', w⟩ where M' on input x simulates M on w; if M accepts, M' halts; if M rejects, M' loops. Then M accepts w ⇔ M' halts on w ⇔ ⟨M', w⟩ ∈ HALT<sub>TM</sub>.</div>
+    </li>
+    <li>
+      <div class="q">Q5. Is HALT<sub>TM</sub> at least recognizable?</div>
+      <div class="a">Yes. Simulate M on w; accept the moment it halts. If it never halts, the recognizer loops — that's allowed for recognizers.</div>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <div class="section-label">9 · How to present this in class</div>
+  <p style="font-size:13.5px;"><strong>Total time: 10 minutes.</strong></p>
+  <ul style="font-size:13.5px;line-height:1.7;">
+    <li><strong>(1 min)</strong> Open with the practical hook: "Why can't your IDE warn you about every infinite loop?"</li>
+    <li><strong>(2 min)</strong> State the goal. Define A ≤ B at the level of intuition before writing it precisely.</li>
+    <li><strong>(3 min)</strong> Walk through the construction of S. Emphasize three regions on the picture: input → R box → simulator box → output.</li>
+    <li><strong>(2 min)</strong> Run the visualization. Let it play through the 5 stages with the pause control.</li>
+    <li><strong>(2 min)</strong> Wrap with the worked example table. Highlight row 1 — the "shortcut" — as the heart of the trick.</li>
+  </ul>
+</section>
+
+</div>
+
+<footer class="foot">Problem 5 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<script>
+(function(){
+  let stage = 0;
+  const TOTAL = 5;
+
+  function render() {
+    const W=760, H=320;
+    let s = '';
+
+    const draw = (cls, x, y, w, h, label, sub, color, on) => {
+      const op = on ? 1 : 0.25;
+      const fc = on ? color : '#eee';
+      const sc = on ? color : '#bbb';
+      s += `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="8" ry="8" fill="white" stroke="${sc}" stroke-width="${on?2.5:1.2}" opacity="${op}"/>`;
+      s += `<text x="${x+w/2}" y="${y+24}" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="700" fill="${fc}" opacity="${op}">${label}</text>`;
+      if (sub) s += `<text x="${x+w/2}" y="${y+44}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="${fc}" opacity="${op}">${sub}</text>`;
+    };
+    const arrow = (x1,y1,x2,y2, on, lbl) => {
+      const op = on ? 1 : 0.2;
+      const col = on ? 'var(--accent)' : '#bbb';
+      s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${col}" stroke-width="${on?2.5:1}" marker-end="url(#h-arr)" opacity="${op}"/>`;
+      if (lbl) s += `<text x="${(x1+x2)/2}" y="${(y1+y2)/2 - 6}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="${col}" opacity="${op}">${lbl}</text>`;
+    };
+
+    s += `<defs><marker id="h-arr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="var(--accent)"/></marker></defs>`;
+
+    // Input box
+    draw('in', 40, 130, 110, 60, '⟨M, w⟩', 'input', 'var(--info)', true);
+    // S box (outer)
+    draw('s', 200, 60, 460, 200, 'S = our decider for A_TM', '', 'var(--accent)', stage >= 1);
+    // R box (inside S)
+    draw('r', 250, 110, 160, 60, 'R', 'decides HALT_TM', 'var(--warn)', stage >= 2);
+    // simulator (inside S)
+    draw('sim', 460, 110, 170, 60, 'simulate M(w)', 'guaranteed to halt', 'var(--gold)', stage >= 4);
+    // output
+    draw('out', 680, 130, 60, 60, '✓/✗', '', 'var(--accent-strong)', stage >= 5);
+
+    // arrows
+    arrow(150, 160, 250, 140, stage >= 1, '');
+    arrow(330, 170, 330, 200, stage >= 3, 'rejects → REJECT');
+    arrow(410, 140, 460, 140, stage >= 4, 'accepts → run M');
+    arrow(630, 160, 680, 160, stage >= 5, '');
+
+    document.getElementById('h-svg').innerHTML = s;
+
+    const messages = [
+      `<div class="step-num">Stage 0 · Setup</div>
+       <p style="margin: 4px 0;">We want to build a decider <strong>S for A<sub>TM</sub></strong>, given an oracle <strong>R that decides HALT<sub>TM</sub></strong>. If we succeed, A<sub>TM</sub> would be decidable — contradiction.</p>
+       <p style="margin: 4px 0;"><strong>Input:</strong> ⟨M, w⟩. <strong>Goal:</strong> decide whether M accepts w.</p>`,
+      `<div class="step-num">Stage 1 · S is born</div>
+       <p style="margin: 4px 0;">S receives ⟨M, w⟩. S has access to R inside.</p>`,
+      `<div class="step-num">Stage 2 · Ask R: does M halt on w?</div>
+       <p style="margin: 4px 0;">S calls R(⟨M, w⟩). R is a hypothetical decider — by assumption it always returns a definite yes/no.</p>`,
+      `<div class="step-num">Stage 3 · If R rejects · M does NOT halt</div>
+       <p style="margin: 4px 0;">If M doesn't even halt on w, it certainly doesn't accept. <strong>S rejects.</strong></p>`,
+      `<div class="step-num">Stage 4 · If R accepts · M halts · simulate it</div>
+       <p style="margin: 4px 0;">R said M halts. So S can safely run M(w) directly. The simulation is guaranteed to terminate.</p>`,
+      `<div class="step-num">Stage 5 · S returns M's answer</div>
+       <p style="margin: 4px 0;">S accepts iff M accepts. <strong>S decides A<sub>TM</sub>.</strong> But A<sub>TM</sub> is undecidable. <strong>Therefore R cannot exist ⇒ HALT<sub>TM</sub> is undecidable.</strong></p>`
+    ];
+    document.getElementById('h-explain').innerHTML = messages[Math.min(stage, messages.length-1)];
+  }
+
+  function step() { if (stage < TOTAL) { stage++; render(); } }
+  function reset() { stage = 0; render(); }
+  function atEnd() { return stage >= TOTAL; }
+
+  WidgetLoop.create({
+    runBtn: document.getElementById('h-run'),
+    stepBtn: document.getElementById('h-step'),
+    resetBtn: document.getElementById('h-reset'),
+    speedSlider: document.getElementById('h-speed'),
+    speedLabel: document.getElementById('h-speed-label'),
+    doStep: step,
+    atEnd,
+    doReset: reset,
+    baseStepMs: 2500,
+    baseLoopMs: 5500,
+    autoStartMs: 1500
+  });
+
+  reset();
+})();
+</script>
+
+<script src="../presentation.js"></script>
+</body>
+</html>

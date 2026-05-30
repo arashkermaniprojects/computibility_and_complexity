@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P9 · Computation history</title>
+<link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css">
+<script src="../widget-loop.js"></script></head><body>
+
+<header class="tool-header">
+<div class="crumb"><a href="index.html">← Student tools</a> · Problem 9 · Lecture 7 · Round 1 (30 pts)</div>
+<h1>Computation history of a Turing machine</h1>
+<p class="sub">The trace C<sub>1</sub> # C<sub>2</sub> # … # C<sub>ℓ</sub> — the bridge from TMs to humbler models.</p>
+<div class="tags"><span class="tag-pill">CLO-2</span><span class="tag-pill warn">R1·30 pts</span><span class="tag-pill info">L7</span></div>
+</header>
+
+<div class="wrap">
+
+<section><div class="section-label">1 · Theory</div>
+<p>A <strong>computation history</strong> of M on w is the full sequence of configurations the TM passes through, written as a single string with separators:</p>
+<div class="math-block">C<sub>1</sub> # C<sub>2</sub> # C<sub>3</sub> # … # C<sub>ℓ</sub></div>
+<div class="theorem-box"><div class="theorem-label">Local checkability</div>
+<p style="margin:4px 0;">A string is "an accepting computation history of M on w" iff it satisfies <em>local</em> properties: (a) the first config is the start; (b) each adjacent pair (C<sub>i</sub>, C<sub>i+1</sub>) follows by one transition of δ; (c) the last config has the accept state. <strong>Humble machines (LBAs, CFGs) can verify these.</strong></p></div>
+<p>This is the key technique behind E<sub>LBA</sub> and ALL<sub>CFG</sub> undecidability (Problems 10, 11).</p>
+</section>
+
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Render a TM's full execution as a history <span class="pill">Auto-plays</span></div>
+<div class="controls">
+<label>Preset: <select id="hh-preset"><option value="copy">copy 00 → 00X</option><option value="parity">parity check 0000</option></select></label>
+<button class="btn play-btn" id="hh-run">⏸ Pause</button><button class="btn ghost" id="hh-step">Step</button><button class="btn ghost" id="hh-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="hh-speed" min="0.25" max="3" step="0.25" value="1"><span id="hh-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label>
+</div>
+<div id="hh-out"></div>
+<div class="explain-panel" id="hh-explain"></div>
+</div></section>
+
+<section><div class="section-label">3 · Q&amp;A defence notes</div>
+<ul class="qa-list">
+<li><div class="q">Q1. Why insert the state inside the tape?</div><div class="a">A configuration must capture tape contents, head position, and state in one string. Writing the state right before the head cell encodes all three compactly.</div></li>
+<li><div class="q">Q2. Why is local checkability so powerful?</div><div class="a">LBAs / CFGs can verify a 2×3 "window" between adjacent configs but cannot count globally. Local checking is in their power; full simulation isn't.</div></li>
+<li><div class="q">Q3. Why doesn't this trick work for proving A<sub>TM</sub> undecidable?</div><div class="a">It does the opposite: it shows certain TM questions <em>reduce to questions about LBAs/CFGs</em>. The undecidability flows the other way.</div></li>
+<li><div class="q">Q4. What if the TM loops?</div><div class="a">No finite accepting computation history exists. The reduction's target language is empty in that case, which is exactly the information we want to encode.</div></li>
+</ul></section>
+
+</div>
+<footer class="foot">Problem 9 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<script>
+(function(){
+const presets = {
+  copy: { input: '00', prog: { 'q0,0':['q1','X','R'], 'q0,_':['qa','_','R'], 'q1,0':['q1','0','R'], 'q1,_':['q2','0','L'], 'q2,0':['q2','0','L'], 'q2,X':['q0','X','R'] }, note: 'M marks each 0 with X then shifts.' },
+  parity: { input: '0000', prog: { 'q0,0':['q1','0','R'], 'q1,0':['q0','0','R'], 'q0,_':['qa','_','R'], 'q1,_':['qr','_','R'] }, note: 'M accepts iff input has an even number of 0s.' }
+};
+function simulate(prog, input) {
+  let tape = input.split(''); if (!tape.length) tape = ['_'];
+  let state = 'q0', head = 0; const hist = [];
+  for (let step = 0; step < 40; step++) {
+    let s = '';
+    for (let i = 0; i < tape.length; i++) { if (i === head) s += '<b>' + state + '</b>|'; s += tape[i]; }
+    if (head >= tape.length) s += '<b>' + state + '</b>|_';
+    hist.push({step, state, str: s});
+    if (state === 'qa' || state === 'qr') break;
+    const r = tape[head] || '_'; const key = state + ',' + r;
+    if (!(key in prog)) break;
+    const [ns, w, d] = prog[key];
+    tape[head] = w;
+    if (d === 'R') { head++; if (head >= tape.length) tape.push('_'); }
+    else if (d === 'L') head = Math.max(0, head - 1);
+    state = ns;
+  }
+  return hist;
+}
+let current = 'copy', revealed = 0, total = 0;
+function loadPreset() {
+  current = document.getElementById('hh-preset').value;
+  const p = presets[current];
+  const hist = simulate(p.prog, p.input);
+  total = hist.length;
+  revealed = 0;
+  window.__hist = hist;
+  render();
+}
+function render() {
+  const hist = window.__hist || [];
+  let html = '<table class="data" style="font-family:ui-monospace,monospace;"><thead><tr><th>i</th><th>Configuration C<sub>i</sub></th></tr></thead><tbody>';
+  for (let i = 0; i < hist.length; i++) {
+    const h = hist[i];
+    const shown = i < revealed;
+    const acc = shown && h.state === 'qa' ? ' style="background:var(--accent-soft);"' : '';
+    const rej = shown && h.state === 'qr' ? ' style="background:var(--warn-soft);"' : '';
+    const op = shown ? '' : ' style="opacity:0.25;"';
+    html += `<tr${acc || rej}${shown ? '' : op}><td>${h.step}</td><td>${shown ? h.str : '·'}</td></tr>`;
+  }
+  html += '</tbody></table>';
+  document.getElementById('hh-out').innerHTML = html;
+  const el = document.getElementById('hh-explain');
+  if (revealed === 0) el.innerHTML = `<div class="step-num">${presets[current].note}</div><p style="margin:4px 0;">Watch each configuration appear. Each row C<sub>i</sub> shows: tape with the state inserted before the head cell.</p>`;
+  else if (revealed < total) el.innerHTML = `<div class="step-num">Configuration C<sub>${revealed-1}</sub> revealed</div><p style="margin:4px 0;">Adjacent pair (C<sub>${revealed-2}</sub>, C<sub>${revealed-1}</sub>) differs by one δ-step. ${total - revealed} more to go.</p>`;
+  else el.innerHTML = `<div class="step-num">History complete</div><p style="margin:4px 0;"><strong>The whole trace is the single string C<sub>1</sub> # C<sub>2</sub> # … # C<sub>${total}</sub>.</strong> ${hist[hist.length-1].state === 'qa' ? 'Last state is qa — this IS an accepting computation history.' : 'Last state is not qa — this is not an accepting history.'}</p>`;
+}
+function step() { if (revealed < total) revealed++; render(); }
+function reset() { revealed = 0; render(); }
+function atEnd() { return revealed >= total; }
+document.getElementById('hh-preset').onchange = loadPreset;
+WidgetLoop.create({runBtn:document.getElementById('hh-run'),stepBtn:document.getElementById('hh-step'),resetBtn:document.getElementById('hh-reset'),speedSlider:document.getElementById('hh-speed'),speedLabel:document.getElementById('hh-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:1100,baseLoopMs:5000,autoStartMs:1500});
+loadPreset();
+})();
+</script><script src="../presentation.js"></script>
+</body></html>

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>P58 · Othello / Hex hardness</title><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css"><script src="../widget-loop.js"></script></head><body>
+<header class="tool-header"><div class="crumb"><a href="index.html">← Student tools</a> · Problem 58 · Lecture 14 · Round 3 (40 pts)</div>
+<h1>Generalized Hex is PSPACE-complete</h1><p class="sub">A more elegant example than chess.</p>
+<div class="tags"><span class="tag-pill">CLO-4</span><span class="tag-pill warn">R3·40 pts</span><span class="tag-pill info">L14</span></div></header>
+<div class="wrap">
+<section><div class="section-label">1 · Theory</div><p>Hex: two players (Red, Blue) place stones on a hex grid; Red tries to connect top to bottom, Blue connects left to right. Standard Hex is determined (first player wins) but finding the winning move is non-trivial.</p>
+<div class="theorem-box"><div class="theorem-label">Theorem (Even &amp; Tarjan, 1976)</div><p style="margin:4px 0;">Generalized Hex on an n×n board is PSPACE-complete. Encoded TQBF instances become specific board positions.</p></div></section>
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Hex board · Red vs Blue <span class="pill">Auto-plays</span></div>
+<div class="controls"><button class="btn play-btn" id="hx-run">⏸ Pause</button><button class="btn ghost" id="hx-step">Step</button><button class="btn ghost" id="hx-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="hx-speed" min="0.25" max="3" step="0.25" value="1"><span id="hx-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
+<svg id="hx-svg" viewBox="0 0 760 320" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="hx-explain"></div></div></section>
+<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why is Hex always determined?</div><div class="a">Strategy-stealing argument: if Blue had a winning strategy, Red could "steal" it (the extra stone never hurts in Hex). So Red wins; never a draw.</div></li>
+<li><div class="q">Q2. Why PSPACE and not EXPTIME?</div><div class="a">Each move places one stone; total moves ≤ n². Polynomial-depth game tree. Game tree may be exponential in size, polynomial in depth ⇒ PSPACE.</div></li>
+<li><div class="q">Q3. Can you find Red's optimal move efficiently?</div><div class="a">Not in polynomial time (under standard assumptions). PSPACE-completeness is the formal "no fast algorithm" statement.</div></li>
+</ul></section></div><footer class="foot">P58 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<script>(function(){
+let stage=0; const T=5;
+// 5x5 hex board, schematic
+function render(){
+  const W=760, H=320, sz=28, sx=200, sy=50;
+  let s='';
+  for(let r=0;r<5;r++)for(let c=0;c<5;c++){const cx=sx+c*sz*1.7+r*sz*0.85, cy=sy+r*sz*1.5;
+    let fill='#fff';
+    // example fills: a small game in progress
+    if(stage>=1 && r===2 && c===2) fill='var(--warn)';
+    if(stage>=2 && r===1 && c===3) fill='var(--info)';
+    if(stage>=3 && r===3 && c===1) fill='var(--warn)';
+    if(stage>=4 && r===0 && c===2) fill='var(--info)';
+    s+=`<polygon points="${cx-sz/2},${cy-sz*0.866} ${cx+sz/2},${cy-sz*0.866} ${cx+sz},${cy} ${cx+sz/2},${cy+sz*0.866} ${cx-sz/2},${cy+sz*0.866} ${cx-sz},${cy}" fill="${fill}" stroke="#666" stroke-width="1.2"/>`;
+  }
+  // legend
+  s+=`<text x="50" y="80" font-family="var(--sans), sans-serif" font-size="12" fill="var(--warn)" font-weight="bold">RED · top→bottom</text>`;
+  s+=`<text x="50" y="100" font-family="var(--sans), sans-serif" font-size="12" fill="var(--info)" font-weight="bold">BLUE · left→right</text>`;
+  document.getElementById('hx-svg').innerHTML=s;
+  const m=['<div class="step-num">Setup</div><p style="margin:4px 0;">5×5 hex grid. Red plays first, wants to connect top to bottom. Blue connects left to right.</p>','<div class="step-num">Red plays centre</div><p style="margin:4px 0;">Standard strong opening.</p>','<div class="step-num">Blue responds</div><p style="margin:4px 0;">Blue plays near a side.</p>','<div class="step-num">Red extends</div><p style="margin:4px 0;">Building toward bottom.</p>','<div class="step-num">Final position (sketch)</div><p style="margin:4px 0;">The game continues to a winning chain. PSPACE-complete: no known polynomial-time algorithm to find the winning move on a general n×n board.</p>'];
+  document.getElementById('hx-explain').innerHTML=m[Math.min(stage,m.length-1)];
+}
+function step(){ if(stage<T-1)stage++; render(); }
+function reset(){ stage=0; render(); }
+function atEnd(){ return stage>=T-1; }
+WidgetLoop.create({runBtn:document.getElementById('hx-run'),stepBtn:document.getElementById('hx-step'),resetBtn:document.getElementById('hx-reset'),speedSlider:document.getElementById('hx-speed'),speedLabel:document.getElementById('hx-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:2200,baseLoopMs:5500,autoStartMs:1500});
+reset();
+})();</script><script src="../presentation.js"></script>
+</body></html>

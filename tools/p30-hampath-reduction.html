@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>P30 · 3SAT → HAMPATH</title><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css"><script src="../widget-loop.js"></script></head><body>
+<header class="tool-header"><div class="crumb"><a href="index.html">← Student tools</a> · Problem 30 · Lecture 12 · Round 2 (30 pts)</div>
+<h1>3SAT → HAMPATH · gadget reduction</h1><p class="sub">Variable diamonds + clause spreaders. Path = assignment.</p>
+<div class="tags"><span class="tag-pill">CLO-4</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L12</span></div></header>
+<div class="wrap">
+<section><div class="section-label">1 · Theory</div><p>For each variable, build a "diamond" gadget that the Hamiltonian path must traverse left-to-right (= true) or right-to-left (= false). For each clause, a spreader node forces the path to visit one of its literals' diamonds.</p>
+<div class="theorem-box"><div class="theorem-label">Result</div><p style="margin:4px 0;">HAMPATH exists ⇔ 3SAT formula is satisfiable. Reduction is polynomial. HAMPATH is NP-complete.</p></div></section>
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Build the gadget for n=2, m=2 <span class="pill">Auto-plays</span></div>
+<div class="controls"><button class="btn play-btn" id="hm-run">⏸ Pause</button><button class="btn ghost" id="hm-step">Step</button><button class="btn ghost" id="hm-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="hm-speed" min="0.25" max="3" step="0.25" value="1"><span id="hm-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
+<svg id="hm-svg" viewBox="0 0 760 320" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="hm-explain"></div></div></section>
+<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. What does "traversal direction = assignment" mean?</div><div class="a">Each variable diamond can be traversed left→right (variable = true) or right→left (variable = false). The whole path picks one direction per diamond.</div></li>
+<li><div class="q">Q2. How does the clause spreader work?</div><div class="a">For each clause C, a spreader node connects to the diamonds of variables appearing in C. The path must dip into the spreader and exit via one literal-true diamond — equivalent to "at least one literal satisfied".</div></li>
+<li><div class="q">Q3. Size of the gadget?</div><div class="a">O((n+m)²) nodes, O((n+m)²) edges. Polynomial.</div></li>
+</ul></section></div><footer class="foot">P30 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<script>(function(){
+let stage=0; const T=4;
+function render(){
+  let s=''; s+=`<text x="380" y="32" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="700">Schematic: 2 variables, 2 clauses</text>`;
+  // 2 variable diamonds, side by side
+  if(stage>=1){
+    [[150,140],[450,140]].forEach((p,k)=>{const[cx,cy]=p;
+      s+=`<polygon points="${cx},${cy-50} ${cx+50},${cy} ${cx},${cy+50} ${cx-50},${cy}" fill="white" stroke="var(--accent)" stroke-width="2"/>`;
+      s+=`<text x="${cx}" y="${cy+5}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="14" font-weight="bold">${'xy'[k]}</text>`;
+      s+=`<text x="${cx}" y="${cy+75}" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="11" fill="var(--muted)">diamond</text>`;
+    });
+  }
+  if(stage>=2){
+    [['c₁',650,80],['c₂',650,220]].forEach(([n,cx,cy])=>{
+      s+=`<circle cx="${cx}" cy="${cy}" r="22" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2"/><text x="${cx}" y="${cy+5}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13" font-weight="bold">${n}</text>`;
+    });
+  }
+  if(stage>=3){
+    // edges from clauses to diamonds
+    s+=`<line x1="630" y1="85" x2="195" y2="135" stroke="var(--gold)" stroke-width="1" stroke-dasharray="3 3"/>`;
+    s+=`<line x1="630" y1="85" x2="495" y2="135" stroke="var(--gold)" stroke-width="1" stroke-dasharray="3 3"/>`;
+    s+=`<line x1="630" y1="220" x2="195" y2="155" stroke="var(--gold)" stroke-width="1" stroke-dasharray="3 3"/>`;
+    s+=`<line x1="630" y1="220" x2="495" y2="155" stroke="var(--gold)" stroke-width="1" stroke-dasharray="3 3"/>`;
+  }
+  document.getElementById('hm-svg').innerHTML=s;
+  const msgs=[
+    `<div class="step-num">Setup</div><p style="margin:4px 0;">For each variable, build a diamond. For each clause, add a "spreader" node. Connect.</p>`,
+    `<div class="step-num">Step 1 · variable diamonds</div><p style="margin:4px 0;">Each diamond has two left↔right traversal directions: left→right encodes TRUE, right→left encodes FALSE.</p>`,
+    `<div class="step-num">Step 2 · clause spreaders</div><p style="margin:4px 0;">Each clause c gets a spreader node. The path must visit each spreader.</p>`,
+    `<div class="step-num">Step 3 · connect clauses to diamonds</div><p style="margin:4px 0;">For each literal in c, add edges between the diamond and the spreader matching the traversal direction. The path enters the spreader from a diamond whose traversal direction makes the literal true.</p>`,
+    `<div class="step-num">Result</div><p style="margin:4px 0;">Hamiltonian path exists ⇔ each spreader has at least one "good" entry direction ⇔ at least one literal per clause is true ⇔ formula is satisfiable.</p>`
+  ];
+  document.getElementById('hm-explain').innerHTML=msgs[Math.min(stage,msgs.length-1)];
+}
+function step(){ if(stage<T)stage++; render(); }
+function reset(){ stage=0; render(); }
+function atEnd(){ return stage>=T; }
+WidgetLoop.create({runBtn:document.getElementById('hm-run'),stepBtn:document.getElementById('hm-step'),resetBtn:document.getElementById('hm-reset'),speedSlider:document.getElementById('hm-speed'),speedLabel:document.getElementById('hm-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:3000,baseLoopMs:5500,autoStartMs:1500});
+reset();
+})();</script><script src="../presentation.js"></script>
+</body></html>

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P8 · Mapping reduction A_TM ≤_m EQ_TM</title>
+<link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css">
+<script src="../widget-loop.js"></script></head><body>
+
+<header class="tool-header">
+<div class="crumb"><a href="index.html">← Student tools</a> · Problem 8 · Lecture 6 · Round 1 (30 pts)</div>
+<h1>EQ<sub>TM</sub> is undecidable · mapping reduction</h1>
+<p class="sub">From ⟨M, w⟩ produce ⟨M<sub>1</sub>, M<sub>2</sub>⟩ such that M<sub>1</sub> ≡ M<sub>2</sub> iff M accepts w.</p>
+<div class="tags"><span class="tag-pill">CLO-2</span><span class="tag-pill warn">R1·30 pts</span><span class="tag-pill info">L6</span></div>
+</header>
+
+<div class="wrap">
+
+<section><div class="section-label">1 · Theory</div>
+<p>EQ<sub>TM</sub> = {⟨M<sub>1</sub>, M<sub>2</sub>⟩ : L(M<sub>1</sub>) = L(M<sub>2</sub>)}. We construct two machines that are equal iff M accepts w.</p>
+<div class="theorem-box"><div class="theorem-label">Construction</div>
+<p style="margin:4px 0;"><strong>M<sub>1</sub>:</strong> reject everything. L(M<sub>1</sub>) = ∅.</p>
+<p style="margin:4px 0;"><strong>M<sub>2</sub>:</strong> on input x, ignore x; run M on w; accept iff M accepts. So L(M<sub>2</sub>) = ∅ if M doesn't accept w, else Σ*.</p>
+<p style="margin:4px 0;"><strong>Then:</strong> L(M<sub>1</sub>) = L(M<sub>2</sub>) ⇔ L(M<sub>2</sub>) = ∅ ⇔ M doesn't accept w.</p>
+<p style="margin:4px 0;">So ⟨M, w⟩ ∈ A<sub>TM</sub> ⇔ ⟨M<sub>1</sub>, M<sub>2</sub>⟩ ∉ EQ<sub>TM</sub>. That's a mapping reduction A<sub>TM</sub> ≤<sub>m</sub> ¬EQ<sub>TM</sub>.</p></div>
+</section>
+
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Build M<sub>1</sub>, M<sub>2</sub>, compare languages <span class="pill">Auto-plays</span></div>
+<div class="controls">
+<button class="btn play-btn" id="q-run">⏸ Pause</button><button class="btn ghost" id="q-step">Step</button><button class="btn ghost" id="q-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="q-speed" min="0.25" max="3" step="0.25" value="1"><span id="q-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label>
+</div>
+<svg id="q-svg" viewBox="0 0 760 280" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="q-explain"></div>
+</div></section>
+
+<section><div class="section-label">3 · Q&amp;A defence notes</div>
+<ul class="qa-list">
+<li><div class="q">Q1. Why use the empty-language M<sub>1</sub>?</div><div class="a">It's a fixed reference. Comparing against ∅ reduces EQ<sub>TM</sub> to E<sub>TM</sub> in disguise — we already know E<sub>TM</sub> is undecidable.</div></li>
+<li><div class="q">Q2. Is EQ<sub>TM</sub> recognizable?</div><div class="a">No. Neither EQ<sub>TM</sub> nor ¬EQ<sub>TM</sub> is recognizable. It sits in the "neither" region of the Venn diagram (Problem 4).</div></li>
+<li><div class="q">Q3. What's the difference between a mapping reduction and a Turing reduction?</div><div class="a">Mapping reduction is a single computable function that translates instances; the answer for B directly gives the answer for A. Turing reduction can call B's decider multiple times and do extra work. Mapping is stricter and preserves recognizability.</div></li>
+<li><div class="q">Q4. Why does mapping reduction preserve undecidability?</div><div class="a">If we could decide EQ<sub>TM</sub>, composing with the reduction gives a decider for A<sub>TM</sub> — contradiction.</div></li>
+</ul></section>
+
+</div>
+<footer class="foot">Problem 8 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<script>
+(function(){
+let stage = 0; const T = 4;
+function render() {
+  let s = '';
+  s += `<text x="380" y="32" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="700">⟨M, w⟩ ↦ ⟨M₁, M₂⟩</text>`;
+  // M1
+  s += `<rect x="60" y="60" width="320" height="180" rx="10" fill="white" stroke="${stage>=1?'var(--warn)':'#ccc'}" stroke-width="${stage>=1?2.5:1}"/>`;
+  s += `<text x="220" y="86" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="700" fill="${stage>=1?'var(--warn)':'#888'}">M₁</text>`;
+  s += `<text x="220" y="116" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13" fill="${stage>=1?'#1a1a1a':'#888'}">on input x: reject</text>`;
+  s += `<text x="220" y="170" text-anchor="middle" font-family="ui-monospace, monospace" font-size="20" fill="${stage>=1?'var(--warn)':'#bbb'}" font-weight="bold">L(M₁) = ∅</text>`;
+  s += `<text x="220" y="210" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="11" fill="${stage>=1?'var(--muted)':'#bbb'}">a fixed reference machine</text>`;
+  // M2
+  s += `<rect x="400" y="60" width="320" height="180" rx="10" fill="white" stroke="${stage>=2?'var(--accent)':'#ccc'}" stroke-width="${stage>=2?2.5:1}"/>`;
+  s += `<text x="560" y="86" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="700" fill="${stage>=2?'var(--accent)':'#888'}">M₂</text>`;
+  s += `<text x="560" y="112" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13" fill="${stage>=2?'#1a1a1a':'#888'}">on input x: ignore x; run M(w);</text>`;
+  s += `<text x="560" y="130" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13" fill="${stage>=2?'#1a1a1a':'#888'}">accept iff M accepts</text>`;
+  if (stage >= 3) {
+    s += `<text x="560" y="170" text-anchor="middle" font-family="ui-monospace, monospace" font-size="16" fill="var(--accent)" font-weight="bold">L(M₂) = Σ* if M accepts w,</text>`;
+    s += `<text x="560" y="190" text-anchor="middle" font-family="ui-monospace, monospace" font-size="16" fill="var(--accent)" font-weight="bold">         ∅ otherwise</text>`;
+  } else {
+    s += `<text x="560" y="170" text-anchor="middle" font-family="ui-monospace, monospace" font-size="20" fill="${stage>=2?'var(--accent)':'#bbb'}" font-weight="bold">L(M₂) = ?</text>`;
+  }
+  document.getElementById('q-svg').innerHTML = s;
+  const m = [
+    `<div class="step-num">Stage 0 · We build two machines</div><p style="margin:4px 0;">Given ⟨M, w⟩ from A<sub>TM</sub>, produce ⟨M₁, M₂⟩ for EQ<sub>TM</sub>.</p>`,
+    `<div class="step-num">Stage 1 · M₁ rejects everything</div><p style="margin:4px 0;">L(M₁) = ∅. A fixed comparison baseline.</p>`,
+    `<div class="step-num">Stage 2 · M₂ depends on M(w)</div><p style="margin:4px 0;">M₂ ignores its input and runs M on w. Same trick as Problem 6.</p>`,
+    `<div class="step-num">Stage 3 · L(M₂) is either Σ* or ∅</div><p style="margin:4px 0;">Σ* if M accepts w; ∅ otherwise. <strong>M₁ ≡ M₂ ⇔ L(M₂) = ∅ ⇔ M does NOT accept w.</strong> A decider for EQ<sub>TM</sub> would decide ¬A<sub>TM</sub>, hence A<sub>TM</sub>. Impossible.</p>`
+  ];
+  document.getElementById('q-explain').innerHTML = m[Math.min(stage, m.length-1)];
+}
+function step() { if (stage < T-1) stage++; render(); }
+function reset() { stage = 0; render(); }
+function atEnd() { return stage >= T-1; }
+WidgetLoop.create({runBtn:document.getElementById('q-run'),stepBtn:document.getElementById('q-step'),resetBtn:document.getElementById('q-reset'),speedSlider:document.getElementById('q-speed'),speedLabel:document.getElementById('q-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:3000,baseLoopMs:5500,autoStartMs:1500});
+reset();
+})();
+</script><script src="../presentation.js"></script>
+</body></html>

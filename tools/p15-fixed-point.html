@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P15 · Recursion theorem fixed point</title>
+<link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css">
+<script src="../widget-loop.js"></script></head><body>
+
+<header class="tool-header">
+<div class="crumb"><a href="index.html">← Student tools</a> · Problem 15 · Lecture 8 · Round 1 (30 pts)</div>
+<h1>The recursion theorem · fixed-point form</h1>
+<p class="sub">For every computable t, there is a TM R such that L(R) = L(t(⟨R⟩)). Programs reason about themselves.</p>
+<div class="tags"><span class="tag-pill">CLO-2</span><span class="tag-pill warn">R1·30 pts</span><span class="tag-pill info">L8</span></div>
+</header>
+
+<div class="wrap">
+
+<section><div class="section-label">1 · Theory</div>
+<div class="theorem-box"><div class="theorem-label">Recursion theorem (fixed-point form)</div>
+<p style="margin:4px 0;">Let t : Σ* → Σ* be a computable total function. Then there exists a TM R such that
+<span class="math">L(R) = L(t(⟨R⟩))</span>. Equivalently: for any computable transformation t of programs, you can build a program that is unchanged (semantically) by t.</p></div>
+<p>This is the cleaner, more powerful statement. Quines (Problem 13) are the case where t outputs a program that prints its argument. Self-aware TMs (Problem 16) use t to inspect the description.</p>
+</section>
+
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">A fixed-point construction · q maps any ⟨P⟩ to ⟨P'⟩ <span class="pill">Auto-plays</span></div>
+<div class="controls">
+<button class="btn play-btn" id="fp-run">⏸ Pause</button><button class="btn ghost" id="fp-step">Step</button><button class="btn ghost" id="fp-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="fp-speed" min="0.25" max="3" step="0.25" value="1"><span id="fp-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label>
+</div>
+<svg id="fp-svg" viewBox="0 0 760 280" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="fp-explain"></div>
+</div></section>
+
+<section><div class="section-label">3 · Q&amp;A defence notes</div>
+<ul class="qa-list">
+<li><div class="q">Q1. Why is the fixed-point form stronger than the quine?</div><div class="a">Quine is t = identity. Fixed-point works for any computable t — including "rewrite every accept into a reject" or "double the number of states".</div></li>
+<li><div class="q">Q2. Why is t required to be total?</div><div class="a">If t loops on some input, the fixed-point construction can fail. Totality ensures t(⟨P⟩) is always defined.</div></li>
+<li><div class="q">Q3. Sketch the proof.</div><div class="a">Use the s-m-n theorem to define a computable q that maps any ⟨P⟩ to ⟨P'⟩ = a program that on input x first writes ⟨P'⟩ on its tape, then runs P(⟨P'⟩, x). Apply q to t to get R = q(t).</div></li>
+<li><div class="q">Q4. Concrete example.</div><div class="a">Let t replace every accept state with reject. There exists a TM R such that L(R) equals the language of R-with-accept-and-reject-swapped. R is "indifferent" to that transformation.</div></li>
+</ul></section>
+
+</div>
+<footer class="foot">Problem 15 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<script>
+(function(){
+let stage = 0; const T = 4;
+function render() {
+  let s = '';
+  s += `<defs><marker id="fp-arr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0,10 3,0 6" fill="var(--accent)"/></marker></defs>`;
+  // R
+  s += `<rect x="60" y="100" width="120" height="80" rx="10" fill="white" stroke="${stage>=1?'var(--accent)':'#bbb'}" stroke-width="${stage>=1?2.5:1}" opacity="${stage>=1?1:0.3}"/>`;
+  s += `<text x="120" y="130" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="16" font-weight="700" fill="${stage>=1?'var(--accent-strong)':'#888'}" opacity="${stage>=1?1:0.3}">R</text>`;
+  s += `<text x="120" y="155" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="${stage>=1?'var(--muted)':'#bbb'}" opacity="${stage>=1?1:0.3}">a TM</text>`;
+  // t
+  s += `<rect x="280" y="80" width="180" height="120" rx="10" fill="#fffdf3" stroke="${stage>=2?'var(--gold)':'#bbb'}" stroke-width="${stage>=2?2.5:1}" opacity="${stage>=2?1:0.3}"/>`;
+  s += `<text x="370" y="110" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="16" font-weight="700" fill="${stage>=2?'var(--gold)':'#888'}" opacity="${stage>=2?1:0.3}">t</text>`;
+  s += `<text x="370" y="135" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="${stage>=2?'#1a1a1a':'#bbb'}" opacity="${stage>=2?1:0.3}">computable</text>`;
+  s += `<text x="370" y="155" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="${stage>=2?'#1a1a1a':'#bbb'}" opacity="${stage>=2?1:0.3}">⟨P⟩ → ⟨P'⟩</text>`;
+  s += `<text x="370" y="180" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="${stage>=2?'var(--muted)':'#bbb'}" opacity="${stage>=2?1:0.3}">transforms programs</text>`;
+  // R'
+  s += `<rect x="560" y="100" width="160" height="80" rx="10" fill="${stage>=3?'var(--accent-soft)':'white'}" stroke="${stage>=3?'var(--accent)':'#bbb'}" stroke-width="${stage>=3?2.5:1}" opacity="${stage>=3?1:0.3}"/>`;
+  s += `<text x="640" y="130" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="700" fill="${stage>=3?'var(--accent-strong)':'#888'}" opacity="${stage>=3?1:0.3}">t(⟨R⟩)</text>`;
+  s += `<text x="640" y="155" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="${stage>=3?'#1a1a1a':'#bbb'}" opacity="${stage>=3?1:0.3}">same L as R !</text>`;
+  s += `<line x1="180" y1="140" x2="280" y2="140" stroke="${stage>=2?'var(--accent)':'#bbb'}" stroke-width="2" marker-end="url(#fp-arr)" opacity="${stage>=2?1:0.3}"/>`;
+  s += `<text x="230" y="130" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="${stage>=2?'var(--accent)':'#bbb'}" opacity="${stage>=2?1:0.3}">⟨R⟩</text>`;
+  s += `<line x1="460" y1="140" x2="560" y2="140" stroke="${stage>=3?'var(--accent)':'#bbb'}" stroke-width="2" marker-end="url(#fp-arr)" opacity="${stage>=3?1:0.3}"/>`;
+  s += `<text x="510" y="130" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="${stage>=3?'var(--gold)':'#bbb'}" opacity="${stage>=3?1:0.3}">⟨R'⟩</text>`;
+  s += `<text x="380" y="240" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="700" fill="${stage>=3?'var(--accent-strong)':'#bbb'}" opacity="${stage>=3?1:0.3}">L(R) = L(R')</text>`;
+  document.getElementById('fp-svg').innerHTML = s;
+  const m = [
+    `<div class="step-num">Stage 0 · the players</div><p style="margin:4px 0;">We have an arbitrary computable transformation t that maps a program description to a (potentially different) program description.</p>`,
+    `<div class="step-num">Stage 1 · R is some TM</div><p style="margin:4px 0;">R is what we want to construct. We don't yet know its details — only that it must satisfy a property.</p>`,
+    `<div class="step-num">Stage 2 · Feed ⟨R⟩ into t</div><p style="margin:4px 0;">t consumes the description and produces a new description ⟨R'⟩ = t(⟨R⟩).</p>`,
+    `<div class="step-num">Stage 3 · L(R) = L(R'): the fixed point</div><p style="margin:4px 0;"><strong>The recursion theorem says such an R always exists.</strong> Different program description (R' ≠ R in general), but identical language.</p>`
+  ];
+  document.getElementById('fp-explain').innerHTML = m[Math.min(stage, m.length-1)];
+}
+function step() { if (stage < T-1) stage++; render(); }
+function reset() { stage = 0; render(); }
+function atEnd() { return stage >= T-1; }
+WidgetLoop.create({runBtn:document.getElementById('fp-run'),stepBtn:document.getElementById('fp-step'),resetBtn:document.getElementById('fp-reset'),speedSlider:document.getElementById('fp-speed'),speedLabel:document.getElementById('fp-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:2700,baseLoopMs:5000,autoStartMs:1500});
+reset();
+})();
+</script><script src="../presentation.js"></script>
+</body></html>

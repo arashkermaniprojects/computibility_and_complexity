@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student tools — BCS 402</title>
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="tool-shell.css">
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">BCS 402 · Dr. Arash Kermani · CUD</div>
+  <h1>Student tools — all 60 problems</h1>
+  <div class="sub">One self-explanatory HTML tool per assigned problem. Each: theory + animated demo + Q&amp;A notes.</div>
+  <div class="tag">Round 1 = 30 pts · Round 2 = 30 pts · Round 3 = 40 pts</div>
+</header>
+
+<nav class="tabs">
+  <a href="../index.html">← Companion lectures</a>
+  <a class="active" href="#r1">Round 1 · Undecidability</a>
+  <a href="#r2">Round 2 · NP-completeness</a>
+  <a href="#r3">Round 3 · Space &amp; hierarchy</a>
+</nav>
+
+<div class="wrap">
+
+<section id="r1">
+  <h2>Round 1 · Lectures 5–8 · Undecidability &amp; reductions (30 pts each)</h2>
+
+  <h3>Lecture 5 — Diagonalization &amp; halting</h3>
+  <div class="module-grid">
+    <a class="module-card" href="p01-cantor-diagonal.html"><div class="num">P1 · CLO-1</div><div class="ttl">Cantor's diagonal</div></a>
+    <a class="module-card" href="p02-universal-tm.html"><div class="num">P2 · CLO-1</div><div class="ttl">Universal TM</div></a>
+    <a class="module-card" href="p03-atm-diagonal.html"><div class="num">P3 · CLO-1</div><div class="ttl">A<sub>TM</sub>-undecidable table</div></a>
+    <a class="module-card" href="p04-venn-classifier.html"><div class="num">P4 · CLO-1</div><div class="ttl">Decidable/Recognizable Venn</div></a>
+    <a class="module-card" href="p49-closure-properties.html"><div class="num">P49 · CLO-1</div><div class="ttl">Closure properties</div></a>
+  </div>
+
+  <h3>Lecture 6 — Reductions for undecidability</h3>
+  <div class="module-grid">
+    <a class="module-card" href="p05-halt-reduction.html"><div class="num">P5 · CLO-2</div><div class="ttl">HALT<sub>TM</sub> via A<sub>TM</sub></div></a>
+    <a class="module-card" href="p06-etm-undecidable.html"><div class="num">P6 · CLO-2</div><div class="ttl">E<sub>TM</sub> undecidable</div></a>
+    <a class="module-card" href="p07-regular-tm.html"><div class="num">P7 · CLO-2</div><div class="ttl">REGULAR<sub>TM</sub></div></a>
+    <a class="module-card" href="p08-eqtm-mapping.html"><div class="num">P8 · CLO-2</div><div class="ttl">EQ<sub>TM</sub> mapping reduction</div></a>
+    <a class="module-card" href="p50-finite-tm.html"><div class="num">P50 · CLO-2</div><div class="ttl">FINITE<sub>TM</sub></div></a>
+  </div>
+
+  <h3>Lecture 7 — Computation-history method</h3>
+  <div class="module-grid">
+    <a class="module-card" href="p09-computation-history.html"><div class="num">P9 · CLO-2</div><div class="ttl">Computation-history viewer</div></a>
+    <a class="module-card" href="p10-elba-undecidable.html"><div class="num">P10 · CLO-2</div><div class="ttl">E<sub>LBA</sub> undecidable</div></a>
+    <a class="module-card" href="p11-all-cfg.html"><div class="num">P11 · CLO-2</div><div class="ttl">ALL<sub>CFG</sub> undecidable</div></a>
+    <a class="module-card" href="p12-decidable-trio.html"><div class="num">P12 · CLO-1/2</div><div class="ttl">A<sub>DFA</sub>, E<sub>DFA</sub>, A<sub>CFG</sub></div></a>
+    <a class="module-card" href="p51-pcp.html"><div class="num">P51 · CLO-2</div><div class="ttl">Post Correspondence</div></a>
+  </div>
+
+  <h3>Lecture 8 — Recursion theorem &amp; Rice</h3>
+  <div class="module-grid">
+    <a class="module-card" href="p13-quine.html"><div class="num">P13 · CLO-1</div><div class="ttl">Quine builder</div></a>
+    <a class="module-card" href="p14-rice-theorem.html"><div class="num">P14 · CLO-1/2</div><div class="ttl">Rice's theorem checker</div></a>
+    <a class="module-card" href="p15-fixed-point.html"><div class="num">P15 · CLO-2</div><div class="ttl">Recursion fixed point</div></a>
+    <a class="module-card" href="p16-self-aware-tm.html"><div class="num">P16 · CLO-1</div><div class="ttl">Self-aware TM</div></a>
+    <a class="module-card" href="p52-kamikaze.html"><div class="num">P52 · CLO-1</div><div class="ttl">Kamikaze TM</div></a>
+  </div>
+</section>
+
+<section id="r2">
+  <h2>Round 2 · Lectures 9–12 · NP &amp; Cook–Levin (30 pts each)</h2>
+
+  <h3>Lecture 9 — Time complexity &amp; P</h3>
+  <div class="module-grid">
+    <a class="module-card" href="p17-growth-race.html"><div class="num">P17 · CLO-3</div><div class="ttl">Growth-rate race</div></a>
+    <a class="module-card" href="p18-single-tape-onbn.html"><div class="num">P18 · CLO-3</div><div class="ttl">Single-tape {0ⁿ1ⁿ}</div></a>
+    <a class="module-card" href="p19-two-tape-race.html"><div class="num">P19 · CLO-3</div><div class="ttl">Single-tape vs two-tape</div></a>
+    <a class="module-card" href="p20-bigO-classifier.html"><div class="num">P20 · CLO-3</div><div class="ttl">Big-O classifier</div></a>
+    <a class="module-card" href="p53-tm-profiler.html"><div class="num">P53 · CLO-3</div><div class="ttl">TM running-time profiler</div></a>
+  </div>
+
+  <h3>Lecture 10 — NP &amp; verifiers</h3>
+  <div class="module-grid">
+    <a class="module-card" href="p21-verifier-vs-solver.html"><div class="num">P21 · CLO-3</div><div class="ttl">Verifier vs brute force</div></a>
+    <a class="module-card" href="p22-sat-interactive.html"><div class="num">P22 · CLO-3</div><div class="ttl">Interactive SAT</div></a>
+    <a class="module-card" href="p23-hampath-verifier.html"><div class="num">P23 · CLO-3</div><div class="ttl">HAMPATH verifier</div></a>
+    <a class="module-card" href="p24-p-showcase.html"><div class="num">P24 · CLO-3</div><div class="ttl">P-class showcase</div></a>
+    <a class="module-card" href="p54-composites-verifier.html"><div class="num">P54 · CLO-3</div><div class="ttl">COMPOSITES verifier</div></a>
+  </div>
+
+  <h3>Lecture 11 — Cook–Levin</h3>
+  <div class="module-grid">
+    <a class="module-card" href="p25-cook-levin-tableau.html"><div class="num">P25 · CLO-4</div><div class="ttl">Cook-Levin tableau</div></a>
+    <a class="module-card" href="p26-sat-to-3sat.html"><div class="num">P26 · CLO-4</div><div class="ttl">SAT → 3SAT</div></a>
+    <a class="module-card" href="p27-3sat-clique.html"><div class="num">P27 · CLO-4</div><div class="ttl">3SAT → CLIQUE</div></a>
+    <a class="module-card" href="p28-clique-to-vc.html"><div class="num">P28 · CLO-4</div><div class="ttl">CLIQUE → VC</div></a>
+    <a class="module-card" href="p55-cook-levin-specific.html"><div class="num">P55 · CLO-4</div><div class="ttl">Cook-Levin (specific)</div></a>
+  </div>
+
+  <h3>Lecture 12 — More NP-complete problems</h3>
+  <div class="module-grid">
+    <a class="module-card" href="p29-subset-sum.html"><div class="num">P29 · CLO-4</div><div class="ttl">SUBSET-SUM</div></a>
+    <a class="module-card" href="p30-hampath-reduction.html"><div class="num">P30 · CLO-4</div><div class="ttl">3SAT → HAMPATH</div></a>
+    <a class="module-card" href="p31-3color.html"><div class="num">P31 · CLO-4</div><div class="ttl">3SAT → 3COLOR</div></a>
+    <a class="module-card" href="p32-self-reducibility.html"><div class="num">P32 · CLO-3/4</div><div class="ttl">SAT self-reducibility</div></a>
+    <a class="module-card" href="p56-set-cover.html"><div class="num">P56 · CLO-4</div><div class="ttl">SET-COVER</div></a>
+  </div>
+</section>
+
+<section id="r3">
+  <h2>Round 3 · Lectures 13–16 · Space &amp; hierarchy (40 pts each)</h2>
+
+  <h3>Lecture 13 — Space, PSPACE, Savitch</h3>
+  <div class="module-grid">
+    <a class="module-card" href="p33-space-time-chart.html"><div class="num">P33 · CLO-5</div><div class="ttl">Space vs time chart</div></a>
+    <a class="module-card" href="p34-savitch-tree.html"><div class="num">P34 · CLO-4</div><div class="ttl">Savitch's tree</div></a>
+    <a class="module-card" href="p35-pspace-npspace.html"><div class="num">P35 · CLO-5</div><div class="ttl">PSPACE = NPSPACE</div></a>
+    <a class="module-card" href="p36-tqbf-game-tree.html"><div class="num">P36 · CLO-4</div><div class="ttl">TQBF game tree</div></a>
+    <a class="module-card" href="p57-exptime-vs-pspace.html"><div class="num">P57 · CLO-5</div><div class="ttl">EXPTIME vs PSPACE</div></a>
+  </div>
+
+  <h3>Lecture 14 — PSPACE-complete games</h3>
+  <div class="module-grid">
+    <a class="module-card" href="p37-tqbf3.html"><div class="num">P37 · CLO-4</div><div class="ttl">TQBF₃ normal form</div></a>
+    <a class="module-card" href="p38-geography.html"><div class="num">P38 · CLO-4</div><div class="ttl">Generalized Geography</div></a>
+    <a class="module-card" href="p39-tqbf-to-geography.html"><div class="num">P39 · CLO-4</div><div class="ttl">TQBF → Geography</div></a>
+    <a class="module-card" href="p40-chess-hardness.html"><div class="num">P40 · CLO-4</div><div class="ttl">Generalized chess</div></a>
+    <a class="module-card" href="p58-othello-hardness.html"><div class="num">P58 · CLO-4</div><div class="ttl">Generalized Hex</div></a>
+  </div>
+
+  <h3>Lecture 15 — L, NL, Immerman–Szelepcsényi</h3>
+  <div class="module-grid">
+    <a class="module-card" href="p41-log-space.html"><div class="num">P41 · CLO-3/5</div><div class="ttl">Log-space machine</div></a>
+    <a class="module-card" href="p42-nl-path.html"><div class="num">P42 · CLO-5</div><div class="ttl">NL PATH</div></a>
+    <a class="module-card" href="p43-path-nl-complete.html"><div class="num">P43 · CLO-4/5</div><div class="ttl">PATH NL-complete</div></a>
+    <a class="module-card" href="p44-inductive-counting.html"><div class="num">P44 · CLO-5</div><div class="ttl">Inductive counting</div></a>
+    <a class="module-card" href="p59-2sat-nl.html"><div class="num">P59 · CLO-3/5</div><div class="ttl">2-SAT in NL</div></a>
+  </div>
+
+  <h3>Lecture 16 — Hierarchy theorems</h3>
+  <div class="module-grid">
+    <a class="module-card" href="p45-hierarchy-diagonal.html"><div class="num">P45 · CLO-1/5</div><div class="ttl">Space hierarchy</div></a>
+    <a class="module-card" href="p46-time-hierarchy.html"><div class="num">P46 · CLO-1/5</div><div class="ttl">Time hierarchy</div></a>
+    <a class="module-card" href="p47-nl-pspace.html"><div class="num">P47 · CLO-5</div><div class="ttl">NL ⊊ PSPACE</div></a>
+    <a class="module-card" href="p48-p-exptime.html"><div class="num">P48 · CLO-5</div><div class="ttl">P ⊊ EXPTIME</div></a>
+    <a class="module-card" href="p60-regex-expspace.html"><div class="num">P60 · CLO-5</div><div class="ttl">REGEX-EQ EXPSPACE-complete</div></a>
+  </div>
+</section>
+
+<section>
+  <h2>Every tool's structure</h2>
+  <ol>
+    <li><strong>Theory</strong> — formal theorem in a gold box + intuition</li>
+    <li><strong>Animated demo</strong> — auto-plays on load, loops, ⏸/▶ Pause/Play, Step, Reset, Speed (0.25× – 3×), narrated step-by-step</li>
+    <li><strong>Q&amp;A defence notes</strong> — 3-5 anticipated peer questions with model answers</li>
+  </ol>
+</section>
+
+</div>
+
+<footer class="foot">
+  Student tools · 60 problems · BCS 402 · Dr. Arash Kermani · CUD
+</footer>
+
+</body>
+</html>

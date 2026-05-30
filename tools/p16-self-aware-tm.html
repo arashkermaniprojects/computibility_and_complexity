@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P16 · Self-aware TM</title>
+<link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css">
+<script src="../widget-loop.js"></script></head><body>
+
+<header class="tool-header">
+<div class="crumb"><a href="index.html">← Student tools</a> · Problem 16 · Lecture 8 · Round 1 (30 pts)</div>
+<h1>Self-aware Turing machines</h1>
+<p class="sub">A TM that reads its own description and acts on it. Used to give a one-line proof that A<sub>TM</sub> is undecidable.</p>
+<div class="tags"><span class="tag-pill">CLO-1</span><span class="tag-pill warn">R1·30 pts</span><span class="tag-pill info">L8</span></div>
+</header>
+
+<div class="wrap">
+
+<section><div class="section-label">1 · Theory</div>
+<p>The recursion theorem says: <strong>any TM can effectively obtain its own description ⟨M⟩</strong> on its tape and use it as data. This gives a beautifully short re-proof of A<sub>TM</sub>-undecidability.</p>
+<div class="theorem-box"><div class="theorem-label">A<sub>TM</sub> undecidable · recursion-theorem proof</div>
+<p style="margin:4px 0;">Suppose D decides A<sub>TM</sub>. By the recursion theorem, build a TM M that on input w:</p>
+<ol style="margin:4px 0;"><li>Obtain ⟨M⟩.</li><li>Compute D(⟨M, w⟩).</li><li>Output the OPPOSITE of D's answer.</li></ol>
+<p style="margin:4px 0;">Then M accepts w ⇔ D says M doesn't accept w ⇔ M doesn't accept w. Contradiction.</p></div>
+<p>The diagonalization is now hidden inside M itself, not stretched across a separate machine D' as in Problem 3.</p>
+</section>
+
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">M inspects ⟨M⟩ and decides what to do <span class="pill">Auto-plays</span></div>
+<div class="controls">
+<button class="btn play-btn" id="sa-run">⏸ Pause</button><button class="btn ghost" id="sa-step">Step</button><button class="btn ghost" id="sa-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="sa-speed" min="0.25" max="3" step="0.25" value="1"><span id="sa-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label>
+</div>
+<svg id="sa-svg" viewBox="0 0 760 280" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="sa-explain"></div>
+</div></section>
+
+<section><div class="section-label">3 · Q&amp;A defence notes</div>
+<ul class="qa-list">
+<li><div class="q">Q1. Compare with the Problem 3 proof.</div><div class="a">Problem 3 builds an external D that flips H. Problem 16's M flips D <em>from inside itself</em>, using the recursion theorem to get ⟨M⟩. Same contradiction, cleaner structure.</div></li>
+<li><div class="q">Q2. Does M actually "know" its own code?</div><div class="a">In the sense the recursion theorem provides: yes, ⟨M⟩ is written on M's tape before computation begins (or constructable on demand). M can then operate on ⟨M⟩ like any other input.</div></li>
+<li><div class="q">Q3. Where else is self-reference used in this course?</div><div class="a">Rice's theorem (P14), Gödel's incompleteness, the construction of complete problems in complexity theory, fixed-point combinators in λ-calculus.</div></li>
+</ul></section>
+
+</div>
+<footer class="foot">Problem 16 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<script>
+(function(){
+let stage = 0; const T = 5;
+function render() {
+  let s = '';
+  s += `<text x="380" y="30" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="700">M's lifecycle on input w</text>`;
+  const boxes = [
+    {x: 30, y: 70, w: 140, h: 70, label: 'Input w', sub: 'arbitrary', col: 'var(--info)'},
+    {x: 200, y: 70, w: 140, h: 70, label: 'Get ⟨M⟩', sub: 'via recursion thm', col: 'var(--gold)'},
+    {x: 370, y: 70, w: 140, h: 70, label: 'D(⟨M, w⟩)', sub: 'ask hyp. decider', col: 'var(--warn)'},
+    {x: 540, y: 70, w: 140, h: 70, label: 'Flip output', sub: 'do opposite of D', col: 'var(--accent)'}
+  ];
+  boxes.forEach((b, i) => {
+    const on = stage >= i + 1;
+    const op = on ? 1 : 0.25;
+    s += `<rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" rx="10" fill="white" stroke="${on?b.col:'#bbb'}" stroke-width="${on?2.5:1}" opacity="${op}"/>`;
+    s += `<text x="${b.x+b.w/2}" y="${b.y+30}" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="700" fill="${on?b.col:'#888'}" opacity="${op}">${b.label}</text>`;
+    s += `<text x="${b.x+b.w/2}" y="${b.y+52}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" fill="${on?'var(--muted)':'#bbb'}" opacity="${op}">${b.sub}</text>`;
+  });
+  if (stage >= T) s += `<text x="380" y="200" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="700" fill="var(--warn)">M accepts w ⇔ D says M doesn't accept w ⇔ M doesn't accept w. CONTRADICTION.</text>`;
+  document.getElementById('sa-svg').innerHTML = s;
+  const m = [
+    `<div class="step-num">Stage 0 · the assumption</div><p style="margin:4px 0;">Assume D decides A<sub>TM</sub>. We'll build a self-referential M that contradicts D.</p>`,
+    `<div class="step-num">Stage 1 · M receives w</div><p style="margin:4px 0;">Arbitrary input.</p>`,
+    `<div class="step-num">Stage 2 · M obtains ⟨M⟩</div><p style="margin:4px 0;">The recursion theorem guarantees this is possible — M can effectively get its own description onto its tape.</p>`,
+    `<div class="step-num">Stage 3 · ask D about itself</div><p style="margin:4px 0;">M calls D(⟨M, w⟩). D supposedly always answers correctly: "does M accept w?"</p>`,
+    `<div class="step-num">Stage 4 · do the opposite</div><p style="margin:4px 0;">If D says yes, M rejects. If D says no, M accepts. Direct contradiction.</p>`,
+    `<div class="step-num">Stage 5 · M can't exist if D exists. D doesn't exist.</div><p style="margin:4px 0;">But M is built by composition from D and a recursion-theorem construction — both effective. So if D existed, M would too. Contradiction. <strong>D cannot exist; A<sub>TM</sub> is undecidable.</strong></p>`
+  ];
+  document.getElementById('sa-explain').innerHTML = m[Math.min(stage, m.length-1)];
+}
+function step() { if (stage < T) stage++; render(); }
+function reset() { stage = 0; render(); }
+function atEnd() { return stage >= T; }
+WidgetLoop.create({runBtn:document.getElementById('sa-run'),stepBtn:document.getElementById('sa-step'),resetBtn:document.getElementById('sa-reset'),speedSlider:document.getElementById('sa-speed'),speedLabel:document.getElementById('sa-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:2500,baseLoopMs:5500,autoStartMs:1500});
+reset();
+})();
+</script><script src="../presentation.js"></script>
+</body></html>

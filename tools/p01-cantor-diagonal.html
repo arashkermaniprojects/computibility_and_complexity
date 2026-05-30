@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1 · Cantor's diagonal argument</title>
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css">
+<script src="../widget-loop.js"></script>
+</head>
+<body>
+
+<header class="tool-header">
+  <div class="crumb"><a href="index.html">← Student tools</a> · Problem 1 · Lecture 5 · Round 1 (30 pts)</div>
+  <h1>Cantor's diagonal argument</h1>
+  <p class="sub">The trick that opens the entire theory of undecidability.</p>
+  <div class="tags">
+    <span class="tag-pill">CLO-1 · Diagonalization</span>
+    <span class="tag-pill warn">Round 1 · 30 pts</span>
+    <span class="tag-pill info">Lecture 5</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- ============================================================ -->
+<section>
+  <div class="section-label">1 · Why this matters · the BIG picture</div>
+
+  <p>
+    Before we can talk about whether a problem is "computable," we need to know whether
+    there are even <em>enough programs</em> to solve all possible problems. Cantor's
+    1891 diagonal argument answers that with a definitive <strong>no</strong>: there are
+    fundamentally more <em>languages</em> than there are <em>programs</em>.
+  </p>
+
+  <div class="theorem-box">
+    <div class="theorem-label">The chain of consequences</div>
+    <ol style="margin: 4px 0;">
+      <li><strong>Cantor's theorem</strong> (this problem): the set of functions ℕ → {0,1} is <em>uncountable</em>.</li>
+      <li>Each Turing machine has a <em>finite</em> description. The set of all TMs is <em>countable</em>.</li>
+      <li>Each TM recognizes <em>one</em> language. So the set of TM-recognizable languages is countable.</li>
+      <li>But the set of <em>all</em> languages over Σ = {0,1} is the same size as 2<sup>ℕ</sup> — uncountable.</li>
+      <li><strong>Conclusion:</strong> there exist languages that NO Turing machine can recognize.</li>
+    </ol>
+  </div>
+
+  <p>
+    So even before you've seen the halting problem or A<sub>TM</sub>, you already know
+    undecidable problems must exist. The diagonal argument is the original proof that
+    "computer scientists have something to do" — there will always be limits.
+  </p>
+
+  <h3>Real-world analogy</h3>
+  <p>
+    Imagine you tried to list every infinite-digit decimal number 0.d<sub>1</sub>d<sub>2</sub>d<sub>3</sub>…
+    no matter how cleverly you order them. Cantor's argument says: take the i-th digit of the i-th number,
+    add 1 to it (mod 10), and concatenate. The resulting number disagrees with every number on your list
+    at <em>at least one digit</em>. So your list missed at least one real number — and by extension,
+    cannot be exhaustive.
+  </p>
+</section>
+
+<!-- ============================================================ -->
+<section>
+  <div class="section-label">2 · Setup · what we're trying to prove</div>
+
+  <p>
+    Let <span class="math">2<sup>ℕ</sup> = {f : ℕ → {0, 1}}</span> denote the set of all functions from
+    the natural numbers to {0, 1}. Equivalently: infinite binary strings.
+  </p>
+
+  <div class="theorem-box">
+    <div class="theorem-label">Theorem (Cantor, 1891)</div>
+    <p style="margin: 4px 0;">
+      The set <span class="math">2<sup>ℕ</sup></span> is <strong>uncountable</strong>. There is no
+      surjection (onto map) from ℕ to <span class="math">2<sup>ℕ</sup></span>.
+    </p>
+    <p style="margin: 4px 0;">
+      Equivalently: for every supposed enumeration <span class="math">f<sub>1</sub>, f<sub>2</sub>, f<sub>3</sub>, …</span>
+      of functions ℕ → {0,1}, there is some function <span class="math">g</span> that is NOT in the list.
+    </p>
+  </div>
+
+  <h3>Vocabulary refresher</h3>
+  <ul>
+    <li><strong>Countable</strong>: can be put in 1-to-1 correspondence with ℕ. Example: integers, rationals, finite strings, Turing machines.</li>
+    <li><strong>Uncountable</strong>: NOT countable. Example: real numbers, infinite binary strings, all subsets of ℕ.</li>
+    <li><strong>Surjection</strong>: a function f : A → B is surjective ("onto") if every b ∈ B has some a ∈ A with f(a) = b.</li>
+    <li><strong>Enumeration</strong>: a list f<sub>1</sub>, f<sub>2</sub>, … i.e. a surjective f : ℕ → S.</li>
+  </ul>
+
+  <p>
+    The proof strategy is <strong>proof by contradiction</strong>: assume an enumeration exists, then
+    construct a specific function g that cannot be in any position of the list.
+  </p>
+</section>
+
+<!-- ============================================================ -->
+<section>
+  <div class="section-label">3 · The proof, step by step</div>
+
+  <p>
+    Suppose for contradiction that <span class="math">2<sup>ℕ</sup></span> were countable. Then we could list all its
+    elements:
+  </p>
+  <div class="math-block">
+    f<sub>1</sub>, f<sub>2</sub>, f<sub>3</sub>, f<sub>4</sub>, …
+  </div>
+
+  <p>
+    Picture the list as an infinite table. Row <em>i</em> shows f<sub>i</sub>'s values:
+    f<sub>i</sub>(0), f<sub>i</sub>(1), f<sub>i</sub>(2), …
+  </p>
+
+  <pre style="font-family: ui-monospace, monospace; font-size: 13px;">
+        col 0   col 1   col 2   col 3   …
+f₁  →   f₁(0)   f₁(1)   f₁(2)   f₁(3)   …
+f₂  →   f₂(0)   f₂(1)   f₂(2)   f₂(3)   …
+f₃  →   f₃(0)   f₃(1)   f₃(2)   f₃(3)   …
+f₄  →   f₄(0)   f₄(1)   f₄(2)   f₄(3)   …
+ ⋮       ⋮       ⋮       ⋮       ⋮
+</pre>
+
+  <p>
+    The <strong>diagonal</strong> consists of the underlined cells <em>f<sub>i</sub>(i−1)</em>:
+    f<sub>1</sub>(0), f<sub>2</sub>(1), f<sub>3</sub>(2), … Now define a new function:
+  </p>
+
+  <div class="math-block">
+    g(n) = 1 − f<sub>n+1</sub>(n)
+  </div>
+
+  <p>
+    That is, take the (n+1)-th row's n-th entry and flip it.
+  </p>
+
+  <h3>Why g is not in the list</h3>
+  <p>
+    Suppose, for further contradiction, that <span class="math">g = f<sub>k</sub></span> for some specific k ≥ 1.
+    Then in particular g(k−1) = f<sub>k</sub>(k−1). But by our construction:
+  </p>
+  <div class="math-block">
+    g(k−1) = 1 − f<sub>k</sub>(k−1).
+  </div>
+  <p>
+    Combining: <span class="math">f<sub>k</sub>(k−1) = 1 − f<sub>k</sub>(k−1)</span>. But a Boolean value cannot equal
+    its own negation. Contradiction. So no such k exists. ∎
+  </p>
+
+  <h3>The single key insight</h3>
+  <p>
+    g only needs to <strong>disagree at one cell per row</strong>. By targeting the diagonal,
+    g is guaranteed to differ from row k at column k−1, no matter what row k contains.
+    The diagonal acts as a "uniform target" — one cell per supposed-listed function.
+  </p>
+</section>
+
+<!-- ============================================================ -->
+<section>
+  <div class="section-label">4 · Animated demo · auto-plays · loops</div>
+
+  <div class="widget">
+    <div class="widget-title">Cantor's diagonal · build rows, then flip <span class="pill">Auto-plays</span></div>
+
+    <div class="controls">
+      <button class="btn play-btn" id="cd-run">⏸ Pause</button>
+      <button class="btn ghost" id="cd-step">Step</button>
+      <button class="btn ghost" id="cd-reset">Reset</button>
+      <label class="speed-control">Speed
+        <input type="range" id="cd-speed" min="0.25" max="3" step="0.25" value="1">
+        <span id="cd-speed-label" style="font-family: var(--mono); min-width: 28px;">1×</span>
+      </label>
+      <label>Rows: <input type="range" id="cd-n" min="5" max="10" value="7" style="width:120px;"> <span id="cd-n-label">7</span></label>
+    </div>
+
+    <div id="cd-table-wrap" style="overflow-x: auto;"></div>
+
+    <div class="explain-panel" id="cd-explain"></div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section>
+  <div class="section-label">5 · Worked example · 4 specific functions</div>
+
+  <p>
+    Let's do this with concrete numbers. Suppose someone claims they've listed every binary
+    sequence and gives us these 4 as the first four entries:
+  </p>
+
+  <pre style="font-family: ui-monospace, monospace; font-size: 13px;">
+        n=0   n=1   n=2   n=3   n=4   n=5  …
+f₁  →    <b>0</b>     1     0     1     1     0
+f₂  →    1     <b>1</b>     0     0     1     0
+f₃  →    0     0     <b>1</b>     1     0     0
+f₄  →    1     0     0     <b>0</b>     1     1
+</pre>
+
+  <p>The bold cells are the diagonal: f<sub>1</sub>(0)=0, f<sub>2</sub>(1)=1, f<sub>3</sub>(2)=1, f<sub>4</sub>(3)=0.</p>
+
+  <p>Now construct g by flipping each diagonal bit:</p>
+
+  <div class="theorem-box">
+    <pre style="font-family: ui-monospace, monospace; font-size: 14px; margin: 0;">
+g(0) = 1 − f₁(0) = 1 − 0 = <b>1</b>
+g(1) = 1 − f₂(1) = 1 − 1 = <b>0</b>
+g(2) = 1 − f₃(2) = 1 − 1 = <b>0</b>
+g(3) = 1 − f₄(3) = 1 − 0 = <b>1</b>
+…
+</pre>
+  </div>
+
+  <p>
+    So g starts <strong>1, 0, 0, 1, ...</strong> Compare with each row:
+  </p>
+
+  <ul>
+    <li><strong>g vs f<sub>1</sub>:</strong> g(0) = 1, f<sub>1</sub>(0) = 0. <span style="color: var(--warn);">Different at index 0 ⇒ g ≠ f<sub>1</sub>.</span></li>
+    <li><strong>g vs f<sub>2</sub>:</strong> g(1) = 0, f<sub>2</sub>(1) = 1. <span style="color: var(--warn);">Different at index 1 ⇒ g ≠ f<sub>2</sub>.</span></li>
+    <li><strong>g vs f<sub>3</sub>:</strong> g(2) = 0, f<sub>3</sub>(2) = 1. <span style="color: var(--warn);">Different at index 2 ⇒ g ≠ f<sub>3</sub>.</span></li>
+    <li><strong>g vs f<sub>4</sub>:</strong> g(3) = 1, f<sub>4</sub>(3) = 0. <span style="color: var(--warn);">Different at index 3 ⇒ g ≠ f<sub>4</sub>.</span></li>
+  </ul>
+
+  <p>
+    g disagrees with EVERY row at exactly one cell. So g is not in the list, contradicting the
+    assumption of exhaustiveness.
+  </p>
+</section>
+
+<!-- ============================================================ -->
+<section>
+  <div class="section-label">6 · Connections · where this argument echoes</div>
+
+  <div class="theorem-box">
+    <div class="theorem-label">Five places in this course where you'll see diagonalization again</div>
+    <ol style="margin: 4px 0;">
+      <li><strong>A<sub>TM</sub> is undecidable</strong> (Problem 3): rows = TMs, columns = TM descriptions, flip cells to build contradiction TM D.</li>
+      <li><strong>Rice's theorem</strong> (Problem 14): diagonalization shows every nontrivial semantic property of recognizable languages is undecidable.</li>
+      <li><strong>Time hierarchy theorem</strong> (Problem 46): rows = TIME(f) machines, columns = inputs. D times out at f·log f, escapes TIME(f).</li>
+      <li><strong>Space hierarchy theorem</strong> (Problem 45): same idea with space bounds. Concrete proof that SPACE(f) ⊊ SPACE(f · log f).</li>
+      <li><strong>Gödel's incompleteness</strong> (outside this course): self-referential sentence "this sentence is not provable" is built by diagonalization.</li>
+    </ol>
+  </div>
+
+  <p>
+    Diagonalization is so prevalent that <strong>any time you see "for every algorithm X, here's an input that escapes it"</strong>,
+    you should suspect a diagonal argument is hiding behind it.
+  </p>
+
+  <h3>Why it works only for the right things</h3>
+  <p>
+    Diagonalization needs three ingredients:
+  </p>
+  <ol>
+    <li>An <em>enumeration</em> of the things you want to show miss something (functions, TMs, programs in time bound).</li>
+    <li>A way to <em>simulate</em> each item from its description (for TMs: the universal TM).</li>
+    <li>A way to <em>flip</em> the answer (for {0,1} functions: subtract from 1; for TMs: swap accept and reject).</li>
+  </ol>
+  <p>
+    These are the same ingredients that make P ≠ NP famously HARD to prove — flipping the answer
+    of an NP machine isn't obviously possible while staying in NP.
+  </p>
+</section>
+
+<!-- ============================================================ -->
+<section>
+  <div class="section-label">7 · Common pitfalls · what students miss</div>
+
+  <ul class="qa-list">
+    <li>
+      <div class="q">Pitfall 1 · "But what if we list g too?"</div>
+      <div class="a">If g is appended as f<sub>m+1</sub> to your list, diagonalize again on the extended list — you'll produce g′ that flips the new (m+1)-th diagonal cell. The argument adapts. No countable list can be closed under diagonalization.</div>
+    </li>
+    <li>
+      <div class="q">Pitfall 2 · "g is a function — what does 'in the list' mean exactly?"</div>
+      <div class="a">"In the list" means there exists some specific index k with f<sub>k</sub> = g <em>as functions</em>: ∀ n, f<sub>k</sub>(n) = g(n). The contradiction shows that for ANY k, there is at least one n (namely n = k−1) where they disagree.</div>
+    </li>
+    <li>
+      <div class="q">Pitfall 3 · "Doesn't this depend on which diagonal we pick?"</div>
+      <div class="a">No. We could flip any cell per row, as long as we pick a different column per row. The diagonal is just the most convenient choice. Any function π : ℕ → ℕ that's a bijection works as a target.</div>
+    </li>
+    <li>
+      <div class="q">Pitfall 4 · "Cantor proved this 130+ years ago — what's modern about it?"</div>
+      <div class="a">Cantor proved sets have different sizes. We use the same proof PATTERN to prove computational limits. The reapplication to TMs is the conceptual leap that founded computer science.</div>
+    </li>
+    <li>
+      <div class="q">Pitfall 5 · "Couldn't we have a 'super-clever' enumeration that avoids diagonalization?"</div>
+      <div class="a">No. The proof targets ANY purported enumeration. There's no escape: as long as you commit to a specific ordering (any ordering), the diagonal argument constructs an escape function relative to that ordering.</div>
+    </li>
+  </ul>
+</section>
+
+<!-- ============================================================ -->
+<section>
+  <div class="section-label">8 · Q&amp;A defence notes</div>
+  <ul class="qa-list">
+    <li>
+      <div class="q">Q1. Why is the flipped function g not in the list?</div>
+      <div class="a">Because g disagrees with row i at column i−1, for every i ≥ 1. So g ≠ f<sub>i</sub> for every i in the list.</div>
+    </li>
+    <li>
+      <div class="q">Q2. Why does Cantor's theorem matter for computability?</div>
+      <div class="a">There are only countably many Turing machines (each is a finite description). So the languages recognized by TMs form a countable set. But there are uncountably many languages. <strong>Therefore most languages are not Turing-recognizable.</strong></div>
+    </li>
+    <li>
+      <div class="q">Q3. Is this the same as the A<sub>TM</sub> diagonalization (Problem 3)?</div>
+      <div class="a">Same <em>technique</em>, different <em>setting</em>. Here, rows are arbitrary functions; in Problem 3, rows are Turing machines and we flip "accepts" / "rejects" instead of bits.</div>
+    </li>
+    <li>
+      <div class="q">Q4. Doesn't this depend on the order of listing?</div>
+      <div class="a">No. We don't need the list in any particular order. We just need an enumeration f<sub>1</sub>, f<sub>2</sub>, … — any surjection ℕ → 2<sup>ℕ</sup>. The diagonal trick works against any such enumeration.</div>
+    </li>
+    <li>
+      <div class="q">Q5. Bonus: prove that the reals between 0 and 1 are uncountable.</div>
+      <div class="a">Each real x ∈ [0,1) has a binary expansion 0.x<sub>0</sub>x<sub>1</sub>x<sub>2</sub>… which is exactly a function ℕ → {0, 1}. So |[0,1)| = |2<sup>ℕ</sup>|. Cantor's theorem applies. (Caveat: dyadic numbers have two expansions; that quirk doesn't break the proof, only complicates the bijection.)</div>
+    </li>
+  </ul>
+</section>
+
+<!-- ============================================================ -->
+<section>
+  <div class="section-label">9 · How to present this in class</div>
+  <ol>
+    <li>State the theorem (<strong>1 min</strong>): "There are more binary sequences than natural numbers."</li>
+    <li>Real-world hook (<strong>1 min</strong>): "You will see this proof technique 5 more times this semester. Watch carefully."</li>
+    <li>Reset the widget; explain rows and columns (<strong>1 min</strong>).</li>
+    <li>Step through 5 rows manually; point out diagonal cells (<strong>2 min</strong>).</li>
+    <li>Flip the diagonal; show how g escapes each row (<strong>2 min</strong>).</li>
+    <li>Walk through the worked example for n = 4 with concrete bits (<strong>3 min</strong>).</li>
+    <li>State the consequence: most languages are not Turing-recognizable (<strong>1 min</strong>).</li>
+    <li>Q&amp;A (<strong>3-5 min</strong>): expect "what about g?", "does ordering matter?", "what if we listed g too?".</li>
+  </ol>
+</section>
+
+</div>
+
+<footer class="foot">
+  Problem 1 · BCS 402 · Dr. Arash Kermani · CUD
+</footer>
+
+<script>
+(function(){
+  let n = 7;
+  let rows = [];
+  let flipped = false;
+  let stage = 0;
+
+  function makeRow(i) {
+    let seed = ((i+1) * 2654435761) >>> 0;
+    const row = [];
+    for (let j = 0; j < 10; j++) {
+      seed = (seed * 1664525 + 1013904223) >>> 0;
+      row.push((seed >>> 16) & 1);
+    }
+    return row;
+  }
+
+  function render() {
+    let html = '<table class="data" style="font-family: ui-monospace, monospace; text-align: center;"><thead><tr><th></th>';
+    for (let j = 0; j < n; j++) html += `<th>j=${j}</th>`;
+    html += `<th style="background:var(--gold-soft);">f<sub>i</sub>(i)</th></tr></thead><tbody>`;
+
+    for (let i = 0; i < n; i++) {
+      const isBuilt = i < rows.length;
+      html += `<tr><th>f<sub>${i+1}</sub></th>`;
+      for (let j = 0; j < n; j++) {
+        const isDiag = (i === j);
+        const v = isBuilt ? rows[i][j] : '·';
+        const hl = isDiag ? `background:${flipped?'var(--warn-soft)':'var(--accent-soft)'};font-weight:bold;` : '';
+        const empty = !isBuilt ? 'color: #d0cdc4;' : '';
+        html += `<td style="${hl}${empty}">${v}</td>`;
+      }
+      const diagV = isBuilt ? rows[i][i] : '·';
+      const diagStyle = flipped ? 'background:var(--gold-soft);font-weight:bold;' : 'background:#fffaee; color: var(--muted);';
+      html += `<td style="${diagStyle}">${diagV}</td></tr>`;
+    }
+
+    html += '<tr style="border-top: 2px solid var(--gold); background: #fffaee;"><th style="color:var(--gold);"><b>g</b></th>';
+    for (let j = 0; j < n; j++) {
+      if (flipped && j < rows.length) {
+        const v = 1 - rows[j][j];
+        html += `<td style="background:var(--gold-soft);color:var(--warn);font-weight:bold;">${v}</td>`;
+      } else {
+        html += `<td style="background:var(--gold-soft);color:#d0cdc4;">·</td>`;
+      }
+    }
+    html += `<td style="background: var(--gold-soft); color: ${flipped ? 'var(--warn)' : 'var(--muted)'};">${flipped ? '≠ every row' : ''}</td></tr>`;
+    html += '</tbody></table>';
+    document.getElementById('cd-table-wrap').innerHTML = html;
+  }
+
+  function setExplain() {
+    const el = document.getElementById('cd-explain');
+    if (stage === 0) {
+      el.innerHTML = `<div class="step-num">Setup</div>
+        <p style="margin: 4px 0;">Assume: every function ℕ→{0,1} can be listed as rows f<sub>1</sub>…f<sub>${n}</sub>.</p>
+        <p style="margin: 4px 0;">Rows fill in one at a time. The diagonal cell (row i, col i−1) is the only one g cares about.</p>`;
+    } else if (stage <= n) {
+      const r = stage;
+      const diag = rows[r-1] ? rows[r-1][r-1] : 0;
+      el.innerHTML = `<div class="step-num">Row ${r} filled · f<sub>${r}</sub>(${r-1}) = ${diag}</div>
+        <p style="margin: 4px 0;"><strong>This row is the supposed function f<sub>${r}</sub>.</strong> Diagonal cell f<sub>${r}</sub>(${r-1}) = ${diag}.</p>
+        <p style="margin: 4px 0;">When we build g, g(${r-1}) = ${1-diag} — the opposite. So g ≠ f<sub>${r}</sub>.</p>
+        ${r < n ? `<p style="margin: 4px 0;">${n - r} row${n-r===1?'':'s'} still to fill.</p>` : `<p style="margin: 4px 0;"><strong>All rows filled. Next click flips the diagonal.</strong></p>`}`;
+    } else {
+      el.innerHTML = `<div class="step-num">Contradiction · g cannot be in the list</div>
+        <p style="margin: 4px 0;"><strong>The gold row is g.</strong> By construction g(i) = 1 − f<sub>i+1</sub>(i).</p>
+        <p style="margin: 4px 0;"><strong>Suppose g = f<sub>k</sub> for some k.</strong> Then g(k−1) = f<sub>k</sub>(k−1) AND g(k−1) = 1 − f<sub>k</sub>(k−1). Impossible.</p>
+        <p style="margin: 4px 0;"><strong>So g is NOT in the list. The set is uncountable.</strong></p>`;
+    }
+  }
+
+  function step() {
+    if (stage < n) {
+      rows.push(makeRow(stage));
+      stage++;
+    } else if (stage === n) {
+      flipped = true;
+      stage++;
+    }
+    render(); setExplain();
+  }
+  function reset() { rows = []; flipped = false; stage = 0; render(); setExplain(); }
+  function atEnd() { return stage > n; }
+
+  document.getElementById('cd-n').oninput = (e) => {
+    n = parseInt(e.target.value);
+    document.getElementById('cd-n-label').textContent = n;
+    reset();
+  };
+
+  WidgetLoop.create({
+    runBtn: document.getElementById('cd-run'),
+    stepBtn: document.getElementById('cd-step'),
+    resetBtn: document.getElementById('cd-reset'),
+    speedSlider: document.getElementById('cd-speed'),
+    speedLabel: document.getElementById('cd-speed-label'),
+    doStep: step,
+    atEnd,
+    doReset: reset,
+    baseStepMs: 1800,
+    baseLoopMs: 5000,
+    autoStartMs: 1200
+  });
+
+  reset();
+})();
+</script>
+<script src="../presentation.js"></script>
+</body>
+</html>

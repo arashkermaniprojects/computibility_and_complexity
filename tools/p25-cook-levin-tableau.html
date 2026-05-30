@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>P25 · Cook-Levin tableau</title><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css"><script src="../widget-loop.js"></script></head><body>
+<header class="tool-header"><div class="crumb"><a href="index.html">← Student tools</a> · Problem 25 · Lecture 11 · Round 2 (30 pts)</div>
+<h1>Cook–Levin tableau · TM run as SAT formula</h1><p class="sub">Encode an entire computation as a n<sup>k</sup>×n<sup>k</sup> grid; 2×3 windows become SAT clauses.</p>
+<div class="tags"><span class="tag-pill">CLO-4</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L11</span></div></header>
+<div class="wrap">
+
+<section><div class="section-label">1 · Why this matters · the BIG picture</div>
+<p>
+This is the <strong>founding theorem of NP-completeness</strong>. Before Cook (1971) and Levin (1973) independently
+proved it, NP existed as a class but no problem was known to be "the hardest". Cook–Levin pinned the title on
+<strong>SAT</strong> and started the chain reaction that today covers thousands of problems — 3SAT, CLIQUE, VERTEX-COVER,
+HAMPATH, TSP, SUBSET-SUM, 3-COLOR, INTEGER-PROGRAMMING, …
+</p>
+<p>
+The key insight: <strong>a Boolean formula can simulate a TM</strong>. Any problem in NP has a polynomial-time verifier;
+the verifier is a TM; encode its computation as a formula. That formula is satisfiable iff some certificate makes the
+verifier accept — which is exactly the NP membership question.
+</p>
+<div class="theorem-box"><div class="theorem-label">Cook–Levin (1971/73)</div><p style="margin:4px 0;">SAT is NP-complete. For every L ∈ NP there is a polynomial-time computable map x ↦ φ<sub>x</sub> such that x ∈ L iff φ<sub>x</sub> is satisfiable.</p></div>
+<p style="font-size:13.5px;color:var(--ink-soft);">
+<strong>Big consequence:</strong> a polynomial-time SAT solver would collapse NP to P, breaking modern cryptography
+(RSA, AES are not directly NP-hard, but most public-key assumptions live in or near NP). This is why the P vs NP
+question is the most famous open problem in computer science.
+</p>
+</section>
+
+<section><div class="section-label">2 · Setup · what we are encoding</div>
+<p>Pick L ∈ NP with poly-time verifier V. By definition:</p>
+<ul style="font-size:14px;line-height:1.65;">
+<li>x ∈ L ⇔ ∃ certificate c (|c| ≤ poly(|x|)) with V(x, c) accepting.</li>
+<li>V runs for at most n<sup>k</sup> steps, where n = |x|.</li>
+</ul>
+<p>So the entire run of V uses at most n<sup>k</sup> tape cells in at most n<sup>k</sup> time steps. We arrange this as a grid:</p>
+
+<div class="theorem-box" style="background:#f3f8f3;"><div class="theorem-label">The tableau</div>
+<ul style="margin:4px 0;padding-left:22px;font-size:13.5px;">
+<li><strong>Rows</strong> · time steps t = 0, 1, …, n<sup>k</sup>.</li>
+<li><strong>Columns</strong> · tape positions p = 0, 1, …, n<sup>k</sup>.</li>
+<li><strong>Cell (t, p)</strong> · holds one symbol from Γ ∪ Q (a tape symbol, or a state-marker indicating the head is here).</li>
+</ul></div>
+
+<p>Each cell becomes a set of Boolean variables: <span class="math">x<sub>t,p,s</sub></span> = "cell (t,p) holds symbol s". The variable count is n<sup>k</sup> · n<sup>k</sup> · |Γ ∪ Q| = polynomial.</p>
+</section>
+
+<section><div class="section-label">3 · The four clause families</div>
+<p>We assemble φ<sub>x</sub> = φ<sub>cell</sub> ∧ φ<sub>start</sub> ∧ φ<sub>accept</sub> ∧ φ<sub>move</sub>.</p>
+
+<table style="font-size:13.5px;width:100%;border-collapse:collapse;margin:10px 0;">
+<thead><tr style="background:var(--gold-soft);">
+<th style="padding:6px;border:1px solid var(--rule);">Family</th>
+<th style="padding:6px;border:1px solid var(--rule);">What it says</th>
+<th style="padding:6px;border:1px solid var(--rule);">Form</th>
+</tr></thead>
+<tbody>
+<tr><td style="padding:6px;border:1px solid var(--rule);"><strong>φ<sub>cell</sub></strong></td><td style="padding:6px;border:1px solid var(--rule);">Each cell holds exactly one symbol.</td><td style="padding:6px;border:1px solid var(--rule);font-family:var(--mono);font-size:12px;">(∨<sub>s</sub> x<sub>t,p,s</sub>) ∧ ¬(x<sub>t,p,s</sub>∧x<sub>t,p,s'</sub>)</td></tr>
+<tr><td style="padding:6px;border:1px solid var(--rule);"><strong>φ<sub>start</sub></strong></td><td style="padding:6px;border:1px solid var(--rule);">Row 0 = the start configuration on (x, c). c-bits are free.</td><td style="padding:6px;border:1px solid var(--rule);font-family:var(--mono);font-size:12px;">x<sub>0,0,q₀</sub> ∧ x<sub>0,1,x₁</sub> ∧ …</td></tr>
+<tr><td style="padding:6px;border:1px solid var(--rule);"><strong>φ<sub>accept</sub></strong></td><td style="padding:6px;border:1px solid var(--rule);">Some cell anywhere contains q<sub>accept</sub>.</td><td style="padding:6px;border:1px solid var(--rule);font-family:var(--mono);font-size:12px;">∨<sub>t,p</sub> x<sub>t,p,qₐ</sub></td></tr>
+<tr><td style="padding:6px;border:1px solid var(--rule);"><strong>φ<sub>move</sub></strong></td><td style="padding:6px;border:1px solid var(--rule);">Every 2×3 window is δ-consistent.</td><td style="padding:6px;border:1px solid var(--rule);font-family:var(--mono);font-size:12px;">∧<sub>(t,p)</sub> ∨<sub>w ∈ legal</sub> "window = w"</td></tr>
+</tbody>
+</table>
+
+<div class="theorem-box" style="background:#fffaf3;">
+<div class="theorem-label">Why 2×3 windows suffice</div>
+<p style="margin:4px 0;">A TM transition touches one cell (head position) and may change its two neighbours' relationship (head moves L or R). So checking <strong>two consecutive rows × three adjacent columns</strong> is enough to certify one δ-step. Tile the tableau with all such windows; if every one is legal, the whole run is legal.</p>
+</div>
+</section>
+
+<section><div class="section-label">4 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Fill the tableau cell-by-cell <span class="pill">Auto-plays</span></div>
+<div class="controls"><button class="btn play-btn" id="t-run">⏸ Pause</button><button class="btn ghost" id="t-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="t-speed" min="0.25" max="3" step="0.25" value="1"><span id="t-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
+<svg id="t-svg" viewBox="0 0 760 360" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="t-explain"></div></div></section>
+
+<section><div class="section-label">5 · Worked example · sizes for a concrete verifier</div>
+<p>Suppose L is SUBSET-SUM and the verifier V takes n bits and runs in n² steps:</p>
+<table style="font-size:13.5px;width:100%;border-collapse:collapse;margin:10px 0;">
+<thead><tr style="background:var(--gold-soft);">
+<th style="padding:6px;border:1px solid var(--rule);">Input size n</th>
+<th style="padding:6px;border:1px solid var(--rule);">Tableau cells (n²×n²)</th>
+<th style="padding:6px;border:1px solid var(--rule);">Variables (× |Γ∪Q| ≈ 20)</th>
+<th style="padding:6px;border:1px solid var(--rule);">Move-clauses (≤ 100 per cell)</th>
+</tr></thead>
+<tbody>
+<tr><td style="padding:6px;border:1px solid var(--rule);">10</td><td style="padding:6px;border:1px solid var(--rule);">10 000</td><td style="padding:6px;border:1px solid var(--rule);">~200 000</td><td style="padding:6px;border:1px solid var(--rule);">~1 000 000</td></tr>
+<tr><td style="padding:6px;border:1px solid var(--rule);">100</td><td style="padding:6px;border:1px solid var(--rule);">10⁸</td><td style="padding:6px;border:1px solid var(--rule);">~2·10⁹</td><td style="padding:6px;border:1px solid var(--rule);">~10¹⁰</td></tr>
+<tr><td style="padding:6px;border:1px solid var(--rule);">1000</td><td style="padding:6px;border:1px solid var(--rule);">10¹²</td><td style="padding:6px;border:1px solid var(--rule);">~2·10¹³</td><td style="padding:6px;border:1px solid var(--rule);">~10¹⁴</td></tr>
+</tbody>
+</table>
+<p>
+Polynomial — but the constant matters. In practice, modern SAT solvers handle problems with millions of variables.
+The Cook–Levin reduction is theoretical; tighter reductions (e.g. directly to 3SAT) are used for practical NP-completeness work.
+</p>
+</section>
+
+<section><div class="section-label">6 · Connections · the NP-complete family tree</div>
+<p>From Cook–Levin, every other NP-complete proof follows a fixed pattern: <em>"reduce SAT (or 3SAT) to my problem."</em></p>
+<ul style="font-size:14px;line-height:1.7;">
+<li><strong>3SAT</strong> · convert each clause of φ<sub>x</sub> into 3-literal clauses with auxiliary variables (Problem 26).</li>
+<li><strong>CLIQUE</strong> · vertices = literal occurrences; edge = compatible literals across different clauses (Problem 27).</li>
+<li><strong>VERTEX-COVER</strong> · complement of CLIQUE on the complement graph (Problem 28).</li>
+<li><strong>SUBSET-SUM</strong>, <strong>HAMPATH</strong>, <strong>3-COLOR</strong>, <strong>TSP</strong>, <strong>SCHEDULING</strong> — all via increasingly creative reductions from 3SAT.</li>
+</ul>
+<p style="font-size:13.5px;color:var(--ink-soft);">Karp's 1972 paper added 21 problems to the family in one stroke. Garey &amp; Johnson's 1979 book catalogued hundreds.</p>
+</section>
+
+<section><div class="section-label">7 · Common pitfalls · what students miss</div>
+<ol style="font-size:14px;line-height:1.7;">
+<li><strong>"The tableau is the SAT formula."</strong> No — the tableau is a thought picture. The formula encodes constraints <em>about</em> the tableau using Boolean variables.</li>
+<li><strong>Confusing rows with tape, columns with time.</strong> The convention here is rows = time, columns = position. Pick one and stick with it.</li>
+<li><strong>Encoding wide TMs.</strong> If the TM uses |Γ| = 100 symbols, each cell needs 100 variables. Still polynomial — but watch the constants.</li>
+<li><strong>Forgetting φ<sub>cell</sub>.</strong> Without "exactly one symbol per cell" clauses, a satisfying assignment could put two symbols in one cell. The construction breaks.</li>
+<li><strong>"This proves SAT is in NP."</strong> SAT ∈ NP needs a separate (easy) argument: guess the assignment, verify. Cook–Levin proves the <em>hardness</em> direction.</li>
+</ol>
+</section>
+
+<section><div class="section-label">8 · Q&amp;A defence notes</div>
+<ul class="qa-list">
+<li><div class="q">Q1. Why a 2×3 window?</div><div class="a">A TM transition affects only the head cell and possibly its neighbours, between two consecutive time steps. 2 rows × 3 columns captures one transition.</div></li>
+<li><div class="q">Q2. Why polynomial size?</div><div class="a">Tableau is n<sup>k</sup>×n<sup>k</sup> = poly cells. Each cell has |Γ|+|Q| Boolean variables (= which symbol/state). Formula size = polynomial in input size.</div></li>
+<li><div class="q">Q3. What's the SAT formula's role?</div><div class="a">φ<sub>x</sub> is satisfiable iff some valid accepting tableau exists iff some certificate c makes V(x, c) accept iff x ∈ L.</div></li>
+<li><div class="q">Q4. Why doesn't the same trick work for EXPTIME?</div><div class="a">An EXPTIME verifier runs for 2<sup>n</sup> steps, producing an exponential-size tableau and an exponential-size formula. That formula is satisfiable iff x ∈ L, but it's too big to write down in polynomial time — so we don't get an NP-style reduction to SAT.</div></li>
+<li><div class="q">Q5. Could SAT have a sub-exponential algorithm?</div><div class="a">Open. The Exponential Time Hypothesis (ETH) conjectures 3SAT cannot be solved in 2<sup>o(n)</sup>. Plenty of refined results assume ETH; no proof either way.</div></li>
+</ul></section>
+
+<section><div class="section-label">9 · How to present this in class</div>
+<p style="font-size:13.5px;"><strong>Total time: 12 minutes.</strong></p>
+<ul style="font-size:13.5px;line-height:1.7;">
+<li><strong>(1 min)</strong> Hook: "Why is SAT special?" Because every NP problem can dress up as a SAT instance.</li>
+<li><strong>(2 min)</strong> Define the tableau. Pick conventions (rows=time, columns=tape).</li>
+<li><strong>(3 min)</strong> Walk through the four clause families. Spend the most time on φ<sub>move</sub> and the 2×3 window.</li>
+<li><strong>(3 min)</strong> Run the visualization. Pause at the moment a 2×3 window highlights.</li>
+<li><strong>(2 min)</strong> Do a size sanity check: "For an n=100 input, how many cells?" Get the audience to compute.</li>
+<li><strong>(1 min)</strong> Forward link: Karp's 21 problems all follow from this single reduction.</li>
+</ul>
+</section>
+
+</div><footer class="foot">P25 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<script>(function(){
+const rows=7,cols=11; const cellW=(760-60)/cols, cellH=(360-60)/rows, sx=40, sy=30;
+function content(r,c){ if(r===0){if(c===0)return 'q₀'; if(c<=5)return '0'; if(c<=8)return '1'; return '_';} if(c===0)return '0'; if(c===r&&r<=5)return 'q'+r; if(c<r&&c<=5)return '0'; if(c<=5)return '0'; if(c<=8)return '1'; return '_';}
+let stage=0; const total=rows*cols;
+function render(){
+  let s=''; s+=`<text x="380" y="22" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" fill="var(--muted)">Each row = configuration C_i. Each column = tape cell.</text>`;
+  for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){const idx=r*cols+c, filled=idx<stage; const x=sx+c*cellW, y=sy+r*cellH; const isHi=idx===stage-1;
+    s+=`<rect x="${x}" y="${y}" width="${cellW-2}" height="${cellH-2}" fill="${isHi?'var(--gold-soft)':(filled?'#fff':'#f5f5f0')}" stroke="${isHi?'var(--gold)':'#ddd'}" stroke-width="${isHi?2:0.6}" opacity="${filled?1:0.3}"/>`;
+    if(filled){const ch=content(r,c); const col=ch.startsWith('q')?'var(--info)':(ch==='_'?'#aaa':'#1a1a1a');
+      s+=`<text x="${x+cellW/2}" y="${y+cellH/2+5}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="${ch.length>1?11:14}" font-weight="${ch.startsWith('q')?'bold':'normal'}" fill="${col}">${ch}</text>`;}
+  }
+  for(let r=0;r<rows;r++) s+=`<text x="20" y="${sy+r*cellH+cellH/2+5}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" fill="#888">t=${r}</text>`;
+  if(stage>cols){const r=Math.floor((stage-cols-1)/cols), c=Math.max(0,(stage-1)%cols-1);
+    if(r<rows-1&&c<cols-2){ s+=`<rect x="${sx+c*cellW-2}" y="${sy+r*cellH-2}" width="${3*cellW+4}" height="${2*cellH+4}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4 3" opacity="0.8"/><text x="${sx+c*cellW+1.5*cellW}" y="${sy+r*cellH-6}" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="11" fill="var(--accent)" font-weight="bold">2×3 window</text>`; }
+  }
+  document.getElementById('t-svg').innerHTML=s;
+  if(stage<=cols) document.getElementById('t-explain').innerHTML=`<div class="step-num">Row 0 · start configuration</div><p style="margin:4px 0;">Filling the start config: state q₀ at position 0, then input symbols.</p>`;
+  else if(stage<total) document.getElementById('t-explain').innerHTML=`<div class="step-num">Cell ${stage}/${total} · δ-consistency window</div><p style="margin:4px 0;">Each cell at time row must be consistent with the cell above and its left/right neighbours via one δ-step. The dashed orange window is one 2×3 constraint.</p>`;
+  else document.getElementById('t-explain').innerHTML=`<div class="step-num">Tableau complete</div><p style="margin:4px 0;"><strong>φ<sub>x</sub></strong> = φ<sub>cell</sub> ∧ φ<sub>start</sub> ∧ φ<sub>accept</sub> ∧ φ<sub>move</sub>. Polynomial size. Satisfiable iff x ∈ L. <strong>So any NP language reduces to SAT ⇒ SAT is NP-hard.</strong></p>`;
+}
+function step(){ if(stage<=total)stage++; render(); }
+function reset(){ stage=0; render(); }
+function atEnd(){ return stage>total; }
+WidgetLoop.create({runBtn:document.getElementById('t-run'),resetBtn:document.getElementById('t-reset'),speedSlider:document.getElementById('t-speed'),speedLabel:document.getElementById('t-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:160,baseLoopMs:5000,autoStartMs:1500});
+reset();
+})();</script><script src="../presentation.js"></script>
+</body></html>

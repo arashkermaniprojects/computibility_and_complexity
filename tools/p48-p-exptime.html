@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>P48 · P ⊊ EXPTIME</title><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css"><script src="../widget-loop.js"></script></head><body>
+<header class="tool-header"><div class="crumb"><a href="index.html">← Student tools</a> · Problem 48 · Lecture 16 · Round 3 (40 pts)</div>
+<h1>P ⊊ EXPTIME · proved strict</h1><p class="sub">Time hierarchy theorem: there is a problem in EXPTIME outside P.</p>
+<div class="tags"><span class="tag-pill">CLO-5</span><span class="tag-pill warn">R3·40 pts</span><span class="tag-pill info">L16</span></div></header>
+<div class="wrap">
+<section><div class="section-label">1 · Theory</div>
+<div class="theorem-box"><div class="theorem-label">Theorem</div><p style="margin:4px 0;">By the time hierarchy theorem, for any constant k there exists a language in TIME(2<sup>n</sup>) \ TIME(n<sup>k</sup>). So <strong>P ⊊ EXPTIME</strong>.</p></div>
+<p>This is one of the few PROVEN strict containments between standard complexity classes. P ⊊ NP, NP ⊊ PSPACE, PSPACE ⊊ EXPTIME — all open.</p></section>
+<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<div class="widget"><div class="widget-title">Walk the proof <span class="pill">Auto-plays</span></div>
+<div class="controls"><button class="btn play-btn" id="pe-run">⏸ Pause</button><button class="btn ghost" id="pe-step">Step</button><button class="btn ghost" id="pe-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="pe-speed" min="0.25" max="3" step="0.25" value="1"><span id="pe-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
+<svg id="pe-svg" viewBox="0 0 760 280" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
+<div class="explain-panel" id="pe-explain"></div></div></section>
+<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. What's an explicit language in EXPTIME \ P?</div><div class="a">The "halt within 2ⁿ steps" diagonalizer from the time hierarchy proof. Concrete natural examples: generalized chess (EXPTIME-complete).</div></li>
+<li><div class="q">Q2. Why is P ⊊ EXPTIME provable but P ⊊ NP not?</div><div class="a">Hierarchy theorem compares time bounds within the same kind of machine. NP uses nondeterminism — a different machine model. We don't have a direct hierarchy theorem connecting deterministic and nondeterministic time.</div></li>
+<li><div class="q">Q3. Are there separations between P and PSPACE?</div><div class="a">Not known. P ⊊ PSPACE is open. If we could prove P ⊊ PSPACE we'd also resolve P vs NP (since NP ⊆ PSPACE).</div></li>
+</ul></section></div><footer class="foot">P48 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<script>(function(){
+const steps=['P = ⋃_k TIME(n^k). For any k, P ⊆ TIME(n^k · poly).','EXPTIME = ⋃_k TIME(2^n^k). Includes TIME(2^n).','Time hierarchy: TIME(2^n) ⊋ TIME(n^k · log) for any constant k.','So EXPTIME ⊋ TIME(n^k) for every k ⇒ EXPTIME ⊋ P.','One of the few proven strict containments. P ⊊ EXPTIME.'];
+let i=0;
+function render(){
+  let s=''; s+=`<text x="380" y="30" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="14" font-weight="700">Proof that P ⊊ EXPTIME</text>`;
+  steps.forEach((step,k)=>{const y=70+k*38, shown=k<=i;
+    s+=`<text x="60" y="${y}" font-family="var(--sans), sans-serif" font-size="14" fill="${shown?'var(--ink)':'#bbb'}" opacity="${shown?1:0.3}"><tspan font-weight="bold" fill="${shown?'var(--accent)':'#bbb'}">${k+1}.</tspan> ${step}</text>`;
+  });
+  document.getElementById('pe-svg').innerHTML=s;
+  document.getElementById('pe-explain').innerHTML=`<div class="step-num">Step ${i+1}/${steps.length}</div><p style="margin:4px 0;">${steps[Math.min(i,steps.length-1)]}</p>`;
+}
+function step(){ if(i<steps.length-1)i++; render(); }
+function reset(){ i=0; render(); }
+function atEnd(){ return i>=steps.length-1; }
+WidgetLoop.create({runBtn:document.getElementById('pe-run'),stepBtn:document.getElementById('pe-step'),resetBtn:document.getElementById('pe-reset'),speedSlider:document.getElementById('pe-speed'),speedLabel:document.getElementById('pe-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:2500,baseLoopMs:5500,autoStartMs:1500});
+reset();
+})();</script><script src="../presentation.js"></script>
+</body></html>

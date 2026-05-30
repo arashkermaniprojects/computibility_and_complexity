@@ -1,0 +1,190 @@
+/* ===================================================================
+   Slide presentation layer · paginates each module
+   Each <section> inside .wrap becomes a slide.
+   =================================================================== */
+
+/* When pagination is active, hide all sections except .slide-active */
+body.paginated .wrap > section { display: none; }
+body.paginated .wrap > section.slide-active {
+  display: block;
+  animation: slideFadeIn 0.35s ease;
+}
+
+@keyframes slideFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Bottom nav bar */
+#slide-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 254, 251, 0.97);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid var(--rule);
+  box-shadow: 0 -2px 14px rgba(0,0,0,.04);
+  padding: 14px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  z-index: 1000;
+  font-family: var(--sans);
+}
+
+#slide-nav button {
+  background: var(--accent);
+  color: white;
+  border: 0;
+  padding: 10px 22px;
+  border-radius: 6px;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s, transform .08s;
+  min-width: 110px;
+}
+#slide-nav button:hover:not(:disabled) {
+  background: var(--accent-strong);
+}
+#slide-nav button:active:not(:disabled) {
+  transform: scale(0.96);
+}
+#slide-nav button:disabled {
+  background: var(--rule);
+  color: var(--dim);
+  cursor: not-allowed;
+}
+
+#slide-dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+#slide-dots .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--rule-strong);
+  cursor: pointer;
+  transition: background .2s, transform .15s;
+}
+#slide-dots .dot:hover {
+  background: var(--accent-soft);
+  transform: scale(1.25);
+}
+#slide-dots .dot.active {
+  background: var(--accent);
+  transform: scale(1.3);
+}
+
+#slide-counter {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0 6px;
+  white-space: nowrap;
+}
+
+/* Top progress bar */
+#slide-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--rule);
+  z-index: 1001;
+}
+#slide-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--gold));
+  width: 0;
+  transition: width .35s ease;
+}
+
+/* Slide title overlay (top-left under progress bar) */
+#slide-title-overlay {
+  position: fixed;
+  top: 14px;
+  right: 24px;
+  background: var(--accent);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 99px;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  z-index: 1001;
+  box-shadow: 0 2px 8px rgba(42, 111, 95, 0.25);
+}
+
+/* Hide top hero when paginated (so the slide title shows fully) */
+body.paginated header.hero {
+  padding: 22px 24px 16px;
+}
+body.paginated header.hero h1 {
+  font-size: 26px;
+}
+body.paginated header.hero .sub {
+  font-size: 14px;
+}
+
+/* Slide-specific spacing so content doesn't overlap the bottom nav */
+body.paginated {
+  padding-bottom: 90px;
+}
+
+/* Per-slide badge (the small label like "Slide 3 · Theory") */
+.slide-badge {
+  display: inline-block;
+  background: var(--gold-soft);
+  color: var(--gold);
+  padding: 4px 12px;
+  border-radius: 99px;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+/* Keyboard hint */
+#slide-hint {
+  position: fixed;
+  bottom: 78px;
+  right: 24px;
+  background: rgba(26, 26, 26, 0.78);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-family: var(--sans);
+  font-size: 11px;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity .5s;
+  pointer-events: none;
+}
+#slide-hint.show { opacity: 1; }
+
+/* Make widgets feel more presentation-like (slight enlargement of svg, more breathing room) */
+body.paginated .widget {
+  margin: 22px auto;
+  max-width: 900px;
+  box-shadow: 0 4px 24px rgba(0,0,0,.04);
+}
+
+/* On smaller screens, stack the nav buttons */
+@media (max-width: 600px) {
+  #slide-nav { flex-direction: column; gap: 8px; padding: 10px 16px; }
+  #slide-nav button { width: 100%; }
+  #slide-dots { order: -1; }
+}

@@ -106,6 +106,38 @@
   .schedule-table th, .schedule-table td { padding: 8px 10px; }
   .schedule-table .ref-pill { margin: 2px; }
 </style>
+
+<style>
+.section-audio {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0 18px;
+  padding: 10px 14px;
+  background: linear-gradient(180deg, #fffaf3 0%, #fff5e8 100%);
+  border: 1px solid var(--gold-soft, #e8d8b4);
+  border-left: 4px solid var(--gold, #c89933);
+  border-radius: 8px;
+}
+.section-audio .audio-label {
+  font-family: var(--sans), system-ui, sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--gold, #8a6a1d);
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.section-audio audio {
+  flex: 1;
+  height: 36px;
+  max-width: 540px;
+}
+@media (max-width: 640px) {
+  .section-audio { flex-wrap: wrap; }
+}
+</style>
+
 </head>
 <body>
 
@@ -124,6 +156,7 @@
 <!-- ========================================================== -->
 <section>
   <h2>What's in this page</h2>
+  <div class="section-audio"><span class="audio-label">🎧 Overview</span><audio controls preload="metadata" src="audio/p-intro.mp3"></audio></div>
   <p>
     Eleven topics, each with a written explanation, a hand-drawn diagram, and a pointer to the
     place in Sipser's textbook and the matching MIT lecture video. Read it top-to-bottom in one
@@ -148,6 +181,7 @@
 
 <!-- ========================================================== -->
 <section id="sets" class="section-anchor">
+  <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/p-sets.mp3"></audio></div>
   <h2>§ 0 · Sets, functions, strings, languages</h2>
   <p>
     A finite <strong>alphabet</strong> Σ is just a finite collection of symbols (the simplest is Σ = {0, 1}).
@@ -322,6 +356,7 @@
 
 <!-- ========================================================== -->
 <section id="dfa" class="section-anchor">
+  <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/p-dfa.mp3"></audio></div>
   <h2>§ 1 · Deterministic finite automata (DFA)</h2>
   <p>
     A DFA is the simplest computing model: finitely many states, a read-only input head that moves
@@ -384,6 +419,7 @@
 
 <!-- ========================================================== -->
 <section id="nfa" class="section-anchor">
+  <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/p-nfa.mp3"></audio></div>
   <h2>§ 2 · Nondeterministic finite automata (NFA)</h2>
   <p>
     An NFA can be in multiple states at once, has ε-transitions (free moves), and several edges
@@ -456,6 +492,7 @@
 
 <!-- ========================================================== -->
 <section id="regex" class="section-anchor">
+  <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/p-regex.mp3"></audio></div>
   <h2>§ 3 · Regular expressions</h2>
   <p>
     Regular expressions describe regular languages with a compact algebra: ∅, ε, single
@@ -540,6 +577,7 @@
 
 <!-- ========================================================== -->
 <section id="pumping" class="section-anchor">
+  <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/p-pumping.mp3"></audio></div>
   <h2>§ 4 · The pumping lemma</h2>
   <p>
     The pumping lemma is how we <strong>prove a language is not regular</strong>. Every long
@@ -599,6 +637,7 @@
 
 <!-- ========================================================== -->
 <section id="cfg" class="section-anchor">
+  <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/p-cfg.mp3"></audio></div>
   <h2>§ 5 · Context-free grammars (CFG)</h2>
   <p>
     A CFG is a set of <strong>production rules</strong> that rewrite variables into strings of
@@ -671,6 +710,7 @@
 
 <!-- ========================================================== -->
 <section id="pda" class="section-anchor">
+  <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/p-pda.mp3"></audio></div>
   <h2>§ 6 · Pushdown automata (PDA)</h2>
   <p>
     A PDA = finite-state automaton + an unbounded LIFO stack. The stack lets it remember unbounded
@@ -740,6 +780,7 @@
 
 <!-- ========================================================== -->
 <section id="tm" class="section-anchor">
+  <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/p-tm.mp3"></audio></div>
   <h2>§ 7 · Turing machines (TM)</h2>
   <p>
     A Turing machine is the full computational model: a two-way read/write tape (unbounded in
@@ -803,6 +844,7 @@
 
 <!-- ========================================================== -->
 <section id="variants" class="section-anchor">
+  <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/p-variants.mp3"></audio></div>
   <h2>§ 8 · TM variants — all the same power</h2>
   <p>
     A surprisingly robust feature of Turing machines: many variations look more powerful, but in
@@ -890,6 +932,7 @@
 
 <!-- ========================================================== -->
 <section id="ct" class="section-anchor">
+  <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/p-ct.mp3"></audio></div>
   <h2>§ 9 · Church-Turing thesis</h2>
   <p>
     The Church-Turing thesis is an informal claim, not a theorem: <em>everything that can be
@@ -943,6 +986,7 @@
 
 <!-- ========================================================== -->
 <section id="enc" class="section-anchor">
+  <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/p-enc.mp3"></audio></div>
   <h2>§ 10 · Encodings: ⟨M⟩ and ⟨M, w⟩</h2>
   <p>
     A Turing machine is just a finite table of transitions. So you can encode it as a binary
@@ -1006,6 +1050,7 @@
 
 <!-- ========================================================== -->
 <section id="decrec" class="section-anchor">
+  <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/p-decrec.mp3"></audio></div>
   <h2>§ 11 · Decidable vs Turing-recognizable</h2>
   <p>
     This is the single most important distinction in the entire course. A TM that

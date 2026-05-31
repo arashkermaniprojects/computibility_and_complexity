@@ -24,12 +24,27 @@
     const PREF_KEY = 'cc_presentation_mode';
     let mode = safeGet(PREF_KEY) || 'slides';
 
-    // Read slide index from URL hash if present (#slide=3) or localStorage per-page
+    // Read slide index from URL hash if present, or localStorage per-page
+    // Accept either:
+    //   #slide=N        (1-based slide number)
+    //   #section-id     (any <section id="…"> on the page)
     const PAGE_KEY = 'cc_slide_' + location.pathname;
     let current = parseInt(safeGet(PAGE_KEY), 10) || 0;
-    if (location.hash.match(/^#slide=(\d+)/)) {
-      current = Math.max(0, Math.min(sections.length - 1, parseInt(RegExp.$1, 10) - 1));
+
+    function indexFromHash(h) {
+      if (!h) return null;
+      h = h.replace(/^#/, '');
+      const m = h.match(/^slide=(\d+)$/);
+      if (m) return Math.max(0, Math.min(sections.length - 1, parseInt(m[1], 10) - 1));
+      // Look up section by id
+      for (let i = 0; i < sections.length; i++) {
+        if (sections[i].id === h) return i;
+      }
+      return null;
     }
+
+    const hashIdx = indexFromHash(location.hash);
+    if (hashIdx !== null) current = hashIdx;
     if (current >= sections.length) current = 0;
 
     // ---- Title detection ----
@@ -163,6 +178,16 @@
       localStorage.setItem(PREF_KEY, mode);
       applyState();
     }
+
+    // React to in-page anchor clicks (#section-id) or external hash changes
+    window.addEventListener('hashchange', () => {
+      if (mode !== 'slides') return;
+      const idx = indexFromHash(location.hash);
+      if (idx !== null && idx !== current) {
+        current = idx;
+        applyState();
+      }
+    });
 
     buildUI();
     applyState();

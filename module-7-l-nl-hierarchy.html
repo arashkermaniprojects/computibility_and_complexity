@@ -71,7 +71,83 @@
 <body>
 
 <header class="hero">
-  <div class="eyebrow">Module 7 · MIT 18.404J Lectures 20–21 · Sipser §8.4–§9.1</div>
+  <div class="eyebrow">Module 7 · MIT 18.404J Lectures <a href="https://www.youtube.com/watch?v=q3xvno_KgRY&list=PLidiQIHRzpXIFFbyGrWkqXXVj0BztDcTF" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;">L20</a>–<a href="https://www.youtube.com/watch?v=vqFRAWeEcUs&list=PLidiQIHRzpXIFFbyGrWkqXXVj0BztDcTF" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;">L21</a> · Sipser <a href="https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/lecture-20-l-and-nl-nl-conl/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;">§8.4</a>, <a href="https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/lecture-21-hierarchy-theorems/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;">§9.1</a></div>
+  <div class="ask-khayyam-bar" style="margin:6px 0 14px;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;font-family:var(--sans), system-ui, sans-serif;"><span style="font-size:11.5px;color:var(--ink-soft, #666);align-self:center;">references open in new tabs →</span><a href="https://khayyammath.com/" target="_blank" rel="noopener" style="display:inline-block;padding:5px 12px;background:var(--accent-strong, #1c4a3f);color:white;border-radius:4px;text-decoration:none;font-weight:600;font-size:12px;">💬 Ask Khayyam ↗</a></div>
+<figure class="diagram">
+  <svg viewBox="0 0 640 300" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+    <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
+      Hierarchy theorem · D diagonalizes against every M&lt;sub&gt;i&lt;/sub&gt; in SPACE(f)
+    </text>
+    <!-- header -->
+    <g font-family="var(--mono), ui-monospace" font-size="12" fill="#888">
+      <text x="100" y="55">M&#8345;</text>
+      <text x="200" y="55">⟨M&#8321;⟩</text>
+      <text x="270" y="55">⟨M&#8322;⟩</text>
+      <text x="340" y="55">⟨M&#8323;⟩</text>
+      <text x="410" y="55">⟨M&#8324;⟩</text>
+      <text x="480" y="55">⟨M&#8325;⟩</text>
+      <text x="540" y="55">…</text>
+    </g>
+    <line x1="170" y1="62" x2="570" y2="62" stroke="#888" stroke-width="1"/>
+    <!-- rows -->
+    <g font-family="var(--mono), ui-monospace" font-size="12">
+      <text x="100" y="90" font-weight="700">M&#8321;</text>
+      <rect x="185" y="75" width="30" height="20" fill="var(--gold-soft)" stroke="var(--gold)"/>
+      <text x="200" y="90" text-anchor="middle" font-weight="700" fill="var(--gold)">1</text>
+      <text x="270" y="90" text-anchor="middle">0</text>
+      <text x="340" y="90" text-anchor="middle">1</text>
+      <text x="410" y="90" text-anchor="middle">1</text>
+      <text x="480" y="90" text-anchor="middle">0</text>
+
+      <text x="100" y="120" font-weight="700">M&#8322;</text>
+      <text x="200" y="120" text-anchor="middle">0</text>
+      <rect x="255" y="105" width="30" height="20" fill="var(--gold-soft)" stroke="var(--gold)"/>
+      <text x="270" y="120" text-anchor="middle" font-weight="700" fill="var(--gold)">0</text>
+      <text x="340" y="120" text-anchor="middle">1</text>
+      <text x="410" y="120" text-anchor="middle">0</text>
+      <text x="480" y="120" text-anchor="middle">1</text>
+
+      <text x="100" y="150" font-weight="700">M&#8323;</text>
+      <text x="200" y="150" text-anchor="middle">1</text>
+      <text x="270" y="150" text-anchor="middle">1</text>
+      <rect x="325" y="135" width="30" height="20" fill="var(--gold-soft)" stroke="var(--gold)"/>
+      <text x="340" y="150" text-anchor="middle" font-weight="700" fill="var(--gold)">1</text>
+      <text x="410" y="150" text-anchor="middle">0</text>
+      <text x="480" y="150" text-anchor="middle">0</text>
+
+      <text x="100" y="180" font-weight="700">M&#8324;</text>
+      <text x="200" y="180" text-anchor="middle">1</text>
+      <text x="270" y="180" text-anchor="middle">0</text>
+      <text x="340" y="180" text-anchor="middle">1</text>
+      <rect x="395" y="165" width="30" height="20" fill="var(--gold-soft)" stroke="var(--gold)"/>
+      <text x="410" y="180" text-anchor="middle" font-weight="700" fill="var(--gold)">1</text>
+      <text x="480" y="180" text-anchor="middle">1</text>
+
+      <text x="100" y="210" font-weight="700">M&#8325;</text>
+      <text x="200" y="210" text-anchor="middle">0</text>
+      <text x="270" y="210" text-anchor="middle">1</text>
+      <text x="340" y="210" text-anchor="middle">0</text>
+      <text x="410" y="210" text-anchor="middle">1</text>
+      <rect x="465" y="195" width="30" height="20" fill="var(--gold-soft)" stroke="var(--gold)"/>
+      <text x="480" y="210" text-anchor="middle" font-weight="700" fill="var(--gold)">1</text>
+    </g>
+    <!-- D row -->
+    <line x1="170" y1="225" x2="570" y2="225" stroke="var(--warn-strong, #b95825)" stroke-width="2"/>
+    <g font-family="var(--mono), ui-monospace" font-size="12" fill="var(--warn-strong, #b95825)">
+      <text x="100" y="250" font-weight="700">D</text>
+      <text x="200" y="250" text-anchor="middle" font-weight="700">0</text>
+      <text x="270" y="250" text-anchor="middle" font-weight="700">1</text>
+      <text x="340" y="250" text-anchor="middle" font-weight="700">0</text>
+      <text x="410" y="250" text-anchor="middle" font-weight="700">0</text>
+      <text x="480" y="250" text-anchor="middle" font-weight="700">0</text>
+      <text x="540" y="250">…</text>
+    </g>
+    <text x="320" y="285" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">
+      D disagrees with every M&lt;sub&gt;i&lt;/sub&gt; at column i ⇒ D ∉ SPACE(f). But D ∈ SPACE(f · log f).
+    </text>
+  </svg>
+  <figcaption>The space hierarchy theorem is proved by diagonalization. We enumerate all SPACE(f) machines, then build D that disagrees with each on its own description. D uses slightly more space (a log factor) — exactly the gap between SPACE(f) and SPACE(f log f).</figcaption>
+</figure>
 <figure class="diagram">
   <svg viewBox="0 0 640 300" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
     <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
@@ -168,6 +244,7 @@
 <!-- ============================================================ -->
 <section id="l-nl">
   <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m7-s1.mp3"></audio></div>
+  
 <figure class="diagram">
   <svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
     <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
@@ -268,6 +345,7 @@
 <!-- ============================================================ -->
 <section id="path">
   <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m7-s2.mp3"></audio></div>
+  
   <h2>2 · PATH is NL-complete</h2>
 
   <p>
@@ -323,6 +401,7 @@
 <!-- ============================================================ -->
 <section id="nl-conl">
   <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m7-s3.mp3"></audio></div>
+  
   <h2>3 · Immerman–Szelepcsényi: NL = coNL</h2>
 
   <p>
@@ -377,6 +456,7 @@
 <!-- ============================================================ -->
 <section id="hierarchy">
   <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m7-s4.mp3"></audio></div>
+  
   <h2>4 · The hierarchy theorems</h2>
 
   <p>
@@ -425,6 +505,7 @@
 <!-- ============================================================ -->
 <section id="picture">
   <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m7-s5.mp3"></audio></div>
+  
   <h2>5 · The full map (everything we've covered)</h2>
 
   <svg viewBox="0 0 760 400" class="svg-anim" style="background:#fcfbf7;border-radius:6px;">
@@ -473,6 +554,7 @@
 <!-- ============================================================ -->
 <section id="exercises">
   <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m7-s6.mp3"></audio></div>
+  
   <h2>6 · Practice (Sipser §8.4–§9.1)</h2>
 
   <div class="exercise">
@@ -518,6 +600,7 @@
 
 <section>
   <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m7-s7.mp3"></audio></div>
+  
   <h2>One-sentence summary of the whole course</h2>
   <div class="key-idea">
     Algorithms are bounded by what's computable (diagonalization rules out the undecidable) and by

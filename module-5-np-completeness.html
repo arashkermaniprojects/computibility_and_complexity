@@ -71,7 +71,70 @@
 <body>
 
 <header class="hero">
-  <div class="eyebrow">Module 5 · MIT 18.404J Lectures 14–16 · Sipser §7.3–§7.5</div>
+  <div class="eyebrow">Module 5 · MIT 18.404J Lectures <a href="https://www.youtube.com/watch?v=1VhnDdQsELo&list=PLidiQIHRzpXIFFbyGrWkqXXVj0BztDcTF" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;">L14</a>–<a href="https://www.youtube.com/watch?v=6Az1gtDRaAU&list=PLidiQIHRzpXIFFbyGrWkqXXVj0BztDcTF" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;">L16</a> · Sipser <a href="https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/lecture-14-p-and-np-sat-poly-time-reducibility/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;">§7.3</a>, <a href="https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/lecture-15-np-completeness/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;">§7.4</a>, <a href="https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/lecture-16-cook-levin-theorem/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;">§7.5</a></div>
+  <div class="ask-khayyam-bar" style="margin:6px 0 14px;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;font-family:var(--sans), system-ui, sans-serif;"><span style="font-size:11.5px;color:var(--ink-soft, #666);align-self:center;">references open in new tabs →</span><a href="https://khayyammath.com/" target="_blank" rel="noopener" style="display:inline-block;padding:5px 12px;background:var(--accent-strong, #1c4a3f);color:white;border-radius:4px;text-decoration:none;font-weight:600;font-size:12px;">💬 Ask Khayyam ↗</a></div>
+<figure class="diagram">
+  <svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+    <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
+      The NP-completeness reduction tree · every node reduces from its parent
+    </text>
+    <!-- root: SAT -->
+    <rect x="270" y="50" width="100" height="40" rx="8" fill="var(--warn-soft)" stroke="var(--warn-strong, #b95825)" stroke-width="2.5"/>
+    <text x="320" y="75" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="14" font-weight="700">SAT</text>
+    <text x="320" y="42" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#888">Cook–Levin (1971)</text>
+    <!-- level 2 -->
+    <g font-family="var(--mono), ui-monospace" font-size="12">
+      <rect x="240" y="130" width="100" height="32" rx="6" fill="#fff" stroke="var(--accent-strong)" stroke-width="1.6"/>
+      <text x="290" y="151" text-anchor="middle">3-SAT</text>
+      <path d="M 320,90 L 290,130" stroke="#888" stroke-width="1.4" fill="none" marker-end="url(#arr-np)"/>
+    </g>
+    <!-- level 3: children of 3-SAT -->
+    <g font-family="var(--mono), ui-monospace" font-size="12">
+      <rect x="50"  y="210" width="100" height="32" rx="6" fill="#fff" stroke="var(--accent-strong)" stroke-width="1.4"/>
+      <text x="100" y="231" text-anchor="middle">CLIQUE</text>
+      <path d="M 270,162 L 110,210" stroke="#888" stroke-width="1.4" fill="none" marker-end="url(#arr-np)"/>
+
+      <rect x="170" y="210" width="100" height="32" rx="6" fill="#fff" stroke="var(--accent-strong)" stroke-width="1.4"/>
+      <text x="220" y="231" text-anchor="middle">SUBSET-SUM</text>
+      <path d="M 285,162 L 230,210" stroke="#888" stroke-width="1.4" fill="none" marker-end="url(#arr-np)"/>
+
+      <rect x="290" y="210" width="100" height="32" rx="6" fill="#fff" stroke="var(--accent-strong)" stroke-width="1.4"/>
+      <text x="340" y="231" text-anchor="middle">HAM-PATH</text>
+      <path d="M 305,162 L 340,210" stroke="#888" stroke-width="1.4" fill="none" marker-end="url(#arr-np)"/>
+
+      <rect x="410" y="210" width="100" height="32" rx="6" fill="#fff" stroke="var(--accent-strong)" stroke-width="1.4"/>
+      <text x="460" y="231" text-anchor="middle">3-COLOR</text>
+      <path d="M 325,162 L 450,210" stroke="#888" stroke-width="1.4" fill="none" marker-end="url(#arr-np)"/>
+
+      <rect x="530" y="210" width="100" height="32" rx="6" fill="#fff" stroke="var(--accent-strong)" stroke-width="1.4"/>
+      <text x="580" y="231" text-anchor="middle">PARTITION</text>
+      <path d="M 340,162 L 555,210" stroke="#888" stroke-width="1.4" fill="none" marker-end="url(#arr-np)"/>
+    </g>
+    <!-- level 4: VC, TSP, … -->
+    <g font-family="var(--mono), ui-monospace" font-size="12">
+      <rect x="80"  y="280" width="120" height="32" rx="6" fill="#fff" stroke="#888" stroke-width="1.4"/>
+      <text x="140" y="301" text-anchor="middle">VERTEX-COVER</text>
+      <path d="M 100,242 L 140,280" stroke="#888" stroke-width="1.4" fill="none" marker-end="url(#arr-np)"/>
+
+      <rect x="220" y="280" width="100" height="32" rx="6" fill="#fff" stroke="#888" stroke-width="1.4"/>
+      <text x="270" y="301" text-anchor="middle">KNAPSACK</text>
+      <path d="M 220,242 L 250,280" stroke="#888" stroke-width="1.4" fill="none" marker-end="url(#arr-np)"/>
+
+      <rect x="340" y="280" width="100" height="32" rx="6" fill="#fff" stroke="#888" stroke-width="1.4"/>
+      <text x="390" y="301" text-anchor="middle">TSP</text>
+      <path d="M 340,242 L 380,280" stroke="#888" stroke-width="1.4" fill="none" marker-end="url(#arr-np)"/>
+    </g>
+    <defs>
+      <marker id="arr-np" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#888"/>
+      </marker>
+    </defs>
+    <text x="320" y="345" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">
+      Edge A → B means "we know a polynomial-time reduction A → B, so B is at least as hard as A."
+    </text>
+  </svg>
+  <figcaption>The NP-completeness family tree rooted at SAT. Every edge is a known polynomial-time reduction. Karp's 1972 paper added 21 such reductions in one stroke; today the tree has hundreds of nodes.</figcaption>
+</figure>
 <figure class="diagram">
   <svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
     <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
@@ -155,6 +218,7 @@
 <!-- ============================================================ -->
 <section id="verifier">
   <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m5-s1.mp3"></audio></div>
+  
 <figure class="diagram">
   <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
     <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
@@ -258,6 +322,7 @@
 <!-- ============================================================ -->
 <section id="sat">
   <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m5-s2.mp3"></audio></div>
+  
   <h2>2 · SAT — the canonical NP problem</h2>
 
   <p>
@@ -297,6 +362,7 @@
 <!-- ============================================================ -->
 <section id="cooklevin">
   <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m5-s3.mp3"></audio></div>
+  
   <h2>3 · Cook–Levin: every NP problem reduces to SAT</h2>
 
   <p>
@@ -340,6 +406,7 @@
 <!-- ============================================================ -->
 <section id="chain">
   <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m5-s4.mp3"></audio></div>
+  
   <h2>4 · The reduction chain: how NP-completeness spreads</h2>
 
   <p>
@@ -379,6 +446,7 @@
 <!-- ============================================================ -->
 <section id="bigpicture">
   <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m5-s5.mp3"></audio></div>
+  
   <h2>5 · The whole map</h2>
 
   <div class="widget" id="map">
@@ -464,6 +532,7 @@
 <!-- ============================================================ -->
 <section id="exercises">
   <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m5-s6.mp3"></audio></div>
+  
   <h2>6 · Practice (Sipser §7.3–§7.5)</h2>
 
   <div class="exercise">
@@ -517,6 +586,7 @@
 
 <section>
   <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m5-s7.mp3"></audio></div>
+  
   <h2>One-sentence summary</h2>
   <div class="key-idea">
     NP is the class of decision problems whose "yes" instances admit polynomial-time-verifiable

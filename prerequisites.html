@@ -1,0 +1,1173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prerequisites — Computability &amp; Complexity</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* Diagrams use the same look as the inline figures in the modules */
+  .diagram {
+    margin: 18px 0;
+    padding: 12px 14px;
+    background: #fcfbf7;
+    border: 1px solid var(--rule, #eee);
+    border-left: 4px solid var(--gold, #c89933);
+    border-radius: 8px;
+  }
+  .diagram svg {
+    width: 100%;
+    height: auto;
+    max-height: 360px;
+    display: block;
+  }
+  .diagram figcaption {
+    margin-top: 10px;
+    font-family: var(--sans), system-ui, sans-serif;
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--ink-soft, #555);
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 12px;
+    margin: 18px 0;
+  }
+  .toc-card {
+    padding: 12px 14px;
+    background: #fffaf3;
+    border: 1px solid var(--gold-soft, #e8d8b4);
+    border-radius: 8px;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.15s;
+  }
+  .toc-card:hover { background: #fff5e8; }
+  .toc-card .num {
+    font-family: var(--mono), ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--gold);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  .toc-card h4 { margin: 4px 0 6px; }
+  .toc-card p { margin: 0; font-size: 12.5px; color: var(--ink-soft, #555); }
+  .ref-pill {
+    display: inline-block;
+    padding: 2px 8px;
+    margin: 0 4px 4px 0;
+    background: var(--accent-soft, #e0f0e8);
+    color: var(--accent-strong, #1c4a3f);
+    border-radius: 12px;
+    font-family: var(--mono), ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .ref-pill.mit {
+    background: #f4dfcf;
+    color: var(--warn-strong, #b95825);
+  }
+  .ref-pill.book {
+    background: var(--gold-soft, #f5e6c8);
+    color: var(--gold, #8a6a1d);
+  }
+  .checklist {
+    list-style: none;
+    padding: 0;
+  }
+  .checklist li {
+    padding: 8px 12px 8px 36px;
+    margin: 6px 0;
+    background: #fcfbf7;
+    border: 1px solid var(--rule, #eee);
+    border-radius: 6px;
+    position: relative;
+    font-size: 14px;
+  }
+  .checklist li::before {
+    content: "☐";
+    position: absolute;
+    left: 12px;
+    top: 8px;
+    font-size: 16px;
+    color: var(--gold, #c89933);
+  }
+  table.notation td:first-child,
+  table.notation th:first-child {
+    text-align: center;
+    font-family: var(--mono), ui-monospace, monospace;
+    font-weight: 700;
+    color: var(--gold, #8a6a1d);
+  }
+  .section-anchor {
+    scroll-margin-top: 80px;
+  }
+  .schedule-table th, .schedule-table td { padding: 8px 10px; }
+  .schedule-table .ref-pill { margin: 2px; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">BCS 402 · Dr. Arash Kermani · CUD</div>
+  <h1>Prerequisites — what to know before Day 1</h1>
+  <div class="sub">Our course starts at Sipser Chapter 4 / MIT 18.404J Lecture 7. Everything below is the foundation we will assume.</div>
+  <div class="tag">≈ 8 hours of self-study covers it. All MIT videos are free on OCW.</div>
+  <div style="margin-top: 14px;">
+    <a href="index.html" class="btn" style="display:inline-block;padding:8px 14px;background:white;color:var(--gold);border:1px solid var(--gold);border-radius:4px;text-decoration:none;">← back to course site</a>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- ========================================================== -->
+<section>
+  <h2>What's in this page</h2>
+  <p>
+    Eleven topics, each with a written explanation, a hand-drawn diagram, and a pointer to the
+    place in Sipser's textbook and the matching MIT lecture video. Read it top-to-bottom in one
+    sitting and you have the vocabulary for our entire semester.
+  </p>
+
+  <div class="toc-grid">
+    <a class="toc-card" href="#sets"><span class="num">§ 0</span><h4>Sets, functions, languages</h4><p>The notation that runs through everything.</p></a>
+    <a class="toc-card" href="#dfa"><span class="num">§ 1</span><h4>Deterministic finite automata</h4><p>The simplest computing model.</p></a>
+    <a class="toc-card" href="#nfa"><span class="num">§ 2</span><h4>NFAs and nondeterminism</h4><p>Multiple parallel guesses.</p></a>
+    <a class="toc-card" href="#regex"><span class="num">§ 3</span><h4>Regular expressions</h4><p>The pattern language of automata.</p></a>
+    <a class="toc-card" href="#pumping"><span class="num">§ 4</span><h4>Pumping lemma</h4><p>How to prove a language is NOT regular.</p></a>
+    <a class="toc-card" href="#cfg"><span class="num">§ 5</span><h4>Context-free grammars</h4><p>Rules that generate languages.</p></a>
+    <a class="toc-card" href="#pda"><span class="num">§ 6</span><h4>Pushdown automata</h4><p>Finite states + a stack.</p></a>
+    <a class="toc-card" href="#tm"><span class="num">§ 7</span><h4>Turing machines</h4><p>The full model of computation.</p></a>
+    <a class="toc-card" href="#variants"><span class="num">§ 8</span><h4>TM variants</h4><p>Multi-tape, nondeterministic, equivalent power.</p></a>
+    <a class="toc-card" href="#ct"><span class="num">§ 9</span><h4>Church-Turing thesis</h4><p>"Algorithm" = "Turing-computable".</p></a>
+    <a class="toc-card" href="#enc"><span class="num">§ 10</span><h4>Encodings ⟨M⟩</h4><p>Programs as data.</p></a>
+    <a class="toc-card" href="#decrec"><span class="num">§ 11</span><h4>Decidable vs recognizable</h4><p>The course's master distinction.</p></a>
+  </div>
+</section>
+
+<!-- ========================================================== -->
+<section id="sets" class="section-anchor">
+  <h2>§ 0 · Sets, functions, strings, languages</h2>
+  <p>
+    A finite <strong>alphabet</strong> Σ is just a finite collection of symbols (the simplest is Σ = {0, 1}).
+    A <strong>string</strong> is a finite sequence of symbols from Σ. The <strong>empty string</strong> is ε.
+    The set of all finite strings over Σ is written <span class="math">Σ*</span>. A <strong>language</strong>
+    is any subset L ⊆ Σ*.
+  </p>
+
+  <figure class="diagram">
+    <svg viewBox="0 0 640 240" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+      <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700">From symbols to languages</text>
+      <!-- Σ box -->
+      <rect x="40" y="60" width="100" height="80" rx="8" fill="#fff" stroke="#1a1a1a" stroke-width="1.6"/>
+      <text x="90" y="80" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" font-weight="700" fill="var(--gold)">alphabet Σ</text>
+      <text x="90" y="105" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="14">{ 0, 1 }</text>
+      <text x="90" y="125" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">finite set of symbols</text>
+      <!-- arrow -->
+      <path d="M 145,100 L 195,100" stroke="var(--accent)" stroke-width="2" marker-end="url(#arr-prereq)"/>
+      <text x="170" y="92" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">strings of length ≤ k</text>
+      <!-- Σ* box -->
+      <rect x="200" y="60" width="180" height="80" rx="8" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.6"/>
+      <text x="290" y="80" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" font-weight="700" fill="var(--gold)">Σ*</text>
+      <text x="290" y="100" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11">ε, 0, 1, 00, 01, 10, 11, …</text>
+      <text x="290" y="123" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">all finite strings</text>
+      <!-- arrow -->
+      <path d="M 385,100 L 435,100" stroke="var(--accent)" stroke-width="2" marker-end="url(#arr-prereq)"/>
+      <text x="410" y="92" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">pick any subset</text>
+      <!-- L box -->
+      <rect x="440" y="60" width="170" height="80" rx="8" fill="var(--accent-soft)" stroke="var(--accent-strong)" stroke-width="2"/>
+      <text x="525" y="80" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" font-weight="700" fill="var(--accent-strong)">language L</text>
+      <text x="525" y="103" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11">{ ε, 0, 00, 000, … }</text>
+      <text x="525" y="125" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">subset of Σ*</text>
+      <defs>
+        <marker id="arr-prereq" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 9 3, 0 6" fill="var(--accent)"/>
+        </marker>
+      </defs>
+      <!-- bottom: examples -->
+      <text x="40" y="180" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="#1a1a1a">Vocabulary:</text>
+      <g font-family="var(--mono), ui-monospace" font-size="12">
+        <text x="40" y="200">|w|</text><text x="120" y="200" fill="#666">= length of string w</text>
+        <text x="40" y="218">ε</text><text x="120" y="218" fill="#666">= empty string · |ε| = 0</text>
+        <text x="320" y="200">w · v</text><text x="400" y="200" fill="#666">= concatenation</text>
+        <text x="320" y="218">wᴿ</text><text x="400" y="218" fill="#666">= reversal of w</text>
+      </g>
+    </svg>
+    <figcaption>An alphabet is a finite set. Σ* is the (infinite) set of all finite strings you can form. A language is any subset of Σ*. Every algorithmic question in this course is "is this string in this language?".</figcaption>
+  </figure>
+
+  <h3>Set operations you'll see constantly</h3>
+
+  <figure class="diagram">
+    <svg viewBox="0 0 640 220" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+      <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700">Set operations on languages A and B</text>
+
+      <!-- Union -->
+      <g transform="translate(50, 50)">
+        <circle cx="40" cy="80" r="40" fill="var(--accent-soft)" stroke="var(--accent-strong)" stroke-width="1.6" opacity="0.7"/>
+        <circle cx="80" cy="80" r="40" fill="var(--accent-soft)" stroke="var(--accent-strong)" stroke-width="1.6" opacity="0.7"/>
+        <text x="20" y="35" font-family="var(--mono), ui-monospace" font-size="12">A</text>
+        <text x="100" y="35" font-family="var(--mono), ui-monospace" font-size="12">B</text>
+        <text x="60" y="150" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" font-weight="700">A ∪ B</text>
+        <text x="60" y="166" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">union</text>
+      </g>
+
+      <!-- Intersection -->
+      <g transform="translate(190, 50)">
+        <circle cx="40" cy="80" r="40" fill="#fff" stroke="var(--accent-strong)" stroke-width="1.6" opacity="0.6"/>
+        <circle cx="80" cy="80" r="40" fill="#fff" stroke="var(--accent-strong)" stroke-width="1.6" opacity="0.6"/>
+        <path d="M 60,40 A 40,40 0 0,1 60,120 A 40,40 0 0,1 60,40 Z" fill="var(--accent-soft)" stroke="none"/>
+        <text x="20" y="35" font-family="var(--mono), ui-monospace" font-size="12">A</text>
+        <text x="100" y="35" font-family="var(--mono), ui-monospace" font-size="12">B</text>
+        <text x="60" y="150" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" font-weight="700">A ∩ B</text>
+        <text x="60" y="166" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">intersection</text>
+      </g>
+
+      <!-- Complement -->
+      <g transform="translate(330, 50)">
+        <rect x="0" y="40" width="120" height="80" fill="var(--warn-soft)" stroke="var(--warn-strong, #b95825)" stroke-width="1.6"/>
+        <circle cx="60" cy="80" r="32" fill="#fff" stroke="var(--accent-strong)" stroke-width="1.6"/>
+        <text x="60" y="85" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="12">A</text>
+        <text x="105" y="55" font-family="var(--mono), ui-monospace" font-size="11" fill="var(--warn-strong, #b95825)">A̅</text>
+        <text x="60" y="150" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" font-weight="700">A̅ = Σ* − A</text>
+        <text x="60" y="166" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">complement</text>
+      </g>
+
+      <!-- Symmetric difference -->
+      <g transform="translate(480, 50)">
+        <defs>
+          <pattern id="hatch-pre" patternUnits="userSpaceOnUse" width="5" height="5" patternTransform="rotate(45)">
+            <line x1="0" y1="0" x2="0" y2="5" stroke="var(--warn)" stroke-width="1"/>
+          </pattern>
+        </defs>
+        <circle cx="40" cy="80" r="40" fill="url(#hatch-pre)" stroke="var(--accent-strong)" stroke-width="1.6"/>
+        <circle cx="80" cy="80" r="40" fill="url(#hatch-pre)" stroke="var(--accent-strong)" stroke-width="1.6"/>
+        <path d="M 60,40 A 40,40 0 0,1 60,120 A 40,40 0 0,1 60,40 Z" fill="#fcfbf7" stroke="none"/>
+        <path d="M 60,40 A 40,40 0 0,1 60,120" stroke="var(--accent-strong)" stroke-width="1.6" fill="none"/>
+        <path d="M 60,40 A 40,40 0 0,0 60,120" stroke="var(--accent-strong)" stroke-width="1.6" fill="none"/>
+        <text x="20" y="35" font-family="var(--mono), ui-monospace" font-size="12">A</text>
+        <text x="100" y="35" font-family="var(--mono), ui-monospace" font-size="12">B</text>
+        <text x="60" y="150" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" font-weight="700">A △ B</text>
+        <text x="60" y="166" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">symmetric difference</text>
+      </g>
+    </svg>
+    <figcaption>Four set operations. Symmetric difference (A △ B) — the striped region — is the key to the EQ<sub>DFA</sub> algorithm in Module 1.</figcaption>
+  </figure>
+
+  <h3>Function classification</h3>
+
+  <figure class="diagram">
+    <svg viewBox="0 0 640 240" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+      <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700">Injective · Surjective · Bijective</text>
+
+      <!-- Injective -->
+      <g transform="translate(50, 50)">
+        <text x="70" y="0" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--accent-strong)">Injective (one-to-one)</text>
+        <ellipse cx="20" cy="80" rx="20" ry="55" fill="#fff" stroke="#888"/>
+        <ellipse cx="120" cy="80" rx="20" ry="55" fill="#fff" stroke="#888"/>
+        <text x="20" y="20" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11">A</text>
+        <text x="120" y="20" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11">B</text>
+        <!-- dots -->
+        <circle cx="20" cy="50" r="3"/><circle cx="20" cy="80" r="3"/><circle cx="20" cy="110" r="3"/>
+        <circle cx="120" cy="40" r="3"/><circle cx="120" cy="65" r="3"/><circle cx="120" cy="95" r="3"/><circle cx="120" cy="120" r="3"/>
+        <line x1="22" y1="50" x2="118" y2="40" stroke="var(--accent)" stroke-width="1.4"/>
+        <line x1="22" y1="80" x2="118" y2="65" stroke="var(--accent)" stroke-width="1.4"/>
+        <line x1="22" y1="110" x2="118" y2="95" stroke="var(--accent)" stroke-width="1.4"/>
+        <text x="70" y="160" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">distinct inputs → distinct outputs</text>
+      </g>
+
+      <!-- Surjective -->
+      <g transform="translate(220, 50)">
+        <text x="70" y="0" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--gold)">Surjective (onto)</text>
+        <ellipse cx="20" cy="80" rx="20" ry="55" fill="#fff" stroke="#888"/>
+        <ellipse cx="120" cy="80" rx="20" ry="55" fill="#fff" stroke="#888"/>
+        <text x="20" y="20" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11">A</text>
+        <text x="120" y="20" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11">B</text>
+        <circle cx="20" cy="40" r="3"/><circle cx="20" cy="65" r="3"/><circle cx="20" cy="95" r="3"/><circle cx="20" cy="120" r="3"/>
+        <circle cx="120" cy="55" r="3"/><circle cx="120" cy="85" r="3"/><circle cx="120" cy="115" r="3"/>
+        <line x1="22" y1="40" x2="118" y2="55" stroke="var(--gold)" stroke-width="1.4"/>
+        <line x1="22" y1="65" x2="118" y2="55" stroke="var(--gold)" stroke-width="1.4"/>
+        <line x1="22" y1="95" x2="118" y2="85" stroke="var(--gold)" stroke-width="1.4"/>
+        <line x1="22" y1="120" x2="118" y2="115" stroke="var(--gold)" stroke-width="1.4"/>
+        <text x="70" y="160" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">every B value is hit</text>
+      </g>
+
+      <!-- Bijective -->
+      <g transform="translate(390, 50)">
+        <text x="70" y="0" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--warn-strong, #b95825)">Bijective</text>
+        <ellipse cx="20" cy="80" rx="20" ry="55" fill="#fff" stroke="#888"/>
+        <ellipse cx="120" cy="80" rx="20" ry="55" fill="#fff" stroke="#888"/>
+        <text x="20" y="20" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11">A</text>
+        <text x="120" y="20" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11">B</text>
+        <circle cx="20" cy="50" r="3"/><circle cx="20" cy="80" r="3"/><circle cx="20" cy="110" r="3"/>
+        <circle cx="120" cy="50" r="3"/><circle cx="120" cy="80" r="3"/><circle cx="120" cy="110" r="3"/>
+        <line x1="22" y1="50" x2="118" y2="50" stroke="var(--warn-strong, #b95825)" stroke-width="1.4"/>
+        <line x1="22" y1="80" x2="118" y2="80" stroke="var(--warn-strong, #b95825)" stroke-width="1.4"/>
+        <line x1="22" y1="110" x2="118" y2="110" stroke="var(--warn-strong, #b95825)" stroke-width="1.4"/>
+        <text x="70" y="160" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">perfect pairing · |A| = |B|</text>
+      </g>
+    </svg>
+    <figcaption>Injective = no collisions; surjective = nothing left over; bijective = both. Bijections are how we'll prove two infinite sets are "the same size" (used in Cantor's diagonal argument).</figcaption>
+  </figure>
+
+  <div class="theorem-box" style="background:#f3f8f3;">
+    <strong>📖 Read:</strong>
+    <span class="ref-pill book">Sipser §0.2</span>
+    <span class="ref-pill book">Sipser §0.4</span>
+    (proof techniques) ·
+    <strong>⏱ Effort:</strong> 1 hour.
+  </div>
+</section>
+
+<!-- ========================================================== -->
+<section id="dfa" class="section-anchor">
+  <h2>§ 1 · Deterministic finite automata (DFA)</h2>
+  <p>
+    A DFA is the simplest computing model: finitely many states, a read-only input head that moves
+    left-to-right, and a deterministic transition function. Given a string, the DFA either accepts
+    or rejects after reading the last symbol.
+  </p>
+
+  <figure class="diagram">
+    <svg viewBox="0 0 640 220" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+      <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700">DFA for "strings with an even number of 0s"</text>
+      <!-- arrow to start -->
+      <path d="M 30,110 L 78,110" stroke="#1a1a1a" stroke-width="1.6" marker-end="url(#arr-dfa)"/>
+      <text x="30" y="100" font-family="var(--sans), system-ui" font-size="11" fill="#666">start</text>
+      <!-- q0 (even count - accept) -->
+      <circle cx="120" cy="110" r="32" fill="var(--accent-soft)" stroke="var(--accent-strong)" stroke-width="2"/>
+      <circle cx="120" cy="110" r="27" fill="none" stroke="var(--accent-strong)" stroke-width="1.5"/>
+      <text x="120" y="115" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="14" font-weight="700">q₀</text>
+      <text x="120" y="165" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="var(--accent-strong)" font-weight="700">accept · even count</text>
+      <!-- q1 (odd count) -->
+      <circle cx="320" cy="110" r="32" fill="#fff" stroke="#1a1a1a" stroke-width="2"/>
+      <text x="320" y="115" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="14" font-weight="700">q₁</text>
+      <text x="320" y="165" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#666">reject · odd count</text>
+      <!-- edges -->
+      <path d="M 152,100 Q 220,80 288,100" fill="none" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arr-dfa)"/>
+      <text x="220" y="75" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" font-weight="700" fill="var(--accent)">0</text>
+      <path d="M 288,120 Q 220,140 152,120" fill="none" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arr-dfa)"/>
+      <text x="220" y="155" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" font-weight="700" fill="var(--accent)">0</text>
+      <!-- self-loops for 1 -->
+      <path d="M 110,80 Q 90,40 130,40 Q 145,40 130,80" fill="none" stroke="#888" stroke-width="1.6" marker-end="url(#arr-dfa)"/>
+      <text x="115" y="32" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" font-weight="700" fill="#666">1</text>
+      <path d="M 310,80 Q 290,40 330,40 Q 345,40 330,80" fill="none" stroke="#888" stroke-width="1.6" marker-end="url(#arr-dfa)"/>
+      <text x="315" y="32" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" font-weight="700" fill="#666">1</text>
+      <defs>
+        <marker id="arr-dfa" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1a1a1a"/>
+        </marker>
+      </defs>
+      <!-- 5-tuple definition -->
+      <g font-family="var(--mono), ui-monospace" font-size="11">
+        <text x="430" y="55"  font-weight="700" fill="#1a1a1a">DFA = (Q, Σ, δ, q₀, F)</text>
+        <text x="430" y="78"  fill="#666">Q = {q₀, q₁}</text>
+        <text x="430" y="95"  fill="#666">Σ = {0, 1}</text>
+        <text x="430" y="112" fill="#666">δ(q₀,0) = q₁, δ(q₀,1) = q₀</text>
+        <text x="430" y="129" fill="#666">δ(q₁,0) = q₀, δ(q₁,1) = q₁</text>
+        <text x="430" y="146" fill="#666">start = q₀</text>
+        <text x="430" y="163" fill="#666">F = {q₀}</text>
+      </g>
+    </svg>
+    <figcaption>A DFA is a 5-tuple. Double circle = accept state. The string "0101" traces q₀ → q₁ → q₁ → q₀ → q₀ — ends in accept state, so accepted.</figcaption>
+  </figure>
+
+  <div class="theorem-box" style="background:#f3f8f3;">
+    <strong>📖 Read:</strong>
+    <span class="ref-pill book">Sipser §1.1</span>
+    <strong>🎬 Watch:</strong>
+    <span class="ref-pill mit">MIT 18.404J L1</span>
+    <strong>⏱ Effort:</strong> 1 hour.
+  </div>
+</section>
+
+<!-- ========================================================== -->
+<section id="nfa" class="section-anchor">
+  <h2>§ 2 · Nondeterministic finite automata (NFA)</h2>
+  <p>
+    An NFA can be in multiple states at once, has ε-transitions (free moves), and several edges
+    can leave a state with the same label. Despite seeming more powerful, every NFA can be
+    converted to a DFA via the <strong>subset construction</strong> — at the cost of
+    exponentially many states.
+  </p>
+
+  <figure class="diagram">
+    <svg viewBox="0 0 640 260" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+      <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700">NFA → DFA subset construction (sketch)</text>
+      <!-- NFA -->
+      <text x="50" y="55" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--info, #2f60a8)">NFA · "strings ending in 01"</text>
+      <g>
+        <circle cx="80"  cy="100" r="22" fill="#fff" stroke="#1a1a1a" stroke-width="1.6"/>
+        <text x="80"  y="105" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="12">A</text>
+        <circle cx="170" cy="100" r="22" fill="#fff" stroke="#1a1a1a" stroke-width="1.6"/>
+        <text x="170" y="105" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="12">B</text>
+        <circle cx="260" cy="100" r="22" fill="var(--accent-soft)" stroke="var(--accent-strong)" stroke-width="2"/>
+        <circle cx="260" cy="100" r="17" fill="none" stroke="var(--accent-strong)" stroke-width="1.5"/>
+        <text x="260" y="105" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="12" font-weight="700">C</text>
+        <!-- A self loop 0,1 -->
+        <path d="M 65,85 Q 50,60 80,55 Q 105,60 95,85" fill="none" stroke="#888" stroke-width="1.4" marker-end="url(#arr-nfa)"/>
+        <text x="80" y="48" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11">0, 1</text>
+        <!-- A → B on 0 -->
+        <path d="M 102,100 L 148,100" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arr-nfa)"/>
+        <text x="125" y="93" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11" fill="var(--accent)">0</text>
+        <!-- B → C on 1 -->
+        <path d="M 192,100 L 238,100" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arr-nfa)"/>
+        <text x="215" y="93" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11" fill="var(--accent)">1</text>
+      </g>
+      <text x="170" y="160" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">3 NFA states · A nondeterministically "guesses" when string is about to end</text>
+
+      <!-- DFA after subset construction -->
+      <text x="430" y="55" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--accent-strong)">Equivalent DFA · 2³ = 8 possible state-subsets, only 3 reachable</text>
+      <g>
+        <rect x="380" y="100" width="60" height="40" rx="6" fill="#fff" stroke="#1a1a1a" stroke-width="1.4"/>
+        <text x="410" y="125" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11">{A}</text>
+        <rect x="460" y="100" width="80" height="40" rx="6" fill="#fff" stroke="#1a1a1a" stroke-width="1.4"/>
+        <text x="500" y="125" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11">{A,B}</text>
+        <rect x="560" y="100" width="80" height="40" rx="6" fill="var(--accent-soft)" stroke="var(--accent-strong)" stroke-width="2"/>
+        <text x="600" y="125" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11" font-weight="700">{A,C}</text>
+        <!-- transitions -->
+        <path d="M 440,120 L 460,120" stroke="var(--accent)" stroke-width="1.4" marker-end="url(#arr-nfa)"/>
+        <text x="450" y="113" font-family="var(--mono), ui-monospace" font-size="10" fill="var(--accent)">0</text>
+        <path d="M 540,120 L 560,120" stroke="var(--accent)" stroke-width="1.4" marker-end="url(#arr-nfa)"/>
+        <text x="550" y="113" font-family="var(--mono), ui-monospace" font-size="10" fill="var(--accent)">1</text>
+      </g>
+      <defs>
+        <marker id="arr-nfa" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto">
+          <polygon points="0 0, 7 3, 0 6" fill="#1a1a1a"/>
+        </marker>
+      </defs>
+      <!-- bottom note -->
+      <text x="320" y="225" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">
+        Each DFA state = the set of NFA states the input could currently be in. 2ⁿ possible subsets.
+      </text>
+    </svg>
+    <figcaption>Subset construction: every DFA state is a subset of NFA states. For an NFA with n states, the equivalent DFA can have up to 2ⁿ states — exponential blow-up, but always finite.</figcaption>
+  </figure>
+
+  <div class="theorem-box" style="background:#f3f8f3;">
+    <strong>📖 Read:</strong>
+    <span class="ref-pill book">Sipser §1.2</span>
+    <strong>🎬 Watch:</strong>
+    <span class="ref-pill mit">MIT 18.404J L1–L2</span>
+    <strong>⏱ Effort:</strong> 1.5 hours.
+  </div>
+</section>
+
+<!-- ========================================================== -->
+<section id="regex" class="section-anchor">
+  <h2>§ 3 · Regular expressions</h2>
+  <p>
+    Regular expressions describe regular languages with a compact algebra: ∅, ε, single
+    characters, union (∪), concatenation (·), Kleene star (*). <strong>Kleene's theorem</strong>
+    says regex, NFA, and DFA all recognize exactly the same class of languages — the regular
+    languages.
+  </p>
+
+  <figure class="diagram">
+    <svg viewBox="0 0 640 240" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+      <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700">Three equivalent representations · the regular languages</text>
+      <!-- regex -->
+      <rect x="40" y="60" width="140" height="120" rx="8" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.6"/>
+      <text x="110" y="85" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--gold)">Regex</text>
+      <text x="110" y="110" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13">(0 ∪ 1)*01</text>
+      <text x="110" y="135" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">"any prefix, then 01"</text>
+      <!-- NFA -->
+      <rect x="250" y="60" width="140" height="120" rx="8" fill="var(--accent-soft)" stroke="var(--accent-strong)" stroke-width="1.6"/>
+      <text x="320" y="85" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--accent-strong)">NFA</text>
+      <g>
+        <circle cx="280" cy="125" r="12" fill="#fff" stroke="#1a1a1a" stroke-width="1.4"/>
+        <text x="280" y="129" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="9">A</text>
+        <circle cx="320" cy="125" r="12" fill="#fff" stroke="#1a1a1a" stroke-width="1.4"/>
+        <text x="320" y="129" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="9">B</text>
+        <circle cx="360" cy="125" r="14" fill="var(--accent-soft)" stroke="var(--accent-strong)" stroke-width="2"/>
+        <circle cx="360" cy="125" r="10" fill="none" stroke="var(--accent-strong)" stroke-width="1.2"/>
+        <text x="360" y="129" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="9" font-weight="700">C</text>
+        <path d="M 292,125 L 308,125" stroke="#888" stroke-width="1" marker-end="url(#arr-regex)"/>
+        <path d="M 332,125 L 346,125" stroke="#888" stroke-width="1" marker-end="url(#arr-regex)"/>
+        <path d="M 272,115 Q 260,90 280,90 Q 295,90 290,115" fill="none" stroke="#888" stroke-width="1" marker-end="url(#arr-regex)"/>
+      </g>
+      <text x="320" y="160" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">guess when "01" starts</text>
+      <!-- DFA -->
+      <rect x="460" y="60" width="140" height="120" rx="8" fill="#d6ebe4" stroke="#1c4a3f" stroke-width="1.6"/>
+      <text x="530" y="85" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="#1c4a3f">DFA</text>
+      <g>
+        <circle cx="490" cy="125" r="12" fill="#fff" stroke="#1a1a1a" stroke-width="1.4"/>
+        <text x="490" y="129" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="9">s</text>
+        <circle cx="530" cy="125" r="12" fill="#fff" stroke="#1a1a1a" stroke-width="1.4"/>
+        <text x="530" y="129" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="9">0</text>
+        <circle cx="570" cy="125" r="14" fill="#d6ebe4" stroke="#1c4a3f" stroke-width="2"/>
+        <circle cx="570" cy="125" r="10" fill="none" stroke="#1c4a3f" stroke-width="1.2"/>
+        <text x="570" y="129" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="9" font-weight="700">01</text>
+        <path d="M 502,125 L 518,125" stroke="#888" stroke-width="1" marker-end="url(#arr-regex)"/>
+        <path d="M 542,125 L 556,125" stroke="#888" stroke-width="1" marker-end="url(#arr-regex)"/>
+      </g>
+      <text x="530" y="160" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">3 deterministic states</text>
+      <defs>
+        <marker id="arr-regex" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+          <polygon points="0 0, 6 3, 0 6" fill="#888"/>
+        </marker>
+      </defs>
+      <!-- arrows between -->
+      <path d="M 190,120 L 245,120" stroke="var(--accent)" stroke-width="2" marker-end="url(#arr-regex-thick)"/>
+      <path d="M 245,140 L 190,140" stroke="var(--accent)" stroke-width="2" marker-end="url(#arr-regex-thick)"/>
+      <text x="217" y="115" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="var(--accent)">build</text>
+      <text x="217" y="158" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="var(--accent)">recover</text>
+      <path d="M 400,120 L 455,120" stroke="var(--accent)" stroke-width="2" marker-end="url(#arr-regex-thick)"/>
+      <path d="M 455,140 L 400,140" stroke="var(--accent)" stroke-width="2" marker-end="url(#arr-regex-thick)"/>
+      <text x="427" y="115" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="var(--accent)">subset</text>
+      <text x="427" y="158" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="var(--accent)">trivial</text>
+      <defs>
+        <marker id="arr-regex-thick" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="var(--accent)"/>
+        </marker>
+      </defs>
+      <text x="320" y="210" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-style="italic" fill="#1a1a1a">
+        Kleene's theorem: all three describe exactly the regular languages.
+      </text>
+    </svg>
+    <figcaption>The three faces of regular languages are interchangeable. Regex is the algebraic, NFA the nondeterministic-machine, and DFA the deterministic-machine view.</figcaption>
+  </figure>
+
+  <div class="theorem-box" style="background:#f3f8f3;">
+    <strong>📖 Read:</strong>
+    <span class="ref-pill book">Sipser §1.3</span>
+    <strong>🎬 Watch:</strong>
+    <span class="ref-pill mit">MIT 18.404J L2</span>
+    <strong>⏱ Effort:</strong> 45 min.
+  </div>
+</section>
+
+<!-- ========================================================== -->
+<section id="pumping" class="section-anchor">
+  <h2>§ 4 · The pumping lemma</h2>
+  <p>
+    The pumping lemma is how we <strong>prove a language is not regular</strong>. Every long
+    enough string in a regular language must have a "pump" — a substring that can be repeated
+    any number of times and still stay in the language.
+  </p>
+
+  <figure class="diagram">
+    <svg viewBox="0 0 640 220" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+      <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700">Pumping lemma · w = xyz where |xy| ≤ p and y ≠ ε</text>
+      <!-- string w -->
+      <rect x="40" y="60" width="560" height="40" fill="#fff" stroke="#888"/>
+      <text x="40" y="55" font-family="var(--sans), system-ui" font-size="11" fill="#666">string w (length ≥ pumping length p)</text>
+      <!-- x portion -->
+      <rect x="40" y="60" width="160" height="40" fill="var(--accent-soft)" stroke="var(--accent-strong)" stroke-width="1.6"/>
+      <text x="120" y="85" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="14" font-weight="700" fill="var(--accent-strong)">x</text>
+      <!-- y portion (the pump) -->
+      <rect x="200" y="60" width="120" height="40" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2"/>
+      <text x="260" y="85" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="14" font-weight="700" fill="var(--gold)">y · the pump</text>
+      <!-- z portion -->
+      <rect x="320" y="60" width="280" height="40" fill="var(--warn-soft)" stroke="var(--warn-strong, #b95825)" stroke-width="1.6"/>
+      <text x="460" y="85" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="14" font-weight="700" fill="var(--warn-strong, #b95825)">z</text>
+      <!-- p bracket -->
+      <line x1="40" y1="115" x2="320" y2="115" stroke="#888" stroke-width="1.4"/>
+      <line x1="40" y1="110" x2="40" y2="120" stroke="#888" stroke-width="1.4"/>
+      <line x1="320" y1="110" x2="320" y2="120" stroke="#888" stroke-width="1.4"/>
+      <text x="180" y="135" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11" fill="#1a1a1a">|xy| ≤ p</text>
+      <!-- pumped strings -->
+      <text x="40" y="170" font-family="var(--sans), system-ui" font-size="12" font-weight="700">For every i ≥ 0:</text>
+      <g font-family="var(--mono), ui-monospace" font-size="13">
+        <text x="40" y="195">x · yⁱ · z ∈ L</text>
+        <text x="220" y="195" fill="#666">i = 0:</text>
+        <text x="265" y="195" fill="var(--warn-strong, #b95825)">xz ∈ L</text>
+        <text x="350" y="195" fill="#666">i = 2:</text>
+        <text x="395" y="195" fill="var(--gold)">xyyz ∈ L</text>
+        <text x="500" y="195" fill="#666">i = 3:</text>
+        <text x="545" y="195" fill="var(--gold)">xyyyz ∈ L</text>
+      </g>
+    </svg>
+    <figcaption>If the language is regular and w is long enough, w decomposes as xyz with a pumpable middle. To prove a language is NOT regular: assume it is, pick a long string, then exhibit some i for which xyⁱz is not in the language.</figcaption>
+  </figure>
+
+  <p>
+    <strong>Classic example.</strong> The language {0ⁿ1ⁿ : n ≥ 0} is not regular. Proof sketch: take
+    w = 0ᵖ1ᵖ. Whatever x, y, z gives |xy| ≤ p, the pump y lies entirely in the 0s. Pumping makes
+    the 0-count differ from the 1-count, so the result is not in L.
+  </p>
+
+  <div class="theorem-box" style="background:#f3f8f3;">
+    <strong>📖 Read:</strong>
+    <span class="ref-pill book">Sipser §1.4</span>
+    <strong>🎬 Watch:</strong>
+    <span class="ref-pill mit">MIT 18.404J L3</span>
+    <strong>⏱ Effort:</strong> 1 hour.
+  </div>
+</section>
+
+<!-- ========================================================== -->
+<section id="cfg" class="section-anchor">
+  <h2>§ 5 · Context-free grammars (CFG)</h2>
+  <p>
+    A CFG is a set of <strong>production rules</strong> that rewrite variables into strings of
+    variables and terminals. The language of the grammar is all strings of terminals derivable
+    from the start variable. CFGs describe nested / matched structure (parentheses,
+    palindromes, programming-language syntax).
+  </p>
+
+  <figure class="diagram">
+    <svg viewBox="0 0 640 280" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+      <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700">CFG for balanced parentheses · derivation tree for "(())"</text>
+      <!-- rules box -->
+      <rect x="40" y="50" width="200" height="120" rx="8" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.6"/>
+      <text x="140" y="72" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--gold)">Rules</text>
+      <g font-family="var(--mono), ui-monospace" font-size="13">
+        <text x="60" y="100">S → ( S )</text>
+        <text x="60" y="120">S → S S</text>
+        <text x="60" y="140">S → ε</text>
+      </g>
+      <text x="140" y="160" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">start variable: S</text>
+
+      <!-- Derivation tree -->
+      <text x="450" y="65" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700">Parse tree for "(())"</text>
+      <!-- nodes -->
+      <g font-family="var(--mono), ui-monospace" font-size="13">
+        <!-- root S -->
+        <circle cx="450" cy="90" r="14" fill="var(--accent-soft)" stroke="var(--accent-strong)" stroke-width="1.6"/>
+        <text x="450" y="94" text-anchor="middle" font-weight="700" fill="var(--accent-strong)">S</text>
+        <!-- ( and S and ) -->
+        <line x1="442" y1="103" x2="400" y2="135" stroke="#888"/>
+        <line x1="450" y1="104" x2="450" y2="135" stroke="#888"/>
+        <line x1="458" y1="103" x2="500" y2="135" stroke="#888"/>
+        <text x="400" y="148" text-anchor="middle" font-weight="700">(</text>
+        <circle cx="450" cy="148" r="13" fill="var(--accent-soft)" stroke="var(--accent-strong)" stroke-width="1.6"/>
+        <text x="450" y="152" text-anchor="middle" font-weight="700" fill="var(--accent-strong)">S</text>
+        <text x="500" y="148" text-anchor="middle" font-weight="700">)</text>
+        <!-- inner S → ( S ) -->
+        <line x1="442" y1="161" x2="412" y2="190" stroke="#888"/>
+        <line x1="450" y1="162" x2="450" y2="190" stroke="#888"/>
+        <line x1="458" y1="161" x2="488" y2="190" stroke="#888"/>
+        <text x="412" y="205" text-anchor="middle" font-weight="700">(</text>
+        <circle cx="450" cy="205" r="13" fill="var(--accent-soft)" stroke="var(--accent-strong)" stroke-width="1.6"/>
+        <text x="450" y="209" text-anchor="middle" font-weight="700" fill="var(--accent-strong)">S</text>
+        <text x="488" y="205" text-anchor="middle" font-weight="700">)</text>
+        <!-- ε -->
+        <line x1="450" y1="218" x2="450" y2="240" stroke="#888"/>
+        <text x="450" y="252" text-anchor="middle" fill="var(--warn-strong, #b95825)" font-weight="700">ε</text>
+      </g>
+      <!-- arrow rule application sequence -->
+      <text x="270" y="120" font-family="var(--mono), ui-monospace" font-size="11" fill="#666">S ⇒ (S) ⇒ ((S)) ⇒ (())</text>
+    </svg>
+    <figcaption>A CFG generates strings by recursively applying rules. The parse tree captures the derivation: leaves spell out the terminal string left-to-right. CFGs are strictly more powerful than regex — they can express nested structure regex cannot.</figcaption>
+  </figure>
+
+  <h3>Chomsky Normal Form (CNF)</h3>
+  <p>
+    Every CFG can be converted to CNF, where every rule has either two variables on the right
+    (<code>A → BC</code>) or a single terminal (<code>A → a</code>). CNF is what the CYK parsing
+    algorithm needs (used in Module 1's A<sub>CFG</sub> widget).
+  </p>
+
+  <div class="theorem-box" style="background:#f3f8f3;">
+    <strong>📖 Read:</strong>
+    <span class="ref-pill book">Sipser §2.1</span>
+    <strong>🎬 Watch:</strong>
+    <span class="ref-pill mit">MIT 18.404J L3–L4</span>
+    <strong>⏱ Effort:</strong> 1.5 hours.
+  </div>
+</section>
+
+<!-- ========================================================== -->
+<section id="pda" class="section-anchor">
+  <h2>§ 6 · Pushdown automata (PDA)</h2>
+  <p>
+    A PDA = finite-state automaton + an unbounded LIFO stack. The stack lets it remember unbounded
+    context, which is exactly the power needed for context-free languages. CFG ⇔ PDA equivalence
+    is the bridge between grammars and machines.
+  </p>
+
+  <figure class="diagram">
+    <svg viewBox="0 0 640 240" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+      <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700">Pushdown automaton · finite state + stack</text>
+      <!-- input tape -->
+      <text x="40" y="60" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="#1a1a1a">Input tape (read-only)</text>
+      <g>""" + ''.join(
+    f'<rect x="{40 + i*44}" y="70" width="44" height="34" fill="#fff" stroke="#888"/>' +
+    f'<text x="{62 + i*44}" y="92" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13">{c}</text>'
+    for i, c in enumerate(['(', '(', ')', ')'])
+) + """
+      </g>
+      <!-- head arrow -->
+      <path d="M 62,118 L 62,108" stroke="var(--warn-strong, #b95825)" stroke-width="2" marker-end="url(#arr-pda)"/>
+      <text x="62" y="132" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="var(--warn-strong, #b95825)">head</text>
+      <defs>
+        <marker id="arr-pda" markerWidth="7" markerHeight="7" refX="3" refY="3" orient="auto">
+          <polygon points="0 6, 7 3, 0 0" fill="var(--warn-strong, #b95825)"/>
+        </marker>
+      </defs>
+
+      <!-- state machine -->
+      <text x="350" y="60" font-family="var(--sans), system-ui" font-size="11" font-weight="700">Finite control</text>
+      <circle cx="380" cy="100" r="20" fill="var(--accent-soft)" stroke="var(--accent-strong)" stroke-width="1.6"/>
+      <text x="380" y="105" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="12">q</text>
+
+      <!-- stack -->
+      <text x="540" y="60" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--gold)">Stack (LIFO)</text>
+      <rect x="500" y="70" width="80" height="140" fill="none" stroke="var(--gold)" stroke-width="2"/>
+      <rect x="500" y="180" width="80" height="30" fill="var(--gold-soft)"/>
+      <text x="540" y="200" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" fill="var(--gold)">$</text>
+      <rect x="500" y="150" width="80" height="30" fill="var(--gold-soft)"/>
+      <text x="540" y="170" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" fill="var(--gold)">(</text>
+      <rect x="500" y="120" width="80" height="30" fill="var(--gold-soft)"/>
+      <text x="540" y="140" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" fill="var(--gold)">(</text>
+      <text x="540" y="100" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">top ↓</text>
+
+      <!-- arrows: input → state ; state ↔ stack -->
+      <path d="M 250,87 L 358,98" stroke="#888" stroke-width="1.4" marker-end="url(#arr-pda-thin)"/>
+      <text x="305" y="80" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">read symbol</text>
+      <path d="M 402,92 L 497,135" stroke="#888" stroke-width="1.4" marker-end="url(#arr-pda-thin)"/>
+      <path d="M 497,150 L 402,108" stroke="#888" stroke-width="1.4" marker-end="url(#arr-pda-thin)"/>
+      <text x="450" y="118" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">push / pop</text>
+      <defs>
+        <marker id="arr-pda-thin" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto">
+          <polygon points="0 0, 7 3, 0 6" fill="#888"/>
+        </marker>
+      </defs>
+    </svg>
+    <figcaption>A PDA reads input left-to-right, can push or pop the stack on each step, and accepts when its state is an accept state at the end of the input (or, in some variants, when the stack is empty). PDAs recognize exactly the context-free languages.</figcaption>
+  </figure>
+
+  <div class="theorem-box" style="background:#f3f8f3;">
+    <strong>📖 Read:</strong>
+    <span class="ref-pill book">Sipser §2.2</span>
+    <strong>🎬 Watch:</strong>
+    <span class="ref-pill mit">MIT 18.404J L4</span>
+    <strong>⏱ Effort:</strong> 1 hour.
+  </div>
+</section>
+
+<!-- ========================================================== -->
+<section id="tm" class="section-anchor">
+  <h2>§ 7 · Turing machines (TM)</h2>
+  <p>
+    A Turing machine is the full computational model: a two-way read/write tape (unbounded in
+    both directions, conceptually), a head that can move left or right one cell per step, and a
+    finite control with accept and reject states. <strong>Everything in our course from
+    Lecture 2 onward is about Turing machines.</strong>
+  </p>
+
+  <figure class="diagram">
+    <svg viewBox="0 0 640 260" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+      <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700">Turing machine · two-way tape + finite control</text>
+      <!-- tape with sample contents -->
+      <g>""" + ''.join(
+    f'<rect x="{40 + i*48}" y="100" width="48" height="44" fill="{"var(--gold-soft)" if i == 4 else "#fff"}" stroke="#888"/>' +
+    f'<text x="{64 + i*48}" y="128" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="14">{c}</text>'
+    for i, c in enumerate(['_', '_', '1', '0', '1', '0', '_', '_', '_', '_', '_', '_'])
+) + """
+      </g>
+      <text x="40" y="92" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="#1a1a1a">Tape</text>
+      <text x="40" y="170" font-family="var(--sans), system-ui" font-size="10" fill="#666">… extends infinitely both ways …</text>
+
+      <!-- head arrow pointing to cell 4 -->
+      <path d="M 256,160 L 256,148" stroke="var(--warn-strong, #b95825)" stroke-width="2.5" marker-end="url(#arr-tm-head)"/>
+      <text x="256" y="180" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--warn-strong, #b95825)">head</text>
+      <defs>
+        <marker id="arr-tm-head" markerWidth="9" markerHeight="9" refX="4" refY="3" orient="auto">
+          <polygon points="0 6, 9 3, 0 0" fill="var(--warn-strong, #b95825)"/>
+        </marker>
+      </defs>
+
+      <!-- finite control box -->
+      <rect x="200" y="200" width="240" height="50" rx="8" fill="var(--accent-soft)" stroke="var(--accent-strong)" stroke-width="2"/>
+      <text x="320" y="221" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--accent-strong)">Finite control</text>
+      <text x="320" y="240" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11" fill="#1a1a1a">δ : Q × Γ → Q × Γ × {L, R}</text>
+
+      <!-- transition explanation arrow -->
+      <path d="M 256,160 Q 270,180 290,200" stroke="#888" stroke-width="1.4" fill="none" stroke-dasharray="3 2"/>
+      <path d="M 320,200 L 320,148" stroke="#888" stroke-width="1.4" fill="none" stroke-dasharray="3 2" marker-end="url(#arr-tm-down)"/>
+      <defs>
+        <marker id="arr-tm-down" markerWidth="8" markerHeight="8" refX="4" refY="6" orient="auto">
+          <polygon points="0 0, 4 6, 8 0" fill="#888"/>
+        </marker>
+      </defs>
+
+      <!-- 7-tuple notation -->
+      <g font-family="var(--mono), ui-monospace" font-size="11">
+        <text x="450" y="220" fill="#1a1a1a" font-weight="700">M = (Q, Σ, Γ, δ, q₀, qₐ, qᵣ)</text>
+      </g>
+    </svg>
+    <figcaption>A TM is a 7-tuple. The transition function δ reads (state, current cell), and prescribes (new state, write symbol, move L or R). When δ enters q<sub>accept</sub> or q<sub>reject</sub>, the machine halts. Otherwise it might run forever.</figcaption>
+  </figure>
+
+  <div class="theorem-box" style="background:#f3f8f3;">
+    <strong>📖 Read:</strong>
+    <span class="ref-pill book">Sipser §3.1</span>
+    <strong>🎬 Watch:</strong>
+    <span class="ref-pill mit">MIT 18.404J L5–L6</span>
+    <strong>⏱ Effort:</strong> 1.5 hours.
+  </div>
+</section>
+
+<!-- ========================================================== -->
+<section id="variants" class="section-anchor">
+  <h2>§ 8 · TM variants — all the same power</h2>
+  <p>
+    A surprisingly robust feature of Turing machines: many variations look more powerful, but in
+    fact recognize exactly the same class of languages. The cost is sometimes polynomial time
+    or constant tape blow-up, but the <em>class</em> is unchanged.
+  </p>
+
+  <figure class="diagram">
+    <svg viewBox="0 0 640 280" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+      <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700">Variants of the Turing machine</text>
+
+      <!-- single tape -->
+      <g transform="translate(20, 50)">
+        <text x="100" y="0" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700">Single-tape</text>
+        <rect x="20" y="20" width="160" height="20" fill="#fff" stroke="#888"/>
+        <line x1="40" y1="20" x2="40" y2="40" stroke="#888"/>
+        <line x1="60" y1="20" x2="60" y2="40" stroke="#888"/>
+        <line x1="80" y1="20" x2="80" y2="40" stroke="#888"/>
+        <line x1="100" y1="20" x2="100" y2="40" stroke="#888"/>
+        <line x1="120" y1="20" x2="120" y2="40" stroke="#888"/>
+        <line x1="140" y1="20" x2="140" y2="40" stroke="#888"/>
+        <line x1="160" y1="20" x2="160" y2="40" stroke="#888"/>
+        <circle cx="60" cy="55" r="6" fill="var(--warn-strong, #b95825)"/>
+        <text x="100" y="80" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" fill="#666">basic model</text>
+      </g>
+
+      <!-- multi tape -->
+      <g transform="translate(180, 50)">
+        <text x="100" y="0" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--accent-strong)">Multi-tape</text>
+        <rect x="20" y="20" width="160" height="14" fill="#fff" stroke="#888"/>
+        <circle cx="60" cy="42" r="5" fill="var(--warn-strong, #b95825)"/>
+        <rect x="20" y="50" width="160" height="14" fill="#fff" stroke="#888"/>
+        <circle cx="100" cy="72" r="5" fill="var(--warn-strong, #b95825)"/>
+        <rect x="20" y="80" width="160" height="14" fill="#fff" stroke="#888"/>
+        <circle cx="140" cy="102" r="5" fill="var(--warn-strong, #b95825)"/>
+        <text x="100" y="120" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" fill="#666">k tapes, k heads</text>
+      </g>
+
+      <!-- nondeterministic tree -->
+      <g transform="translate(360, 50)">
+        <text x="100" y="0" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--gold)">Nondeterministic</text>
+        <circle cx="100" cy="25" r="6" fill="var(--gold)"/>
+        <line x1="100" y1="31" x2="60" y2="55" stroke="#888" stroke-width="1"/>
+        <line x1="100" y1="31" x2="140" y2="55" stroke="#888" stroke-width="1"/>
+        <circle cx="60" cy="60" r="5" fill="var(--gold)"/>
+        <circle cx="140" cy="60" r="5" fill="var(--gold)"/>
+        <line x1="60" y1="65" x2="40" y2="85" stroke="#888" stroke-width="1"/>
+        <line x1="60" y1="65" x2="80" y2="85" stroke="#888" stroke-width="1"/>
+        <line x1="140" y1="65" x2="120" y2="85" stroke="#888" stroke-width="1"/>
+        <line x1="140" y1="65" x2="160" y2="85" stroke="#888" stroke-width="1"/>
+        <circle cx="40" cy="90" r="4" fill="var(--gold)"/>
+        <circle cx="80" cy="90" r="4" fill="var(--gold)"/>
+        <circle cx="120" cy="90" r="4" fill="var(--gold)"/>
+        <circle cx="160" cy="90" r="4" fill="var(--gold)"/>
+        <text x="100" y="120" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" fill="#666">branching computation</text>
+      </g>
+
+      <!-- enumerator -->
+      <g transform="translate(540, 50)">
+        <text x="50" y="0" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--warn-strong, #b95825)">Enumerator</text>
+        <rect x="0" y="20" width="100" height="80" fill="#fff" stroke="#888"/>
+        <text x="50" y="40" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11">w₁</text>
+        <text x="50" y="55" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11">w₂</text>
+        <text x="50" y="70" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11">w₃</text>
+        <text x="50" y="85" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11">⋮</text>
+        <text x="50" y="120" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" fill="#666">prints all of L</text>
+      </g>
+
+      <!-- conclusion -->
+      <rect x="40" y="180" width="560" height="60" rx="8" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.6"/>
+      <text x="320" y="207" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700">All four variants recognize exactly the same class of languages</text>
+      <text x="320" y="227" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#666">— the Turing-recognizable (a.k.a. recursively enumerable) languages</text>
+    </svg>
+    <figcaption>Multi-tape and nondeterministic TMs <em>can</em> be simulated by single-tape deterministic ones, but at a polynomial / exponential time cost. They are equally powerful, but not equally efficient — this is what motivates complexity classes.</figcaption>
+  </figure>
+
+  <div class="theorem-box" style="background:#f3f8f3;">
+    <strong>📖 Read:</strong>
+    <span class="ref-pill book">Sipser §3.2</span>
+    <strong>🎬 Watch:</strong>
+    <span class="ref-pill mit">MIT 18.404J L6</span>
+    <strong>⏱ Effort:</strong> 1 hour.
+  </div>
+</section>
+
+<!-- ========================================================== -->
+<section id="ct" class="section-anchor">
+  <h2>§ 9 · Church-Turing thesis</h2>
+  <p>
+    The Church-Turing thesis is an informal claim, not a theorem: <em>everything that can be
+    computed by an algorithm can be computed by a Turing machine.</em> It lets us interchange
+    "algorithm", "program", "procedure", and "Turing machine" in proofs.
+  </p>
+
+  <figure class="diagram">
+    <svg viewBox="0 0 640 220" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+      <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700">Church-Turing thesis · the bridge between informal and formal</text>
+      <!-- informal side -->
+      <rect x="40" y="60" width="200" height="120" rx="8" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.6"/>
+      <text x="140" y="85" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--gold)">Informal world</text>
+      <g font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">
+        <text x="55" y="110">• Pseudocode</text>
+        <text x="55" y="128">• Python · Java · C</text>
+        <text x="55" y="146">• Lambda calculus</text>
+        <text x="55" y="164">• Recursive functions</text>
+      </g>
+
+      <!-- ↔ -->
+      <text x="320" y="125" text-anchor="middle" font-family="var(--sans), system-ui" font-size="36" fill="var(--accent-strong)">↔</text>
+      <text x="320" y="160" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">Church-Turing thesis</text>
+
+      <!-- formal side -->
+      <rect x="400" y="60" width="200" height="120" rx="8" fill="var(--accent-soft)" stroke="var(--accent-strong)" stroke-width="2"/>
+      <text x="500" y="85" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--accent-strong)">Formal world</text>
+      <g font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">
+        <text x="415" y="110">• Turing machines</text>
+        <text x="415" y="128">• Configurations</text>
+        <text x="415" y="146">• δ : Q × Γ → Q × Γ × {L,R}</text>
+        <text x="415" y="164">• Provable properties</text>
+      </g>
+
+      <!-- bottom note -->
+      <text x="320" y="205" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-style="italic" fill="#666">
+        "There is an algorithm" ⇔ "There is a Turing machine" — used freely from Lecture 2 onward.
+      </text>
+    </svg>
+    <figcaption>The Church-Turing thesis isn't a theorem we prove; it's a working assumption that has never been refuted in 90 years. It lets us describe TMs informally in English and trust the formal construction exists.</figcaption>
+  </figure>
+
+  <div class="theorem-box" style="background:#f3f8f3;">
+    <strong>📖 Read:</strong>
+    <span class="ref-pill book">Sipser §3.3</span>
+    <strong>🎬 Watch:</strong>
+    <span class="ref-pill mit">MIT 18.404J L6</span>
+    <strong>⏱ Effort:</strong> 30 min.
+  </div>
+</section>
+
+<!-- ========================================================== -->
+<section id="enc" class="section-anchor">
+  <h2>§ 10 · Encodings: ⟨M⟩ and ⟨M, w⟩</h2>
+  <p>
+    A Turing machine is just a finite table of transitions. So you can encode it as a binary
+    string ⟨M⟩. Once a TM is data, you can feed it as input to another TM — this is the
+    foundation of the <strong>universal TM</strong> (Lecture 2) and every undecidability proof
+    we will see.
+  </p>
+
+  <figure class="diagram">
+    <svg viewBox="0 0 640 240" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+      <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700">A TM is just data · ⟨M⟩ is a string</text>
+      <!-- TM diagram -->
+      <g transform="translate(30, 60)">
+        <text x="100" y="0" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--accent-strong)">TM M (the picture)</text>
+        <circle cx="40" cy="40" r="18" fill="#fff" stroke="#1a1a1a"/>
+        <text x="40" y="44" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11">q₀</text>
+        <circle cx="120" cy="40" r="18" fill="var(--accent-soft)" stroke="var(--accent-strong)"/>
+        <text x="120" y="44" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11">q₁</text>
+        <path d="M 58,40 L 100,40" stroke="#888" stroke-width="1.4" marker-end="url(#arr-enc)"/>
+        <text x="80" y="33" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="10">0/1,R</text>
+        <path d="M 130,55 Q 150,80 130,90 Q 110,80 110,55" fill="none" stroke="#888" stroke-width="1.4" marker-end="url(#arr-enc)"/>
+        <text x="135" y="95" font-family="var(--mono), ui-monospace" font-size="10">_/_,R</text>
+        <defs>
+          <marker id="arr-enc" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto">
+            <polygon points="0 0, 7 3, 0 6" fill="#888"/>
+          </marker>
+        </defs>
+      </g>
+
+      <!-- arrow encode -->
+      <path d="M 250,100 L 305,100" stroke="var(--gold)" stroke-width="2.5" marker-end="url(#arr-enc-big)"/>
+      <text x="277" y="92" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="var(--gold)" font-weight="700">encode</text>
+      <defs>
+        <marker id="arr-enc-big" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 9 3, 0 6" fill="var(--gold)"/>
+        </marker>
+      </defs>
+
+      <!-- encoded string -->
+      <g transform="translate(310, 60)">
+        <text x="135" y="0" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--gold)">⟨M⟩ (the string)</text>
+        <rect x="0" y="15" width="280" height="60" rx="6" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.6"/>
+        <text x="140" y="42" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11">10110100110010110010110...</text>
+        <text x="140" y="60" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">a binary representation of all of M</text>
+      </g>
+
+      <!-- pair ⟨M,w⟩ -->
+      <g transform="translate(40, 165)">
+        <text x="280" y="0" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700">Pair encoding ⟨M, w⟩</text>
+        <rect x="100" y="15" width="170" height="40" rx="6" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.6"/>
+        <text x="185" y="38" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11">⟨M⟩</text>
+        <text x="280" y="38" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="15">#</text>
+        <rect x="290" y="15" width="170" height="40" rx="6" fill="var(--accent-soft)" stroke="var(--accent-strong)" stroke-width="1.6"/>
+        <text x="375" y="38" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11">⟨w⟩</text>
+        <text x="280" y="73" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">a single string built from both</text>
+      </g>
+    </svg>
+    <figcaption>Once M is a string, we can write down questions like "does M accept w?" as language membership questions about pairs ⟨M, w⟩. This is what makes A<sub>TM</sub> = {⟨M, w⟩ : M accepts w} a well-defined language.</figcaption>
+  </figure>
+</section>
+
+<!-- ========================================================== -->
+<section id="decrec" class="section-anchor">
+  <h2>§ 11 · Decidable vs Turing-recognizable</h2>
+  <p>
+    This is the single most important distinction in the entire course. A TM that
+    <strong>decides</strong> a language always halts with the correct yes/no answer. A TM that
+    only <strong>recognizes</strong> a language accepts every yes-instance but may loop forever
+    on no-instances.
+  </p>
+
+  <figure class="diagram">
+    <svg viewBox="0 0 640 280" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+      <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700">Behavior of a recognizer vs a decider on input w</text>
+
+      <!-- left: decider -->
+      <g transform="translate(40, 60)">
+        <rect x="0" y="0" width="270" height="180" rx="8" fill="#d6ebe4" stroke="#1c4a3f" stroke-width="2"/>
+        <text x="135" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="#1c4a3f">DECIDER</text>
+        <text x="135" y="40" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#1c4a3f">always halts</text>
+        <!-- decision branches -->
+        <line x1="135" y1="55" x2="60" y2="100" stroke="#888" stroke-width="1.4"/>
+        <line x1="135" y1="55" x2="210" y2="100" stroke="#888" stroke-width="1.4"/>
+        <text x="135" y="65" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">w?</text>
+        <rect x="20" y="100" width="80" height="40" rx="6" fill="#fff" stroke="#1c4a3f" stroke-width="1.4"/>
+        <text x="60" y="125" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="#1c4a3f">accept</text>
+        <rect x="170" y="100" width="80" height="40" rx="6" fill="#fff" stroke="#1c4a3f" stroke-width="1.4"/>
+        <text x="210" y="125" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="#1c4a3f">reject</text>
+        <text x="135" y="165" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#666">no third option</text>
+      </g>
+
+      <!-- right: recognizer -->
+      <g transform="translate(330, 60)">
+        <rect x="0" y="0" width="270" height="180" rx="8" fill="#d6e3f4" stroke="var(--info, #2f60a8)" stroke-width="2"/>
+        <text x="135" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--info, #2f60a8)">RECOGNIZER</text>
+        <text x="135" y="40" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="var(--info, #2f60a8)">may loop forever</text>
+        <line x1="135" y1="55" x2="40" y2="100" stroke="#888" stroke-width="1.4"/>
+        <line x1="135" y1="55" x2="135" y2="100" stroke="#888" stroke-width="1.4"/>
+        <line x1="135" y1="55" x2="230" y2="100" stroke="#888" stroke-width="1.4"/>
+        <text x="135" y="65" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">w?</text>
+        <rect x="5" y="100" width="70" height="40" rx="6" fill="#fff" stroke="var(--info, #2f60a8)" stroke-width="1.4"/>
+        <text x="40" y="125" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--info, #2f60a8)">accept</text>
+        <rect x="100" y="100" width="70" height="40" rx="6" fill="#fff" stroke="var(--info, #2f60a8)" stroke-width="1.4"/>
+        <text x="135" y="125" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--info, #2f60a8)">reject</text>
+        <rect x="195" y="100" width="70" height="40" rx="6" fill="var(--warn-soft)" stroke="var(--warn-strong, #b95825)" stroke-width="1.8"/>
+        <text x="230" y="120" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-weight="700" fill="var(--warn-strong, #b95825)">loop</text>
+        <text x="230" y="135" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-weight="700" fill="var(--warn-strong, #b95825)">forever</text>
+        <text x="135" y="165" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#666">loop = "no answer ever"</text>
+      </g>
+    </svg>
+    <figcaption>A decider gives a verdict for every input. A recognizer may loop forever on no-instances. The famous A<sub>TM</sub> language is recognizable (use a universal TM) but not decidable (Cantor diagonal kills the decider) — this is the gap that drives the entire undecidability story.</figcaption>
+  </figure>
+</section>
+
+<!-- ========================================================== -->
+<section>
+  <h2>Day-one checklist · prove you're ready</h2>
+  <p>Before the first lecture, every student should be able to:</p>
+
+  <ul class="checklist">
+    <li>Draw a DFA for "strings with an even number of 0s" and trace a 6-character input through it.</li>
+    <li>Convert an NFA with ε-transitions into an equivalent DFA via subset construction.</li>
+    <li>Write a regex for "strings ending in 01" and an equivalent NFA.</li>
+    <li>Prove {0ⁿ1ⁿ} is not regular using the pumping lemma.</li>
+    <li>Write a CFG for balanced parentheses and parse "(())" via the rules.</li>
+    <li>Describe a Turing machine that decides {0ⁿ1ⁿ} — by hand, transition by transition.</li>
+    <li>Explain in one sentence what "Turing-recognizable but not decidable" means.</li>
+    <li>Encode a small Turing machine as a binary string ⟨M⟩ (rough sketch is fine).</li>
+  </ul>
+
+  <p style="margin-top: 14px; font-style: italic; color: var(--ink-soft, #666);">
+    If you can do all eight, you're ready. If two or more feel impossible, spend a day with Sipser
+    chapters 0–3 before our first session.
+  </p>
+</section>
+
+<!-- ========================================================== -->
+<section>
+  <h2>Self-study schedule · 5 days, ≈ 8 hours total</h2>
+
+  <table class="data schedule-table">
+    <thead>
+      <tr><th>Day</th><th>Topics</th><th>Sipser</th><th>MIT video</th><th>Hours</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Day 1</strong></td>
+        <td>Sets, functions, languages, proofs</td>
+        <td><span class="ref-pill book">§0.2</span><span class="ref-pill book">§0.4</span></td>
+        <td>—</td>
+        <td>1 h</td>
+      </tr>
+      <tr>
+        <td><strong>Day 2</strong></td>
+        <td>DFA · NFA · regular expressions</td>
+        <td><span class="ref-pill book">§1.1</span><span class="ref-pill book">§1.2</span><span class="ref-pill book">§1.3</span></td>
+        <td><span class="ref-pill mit">L1</span><span class="ref-pill mit">L2</span></td>
+        <td>2 h</td>
+      </tr>
+      <tr>
+        <td><strong>Day 3</strong></td>
+        <td>Pumping lemma · CFGs</td>
+        <td><span class="ref-pill book">§1.4</span><span class="ref-pill book">§2.1</span></td>
+        <td><span class="ref-pill mit">L3</span></td>
+        <td>1.5 h</td>
+      </tr>
+      <tr>
+        <td><strong>Day 4</strong></td>
+        <td>PDAs · non-CFLs</td>
+        <td><span class="ref-pill book">§2.2</span><span class="ref-pill book">§2.3</span></td>
+        <td><span class="ref-pill mit">L4</span><span class="ref-pill mit">L5</span></td>
+        <td>1.5 h</td>
+      </tr>
+      <tr>
+        <td><strong>Day 5</strong></td>
+        <td>Turing machines · variants · Church-Turing</td>
+        <td><span class="ref-pill book">§3.1</span><span class="ref-pill book">§3.2</span><span class="ref-pill book">§3.3</span></td>
+        <td><span class="ref-pill mit">L5</span><span class="ref-pill mit">L6</span></td>
+        <td>2 h</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="margin-top: 14px;">
+    Free MIT videos and lecture notes:
+    <a href="https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/" target="_blank" rel="noopener">
+      ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020
+    </a>
+  </p>
+</section>
+
+<!-- ========================================================== -->
+<section>
+  <h2>Notation cheat sheet</h2>
+
+  <table class="data notation">
+    <thead>
+      <tr><th>Symbol</th><th>Meaning</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Σ</td><td>finite alphabet (often {0,1})</td></tr>
+      <tr><td>Σ*</td><td>set of all finite strings over Σ</td></tr>
+      <tr><td>ε</td><td>empty string (length 0)</td></tr>
+      <tr><td>|w|</td><td>length of string w</td></tr>
+      <tr><td>L</td><td>a language (subset of Σ*)</td></tr>
+      <tr><td>L(M)</td><td>the language a machine M recognizes</td></tr>
+      <tr><td>⟨M⟩</td><td>encoding of TM M as a binary string</td></tr>
+      <tr><td>⟨M, w⟩</td><td>encoded pair of machine and input</td></tr>
+      <tr><td>δ</td><td>transition function</td></tr>
+      <tr><td>A<sub>X</sub></td><td>"does X accept w?" language</td></tr>
+      <tr><td>E<sub>X</sub></td><td>"is L(X) empty?" language</td></tr>
+      <tr><td>EQ<sub>X</sub></td><td>"do X₁ and X₂ accept the same?" language</td></tr>
+      <tr><td>⊆ · ⊊</td><td>subset · proper subset</td></tr>
+      <tr><td>A △ B</td><td>symmetric difference</td></tr>
+      <tr><td>≤<sub>p</sub> · ≤<sub>m</sub> · ≤<sub>T</sub></td><td>polynomial · mapping · Turing reduction</td></tr>
+    </tbody>
+  </table>
+</section>
+
+</div>
+
+<footer class="foot" style="margin-top:40px;padding:20px;text-align:center;color:#888;font-size:13px;">
+  BCS 402 · Dr. Arash Kermani · CUD · Summer 2026 ·
+  <a href="index.html" style="color:var(--gold);">back to course site</a>
+</footer>
+
+</body>
+</html>

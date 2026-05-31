@@ -1,0 +1,1 @@
+One-sentence summary of Module 4: time complexity is measured in Big-O of the input length, and the class P captures problems decidable in polynomial time on any reasonable Turing machine model.

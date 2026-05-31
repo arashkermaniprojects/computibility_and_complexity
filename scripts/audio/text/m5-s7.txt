@@ -1,0 +1,1 @@
+One-sentence summary of Module 5: N-P captures problems with polynomial-time verifiers; Cook–Levin proves S-A-T is N-P-complete; and the entire family of N-P-complete problems is connected by polynomial-time reductions starting from S-A-T.

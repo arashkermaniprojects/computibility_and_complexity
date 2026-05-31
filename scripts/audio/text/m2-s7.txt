@@ -1,0 +1,1 @@
+One-sentence summary of Module 2: the diagonal argument proves that A-T-M is undecidable, and once we have one undecidable problem we generate many more by reduction. Hold that thought as we explore deeper undecidability results next.

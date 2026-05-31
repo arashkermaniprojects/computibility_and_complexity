@@ -1,0 +1,1 @@
+One-sentence summary of Module 6: P-S-P-A-C-E equals N-P-S-P-A-C-E by Savitch, and T-Q-B-F is the canonical P-S-P-A-C-E-complete problem, corresponding to two-player games.

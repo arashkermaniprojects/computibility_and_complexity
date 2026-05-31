@@ -1,0 +1,1 @@
+One-sentence summary of Module 1: every natural decision problem about finite automata and context-free grammars is decidable in polynomial time, because their behavior is finite enough to inspect mechanically. Hold that thought as we now turn to Turing machines, where the situation reverses completely.

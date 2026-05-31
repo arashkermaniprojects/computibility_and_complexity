@@ -1,0 +1,1 @@
+One-sentence summary of the entire course: computability draws the line between possible and impossible algorithms, complexity draws the lines between fast, slow, and infeasible — and almost every interesting line between complexity classes remains, even after fifty years, an open mystery.

@@ -1,0 +1,1 @@
+One-sentence summary of Module 3: the computation history method, the recursion theorem, and Rice's theorem are the three power tools of advanced undecidability — together they reduce almost any semantic question about Turing machines to the halting problem.

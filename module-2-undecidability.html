@@ -7,6 +7,41 @@
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="presentation.css">
 <script src="widget-loop.js"></script>
+
+<style>
+.section-audio {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0 18px;
+  padding: 10px 14px;
+  background: linear-gradient(180deg, #fffaf3 0%, #fff5e8 100%);
+  border: 1px solid var(--gold-soft, #e8d8b4);
+  border-left: 4px solid var(--gold, #c89933);
+  border-radius: 8px;
+}
+.section-audio .audio-label {
+  font-family: var(--sans, system-ui), sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--gold, #8a6a1d);
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.section-audio audio {
+  flex: 1;
+  height: 36px;
+  max-width: 540px;
+}
+.section-audio audio::-webkit-media-controls-panel {
+  background: #fffaf3;
+}
+@media (max-width: 640px) {
+  .section-audio { flex-wrap: wrap; }
+}
+</style>
+
 </head>
 <body>
 
@@ -31,6 +66,7 @@
 
 <!-- ============================================================ -->
 <section id="cantor">
+  <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m2-s1.mp3"></audio></div>
   <h2>1 · Cantor's diagonal argument — the seed of everything</h2>
 
   <p>
@@ -90,6 +126,7 @@
 
 <!-- ============================================================ -->
 <section id="atm">
+  <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m2-s2.mp3"></audio></div>
   <h2>2 · A<sub>TM</sub> is Turing-recognizable</h2>
 
   <p>
@@ -207,6 +244,7 @@
 
 <!-- ============================================================ -->
 <section id="diag">
+  <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m2-s3.mp3"></audio></div>
   <h2>3 · A<sub>TM</sub> is <em>not</em> decidable — the contradiction machine</h2>
 
   <p>
@@ -294,6 +332,7 @@
 
 <!-- ============================================================ -->
 <section id="halt">
+  <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m2-s4.mp3"></audio></div>
   <h2>4 · The halting problem &amp; reductions to it</h2>
 
   <p>
@@ -357,6 +396,7 @@
 
 <!-- ============================================================ -->
 <section id="venn">
+  <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m2-s5.mp3"></audio></div>
   <h2>5 · The map of languages — decidable, recognizable, neither</h2>
 
   <p>
@@ -408,6 +448,7 @@
 
 <!-- ============================================================ -->
 <section id="exercises">
+  <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m2-s6.mp3"></audio></div>
   <h2>6 · Practice (Sipser Ch. 4.2 &amp; 5.1)</h2>
 
   <div class="exercise">
@@ -503,6 +544,7 @@
 </section>
 
 <section>
+  <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m2-s7.mp3"></audio></div>
   <h2>One-sentence summary</h2>
   <div class="key-idea">
     A diagonal argument (or a reduction from one) shows that <span class="math">A<sub>TM</sub></span>,

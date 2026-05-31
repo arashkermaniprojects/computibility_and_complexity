@@ -42,6 +42,31 @@
 }
 </style>
 
+
+<style>
+.diagram {
+  margin: 18px 0;
+  padding: 12px 14px;
+  background: #fcfbf7;
+  border: 1px solid var(--rule, #eee);
+  border-left: 4px solid var(--gold, #c89933);
+  border-radius: 8px;
+}
+.diagram svg {
+  width: 100%;
+  height: auto;
+  max-height: 360px;
+  display: block;
+}
+.diagram figcaption {
+  margin-top: 10px;
+  font-family: var(--sans, system-ui), sans-serif;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--ink-soft, #555);
+}
+</style>
+
 </head>
 <body>
 
@@ -222,6 +247,63 @@
       the start state. If any reachable node is an accept state, output <em>not empty</em>;
       otherwise, output <em>empty</em>. The DFA has finitely many states, so the search halts.
     </p>
+<figure class="diagram">
+  <svg viewBox="0 0 640 220" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+    <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
+      E&lt;sub&gt;DFA&lt;/sub&gt; via reachability · BFS frontier expanding from q&#8320;
+    </text>
+    <!-- nodes -->
+    <g font-family="var(--mono), ui-monospace" font-size="13">
+      <circle cx="80"  cy="120" r="22" fill="var(--accent-soft)" stroke="var(--accent-strong)" stroke-width="2"/>
+      <text x="80"  y="125" text-anchor="middle" font-weight="700">q&#8320;</text>
+      <text x="80"  y="170" text-anchor="middle" font-size="10" fill="#666">start · level 0</text>
+
+      <circle cx="200" cy="80"  r="22" fill="var(--accent-soft)" stroke="var(--accent-strong)" stroke-width="2"/>
+      <text x="200" y="85"  text-anchor="middle" font-weight="700">q&#8321;</text>
+
+      <circle cx="200" cy="160" r="22" fill="var(--accent-soft)" stroke="var(--accent-strong)" stroke-width="2"/>
+      <text x="200" y="165" text-anchor="middle" font-weight="700">q&#8322;</text>
+
+      <circle cx="340" cy="50"  r="22" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2"/>
+      <text x="340" y="55"  text-anchor="middle" font-weight="700">q&#8323;</text>
+
+      <circle cx="340" cy="120" r="22" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2"/>
+      <text x="340" y="125" text-anchor="middle" font-weight="700">q&#8324;</text>
+
+      <circle cx="340" cy="190" r="22" fill="#f5f5f0" stroke="#bbb" stroke-width="2"/>
+      <text x="340" y="195" text-anchor="middle" font-weight="700" fill="#888">q&#8325;</text>
+
+      <!-- ACCEPT state — double circle -->
+      <circle cx="480" cy="80"  r="22" fill="var(--warn-soft)" stroke="var(--warn-strong, #b95825)" stroke-width="2"/>
+      <circle cx="480" cy="80"  r="17" fill="none" stroke="var(--warn-strong, #b95825)" stroke-width="1.5"/>
+      <text x="480" y="85"  text-anchor="middle" font-weight="700">q&#8326;</text>
+      <text x="480" y="130" text-anchor="middle" font-size="10" fill="var(--warn-strong, #b95825)" font-weight="600">accept</text>
+    </g>
+    <!-- arrows showing edges (forward only for clarity) -->
+    <g stroke="#888" stroke-width="1.5" fill="none" marker-end="url(#arrow-r)">
+      <path d="M 102,114 L 178,90"/>
+      <path d="M 102,128 L 178,155"/>
+      <path d="M 222,73 L 318,55"/>
+      <path d="M 222,87 L 318,115"/>
+      <path d="M 222,155 L 318,128"/>
+      <path d="M 222,165 L 318,185"/>
+      <path d="M 362,50 L 458,77"/>
+      <path d="M 362,118 L 458,85"/>
+    </g>
+    <defs>
+      <marker id="arrow-r" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#888"/>
+      </marker>
+    </defs>
+    <!-- BFS frontiers -->
+    <text x="80"  y="200" text-anchor="middle" font-size="9" fill="#888">level 0</text>
+    <text x="200" y="200" text-anchor="middle" font-size="9" fill="#888">level 1</text>
+    <text x="340" y="215" text-anchor="middle" font-size="9" fill="#888">level 2</text>
+    <text x="480" y="200" text-anchor="middle" font-size="9" fill="#888">level 3</text>
+  </svg>
+  <figcaption>BFS expands outward from the start state. The DFA's language is empty if and only if no accept state is ever reached. Linear time in the number of states and transitions.</figcaption>
+</figure>
+
   </div>
 
   <h3>Try it: emptiness by reachability</h3>
@@ -280,6 +362,45 @@
     &nbsp;&nbsp;where&nbsp;&nbsp;
     L(A) △ L(B) = (L(A) ∩ L(B)<sup>c</sup>) ∪ (L(A)<sup>c</sup> ∩ L(B)).
   </div>
+<figure class="diagram">
+  <svg viewBox="0 0 640 280" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+    <defs>
+      <pattern id="hatch-symdiff" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="6" stroke="var(--warn)" stroke-width="1.4"/>
+      </pattern>
+    </defs>
+    <!-- title -->
+    <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
+      Symmetric difference · L(A) △ L(B) = (L(A) \ L(B)) ∪ (L(B) \ L(A))
+    </text>
+    <!-- circle A -->
+    <circle cx="240" cy="155" r="80" fill="url(#hatch-symdiff)" stroke="var(--accent-strong)" stroke-width="2"/>
+    <!-- circle B -->
+    <circle cx="400" cy="155" r="80" fill="url(#hatch-symdiff)" stroke="var(--info)" stroke-width="2"/>
+    <!-- intersection painted white to mask hatch -->
+    <path d="M 320,82 A 80,80 0 0,1 320,228 A 80,80 0 0,1 320,82 Z" fill="#fcfbf7" stroke="none"/>
+    <!-- intersection outline -->
+    <path d="M 320,82 A 80,80 0 0,1 320,228" fill="none" stroke="var(--accent-strong)" stroke-width="2"/>
+    <path d="M 320,82 A 80,80 0 0,0 320,228" fill="none" stroke="var(--info)" stroke-width="2"/>
+    <!-- labels -->
+    <text x="195" y="60" font-family="var(--mono), ui-monospace" font-size="15" font-weight="700" fill="var(--accent-strong)">L(A)</text>
+    <text x="425" y="60" font-family="var(--mono), ui-monospace" font-size="15" font-weight="700" fill="var(--info)">L(B)</text>
+    <text x="320" y="160" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" fill="#1a1a1a">L(A) ∩ L(B)</text>
+    <text x="320" y="178" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#666">both DFAs agree</text>
+    <!-- annotations for shaded regions -->
+    <text x="180" y="200" font-family="var(--sans), system-ui" font-size="12" font-weight="600" fill="var(--warn-strong, #b95825)">A accepts, B rejects</text>
+    <text x="450" y="200" font-family="var(--sans), system-ui" font-size="12" font-weight="600" fill="var(--warn-strong, #b95825)">B accepts, A rejects</text>
+    <!-- arrows pointing at the symmetric difference -->
+    <path d="M 195,210 Q 180,225 175,235" fill="none" stroke="var(--warn)" stroke-width="1.5" stroke-dasharray="3 2"/>
+    <path d="M 470,210 Q 480,225 485,235" fill="none" stroke="var(--warn)" stroke-width="1.5" stroke-dasharray="3 2"/>
+    <!-- bottom note -->
+    <text x="320" y="265" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-style="italic" fill="#666">
+      Striped region = symmetric difference. L(A) = L(B) iff the striped region is empty.
+    </text>
+  </svg>
+  <figcaption>The symmetric difference of two languages is the set of strings on which the two DFAs disagree. Two DFAs are equivalent if and only if their symmetric difference is the empty language — and that is what the product construction lets us test.</figcaption>
+</figure>
+
 
   <p>
     The symmetric difference is the set of strings on which <span class="math">A</span> and

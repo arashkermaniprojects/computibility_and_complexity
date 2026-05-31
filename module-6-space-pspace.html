@@ -42,6 +42,31 @@
 }
 </style>
 
+
+<style>
+.diagram {
+  margin: 18px 0;
+  padding: 12px 14px;
+  background: #fcfbf7;
+  border: 1px solid var(--rule, #eee);
+  border-left: 4px solid var(--gold, #c89933);
+  border-radius: 8px;
+}
+.diagram svg {
+  width: 100%;
+  height: auto;
+  max-height: 360px;
+  display: block;
+}
+.diagram figcaption {
+  margin-top: 10px;
+  font-family: var(--sans, system-ui), sans-serif;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--ink-soft, #555);
+}
+</style>
+
 </head>
 <body>
 
@@ -49,6 +74,38 @@
   <div class="eyebrow">Module 6 · MIT 18.404J Lectures 17–19 · Sipser §8.1–§8.3</div>
   <h1>Space complexity, PSPACE &amp; games</h1>
   <div class="sub">Savitch's theorem visualized as a recursion tree, and games that are provably hard to play perfectly.</div>
+<figure class="diagram">
+  <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+    <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
+      Savitch's recursion tree · log depth × O(f) bits per frame = O(f²) space
+    </text>
+    <!-- root -->
+    <circle cx="320" cy="60" r="16" fill="var(--gold)" stroke="var(--gold)" stroke-width="2"/>
+    <text x="320" y="65" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11" font-weight="700" fill="#fff">A→B, t</text>
+    <!-- level 2 -->
+    <line x1="320" y1="76" x2="180" y2="120" stroke="#888" stroke-width="1.4"/>
+    <line x1="320" y1="76" x2="460" y2="120" stroke="#888" stroke-width="1.4"/>
+    <circle cx="180" cy="130" r="14" fill="var(--accent)" stroke="var(--accent-strong)" stroke-width="1.5"/>
+    <text x="180" y="134" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="10" fill="#fff">A→M, t/2</text>
+    <circle cx="460" cy="130" r="14" fill="var(--accent)" stroke="var(--accent-strong)" stroke-width="1.5"/>
+    <text x="460" y="134" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="10" fill="#fff">M→B, t/2</text>
+    <!-- level 3 --><line x1="180" y1="144" x2="120" y2="180" stroke="#888" stroke-width="1.2"/><circle cx="120" cy="190" r="11" fill="#fff" stroke="#888" stroke-width="1.4"/><line x1="180" y1="144" x2="240" y2="180" stroke="#888" stroke-width="1.2"/><circle cx="240" cy="190" r="11" fill="#fff" stroke="#888" stroke-width="1.4"/><line x1="460" y1="144" x2="400" y2="180" stroke="#888" stroke-width="1.2"/><circle cx="400" cy="190" r="11" fill="#fff" stroke="#888" stroke-width="1.4"/><line x1="460" y1="144" x2="520" y2="180" stroke="#888" stroke-width="1.2"/><circle cx="520" cy="190" r="11" fill="#fff" stroke="#888" stroke-width="1.4"/>
+    <!-- level 4 (leaves) --><line x1="120" y1="200" x2="100" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="100" cy="248" r="6" fill="#eee" stroke="#bbb"/><line x1="120" y1="200" x2="160" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="160" cy="248" r="6" fill="#eee" stroke="#bbb"/><line x1="240" y1="200" x2="220" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="220" cy="248" r="6" fill="#eee" stroke="#bbb"/><line x1="240" y1="200" x2="280" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="280" cy="248" r="6" fill="#eee" stroke="#bbb"/><line x1="360" y1="200" x2="340" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="340" cy="248" r="6" fill="#eee" stroke="#bbb"/><line x1="360" y1="200" x2="400" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="400" cy="248" r="6" fill="#eee" stroke="#bbb"/><line x1="480" y1="200" x2="460" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="460" cy="248" r="6" fill="#eee" stroke="#bbb"/><line x1="480" y1="200" x2="520" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="520" cy="248" r="6" fill="#eee" stroke="#bbb"/>
+    <!-- side annotations -->
+    <text x="540" y="65"  font-family="var(--sans), system-ui" font-size="11" fill="#666">level 0 · t = full</text>
+    <text x="540" y="135" font-family="var(--sans), system-ui" font-size="11" fill="#666">level 1 · t/2</text>
+    <text x="540" y="195" font-family="var(--sans), system-ui" font-size="11" fill="#666">level 2 · t/4</text>
+    <text x="540" y="252" font-family="var(--sans), system-ui" font-size="11" fill="#666">…log t levels</text>
+    <!-- bracket showing stack depth -->
+    <line x1="40" y1="60" x2="40" y2="250" stroke="var(--warn-strong, #b95825)" stroke-width="2"/>
+    <text x="30" y="160" text-anchor="end" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--warn-strong, #b95825)">depth = log t = O(f(n))</text>
+    <text x="320" y="295" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-style="italic" fill="#666">
+      Exponentially many nodes, but only one root-to-leaf path lives on the stack at a time.
+    </text>
+  </svg>
+  <figcaption>Savitch's recursion tree has 2^(log t) leaves — exponentially many nodes — but at any moment only a single root-to-leaf path occupies the call stack. log t × O(f) bits per frame = O(f²) space, proving NSPACE(f) ⊆ SPACE(f²).</figcaption>
+</figure>
+
   <div class="tag">BCS 402 · Dr. Arash Kermani · CUD</div>
 </header>
 
@@ -67,7 +124,85 @@
 <!-- ============================================================ -->
 <section id="intro">
   <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m6-s1.mp3"></audio></div>
+<figure class="diagram">
+  <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+    <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
+      TQBF game tree · ∃x∀y∃z. φ(x,y,z) evaluated bottom-up
+    </text>
+    <!-- root: exists x -->
+    <circle cx="320" cy="55" r="22" fill="var(--accent-soft)" stroke="var(--accent-strong)" stroke-width="2.5"/>
+    <text x="320" y="62" text-anchor="middle" font-family="var(--sans), system-ui" font-size="18" fill="var(--accent-strong)">∃</text>
+    <text x="320" y="40" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11" fill="#1a1a1a">x</text>
+    <!-- branches: x=0, x=1 -->
+    <line x1="304" y1="68"  x2="160" y2="115" stroke="#888" stroke-width="1.4"/>
+    <text x="225" y="90" font-family="var(--mono), ui-monospace" font-size="11" fill="#888">x=0</text>
+    <line x1="336" y1="68"  x2="480" y2="115" stroke="#888" stroke-width="1.4"/>
+    <text x="410" y="90" font-family="var(--mono), ui-monospace" font-size="11" fill="#888">x=1</text>
+    <!-- universal y -->
+    <circle cx="160" cy="130" r="20" fill="var(--warn-soft)" stroke="var(--warn-strong, #b95825)" stroke-width="2"/>
+    <text x="160" y="136" text-anchor="middle" font-family="var(--sans), system-ui" font-size="16" fill="var(--warn-strong, #b95825)">∀</text>
+    <text x="160" y="115" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="10" fill="#1a1a1a">y</text>
+    <circle cx="480" cy="130" r="20" fill="var(--warn-soft)" stroke="var(--warn-strong, #b95825)" stroke-width="2"/>
+    <text x="480" y="136" text-anchor="middle" font-family="var(--sans), system-ui" font-size="16" fill="var(--warn-strong, #b95825)">∀</text>
+    <text x="480" y="115" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="10" fill="#1a1a1a">y</text>
+    <!-- branches: y=0, y=1 for left ∀ -->
+    <line x1="148" y1="142" x2="80"  y2="180" stroke="#888" stroke-width="1.2"/>
+    <line x1="172" y1="142" x2="240" y2="180" stroke="#888" stroke-width="1.2"/>
+    <line x1="468" y1="142" x2="400" y2="180" stroke="#888" stroke-width="1.2"/>
+    <line x1="492" y1="142" x2="560" y2="180" stroke="#888" stroke-width="1.2"/>
+    <!-- existential z --><circle cx="80" cy="195" r="16" fill="var(--accent-soft)" stroke="var(--accent-strong)" stroke-width="1.6"/><text x="80" y="201" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" fill="var(--accent-strong)">∃</text><circle cx="240" cy="195" r="16" fill="var(--accent-soft)" stroke="var(--accent-strong)" stroke-width="1.6"/><text x="240" y="201" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" fill="var(--accent-strong)">∃</text><circle cx="400" cy="195" r="16" fill="var(--accent-soft)" stroke="var(--accent-strong)" stroke-width="1.6"/><text x="400" y="201" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" fill="var(--accent-strong)">∃</text><circle cx="560" cy="195" r="16" fill="var(--accent-soft)" stroke="var(--accent-strong)" stroke-width="1.6"/><text x="560" y="201" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" fill="var(--accent-strong)">∃</text>
+    <!-- leaves: phi values --><rect x="50" y="240" width="30" height="22" fill="#d6ebe4" stroke="#1c4a3f" stroke-width="1.2"/><text x="65" y="257" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="12" font-weight="700" fill="#1c4a3f">1</text><rect x="95" y="240" width="30" height="22" fill="#f4dfcf" stroke="var(--warn-strong, #b95825)" stroke-width="1.2"/><text x="110" y="257" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="12" font-weight="700" fill="var(--warn-strong, #b95825)">0</text><rect x="140" y="240" width="30" height="22" fill="#f4dfcf" stroke="var(--warn-strong, #b95825)" stroke-width="1.2"/><text x="155" y="257" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="12" font-weight="700" fill="var(--warn-strong, #b95825)">0</text><rect x="185" y="240" width="30" height="22" fill="#d6ebe4" stroke="#1c4a3f" stroke-width="1.2"/><text x="200" y="257" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="12" font-weight="700" fill="#1c4a3f">1</text><rect x="230" y="240" width="30" height="22" fill="#f4dfcf" stroke="var(--warn-strong, #b95825)" stroke-width="1.2"/><text x="245" y="257" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="12" font-weight="700" fill="var(--warn-strong, #b95825)">0</text><rect x="275" y="240" width="30" height="22" fill="#f4dfcf" stroke="var(--warn-strong, #b95825)" stroke-width="1.2"/><text x="290" y="257" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="12" font-weight="700" fill="var(--warn-strong, #b95825)">0</text><rect x="320" y="240" width="30" height="22" fill="#d6ebe4" stroke="#1c4a3f" stroke-width="1.2"/><text x="335" y="257" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="12" font-weight="700" fill="#1c4a3f">1</text><rect x="365" y="240" width="30" height="22" fill="#f4dfcf" stroke="var(--warn-strong, #b95825)" stroke-width="1.2"/><text x="380" y="257" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="12" font-weight="700" fill="var(--warn-strong, #b95825)">0</text><rect x="410" y="240" width="30" height="22" fill="#f4dfcf" stroke="var(--warn-strong, #b95825)" stroke-width="1.2"/><text x="425" y="257" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="12" font-weight="700" fill="var(--warn-strong, #b95825)">0</text><rect x="455" y="240" width="30" height="22" fill="#d6ebe4" stroke="#1c4a3f" stroke-width="1.2"/><text x="470" y="257" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="12" font-weight="700" fill="#1c4a3f">1</text><rect x="500" y="240" width="30" height="22" fill="#f4dfcf" stroke="var(--warn-strong, #b95825)" stroke-width="1.2"/><text x="515" y="257" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="12" font-weight="700" fill="var(--warn-strong, #b95825)">0</text><rect x="545" y="240" width="30" height="22" fill="#f4dfcf" stroke="var(--warn-strong, #b95825)" stroke-width="1.2"/><text x="560" y="257" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="12" font-weight="700" fill="var(--warn-strong, #b95825)">0</text><rect x="590" y="240" width="30" height="22" fill="#d6ebe4" stroke="#1c4a3f" stroke-width="1.2"/><text x="605" y="257" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="12" font-weight="700" fill="#1c4a3f">1</text>
+    <!-- legend -->
+    <rect x="80" y="285" width="14" height="14" fill="var(--accent-soft)" stroke="var(--accent-strong)"/>
+    <text x="100" y="296" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">∃ node = OR</text>
+    <rect x="220" y="285" width="14" height="14" fill="var(--warn-soft)" stroke="var(--warn-strong, #b95825)"/>
+    <text x="240" y="296" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">∀ node = AND</text>
+    <text x="400" y="296" font-family="var(--sans), system-ui" font-size="11" fill="#666" font-style="italic">depth-first eval · O(n) space</text>
+  </svg>
+  <figcaption>A TQBF formula is true iff there is a winning strategy for the existential player in this game tree. ∃ nodes are OR, ∀ nodes are AND. Polynomial depth, exponential tree — depth-first evaluation needs only polynomial space.</figcaption>
+</figure>
+
   <h2>1 · Time vs. space</h2>
+<figure class="diagram">
+  <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+    <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
+      Time vs space · the diagonal of complexity
+    </text>
+    <!-- axes -->
+    <line x1="80" y1="270" x2="600" y2="270" stroke="#888" stroke-width="1.4"/>
+    <line x1="80" y1="60"  x2="80" y2="270"  stroke="#888" stroke-width="1.4"/>
+    <text x="600" y="290" text-anchor="end" font-family="var(--sans), system-ui" font-size="12" fill="#666">SPACE →</text>
+    <text x="78" y="55" text-anchor="end" font-family="var(--sans), system-ui" font-size="12" fill="#666">TIME ↑</text>
+    <!-- labels along axes -->
+    <text x="160" y="290" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11" fill="#888">log n</text>
+    <text x="280" y="290" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11" fill="#888">poly</text>
+    <text x="450" y="290" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11" fill="#888">exp</text>
+    <text x="70"  y="265" text-anchor="end" font-family="var(--mono), ui-monospace" font-size="11" fill="#888">poly</text>
+    <text x="70"  y="155" text-anchor="end" font-family="var(--mono), ui-monospace" font-size="11" fill="#888">exp</text>
+    <text x="70"  y="75"  text-anchor="end" font-family="var(--mono), ui-monospace" font-size="11" fill="#888">2^poly</text>
+    <!-- regions -->
+    <!-- L (low time low space) -->
+    <rect x="100" y="240" width="100" height="30" fill="#d6ebe4" stroke="#1c4a3f" stroke-width="1.4"/>
+    <text x="150" y="259" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="12" font-weight="700" fill="#1c4a3f">L · NL</text>
+    <!-- P -->
+    <rect x="100" y="200" width="200" height="40" fill="#e8f0ec" stroke="#1c4a3f" stroke-width="1.4"/>
+    <text x="200" y="225" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" font-weight="700" fill="#1c4a3f">P</text>
+    <!-- NP -->
+    <rect x="100" y="160" width="270" height="40" fill="var(--accent-soft)" stroke="var(--accent-strong)" stroke-width="1.4"/>
+    <text x="235" y="186" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" font-weight="700" fill="var(--accent-strong)">NP (and coNP)</text>
+    <!-- PSPACE -->
+    <rect x="100" y="120" width="350" height="40" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.6"/>
+    <text x="275" y="146" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" font-weight="700" fill="var(--gold)">PSPACE = NPSPACE</text>
+    <!-- EXPTIME -->
+    <rect x="100" y="80" width="490" height="40" fill="#f4dfcf" stroke="var(--warn-strong, #b95825)" stroke-width="1.6"/>
+    <text x="345" y="106" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" font-weight="700" fill="var(--warn-strong, #b95825)">EXPTIME ⊆ EXPSPACE</text>
+    <!-- inclusion ladder annotation -->
+    <text x="500" y="265" font-family="var(--sans), system-ui" font-size="11" fill="#666">L ⊆ NL ⊆ P ⊆ NP ⊆ PSPACE ⊆ EXPTIME</text>
+    <text x="500" y="246" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="#666">strict at hierarchy gaps only</text>
+  </svg>
+  <figcaption>Roughly: space ≤ time, but time ≤ 2^O(space). Polynomial time fits inside polynomial space; polynomial space gives exponential time. The diagonal of complexity is dominated by these two trade-offs.</figcaption>
+</figure>
+
 
   <p>
     Space complexity counts the number of tape cells a TM uses. The classes are defined just like

@@ -42,11 +42,112 @@
 }
 </style>
 
+
+<style>
+.diagram {
+  margin: 18px 0;
+  padding: 12px 14px;
+  background: #fcfbf7;
+  border: 1px solid var(--rule, #eee);
+  border-left: 4px solid var(--gold, #c89933);
+  border-radius: 8px;
+}
+.diagram svg {
+  width: 100%;
+  height: auto;
+  max-height: 360px;
+  display: block;
+}
+.diagram figcaption {
+  margin-top: 10px;
+  font-family: var(--sans, system-ui), sans-serif;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--ink-soft, #555);
+}
+</style>
+
 </head>
 <body>
 
 <header class="hero">
   <div class="eyebrow">Module 7 · MIT 18.404J Lectures 20–21 · Sipser §8.4–§9.1</div>
+<figure class="diagram">
+  <svg viewBox="0 0 640 300" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+    <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
+      Hierarchy theorem · D diagonalizes against every M&lt;sub&gt;i&lt;/sub&gt; in SPACE(f)
+    </text>
+    <!-- header -->
+    <g font-family="var(--mono), ui-monospace" font-size="12" fill="#888">
+      <text x="100" y="55">M&#8345;</text>
+      <text x="200" y="55">⟨M&#8321;⟩</text>
+      <text x="270" y="55">⟨M&#8322;⟩</text>
+      <text x="340" y="55">⟨M&#8323;⟩</text>
+      <text x="410" y="55">⟨M&#8324;⟩</text>
+      <text x="480" y="55">⟨M&#8325;⟩</text>
+      <text x="540" y="55">…</text>
+    </g>
+    <line x1="170" y1="62" x2="570" y2="62" stroke="#888" stroke-width="1"/>
+    <!-- rows -->
+    <g font-family="var(--mono), ui-monospace" font-size="12">
+      <text x="100" y="90" font-weight="700">M&#8321;</text>
+      <rect x="185" y="75" width="30" height="20" fill="var(--gold-soft)" stroke="var(--gold)"/>
+      <text x="200" y="90" text-anchor="middle" font-weight="700" fill="var(--gold)">1</text>
+      <text x="270" y="90" text-anchor="middle">0</text>
+      <text x="340" y="90" text-anchor="middle">1</text>
+      <text x="410" y="90" text-anchor="middle">1</text>
+      <text x="480" y="90" text-anchor="middle">0</text>
+
+      <text x="100" y="120" font-weight="700">M&#8322;</text>
+      <text x="200" y="120" text-anchor="middle">0</text>
+      <rect x="255" y="105" width="30" height="20" fill="var(--gold-soft)" stroke="var(--gold)"/>
+      <text x="270" y="120" text-anchor="middle" font-weight="700" fill="var(--gold)">0</text>
+      <text x="340" y="120" text-anchor="middle">1</text>
+      <text x="410" y="120" text-anchor="middle">0</text>
+      <text x="480" y="120" text-anchor="middle">1</text>
+
+      <text x="100" y="150" font-weight="700">M&#8323;</text>
+      <text x="200" y="150" text-anchor="middle">1</text>
+      <text x="270" y="150" text-anchor="middle">1</text>
+      <rect x="325" y="135" width="30" height="20" fill="var(--gold-soft)" stroke="var(--gold)"/>
+      <text x="340" y="150" text-anchor="middle" font-weight="700" fill="var(--gold)">1</text>
+      <text x="410" y="150" text-anchor="middle">0</text>
+      <text x="480" y="150" text-anchor="middle">0</text>
+
+      <text x="100" y="180" font-weight="700">M&#8324;</text>
+      <text x="200" y="180" text-anchor="middle">1</text>
+      <text x="270" y="180" text-anchor="middle">0</text>
+      <text x="340" y="180" text-anchor="middle">1</text>
+      <rect x="395" y="165" width="30" height="20" fill="var(--gold-soft)" stroke="var(--gold)"/>
+      <text x="410" y="180" text-anchor="middle" font-weight="700" fill="var(--gold)">1</text>
+      <text x="480" y="180" text-anchor="middle">1</text>
+
+      <text x="100" y="210" font-weight="700">M&#8325;</text>
+      <text x="200" y="210" text-anchor="middle">0</text>
+      <text x="270" y="210" text-anchor="middle">1</text>
+      <text x="340" y="210" text-anchor="middle">0</text>
+      <text x="410" y="210" text-anchor="middle">1</text>
+      <rect x="465" y="195" width="30" height="20" fill="var(--gold-soft)" stroke="var(--gold)"/>
+      <text x="480" y="210" text-anchor="middle" font-weight="700" fill="var(--gold)">1</text>
+    </g>
+    <!-- D row -->
+    <line x1="170" y1="225" x2="570" y2="225" stroke="var(--warn-strong, #b95825)" stroke-width="2"/>
+    <g font-family="var(--mono), ui-monospace" font-size="12" fill="var(--warn-strong, #b95825)">
+      <text x="100" y="250" font-weight="700">D</text>
+      <text x="200" y="250" text-anchor="middle" font-weight="700">0</text>
+      <text x="270" y="250" text-anchor="middle" font-weight="700">1</text>
+      <text x="340" y="250" text-anchor="middle" font-weight="700">0</text>
+      <text x="410" y="250" text-anchor="middle" font-weight="700">0</text>
+      <text x="480" y="250" text-anchor="middle" font-weight="700">0</text>
+      <text x="540" y="250">…</text>
+    </g>
+    <text x="320" y="285" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">
+      D disagrees with every M&lt;sub&gt;i&lt;/sub&gt; at column i ⇒ D ∉ SPACE(f). But D ∈ SPACE(f · log f).
+    </text>
+  </svg>
+  <figcaption>The space hierarchy theorem is proved by diagonalization. We enumerate all SPACE(f) machines, then build D that disagrees with each on its own description. D uses slightly more space (a log factor) — exactly the gap between SPACE(f) and SPACE(f log f).</figcaption>
+</figure>
+
   <h1>L, NL &amp; the hierarchy theorems</h1>
   <div class="sub">The smallest natural complexity classes — and the one separation theorem we can actually prove.</div>
   <div class="tag">BCS 402 · Dr. Arash Kermani · CUD</div>
@@ -67,6 +168,54 @@
 <!-- ============================================================ -->
 <section id="l-nl">
   <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m7-s1.mp3"></audio></div>
+<figure class="diagram">
+  <svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+    <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
+      The complexity zoo · everything from L to EXPSPACE
+    </text>
+    <!-- nested ellipses, biggest first -->
+    <!-- EXPSPACE -->
+    <ellipse cx="320" cy="190" rx="290" ry="150" fill="#fefaf3" stroke="#444" stroke-width="1.4"/>
+    <text x="50" y="80" font-family="var(--mono), ui-monospace" font-size="13" font-weight="700" fill="#444">EXPSPACE</text>
+    <!-- EXPTIME -->
+    <ellipse cx="320" cy="195" rx="245" ry="125" fill="#f4dfcf" stroke="var(--warn-strong, #b95825)" stroke-width="1.6"/>
+    <text x="92" y="105" font-family="var(--mono), ui-monospace" font-size="12" font-weight="700" fill="var(--warn-strong, #b95825)">EXPTIME</text>
+    <!-- PSPACE -->
+    <ellipse cx="320" cy="200" rx="200" ry="100" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.6"/>
+    <text x="140" y="130" font-family="var(--mono), ui-monospace" font-size="12" font-weight="700" fill="var(--gold)">PSPACE</text>
+    <!-- NP -->
+    <ellipse cx="270" cy="205" rx="100" ry="65" fill="var(--accent-soft)" stroke="var(--accent-strong)" stroke-width="1.6"/>
+    <text x="195" y="170" font-family="var(--mono), ui-monospace" font-size="12" font-weight="700" fill="var(--accent-strong)">NP</text>
+    <!-- P -->
+    <ellipse cx="240" cy="215" rx="60" ry="38" fill="#d6ebe4" stroke="#1c4a3f" stroke-width="1.6"/>
+    <text x="230" y="200" font-family="var(--mono), ui-monospace" font-size="12" font-weight="700" fill="#1c4a3f">P</text>
+    <!-- NL -->
+    <ellipse cx="225" cy="225" rx="30" ry="22" fill="#fff" stroke="#1c4a3f" stroke-width="1.4"/>
+    <text x="225" y="229" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11" font-weight="700" fill="#1c4a3f">NL</text>
+    <!-- L (inside NL) -->
+    <ellipse cx="218" cy="230" rx="15" ry="10" fill="#fcfbf7" stroke="#1c4a3f" stroke-width="1.2"/>
+    <text x="218" y="234" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="9" fill="#1c4a3f">L</text>
+    <!-- complete-problem markers -->
+    <g font-family="var(--mono), ui-monospace" font-size="11">
+      <!-- PATH in NL -->
+      <text x="320" y="222" font-size="10" fill="var(--accent-strong)">↓ PATH ∈ NL-c</text>
+      <!-- SAT in NP -->
+      <text x="345" y="195" font-size="10" fill="var(--accent-strong)">↑ SAT ∈ NP-c</text>
+      <!-- TQBF in PSPACE -->
+      <text x="395" y="155" font-size="10" fill="var(--gold)">↑ TQBF ∈ PSPACE-c</text>
+      <!-- Generalized chess in EXPTIME -->
+      <text x="450" y="125" font-size="10" fill="var(--warn-strong, #b95825)">↑ Gen. chess ∈ EXPTIME-c</text>
+      <!-- REGEX-eq in EXPSPACE -->
+      <text x="495" y="92" font-size="10" fill="#444">↑ REGEX-EQ ∈ EXPSPACE-c</text>
+    </g>
+    <!-- strict separations -->
+    <text x="320" y="345" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11.5" fill="#1a1a1a">
+      <tspan font-weight="700">strict by hierarchy:</tspan> L ⊊ PSPACE · P ⊊ EXPTIME · PSPACE ⊊ EXPSPACE
+    </text>
+  </svg>
+  <figcaption>The full nested-ovals map of complexity classes. Strict containments between adjacent classes are mostly open (P vs NP, NP vs PSPACE, PSPACE vs EXPTIME) — but the hierarchy theorems give us at least L ⊊ PSPACE, P ⊊ EXPTIME, and PSPACE ⊊ EXPSPACE.</figcaption>
+</figure>
+
   <h2>1 · L and NL — counting with logarithmic memory</h2>
 
   <p>

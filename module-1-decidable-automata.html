@@ -368,39 +368,32 @@
     L(A) △ L(B) = (L(A) ∩ L(B)<sup>c</sup>) ∪ (L(A)<sup>c</sup> ∩ L(B)).
   </div>
 <figure class="diagram">
-  <svg viewBox="0 0 640 280" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+  <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
     <defs>
-      <pattern id="hatch-symdiff" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
-        <line x1="0" y1="0" x2="0" y2="6" stroke="var(--warn)" stroke-width="1.4"/>
-      </pattern>
+      <mask id="symdiff-mask">
+        <rect x="0" y="0" width="640" height="320" fill="white"/>
+        <path d="M 330,85 A 85,85 0 0,1 330,235 A 85,85 0 0,1 330,85 Z" fill="black"/>
+      </mask>
     </defs>
-    <!-- title -->
-    <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
+    <text x="320" y="28" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
       Symmetric difference · L(A) △ L(B) = (L(A) \ L(B)) ∪ (L(B) \ L(A))
     </text>
-    <!-- circle A -->
-    <circle cx="240" cy="155" r="80" fill="url(#hatch-symdiff)" stroke="var(--accent-strong)" stroke-width="2"/>
-    <!-- circle B -->
-    <circle cx="400" cy="155" r="80" fill="url(#hatch-symdiff)" stroke="var(--info)" stroke-width="2"/>
-    <!-- intersection painted white to mask hatch -->
-    <path d="M 320,82 A 80,80 0 0,1 320,228 A 80,80 0 0,1 320,82 Z" fill="#fcfbf7" stroke="none"/>
-    <!-- intersection outline -->
-    <path d="M 320,82 A 80,80 0 0,1 320,228" fill="none" stroke="var(--accent-strong)" stroke-width="2"/>
-    <path d="M 320,82 A 80,80 0 0,0 320,228" fill="none" stroke="var(--info)" stroke-width="2"/>
-    <!-- labels -->
-    <text x="195" y="60" font-family="var(--mono), ui-monospace" font-size="15" font-weight="700" fill="var(--accent-strong)">L(A)</text>
-    <text x="425" y="60" font-family="var(--mono), ui-monospace" font-size="15" font-weight="700" fill="var(--info)">L(B)</text>
-    <text x="320" y="160" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" fill="#1a1a1a">L(A) ∩ L(B)</text>
-    <text x="320" y="178" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#666">both DFAs agree</text>
-    <!-- annotations for shaded regions -->
-    <text x="180" y="200" font-family="var(--sans), system-ui" font-size="12" font-weight="600" fill="var(--warn-strong, #b95825)">A accepts, B rejects</text>
-    <text x="450" y="200" font-family="var(--sans), system-ui" font-size="12" font-weight="600" fill="var(--warn-strong, #b95825)">B accepts, A rejects</text>
-    <!-- arrows pointing at the symmetric difference -->
-    <path d="M 195,210 Q 180,225 175,235" fill="none" stroke="var(--warn)" stroke-width="1.5" stroke-dasharray="3 2"/>
-    <path d="M 470,210 Q 480,225 485,235" fill="none" stroke="var(--warn)" stroke-width="1.5" stroke-dasharray="3 2"/>
-    <!-- bottom note -->
-    <text x="320" y="265" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-style="italic" fill="#666">
-      Striped region = symmetric difference. L(A) = L(B) iff the striped region is empty.
+    <g mask="url(#symdiff-mask)">
+      <circle cx="290" cy="160" r="85" fill="#f4d9c4" stroke="none"/>
+      <circle cx="370" cy="160" r="85" fill="#f4d9c4" stroke="none"/>
+    </g>
+    <circle cx="290" cy="160" r="85" fill="none" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2.2"/>
+    <circle cx="370" cy="160" r="85" fill="none" stroke="var(--info, #2f60a8)" stroke-width="2.2"/>
+    <text x="230" y="80" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="16" font-weight="700" fill="var(--accent-strong, #1c4a3f)">L(A)</text>
+    <text x="430" y="80" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="16" font-weight="700" fill="var(--info, #2f60a8)">L(B)</text>
+    <text x="330" y="158" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="600" fill="#1a1a1a">L(A) ∩ L(B)</text>
+    <text x="330" y="176" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#666" font-style="italic">both DFAs agree</text>
+    <text x="230" y="170" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--warn-strong, #b95825)">A accepts</text>
+    <text x="230" y="186" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--warn-strong, #b95825)">B rejects</text>
+    <text x="430" y="170" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--warn-strong, #b95825)">B accepts</text>
+    <text x="430" y="186" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--warn-strong, #b95825)">A rejects</text>
+    <text x="320" y="290" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-style="italic" fill="#666">
+      The two orange crescents are the symmetric difference. L(A) = L(B) iff both crescents are empty.
     </text>
   </svg>
   <figcaption>The symmetric difference of two languages is the set of strings on which the two DFAs disagree. Two DFAs are equivalent if and only if their symmetric difference is the empty language — and that is what the product construction lets us test.</figcaption>

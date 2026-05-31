@@ -267,24 +267,28 @@
         <text x="105" y="55" font-family="var(--mono), ui-monospace" font-size="11" fill="var(--warn-strong, #b95825)">A̅</text>
         <text x="60" y="150" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" font-weight="700">A̅ = Σ* − A</text>
         <text x="60" y="166" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">complement</text>
-      </g>
-
-      <!-- Symmetric difference -->
+      </g>      <!-- Symmetric difference -->
       <g transform="translate(480, 50)">
         <defs>
-          <pattern id="hatch-pre" patternUnits="userSpaceOnUse" width="5" height="5" patternTransform="rotate(45)">
-            <line x1="0" y1="0" x2="0" y2="5" stroke="var(--warn)" stroke-width="1"/>
-          </pattern>
+          <mask id="symdiff-mask-pre">
+            <rect x="-10" y="0" width="140" height="160" fill="white"/>
+            <!-- intersection lens between cx=40,r=40 and cx=80,r=40 (intersect at x=60, y=45.4 and y=114.6) -->
+            <path d="M 60,45 A 40,40 0 0,1 60,115 A 40,40 0 0,1 60,45 Z" fill="black"/>
+          </mask>
         </defs>
-        <circle cx="40" cy="80" r="40" fill="url(#hatch-pre)" stroke="var(--accent-strong)" stroke-width="1.6"/>
-        <circle cx="80" cy="80" r="40" fill="url(#hatch-pre)" stroke="var(--accent-strong)" stroke-width="1.6"/>
-        <path d="M 60,40 A 40,40 0 0,1 60,120 A 40,40 0 0,1 60,40 Z" fill="#fcfbf7" stroke="none"/>
-        <path d="M 60,40 A 40,40 0 0,1 60,120" stroke="var(--accent-strong)" stroke-width="1.6" fill="none"/>
-        <path d="M 60,40 A 40,40 0 0,0 60,120" stroke="var(--accent-strong)" stroke-width="1.6" fill="none"/>
+        <!-- Union filled, masked so only crescents show -->
+        <g mask="url(#symdiff-mask-pre)">
+          <circle cx="40" cy="80" r="40" fill="#f4d9c4" stroke="none"/>
+          <circle cx="80" cy="80" r="40" fill="#f4d9c4" stroke="none"/>
+        </g>
+        <!-- Clean borders on top -->
+        <circle cx="40" cy="80" r="40" fill="none" stroke="var(--accent-strong)" stroke-width="1.6"/>
+        <circle cx="80" cy="80" r="40" fill="none" stroke="var(--accent-strong)" stroke-width="1.6"/>
         <text x="20" y="35" font-family="var(--mono), ui-monospace" font-size="12">A</text>
         <text x="100" y="35" font-family="var(--mono), ui-monospace" font-size="12">B</text>
         <text x="60" y="150" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" font-weight="700">A △ B</text>
         <text x="60" y="166" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">symmetric difference</text>
+
       </g>
     </svg>
     <figcaption>Four set operations. Symmetric difference (A △ B) — the striped region — is the key to the EQ<sub>DFA</sub> algorithm in Module 1.</figcaption>

@@ -75,37 +75,7 @@
   <div class="ask-khayyam-bar" style="margin:6px 0 14px;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;font-family:var(--sans), system-ui, sans-serif;"><span style="font-size:11.5px;color:var(--ink-soft, #666);align-self:center;">references open in new tabs →</span><a href="https://khayyammath.com/" target="_blank" rel="noopener" style="display:inline-block;padding:5px 12px;background:var(--accent-strong, #1c4a3f);color:white;border-radius:4px;text-decoration:none;font-weight:600;font-size:12px;">💬 Ask Khayyam ↗</a></div>
   <h1>Space complexity, PSPACE &amp; games</h1>
   <div class="sub">Savitch's theorem visualized as a recursion tree, and games that are provably hard to play perfectly.</div>
-<figure class="diagram">
-  <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
-    <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
-      Savitch's recursion tree · log depth × O(f) bits per frame = O(f²) space
-    </text>
-    <!-- root -->
-    <circle cx="320" cy="60" r="16" fill="var(--gold)" stroke="var(--gold)" stroke-width="2"/>
-    <text x="320" y="65" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11" font-weight="700" fill="#fff">A→B, t</text>
-    <!-- level 2 -->
-    <line x1="320" y1="76" x2="180" y2="120" stroke="#888" stroke-width="1.4"/>
-    <line x1="320" y1="76" x2="460" y2="120" stroke="#888" stroke-width="1.4"/>
-    <circle cx="180" cy="130" r="14" fill="var(--accent)" stroke="var(--accent-strong)" stroke-width="1.5"/>
-    <text x="180" y="134" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="10" fill="#fff">A→M, t/2</text>
-    <circle cx="460" cy="130" r="14" fill="var(--accent)" stroke="var(--accent-strong)" stroke-width="1.5"/>
-    <text x="460" y="134" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="10" fill="#fff">M→B, t/2</text>
-    <!-- level 3 --><line x1="180" y1="144" x2="120" y2="180" stroke="#888" stroke-width="1.2"/><circle cx="120" cy="190" r="11" fill="#fff" stroke="#888" stroke-width="1.4"/><line x1="180" y1="144" x2="240" y2="180" stroke="#888" stroke-width="1.2"/><circle cx="240" cy="190" r="11" fill="#fff" stroke="#888" stroke-width="1.4"/><line x1="460" y1="144" x2="400" y2="180" stroke="#888" stroke-width="1.2"/><circle cx="400" cy="190" r="11" fill="#fff" stroke="#888" stroke-width="1.4"/><line x1="460" y1="144" x2="520" y2="180" stroke="#888" stroke-width="1.2"/><circle cx="520" cy="190" r="11" fill="#fff" stroke="#888" stroke-width="1.4"/>
-    <!-- level 4 (leaves) --><line x1="120" y1="200" x2="100" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="100" cy="248" r="6" fill="#eee" stroke="#bbb"/><line x1="120" y1="200" x2="160" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="160" cy="248" r="6" fill="#eee" stroke="#bbb"/><line x1="240" y1="200" x2="220" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="220" cy="248" r="6" fill="#eee" stroke="#bbb"/><line x1="240" y1="200" x2="280" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="280" cy="248" r="6" fill="#eee" stroke="#bbb"/><line x1="360" y1="200" x2="340" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="340" cy="248" r="6" fill="#eee" stroke="#bbb"/><line x1="360" y1="200" x2="400" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="400" cy="248" r="6" fill="#eee" stroke="#bbb"/><line x1="480" y1="200" x2="460" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="460" cy="248" r="6" fill="#eee" stroke="#bbb"/><line x1="480" y1="200" x2="520" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="520" cy="248" r="6" fill="#eee" stroke="#bbb"/>
-    <!-- side annotations -->
-    <text x="540" y="65"  font-family="var(--sans), system-ui" font-size="11" fill="#666">level 0 · t = full</text>
-    <text x="540" y="135" font-family="var(--sans), system-ui" font-size="11" fill="#666">level 1 · t/2</text>
-    <text x="540" y="195" font-family="var(--sans), system-ui" font-size="11" fill="#666">level 2 · t/4</text>
-    <text x="540" y="252" font-family="var(--sans), system-ui" font-size="11" fill="#666">…log t levels</text>
-    <!-- bracket showing stack depth -->
-    <line x1="40" y1="60" x2="40" y2="250" stroke="var(--warn-strong, #b95825)" stroke-width="2"/>
-    <text x="30" y="160" text-anchor="end" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--warn-strong, #b95825)">depth = log t = O(f(n))</text>
-    <text x="320" y="295" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-style="italic" fill="#666">
-      Exponentially many nodes, but only one root-to-leaf path lives on the stack at a time.
-    </text>
-  </svg>
-  <figcaption>Savitch's recursion tree has 2^(log t) leaves — exponentially many nodes — but at any moment only a single root-to-leaf path occupies the call stack. log t × O(f) bits per frame = O(f²) space, proving NSPACE(f) ⊆ SPACE(f²).</figcaption>
-</figure>
+
 
   <div class="tag">BCS 402 · Dr. Arash Kermani · CUD</div>
 </header>
@@ -251,6 +221,39 @@
   <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m6-s2.mp3"></audio></div>
   
   <h2>2 · Savitch's theorem: NSPACE ⊆ SPACE(f²)</h2>
+  
+<figure class="diagram">
+  <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+    <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
+      Savitch's recursion tree · log depth × O(f) bits per frame = O(f²) space
+    </text>
+    <!-- root -->
+    <circle cx="320" cy="60" r="16" fill="var(--gold)" stroke="var(--gold)" stroke-width="2"/>
+    <text x="320" y="65" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11" font-weight="700" fill="#fff">A→B, t</text>
+    <!-- level 2 -->
+    <line x1="320" y1="76" x2="180" y2="120" stroke="#888" stroke-width="1.4"/>
+    <line x1="320" y1="76" x2="460" y2="120" stroke="#888" stroke-width="1.4"/>
+    <circle cx="180" cy="130" r="14" fill="var(--accent)" stroke="var(--accent-strong)" stroke-width="1.5"/>
+    <text x="180" y="134" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="10" fill="#fff">A→M, t/2</text>
+    <circle cx="460" cy="130" r="14" fill="var(--accent)" stroke="var(--accent-strong)" stroke-width="1.5"/>
+    <text x="460" y="134" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="10" fill="#fff">M→B, t/2</text>
+    <!-- level 3 --><line x1="180" y1="144" x2="120" y2="180" stroke="#888" stroke-width="1.2"/><circle cx="120" cy="190" r="11" fill="#fff" stroke="#888" stroke-width="1.4"/><line x1="180" y1="144" x2="240" y2="180" stroke="#888" stroke-width="1.2"/><circle cx="240" cy="190" r="11" fill="#fff" stroke="#888" stroke-width="1.4"/><line x1="460" y1="144" x2="400" y2="180" stroke="#888" stroke-width="1.2"/><circle cx="400" cy="190" r="11" fill="#fff" stroke="#888" stroke-width="1.4"/><line x1="460" y1="144" x2="520" y2="180" stroke="#888" stroke-width="1.2"/><circle cx="520" cy="190" r="11" fill="#fff" stroke="#888" stroke-width="1.4"/>
+    <!-- level 4 (leaves) --><line x1="120" y1="200" x2="100" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="100" cy="248" r="6" fill="#eee" stroke="#bbb"/><line x1="120" y1="200" x2="160" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="160" cy="248" r="6" fill="#eee" stroke="#bbb"/><line x1="240" y1="200" x2="220" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="220" cy="248" r="6" fill="#eee" stroke="#bbb"/><line x1="240" y1="200" x2="280" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="280" cy="248" r="6" fill="#eee" stroke="#bbb"/><line x1="360" y1="200" x2="340" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="340" cy="248" r="6" fill="#eee" stroke="#bbb"/><line x1="360" y1="200" x2="400" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="400" cy="248" r="6" fill="#eee" stroke="#bbb"/><line x1="480" y1="200" x2="460" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="460" cy="248" r="6" fill="#eee" stroke="#bbb"/><line x1="480" y1="200" x2="520" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="520" cy="248" r="6" fill="#eee" stroke="#bbb"/>
+    <!-- side annotations -->
+    <text x="540" y="65"  font-family="var(--sans), system-ui" font-size="11" fill="#666">level 0 · t = full</text>
+    <text x="540" y="135" font-family="var(--sans), system-ui" font-size="11" fill="#666">level 1 · t/2</text>
+    <text x="540" y="195" font-family="var(--sans), system-ui" font-size="11" fill="#666">level 2 · t/4</text>
+    <text x="540" y="252" font-family="var(--sans), system-ui" font-size="11" fill="#666">…log t levels</text>
+    <!-- bracket showing stack depth -->
+    <line x1="40" y1="60" x2="40" y2="250" stroke="var(--warn-strong, #b95825)" stroke-width="2"/>
+    <text x="30" y="160" text-anchor="end" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--warn-strong, #b95825)">depth = log t = O(f(n))</text>
+    <text x="320" y="295" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-style="italic" fill="#666">
+      Exponentially many nodes, but only one root-to-leaf path lives on the stack at a time.
+    </text>
+  </svg>
+  <figcaption>Savitch's recursion tree has 2^(log t) leaves — exponentially many nodes — but at any moment only a single root-to-leaf path occupies the call stack. log t × O(f) bits per frame = O(f²) space, proving NSPACE(f) ⊆ SPACE(f²).</figcaption>
+</figure>
+
 
   <p>
     A nondeterministic machine using <span class="math">f(n)</span> space can be simulated by a

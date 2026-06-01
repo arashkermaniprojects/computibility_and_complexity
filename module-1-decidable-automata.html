@@ -552,10 +552,11 @@
         <rect width="7" height="7" fill="#fde2cc"/>
         <line x1="0" y1="0" x2="0" y2="7" stroke="#e07a3a" stroke-width="1.6"/>
       </pattern>
-      <!-- Mask: full visible EXCEPT the intersection lens (so only the crescents get filled) -->
+      <!-- Mask: full visible EXCEPT the intersection lens (so only the crescents get filled).
+           Lens vertices are at (130, 75±√2700) ≈ (130, 23) and (130, 127) — where the two circles actually meet. -->
       <mask id="sdmask-eq">
         <rect x="-40" y="-40" width="320" height="220" fill="white"/>
-        <path d="M 130,15 A 60,60 0 0,1 130,135 A 60,60 0 0,1 130,15 Z" fill="black"/>
+        <path d="M 130,23 A 60,60 0 0,1 130,127 A 60,60 0 0,1 130,23 Z" fill="black"/>
       </mask>
     </defs>
 
@@ -600,21 +601,22 @@
         <circle cx="100" cy="75" r="60" fill="url(#hatch-symdiff)" stroke="none"/>
         <circle cx="160" cy="75" r="60" fill="url(#hatch-symdiff)" stroke="none"/>
       </g>
-      <!-- White fill explicitly on the intersection lens (so it's clearly NOT shaded) -->
-      <path d="M 130,15 A 60,60 0 0,1 130,135 A 60,60 0 0,1 130,15 Z" fill="white" stroke="none"/>
+      <!-- White fill explicitly on the intersection lens (so it's clearly NOT shaded).
+           Same exact lens path as the mask above. -->
+      <path d="M 130,23 A 60,60 0 0,1 130,127 A 60,60 0 0,1 130,23 Z" fill="white" stroke="none"/>
 
       <!-- Circle outlines on top -->
       <circle cx="100" cy="75" r="60" fill="none" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.8"/>
       <circle cx="160" cy="75" r="60" fill="none" stroke="var(--info, #2f60a8)" stroke-width="1.8"/>
 
-      <!-- Circle labels above -->
-      <text x="50" y="20" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700" fill="var(--accent-strong, #1c4a3f)">L(A)</text>
-      <text x="210" y="20" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700" fill="var(--info, #2f60a8)">L(B)</text>
+      <!-- Circle labels above (clear of circle tops at y=15) -->
+      <text x="55" y="6" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700" fill="var(--accent-strong, #1c4a3f)">L(A)</text>
+      <text x="205" y="6" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700" fill="var(--info, #2f60a8)">L(B)</text>
 
-      <!-- Intersection lens: explicit "AGREE — not in △" label -->
-      <text x="130" y="70" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-weight="700" fill="var(--accent-strong, #1c4a3f)">A = B here</text>
-      <text x="130" y="83" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" fill="#666" font-style="italic">both accept or both reject</text>
-      <text x="130" y="98" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" font-weight="700" fill="#1c4a3f">→ not in △</text>
+      <!-- Intersection lens: explicit "AGREE — not in △" label (compact to fit narrow lens) -->
+      <text x="130" y="70" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--accent-strong, #1c4a3f)">A = B</text>
+      <text x="130" y="83" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" fill="#666" font-style="italic">agree</text>
+      <text x="130" y="98" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" font-weight="700" fill="#1c4a3f">not in △</text>
 
       <!-- Crescent annotations (placed outside the venn with leader lines) -->
       <text x="-35" y="80" font-family="var(--sans), system-ui" font-size="10" font-weight="700" fill="#b95825">A accepts</text>

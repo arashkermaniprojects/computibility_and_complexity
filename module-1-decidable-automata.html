@@ -536,7 +536,7 @@
     L(A) △ L(B) = (L(A) ∩ L(B)<sup>c</sup>) ∪ (L(A)<sup>c</sup> ∩ L(B)).
   </div>
 <figure class="diagram">
-  <svg viewBox="0 0 700 460" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+  <svg viewBox="0 0 700 520" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
     <defs>
       <marker id="arr-eq" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
         <polygon points="0 0, 8 3, 0 6" fill="#444"/>
@@ -544,9 +544,19 @@
       <marker id="arr-eq-g" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
         <polygon points="0 0, 8 3, 0 6" fill="var(--accent-strong, #1c4a3f)"/>
       </marker>
-      <pattern id="hatch-symdiff-small" patternUnits="userSpaceOnUse" width="5" height="5" patternTransform="rotate(45)">
-        <line x1="0" y1="0" x2="0" y2="5" stroke="#f4b485" stroke-width="1.2"/>
+      <marker id="arr-eq-b" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="var(--info, #2f60a8)"/>
+      </marker>
+      <!-- Bold diagonal hatch for the symmetric-difference region -->
+      <pattern id="hatch-symdiff" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(45)">
+        <rect width="7" height="7" fill="#fde2cc"/>
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#e07a3a" stroke-width="1.6"/>
       </pattern>
+      <!-- Mask: full visible EXCEPT the intersection lens (so only the crescents get filled) -->
+      <mask id="sdmask-eq">
+        <rect x="-40" y="-40" width="320" height="220" fill="white"/>
+        <path d="M 130,15 A 60,60 0 0,1 130,135 A 60,60 0 0,1 130,15 Z" fill="black"/>
+      </mask>
     </defs>
 
     <text x="350" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
@@ -568,51 +578,88 @@
     <text x="570" y="90" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700" fill="var(--info, #2f60a8)">L(B) ⊆ Σ*</text>
     <text x="570" y="108" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">strings B accepts</text>
 
-    <!-- arrows down to symmetric difference -->
-    <path d="M 130,122 L 280,205" stroke="#444" stroke-width="1.6" marker-end="url(#arr-eq)"/>
-    <path d="M 570,122 L 420,205" stroke="#444" stroke-width="1.6" marker-end="url(#arr-eq)"/>
+    <!-- Curved arrows from input boxes directly into the Venn circles -->
+    <path d="M 130,122 C 130,180 220,235 290,260" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.6" fill="none" marker-end="url(#arr-eq-g)"/>
+    <path d="M 570,122 C 570,180 480,235 410,260" stroke="var(--info, #2f60a8)" stroke-width="1.6" fill="none" marker-end="url(#arr-eq-b)"/>
 
-    <!-- ============ ROW 2: Sipser identity + Venn ============ -->
-    <text x="350" y="155" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="#1a1a1a">
-      Key identity:
+    <!-- ============ ROW 2: Sipser identity ============ -->
+    <text x="350" y="150" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="#1a1a1a">
+      Sipser key identity
     </text>
-    <text x="350" y="178" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" fill="#1a1a1a">
+    <text x="350" y="173" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" fill="#1a1a1a">
       L(A) △ L(B)  =  (L(A) ∩ L(B)<tspan baseline-shift="super" font-size="0.7em">c</tspan>)  ∪  (L(A)<tspan baseline-shift="super" font-size="0.7em">c</tspan> ∩ L(B))
     </text>
+    <text x="350" y="192" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">
+      = strings on which A and B <tspan font-weight="700" fill="#b95825">disagree</tspan>
+    </text>
 
-    <!-- Venn diagram showing symmetric difference (shaded region) -->
-    <g transform="translate(220, 200)">
-      <defs>
-        <mask id="sdmask-eq">
-          <rect x="-20" y="-20" width="280" height="170" fill="white"/>
-          <path d="M 130,15 A 60,60 0 0,1 130,135 A 60,60 0 0,1 130,15 Z" fill="black"/>
-        </mask>
-      </defs>
+    <!-- ============ Venn diagram (centered) ============ -->
+    <g transform="translate(220, 215)">
+      <!-- Crescents filled with bold hatch via mask (intersection is excluded) -->
       <g mask="url(#sdmask-eq)">
-        <circle cx="100" cy="75" r="60" fill="#f4d9c4" stroke="none"/>
-        <circle cx="160" cy="75" r="60" fill="#f4d9c4" stroke="none"/>
+        <circle cx="100" cy="75" r="60" fill="url(#hatch-symdiff)" stroke="none"/>
+        <circle cx="160" cy="75" r="60" fill="url(#hatch-symdiff)" stroke="none"/>
       </g>
+      <!-- White fill explicitly on the intersection lens (so it's clearly NOT shaded) -->
+      <path d="M 130,15 A 60,60 0 0,1 130,135 A 60,60 0 0,1 130,15 Z" fill="white" stroke="none"/>
+
+      <!-- Circle outlines on top -->
       <circle cx="100" cy="75" r="60" fill="none" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.8"/>
       <circle cx="160" cy="75" r="60" fill="none" stroke="var(--info, #2f60a8)" stroke-width="1.8"/>
-      <text x="50" y="35" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700" fill="var(--accent-strong, #1c4a3f)">L(A)</text>
-      <text x="210" y="35" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700" fill="var(--info, #2f60a8)">L(B)</text>
-      <text x="130" y="78" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#1a1a1a">L(A)∩L(B)</text>
-      <text x="130" y="93" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" fill="#666" font-style="italic">both agree</text>
-      <text x="130" y="160" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--warn-strong, #b95825)">shaded = L(A) △ L(B)</text>
+
+      <!-- Circle labels above -->
+      <text x="50" y="20" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700" fill="var(--accent-strong, #1c4a3f)">L(A)</text>
+      <text x="210" y="20" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700" fill="var(--info, #2f60a8)">L(B)</text>
+
+      <!-- Intersection lens: explicit "AGREE — not in △" label -->
+      <text x="130" y="70" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-weight="700" fill="var(--accent-strong, #1c4a3f)">A = B here</text>
+      <text x="130" y="83" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" fill="#666" font-style="italic">both accept or both reject</text>
+      <text x="130" y="98" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" font-weight="700" fill="#1c4a3f">→ not in △</text>
+
+      <!-- Crescent annotations (placed outside the venn with leader lines) -->
+      <text x="-35" y="80" font-family="var(--sans), system-ui" font-size="10" font-weight="700" fill="#b95825">A accepts</text>
+      <text x="-35" y="93" font-family="var(--sans), system-ui" font-size="10" font-weight="700" fill="#b95825">B rejects</text>
+      <line x1="20" y1="85" x2="60" y2="80" stroke="#b95825" stroke-width="1"/>
+
+      <text x="245" y="80" font-family="var(--sans), system-ui" font-size="10" font-weight="700" fill="#b95825">B accepts</text>
+      <text x="245" y="93" font-family="var(--sans), system-ui" font-size="10" font-weight="700" fill="#b95825">A rejects</text>
+      <line x1="240" y1="85" x2="200" y2="80" stroke="#b95825" stroke-width="1"/>
+
+      <!-- Caption under Venn -->
+      <text x="130" y="170" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--warn-strong, #b95825)">
+        hatched crescents  =  L(A) △ L(B)
+      </text>
+    </g>
+
+    <!-- ============ Legend on the right ============ -->
+    <g transform="translate(540, 235)">
+      <rect x="0" y="0" width="135" height="92" rx="6" fill="#fbf6ef" stroke="#d8cdb3" stroke-width="1"/>
+      <text x="67" y="16" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-weight="700" fill="#1a1a1a">Legend</text>
+
+      <rect x="12" y="26" width="16" height="14" fill="url(#hatch-symdiff)" stroke="#b95825" stroke-width="1"/>
+      <text x="34" y="37" font-family="var(--sans), system-ui" font-size="10" fill="#1a1a1a">in L(A) △ L(B)</text>
+      <text x="34" y="49" font-family="var(--sans), system-ui" font-size="9" fill="#666" font-style="italic">(disagree)</text>
+
+      <rect x="12" y="60" width="16" height="14" fill="white" stroke="#888" stroke-width="1"/>
+      <text x="34" y="71" font-family="var(--sans), system-ui" font-size="10" fill="#1a1a1a">excluded</text>
+      <text x="34" y="83" font-family="var(--sans), system-ui" font-size="9" fill="#666" font-style="italic">(agree)</text>
     </g>
 
     <!-- Divider -->
-    <line x1="40" y1="380" x2="660" y2="380" stroke="#ddd" stroke-width="1"/>
+    <line x1="40" y1="410" x2="660" y2="410" stroke="#ddd" stroke-width="1"/>
 
     <!-- ============ ROW 3: From identity to DFA C, via closure ============ -->
-    <text x="350" y="402" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="#1a1a1a">
+    <text x="350" y="434" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="#1a1a1a">
       Regular languages are closed under ∪, ∩, complement (Sipser §1.1)
     </text>
-    <text x="350" y="420" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" fill="#1a1a1a">
+    <text x="350" y="453" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" fill="#1a1a1a">
       ⇒ there is a DFA <tspan font-family="var(--mono), ui-monospace, monospace" font-weight="700" fill="var(--gold)">C</tspan> with <tspan font-family="var(--mono), ui-monospace, monospace">L(C) = L(A) △ L(B)</tspan>.
       Now apply the <tspan font-family="var(--mono), ui-monospace, monospace" font-weight="700" fill="var(--accent-strong, #1c4a3f)">E<tspan baseline-shift="sub" font-size="0.75em">DFA</tspan></tspan> decider on <tspan font-family="var(--mono), ui-monospace, monospace" font-weight="700">C</tspan>:
     </text>
-    <text x="350" y="444" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
+
+    <!-- Boxed conclusion -->
+    <rect x="210" y="472" width="280" height="34" rx="8" fill="#eef9f3" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.8"/>
+    <text x="350" y="494" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="14" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
       L(A) = L(B)  ⇔  L(C) = ∅
     </text>
   </svg>

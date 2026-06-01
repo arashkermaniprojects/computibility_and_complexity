@@ -53,7 +53,7 @@ GRAPH_REACHABILITY = """
 <figure class="diagram">
   <svg viewBox="0 0 640 220" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
     <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
-      E&lt;sub&gt;DFA&lt;/sub&gt; via reachability · BFS frontier expanding from q&#8320;
+      E<tspan baseline-shift="sub" font-size="0.75em">DFA</tspan> via reachability · BFS frontier expanding from q&#8320;
     </text>
     <!-- nodes -->
     <g font-family="var(--mono), ui-monospace" font-size="13">
@@ -225,20 +225,20 @@ VENN_DECIDABLE_RECOGNIZABLE = """
     <g font-family="var(--mono), ui-monospace" font-size="11.5">
       <!-- decidable -->
       <rect x="285" y="155" width="90" height="20" rx="4" fill="#fff" stroke="#1c4a3f"/>
-      <text x="330" y="170" text-anchor="middle" fill="#1c4a3f">A&lt;sub&gt;DFA&lt;/sub&gt; · E&lt;sub&gt;CFG&lt;/sub&gt;</text>
+      <text x="330" y="170" text-anchor="middle" fill="#1c4a3f">A<tspan baseline-shift="sub" font-size="0.75em">DFA</tspan> · E<tspan baseline-shift="sub" font-size="0.75em">CFG</tspan></text>
       <!-- recognizable not decidable -->
       <rect x="120" y="190" width="80" height="20" rx="4" fill="#fff" stroke="var(--info)"/>
-      <text x="160" y="205" text-anchor="middle" fill="var(--info)">A&lt;sub&gt;TM&lt;/sub&gt;</text>
+      <text x="160" y="205" text-anchor="middle" fill="var(--info)">A<tspan baseline-shift="sub" font-size="0.75em">TM</tspan></text>
       <rect x="130" y="215" width="100" height="20" rx="4" fill="#fff" stroke="var(--info)"/>
-      <text x="180" y="230" text-anchor="middle" fill="var(--info)">HALT&lt;sub&gt;TM&lt;/sub&gt;</text>
+      <text x="180" y="230" text-anchor="middle" fill="var(--info)">HALT<tspan baseline-shift="sub" font-size="0.75em">TM</tspan></text>
       <!-- co-rec not decidable -->
       <rect x="450" y="190" width="100" height="20" rx="4" fill="#fff" stroke="var(--warn-strong, #b95825)"/>
-      <text x="500" y="205" text-anchor="middle" fill="var(--warn-strong, #b95825)">co-A&lt;sub&gt;TM&lt;/sub&gt;</text>
+      <text x="500" y="205" text-anchor="middle" fill="var(--warn-strong, #b95825)">co-A<tspan baseline-shift="sub" font-size="0.75em">TM</tspan></text>
       <rect x="440" y="215" width="120" height="20" rx="4" fill="#fff" stroke="var(--warn-strong, #b95825)"/>
-      <text x="500" y="230" text-anchor="middle" fill="var(--warn-strong, #b95825)">co-HALT&lt;sub&gt;TM&lt;/sub&gt;</text>
+      <text x="500" y="230" text-anchor="middle" fill="var(--warn-strong, #b95825)">co-HALT<tspan baseline-shift="sub" font-size="0.75em">TM</tspan></text>
       <!-- neither -->
       <rect x="320" y="290" width="100" height="22" rx="4" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/>
-      <text x="370" y="305" text-anchor="middle" font-weight="700">EQ&lt;sub&gt;TM&lt;/sub&gt;</text>
+      <text x="370" y="305" text-anchor="middle" font-weight="700">EQ<tspan baseline-shift="sub" font-size="0.75em">TM</tspan></text>
       <text x="370" y="280" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#888" font-style="italic">neither recognizable nor co-recognizable</text>
     </g>
     <!-- bridge theorem note -->
@@ -285,7 +285,7 @@ D_CONTRADICTION_MACHINE = """
       Now run D on ⟨D⟩. By definition, D outputs the opposite of D(⟨D⟩).
     </text>
     <text x="320" y="252" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-style="italic" fill="var(--warn-strong, #b95825)">
-      D contradicts itself ⇒ H cannot exist ⇒ A&lt;sub&gt;TM&lt;/sub&gt; is undecidable.
+      D contradicts itself ⇒ H cannot exist ⇒ A<tspan baseline-shift="sub" font-size="0.75em">TM</tspan> is undecidable.
     </text>
   </svg>
   <figcaption>D is built from H by composition: ask H whether M accepts its own description, then output the opposite. When D is fed its own description, D's answer must equal its own opposite — impossible. The hypothetical decider H cannot exist.</figcaption>
@@ -627,10 +627,10 @@ COOK_LEVIN_TABLEAU = """
     <text x="370" y="225" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--accent-strong)">∃ accept somewhere</text>
     <!-- caption -->
     <text x="320" y="290" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-style="italic" fill="#666">
-      Variables: x&lt;sub&gt;t,p,s&lt;/sub&gt; = "cell (t,p) holds symbol s". Clauses: each 2×3 window must be δ-consistent.
+      Variables: x<tspan baseline-shift="sub" font-size="0.75em">t,p,s</tspan> = "cell (t,p) holds symbol s". Clauses: each 2×3 window must be δ-consistent.
     </text>
     <text x="320" y="308" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#888">
-      Polynomial in |w| ⇒ NP ≤&lt;sub&gt;p&lt;/sub&gt; SAT.
+      Polynomial in |w| ⇒ NP ≤<tspan baseline-shift="sub" font-size="0.75em">p</tspan> SAT.
     </text>
   </svg>
   <figcaption>The verifier V running on input x with certificate c sweeps a tape over polynomial time. Each row is a configuration; each 2×3 window must follow δ. Converting each window into a SAT clause produces a formula φ<sub>x</sub> that is satisfiable iff some certificate makes V accept. Every NP problem reduces this way.</figcaption>
@@ -831,7 +831,7 @@ HIERARCHY_DIAGONAL = """
 <figure class="diagram">
   <svg viewBox="0 0 640 300" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
     <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
-      Hierarchy theorem · D diagonalizes against every M&lt;sub&gt;i&lt;/sub&gt; in SPACE(f)
+      Hierarchy theorem · D diagonalizes against every M<tspan baseline-shift="sub" font-size="0.75em">i</tspan> in SPACE(f)
     </text>
     <!-- header -->
     <g font-family="var(--mono), ui-monospace" font-size="12" fill="#888">
@@ -898,7 +898,7 @@ HIERARCHY_DIAGONAL = """
       <text x="540" y="250">…</text>
     </g>
     <text x="320" y="285" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">
-      D disagrees with every M&lt;sub&gt;i&lt;/sub&gt; at column i ⇒ D ∉ SPACE(f). But D ∈ SPACE(f · log f).
+      D disagrees with every M<tspan baseline-shift="sub" font-size="0.75em">i</tspan> at column i ⇒ D ∉ SPACE(f). But D ∈ SPACE(f · log f).
     </text>
   </svg>
   <figcaption>The space hierarchy theorem is proved by diagonalization. We enumerate all SPACE(f) machines, then build D that disagrees with each on its own description. D uses slightly more space (a log factor) — exactly the gap between SPACE(f) and SPACE(f log f).</figcaption>

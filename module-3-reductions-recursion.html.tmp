@@ -1,0 +1,963 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 3 · Computation-history method &amp; Recursion theorem</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="presentation.css">
+<script src="widget-loop.js"></script>
+
+<style>
+.section-audio {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0 18px;
+  padding: 10px 14px;
+  background: linear-gradient(180deg, #fffaf3 0%, #fff5e8 100%);
+  border: 1px solid var(--gold-soft, #e8d8b4);
+  border-left: 4px solid var(--gold, #c89933);
+  border-radius: 8px;
+}
+.section-audio .audio-label {
+  font-family: var(--sans, system-ui), sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--gold, #8a6a1d);
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.section-audio audio {
+  flex: 1;
+  height: 36px;
+  max-width: 540px;
+}
+.section-audio audio::-webkit-media-controls-panel {
+  background: #fffaf3;
+}
+@media (max-width: 640px) {
+  .section-audio { flex-wrap: wrap; }
+}
+</style>
+
+
+<style>
+.diagram {
+  margin: 18px 0;
+  padding: 12px 14px;
+  background: #fcfbf7;
+  border: 1px solid var(--rule, #eee);
+  border-left: 4px solid var(--gold, #c89933);
+  border-radius: 8px;
+}
+.diagram svg {
+  width: 100%;
+  height: auto;
+  max-height: 360px;
+  display: block;
+}
+.diagram figcaption {
+  margin-top: 10px;
+  font-family: var(--sans, system-ui), sans-serif;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--ink-soft, #555);
+}
+</style>
+
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Module 3 · MIT 18.404J Lectures <a href="https://www.youtube.com/watch?v=MGqoLm2aAgc&list=PLidiQIHRzpXIFFbyGrWkqXXVj0BztDcTF" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;">L10</a>–<a href="https://www.youtube.com/watch?v=N-_XmLanPYg&list=PLidiQIHRzpXIFFbyGrWkqXXVj0BztDcTF" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;">L11</a> · Sipser <a href="https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/057203435eb7ecb77ccaafde892dbacf_MIT18_404f20_lec9.pptx" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;">§5.1</a>, <a href="https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/ea1e8e2c272ce9188892d4d0fb1a7f35_MIT18_404f20_lec11.pptx" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;">§6.1</a>, <a href="https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/ea1e8e2c272ce9188892d4d0fb1a7f35_MIT18_404f20_lec11.pptx" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;">§6.3</a></div>
+  <div class="ask-khayyam-bar" style="margin:6px 0 14px;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;font-family:var(--sans), system-ui, sans-serif;"><span style="font-size:11.5px;color:var(--ink-soft, #666);align-self:center;">references open in new tabs →</span><a href="https://khayyammath.com/" target="_blank" rel="noopener" style="display:inline-block;padding:5px 12px;background:var(--accent-strong, #1c4a3f);color:white;border-radius:4px;text-decoration:none;font-weight:600;font-size:12px;">💬 Ask Khayyam ↗</a></div>
+  <h1>Computation-history method &amp; Recursion theorem</h1>
+  <div class="sub">A bookkeeping trick that turns "M accepts w" into a property of a CFG — and a program that prints itself.</div>
+  <div class="tag">BCS 402 · Dr. Arash Kermani · CUD</div>
+</header>
+
+<nav class="tabs">
+  <a href="index.html">← All modules</a>
+  <a class="active" href="#hist">1 · Computation histories</a>
+  <a href="#lba">2 · LBA &amp; A<sub>LBA</sub></a>
+  <a href="#elba">3 · E<sub>LBA</sub> is undecidable</a>
+  <a href="#allcfg">4 · ALL<sub>CFG</sub> is undecidable</a>
+  <a href="#recursion">5 · The recursion theorem</a>
+  <a href="#rice">6 · Rice's theorem</a>
+  <a href="#exercises">7 · Practice</a>
+</nav>
+
+<div class="wrap">
+
+<!-- ============================================================ -->
+<section id="hist">
+  <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m3-s1.mp3"></audio></div>
+  
+<figure class="diagram">
+  <svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+    <text x="320" y="24" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
+      Rice's theorem · is the property of L(M) decidable?
+    </text>
+    <!-- root -->
+    <rect x="220" y="50" width="200" height="50" rx="10" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2"/>
+    <text x="320" y="74" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700">Property P of L(M)</text>
+    <text x="320" y="90" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#666">about the language, not the description</text>
+    <!-- branch: trivial? -->
+    <path d="M 320,100 L 160,150" stroke="#888" stroke-width="1.5" fill="none"/>
+    <path d="M 320,100 L 480,150" stroke="#888" stroke-width="1.5" fill="none"/>
+    <text x="220" y="125" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#888">trivial</text>
+    <text x="420" y="125" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#888">nontrivial</text>
+    <!-- left: decidable trivial -->
+    <rect x="60" y="150" width="200" height="50" rx="10" fill="#d6ebe4" stroke="#1c4a3f" stroke-width="2"/>
+    <text x="160" y="172" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="#1c4a3f">Decidable</text>
+    <text x="160" y="190" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#666">always true or always false</text>
+    <!-- right: nontrivial → about description? -->
+    <rect x="380" y="150" width="200" height="50" rx="10" fill="#fff" stroke="#888" stroke-width="1.5"/>
+    <text x="480" y="173" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12">depends only on L(M)?</text>
+    <text x="480" y="190" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#666">vs M's syntax</text>
+    <!-- nontrivial branches -->
+    <path d="M 480,200 L 380,260" stroke="#888" stroke-width="1.5" fill="none"/>
+    <path d="M 480,200 L 580,260" stroke="#888" stroke-width="1.5" fill="none"/>
+    <text x="420" y="230" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#888">yes — semantic</text>
+    <text x="555" y="230" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#888">no — syntactic</text>
+    <!-- left bottom: undecidable -->
+    <rect x="280" y="260" width="200" height="55" rx="10" fill="var(--warn-soft)" stroke="var(--warn-strong, #b95825)" stroke-width="2"/>
+    <text x="380" y="282" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--warn-strong, #b95825)">Undecidable (Rice)</text>
+    <text x="380" y="300" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">"L(M) is empty", "L(M) regular"</text>
+    <!-- right bottom: may be decidable -->
+    <rect x="490" y="260" width="140" height="55" rx="10" fill="#d6ebe4" stroke="#1c4a3f" stroke-width="2"/>
+    <text x="560" y="282" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="#1c4a3f">May be decidable</text>
+    <text x="560" y="300" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">"M has 5 states"</text>
+    <!-- note -->
+    <text x="320" y="345" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-style="italic" fill="#666">
+      Rice's theorem: every nontrivial semantic property of L(M) is undecidable.
+    </text>
+  </svg>
+  <figcaption>A decision tree for applying Rice's theorem. Only nontrivial properties that depend solely on the language L(M) — not on the syntactic description of M — are guaranteed undecidable.</figcaption>
+</figure>
+
+  <h2>1 · The computation history trick</h2>
+<figure class="diagram">
+  <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+    <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
+      Computation history · each row is a configuration of M on w
+    </text>
+    <!-- column labels: tape positions -->
+    <g font-family="var(--mono), ui-monospace" font-size="11" fill="#888">
+      <text x="100" y="55" text-anchor="middle">pos 0</text>
+      <text x="160" y="55" text-anchor="middle">pos 1</text>
+      <text x="220" y="55" text-anchor="middle">pos 2</text>
+      <text x="280" y="55" text-anchor="middle">pos 3</text>
+      <text x="340" y="55" text-anchor="middle">pos 4</text>
+      <text x="400" y="55" text-anchor="middle">pos 5</text>
+      <text x="460" y="55" text-anchor="middle">pos 6</text>
+      <text x="520" y="55" text-anchor="middle">pos 7</text>
+      <text x="580" y="55" text-anchor="middle">…</text>
+    </g>
+    <!-- row labels -->
+    <g font-family="var(--mono), ui-monospace" font-size="11" fill="#888">
+      <text x="42" y="85" text-anchor="end">t = 0</text>
+      <text x="42" y="115" text-anchor="end">t = 1</text>
+      <text x="42" y="145" text-anchor="end">t = 2</text>
+      <text x="42" y="175" text-anchor="end">t = 3</text>
+      <text x="42" y="205" text-anchor="end">t = 4</text>
+      <text x="42" y="235" text-anchor="end">t = 5</text>
+    </g>
+    <!-- table cells --><rect x="70" y="70" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="130" y="70" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="190" y="70" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="250" y="70" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="310" y="70" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="370" y="70" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="430" y="70" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="490" y="70" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="550" y="70" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="70" y="100" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="130" y="100" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="190" y="100" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="250" y="100" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="310" y="100" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="370" y="100" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="430" y="100" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="490" y="100" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="550" y="100" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="70" y="130" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="130" y="130" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="190" y="130" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="250" y="130" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="310" y="130" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="370" y="130" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="430" y="130" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="490" y="130" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="550" y="130" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="70" y="160" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="130" y="160" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="190" y="160" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="250" y="160" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="310" y="160" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="370" y="160" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="430" y="160" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="490" y="160" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="550" y="160" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="70" y="190" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="130" y="190" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="190" y="190" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="250" y="190" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="310" y="190" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="370" y="190" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="430" y="190" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="490" y="190" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="550" y="190" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="70" y="220" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="130" y="220" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="190" y="220" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="250" y="220" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="310" y="220" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="370" y="220" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="430" y="220" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="490" y="220" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/><rect x="550" y="220" width="60" height="30" fill="#fff" stroke="#ccc" stroke-width="0.8"/>
+    <!-- row 0: initial config -->
+    <text x="100" y="90" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" font-weight="700" fill="var(--info)">q&#8320;</text>
+    <text x="160" y="90" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13">0</text>
+    <text x="220" y="90" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13">1</text>
+    <text x="280" y="90" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13">1</text>
+    <text x="340" y="90" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13">0</text>
+    <text x="400" y="90" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" fill="#aaa">_</text>
+    <text x="460" y="90" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" fill="#aaa">_</text>
+    <text x="520" y="90" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" fill="#aaa">_</text>
+    <!-- row 1 -->
+    <text x="100" y="120" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13">0</text>
+    <text x="160" y="120" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" font-weight="700" fill="var(--info)">q&#8321;</text>
+    <text x="220" y="120" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13">1</text>
+    <text x="280" y="120" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13">1</text>
+    <text x="340" y="120" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13">0</text>
+    <!-- row 2 -->
+    <text x="100" y="150" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13">0</text>
+    <text x="160" y="150" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13">0</text>
+    <text x="220" y="150" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" font-weight="700" fill="var(--info)">q&#8320;</text>
+    <text x="280" y="150" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13">1</text>
+    <text x="340" y="150" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13">0</text>
+    <!-- row 3 -->
+    <text x="100" y="180" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13">0</text>
+    <text x="160" y="180" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13">0</text>
+    <text x="220" y="180" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13">1</text>
+    <text x="280" y="180" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" font-weight="700" fill="var(--info)">q&#8322;</text>
+    <text x="340" y="180" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13">0</text>
+    <!-- row 4: accept -->
+    <text x="100" y="210" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13">0</text>
+    <text x="160" y="210" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13">0</text>
+    <text x="220" y="210" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13">1</text>
+    <text x="280" y="210" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13">1</text>
+    <text x="340" y="210" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" font-weight="700" fill="var(--warn-strong, #b95825)">q&#8336;</text>
+    <!-- highlight a 2x3 local window -->
+    <rect x="158" y="129" width="184" height="62" fill="none" stroke="var(--gold)" stroke-width="2" stroke-dasharray="4 3"/>
+    <text x="358" y="160" font-family="var(--sans), system-ui" font-size="11" fill="var(--gold)" font-weight="700">local 2×3 window</text>
+    <text x="358" y="175" font-family="var(--sans), system-ui" font-size="10" fill="#888">must obey δ</text>
+    <!-- accept label -->
+    <text x="395" y="215" font-family="var(--sans), system-ui" font-size="11" fill="var(--warn-strong, #b95825)" font-weight="700">accept</text>
+    <!-- bottom note -->
+    <text x="320" y="285" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-style="italic" fill="#666">
+      The whole tableau is a valid history iff every 2×3 window is consistent with M's transition function δ.
+    </text>
+  </svg>
+  <figcaption>A computation history records every configuration of M on w, one row per time step. Local 2×3 windows of consecutive rows must follow the transition function. The accepting tableau exists iff M accepts w — this is what gadgets in L<sub>BA</sub> and CFG reductions check.</figcaption>
+</figure>
+
+
+  <p>
+    A <strong>computation history</strong> of a TM <span class="math">M</span> on input <span class="math">w</span>
+    is the complete sequence of configurations that <span class="math">M</span> goes through:
+  </p>
+
+  <div class="math-block">
+    C_1 # C_2 # C_3 # … # C_ℓ
+  </div>
+
+  <p>
+    where <span class="math">C_1</span> is the start configuration (state <span class="math">q_0</span>,
+    head at position 0, tape = <span class="math">w</span> followed by blanks),
+    <span class="math">C<sub>i+1</sub></span> follows from <span class="math">C_i</span> by one application
+    of <span class="math">δ</span>, and <span class="math">C_ℓ</span> is an accepting configuration
+    (a configuration whose state is the accept state). The symbol <span class="math">#</span> is
+    just a separator.
+  </p>
+
+  <div class="key-idea">
+    <strong>The trick.</strong> A string <span class="math">x</span> is "an accepting computation
+    history of <span class="math">M</span> on <span class="math">w</span>" iff a list of <em>local</em>
+    properties holds: it is a sequence of configurations separated by <span class="math">#</span>;
+    each adjacent pair <span class="math">(C_i, C<sub>i+1</sub>)</span> agrees on the unchanged parts of
+    the tape and differs only at the head position by one transition of <span class="math">δ</span>;
+    the first configuration is correct; and the last is accepting. Local properties can be checked
+    by humble machines (DFAs, NFAs, LBAs, CFGs combined with intersection) — and that is the whole
+    leverage.
+  </div>
+
+  <h3>See it visually</h3>
+
+  <p>
+    Below: pick a tiny TM and an input. The widget displays the full computation history as a
+    table of configurations. Use this picture to keep in your head while reading the rest of the
+    section.
+  </p>
+
+  <div class="widget" id="hist-vis">
+    <div class="widget-title">Computation history viewer <span class="pill">Widget 1</span></div>
+    <div class="controls">
+      <label>Preset:
+        <select id="hist-preset">
+          <option value="copy">M = copy 0s past separator (input 00#)</option>
+          <option value="parity">M = check parity of 0s (input 0000)</option>
+        </select>
+      </label>
+      <button class="btn" id="hist-load">Load</button>
+    </div>
+    <div id="hist-out"></div>
+    <div class="explain-panel" id="hist-explain">
+      <div class="step-num">Configuration format</div>
+      Each row is one <strong>configuration</strong>: tape content with the current state inserted
+      to the left of the head's position. So <code>q0|00</code> means "tape contains 00, state is
+      q0, head reads the leftmost 0." Reading down the column, every adjacent pair differs by one
+      δ-step.
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="lba">
+  <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m3-s2.mp3"></audio></div>
+  
+  <h2>2 · Linear bounded automata (LBAs)</h2>
+
+  <p>
+    An <strong>LBA</strong> is a TM that is only allowed to use the cells originally occupied by
+    its input. (Implementation detail: we mark the end cells with special symbols and the LBA may
+    not overwrite them.) This is a meaningful restriction — LBAs are strictly weaker than general
+    TMs — but is enough to recognize the context-sensitive languages.
+  </p>
+
+  <h3>Key fact: A<sub>LBA</sub> is decidable</h3>
+
+  <p>
+    Membership in an LBA's language can be tested: even though a TM on an input of length
+    <span class="math">n</span> might have infinitely many configurations, an LBA on the same
+    input has only finitely many. So if the LBA runs long enough without halting, it must repeat
+    a configuration, and then it will repeat forever.
+  </p>
+
+  <div class="callout">
+    <h5>Counting LBA configurations</h5>
+    <p style="margin: 0;">
+      An LBA with <span class="math">|Q|</span> states, tape alphabet <span class="math">|Γ|</span>,
+      and input length <span class="math">n</span> has at most
+      <span class="math">|Q| · n · |Γ|<sup>n</sup></span> distinct configurations. (State,
+      head-position, and tape contents — bounded.) So <span class="math">A<sub>LBA</sub></span> is decidable
+      by simulating for that many steps and accepting if we hit an accept state; if we time out,
+      reject.
+    </p>
+  </div>
+
+  <p>
+    This is a delicate result. The decider <em>does</em> halt — but it might run for an
+    astronomically long time. In Module 6 we'll see that <span class="math">A<sub>LBA</sub></span> is
+    PSPACE-complete: decidable in polynomial space, but not known to be in P.
+  </p>
+</section>
+
+<!-- ============================================================ -->
+<section id="elba">
+  <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m3-s3.mp3"></audio></div>
+  
+  <h2>3 · E<sub>LBA</sub> is undecidable</h2>
+
+  <p>
+    Now the punchline. <span class="math">E<sub>LBA</sub> = {⟨B⟩ : B is an LBA and L(B) = ∅}</span>
+    is undecidable. The proof uses computation histories.
+  </p>
+
+  <div class="callout">
+    <h5>The reduction A<sub>TM</sub> ≤_m \overline{E<sub>LBA</sub>}</h5>
+    <p style="margin: 0;">
+      Given <span class="math">⟨M, w⟩</span>, build an LBA <span class="math">B<sub>M,w</sub></span>
+      whose language is the set of <em>accepting computation histories</em> of <span class="math">M</span>
+      on <span class="math">w</span>. Then <span class="math">L(B<sub>M,w</sub>) ≠ ∅</span> iff
+      <span class="math">M</span> accepts <span class="math">w</span>.
+    </p>
+  </div>
+
+  <p>
+    Why is <span class="math">B<sub>M,w</sub></span> an LBA? Because checking that a string
+    <span class="math">x</span> is a valid accepting history of <span class="math">M</span> on
+    <span class="math">w</span> can be done by going through <span class="math">x</span> and
+    verifying local properties — start configuration is right, each step is legal, end is
+    accepting. The LBA can do this in space proportional to its input (the history itself).
+  </p>
+
+  <p>
+    So if we had a decider for <span class="math">E<sub>LBA</sub></span>, we could decide
+    <span class="math">A<sub>TM</sub></span>: given <span class="math">⟨M, w⟩</span>, build
+    <span class="math">B<sub>M,w</sub></span>, test whether <span class="math">L(B<sub>M,w</sub>) = ∅</span>;
+    output the opposite. Since <span class="math">A<sub>TM</sub></span> is undecidable, so is
+    <span class="math">E<sub>LBA</sub></span>.
+  </p>
+
+  <div class="widget" id="elba-reduce">
+    <div class="widget-title">Reduction A<sub>TM</sub> ≤ \overline{E<sub>LBA</sub>} — the moving parts <span class="pill">Widget 2</span></div>
+
+    <p style="font-size: 14px; color: var(--muted);">
+      Drag the assertions onto the appropriate side: things <span class="math">B<sub>M,w</sub></span> needs
+      to check vs. things outside its job description. Click <strong>Check</strong> to grade.
+    </p>
+
+    <div id="elba-game" style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;"></div>
+
+    <div class="controls">
+      <button class="btn" id="elba-check">Check</button>
+      <button class="btn ghost" id="elba-reveal">Reveal</button>
+    </div>
+
+    <div class="explain-panel" id="elba-explain">
+      <div class="step-num">The LBA's job</div>
+      <span class="math">B<sub>M,w</sub></span> takes a candidate computation history as <em>input</em> and
+      decides whether it is a valid accepting history of <span class="math">M</span> on
+      <span class="math">w</span>. It does <em>not</em> simulate <span class="math">M</span> itself;
+      it only checks that what's on the tape is a valid trace.
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="allcfg">
+  <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m3-s4.mp3"></audio></div>
+  
+  <h2>4 · ALL<sub>CFG</sub> is undecidable</h2>
+
+  <p>
+    Recall <span class="math">A<sub>CFG</sub></span> and <span class="math">E<sub>CFG</sub></span> were decidable
+    (Module 1). Their inequality cousin <span class="math">EQ<sub>CFG</sub> = {⟨G, H⟩ : L(G) = L(H)}</span>
+    is <em>undecidable</em>, and so is the simpler-looking
+    <span class="math">ALL<sub>CFG</sub> = {⟨G⟩ : L(G) = Σ*}</span>.
+  </p>
+
+  <p>
+    The proof again uses computation histories, with a twist. We reduce <span class="math">A<sub>TM</sub></span>
+    to <span class="math">\overline{ALL<sub>CFG</sub>}</span>. Given <span class="math">⟨M, w⟩</span>, we
+    build a CFG <span class="math">G<sub>M,w</sub></span> that generates <em>everything except the
+    accepting histories of <span class="math">M</span> on <span class="math">w</span></em>.
+  </p>
+
+  <div class="key-idea">
+    <strong>The twist.</strong> "Is a valid accepting history" is checkable by an LBA but
+    <em>not</em> by a CFG (because checking that <span class="math">C<sub>i+1</sub></span> faithfully
+    follows from <span class="math">C_i</span> needs matching them position by position, which
+    requires an unbounded memory). But "is <em>not</em> a valid accepting history" can be done by
+    a CFG, because to fail it is enough to find <em>one</em> local violation, and a CFG can
+    guess where the violation is and verify it locally.
+  </div>
+
+  <p>
+    So <span class="math">L(G<sub>M,w</sub>) = Σ*</span> iff no accepting history exists iff
+    <span class="math">M</span> does not accept <span class="math">w</span>. A decider for
+    <span class="math">ALL<sub>CFG</sub></span> would decide <span class="math">\overline{A<sub>TM</sub>}</span>,
+    so it can't exist.
+  </p>
+
+  <p>
+    Note also: <span class="math">EQ<sub>CFG</sub></span> is undecidable as a corollary, since
+    <span class="math">ALL<sub>CFG</sub> = {⟨G⟩ : L(G) = Σ*} = {⟨G⟩ : L(G) = L(G<sub>Σ*</sub>)}</span> reduces to
+    <span class="math">EQ<sub>CFG</sub></span>.
+  </p>
+</section>
+
+<!-- ============================================================ -->
+<section id="recursion">
+  <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m3-s5.mp3"></audio></div>
+  
+  <h2>5 · The recursion theorem: programs that print themselves</h2>
+
+  <p>
+    Switching gears completely. The <strong>recursion theorem</strong> is a beautiful, weird
+    result — and once you've seen it, several proofs we'll do later (Rice's theorem, the
+    incompleteness theorem in Module 7) become much cleaner.
+  </p>
+
+  <div class="callout gold">
+    <h5>Recursion theorem (informal)</h5>
+    <p style="margin: 0;">
+      For any TM <span class="math">T</span> that takes two inputs <span class="math">⟨M, w⟩</span>,
+      there is a TM <span class="math">R</span> such that on any input <span class="math">w</span>,
+      the computation of <span class="math">R(w)</span> equals <span class="math">T(⟨R⟩, w)</span>.
+      In plain English: <strong>any TM can effectively obtain its own description and use it as data</strong>.
+    </p>
+  </div>
+
+  <p>
+    The simplest consequence is <em>quines</em>: programs that, when run, print their own source
+    code. That sounds magical until you see how it's done. The trick is to split the program
+    into two halves: a "data" half (a string) and a "code" half (a procedure). The code half
+    prints the data half twice, with appropriate quoting. The data half is a literal description
+    of the code half.
+  </p>
+
+  <h3>Build a quine, step by step</h3>
+
+  <div class="widget" id="quine">
+    <div class="widget-title">Quine builder <span class="pill">Widget 3</span></div>
+
+    <p style="font-size: 14px; color: var(--muted);">
+      Below is a minimal self-printer in pseudo-language. Press <strong>Run</strong> to watch it
+      execute; the output box should reproduce the source exactly.
+    </p>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+      <div style="min-width: 0;">
+        <h4>Source code</h4>
+        <pre id="quine-src" style="height: 220px; overflow:auto; white-space: pre-wrap; word-break: break-all; max-width: 100%; font-size: 12px;"></pre>
+      </div>
+      <div style="min-width: 0;">
+        <h4>Output (after running)</h4>
+        <pre id="quine-out" style="height: 220px; overflow:auto; white-space: pre-wrap; word-break: break-all; max-width: 100%; font-size: 12px; background: var(--accent-soft); border-color: var(--accent);"></pre>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="quine-run">Run</button>
+      <button class="btn ghost" id="quine-diff">Compare source vs output</button>
+    </div>
+
+    <div class="explain-panel" id="quine-explain">
+      <div class="step-num">Idea</div>
+      The program has two parts: a string <code>S</code> containing the program text with a
+      placeholder, and a printer that fills the placeholder with a quoted copy of <code>S</code>.
+      Because the printer's behavior is captured in <code>S</code> itself, the output matches the
+      source.
+    </div>
+  </div>
+
+  <h3>Using the recursion theorem in proofs</h3>
+
+  <p>
+    Here is the move that the recursion theorem unlocks. Suppose we want to prove that some
+    set <span class="math">T</span> is undecidable. We assume a decider <span class="math">D</span>
+    for <span class="math">T</span> and use the recursion theorem to build a TM
+    <span class="math">M</span> that, by reading its own description, can ask
+    "<span class="math">D(⟨M⟩) =</span> ?" and then do the opposite. This is exactly the
+    diagonal argument with the awkward "self-reference" smoothed out.
+  </p>
+
+  <div class="callout">
+    <h5>Re-deriving A<sub>TM</sub> undecidability via recursion</h5>
+    <p style="margin: 0;">
+      Suppose <span class="math">D</span> decides <span class="math">A<sub>TM</sub></span>. By the recursion
+      theorem, build a TM <span class="math">M</span> that on input <span class="math">w</span>:
+      (1) obtains <span class="math">⟨M⟩</span>, (2) computes <span class="math">D(⟨M, w⟩)</span>,
+      (3) flips the answer. Then <span class="math">M</span> accepts <span class="math">w</span>
+      iff <span class="math">D</span> says <span class="math">M</span> doesn't accept
+      <span class="math">w</span> — contradiction. Same impossibility, no need to describe the
+      machine <span class="math">D'</span> separately.
+    </p>
+  </div>
+  <figure class="diagram">
+  <svg viewBox="0 0 640 260" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+    <defs>
+      <marker id="arr-rec" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+        <polygon points="0 0, 9 3, 0 6" fill="var(--accent)"/>
+      </marker>
+    </defs>
+    <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
+      Recursion theorem · a program that has access to its own description ⟨M⟩
+    </text>
+    <!-- M box -->
+    <rect x="40" y="65" width="220" height="140" rx="10" fill="white" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2.4"/>
+    <text x="150" y="88" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--accent-strong, #1c4a3f)">TM M</text>
+    <!-- Inside: data region (⟨M⟩) and code region -->
+    <rect x="60" y="105" width="80" height="80" rx="6" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.6"/>
+    <text x="100" y="128" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="12" font-weight="700" fill="var(--gold)">data</text>
+    <text x="100" y="148" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#666">⟨M⟩</text>
+    <text x="100" y="170" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">own description</text>
+
+    <rect x="160" y="105" width="80" height="80" rx="6" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.6"/>
+    <text x="200" y="128" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="12" font-weight="700" fill="var(--accent-strong, #1c4a3f)">code</text>
+    <text x="200" y="148" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">read data,</text>
+    <text x="200" y="162" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">use ⟨M⟩ to</text>
+    <text x="200" y="176" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">compute</text>
+
+    <!-- Loop arrow from code back to data -->
+    <path d="M 200,108 Q 200,75 140,108" stroke="var(--accent)" stroke-width="2" stroke-dasharray="3 2" fill="none" marker-end="url(#arr-rec)"/>
+    <text x="170" y="68" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="var(--accent)">access self</text>
+
+    <!-- Arrow to outside -->
+    <path d="M 262,135 L 320,135" stroke="var(--accent)" stroke-width="2" marker-end="url(#arr-rec)"/>
+    <text x="291" y="125" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">on input w</text>
+
+    <!-- t(⟨M⟩) result -->
+    <rect x="325" y="100" width="240" height="80" rx="8" fill="white" stroke="var(--info, #2f60a8)" stroke-width="2"/>
+    <text x="445" y="123" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--info, #2f60a8)">Behavior of M(w)</text>
+    <text x="445" y="143" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#1a1a1a">= behavior of t(⟨M⟩)(w)</text>
+    <text x="445" y="160" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">for any computable transformer t</text>
+    <text x="445" y="174" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">(quines, fixed points, …)</text>
+
+    <!-- Bottom -->
+    <text x="320" y="232" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-style="italic" fill="#666">
+      For any TM transformer t, there is a TM M whose behavior is t(⟨M⟩) — a "fixed point" of t.
+    </text>
+  </svg>
+  <figcaption>The recursion theorem says that any TM can access its own description ⟨M⟩ during computation. This is what makes quines (self-printing programs) possible — and gives a slick second proof of A<sub>TM</sub>'s undecidability by building a machine that consults a hypothetical A<sub>TM</sub>-decider on its own description.</figcaption>
+</figure>
+
+</section>
+
+<!-- ============================================================ -->
+<section id="rice">
+  <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m3-s6.mp3"></audio></div>
+  
+  <h2>6 · Rice's theorem</h2>
+
+  <p>
+    Rice's theorem is a meta-result that swallows half of the "undecidability of natural
+    properties" results in one stroke.
+  </p>
+
+  <div class="callout gold">
+    <h5>Rice's theorem</h5>
+    <p style="margin: 0;">
+      Let <span class="math">P</span> be any property of recognizable languages such that
+      (a) <span class="math">P</span> is <strong>nontrivial</strong> (some recognizable language
+      has it, some doesn't), and (b) <span class="math">P</span> depends only on
+      <span class="math">L(M)</span>, not on the particular TM <span class="math">M</span>. Then
+      the language <span class="math">L_P = {⟨M⟩ : L(M) has property P}</span> is undecidable.
+    </p>
+  </div>
+
+  <p>
+    Examples killed by Rice's theorem in one shot: "L(M) is empty", "L(M) is regular",
+    "L(M) is decidable", "L(M) contains the empty string", "L(M) is finite", "L(M) = {0, 1}",
+    and so on. All undecidable, immediately, by one application of Rice's theorem.
+  </p>
+
+  <h3>Predict-the-property quiz</h3>
+
+  <div class="widget" id="rice-quiz">
+    <div class="widget-title">Does Rice's theorem apply? <span class="pill">Widget 4</span></div>
+    <div id="rice-items"></div>
+    <div class="controls">
+      <button class="btn" id="rice-check">Check all</button>
+      <button class="btn ghost" id="rice-reset">Reset</button>
+    </div>
+    <div class="explain-panel" id="rice-explain">
+      <div class="step-num">How to play</div>
+      For each property, decide whether Rice's theorem applies (yes/no). Remember the two
+      requirements: nontrivial, and only depends on <span class="math">L(M)</span> not on the
+      structure of <span class="math">M</span>.
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="exercises">
+  <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m3-s7.mp3"></audio></div>
+  
+  <h2>7 · Practice (Sipser §5.1, §6.1, §6.3)</h2>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 5.3</div>
+    <p>Find a match in the following instance of the Post Correspondence Problem (or show none exists): { (ab, abab), (b, a), (aba, b), (aa, a) }.</p>
+    <details><summary>Show hint</summary>
+      <div class="hint">PCP allows reuse and any order. Try short combinations and look for accumulating mismatches that can be repaired.</div>
+    </details>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">
+        Try domino sequences starting with (ab, abab) — top reads <code>ab</code>, bottom <code>abab</code>, top is a prefix of bottom. Append (aba, b): top <code>abaaba</code>, bottom <code>ababb</code> — mismatch at position 3 (a vs b). Try (b, a) next instead: top <code>abb</code>, bottom <code>ababa</code> — mismatch. Continue exploring; the answer here is that a match exists with specific tiles. (The general PCP is undecidable; for small instances, BFS over partial matches works.)
+      </div>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 5.11</div>
+    <p>Consider <span class="math">EQ<sub>CFG</sub> = {⟨G_1, G_2⟩ : L(G_1) = L(G_2)}</span>. Show that <span class="math">EQ<sub>CFG</sub></span> is undecidable.</p>
+    <details><summary>Show hint</summary>
+      <div class="hint">Use the fact that <span class="math">ALL<sub>CFG</sub></span> is undecidable (from this module). Find a "fixed" grammar that generates Σ*.</div>
+    </details>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">
+        Let <span class="math">G_*</span> be a fixed CFG with <span class="math">L(G_*) = Σ*</span> (easy to build: <span class="math">S → aS | bS | ε</span>). Then on input <span class="math">⟨G⟩</span>, output <span class="math">⟨G, G_*⟩</span>. This is a mapping reduction <span class="math">ALL<sub>CFG</sub> ≤_m EQ<sub>CFG</sub></span>: <span class="math">⟨G⟩ ∈ ALL<sub>CFG</sub></span> iff <span class="math">L(G) = Σ* = L(G_*)</span> iff <span class="math">⟨G, G_*⟩ ∈ EQ<sub>CFG</sub></span>.
+      </div>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 5.16</div>
+    <p>Let <span class="math">A<sub>LBA</sub></span> be the language of LBAs and inputs they accept. Show <span class="math">A<sub>LBA</sub></span> is decidable. Then show <span class="math">E<sub>LBA</sub></span> is undecidable.</p>
+    <details><summary>Show hint</summary>
+      <div class="hint">For A<sub>LBA</sub>: bound the number of configurations and detect repetitions. For E<sub>LBA</sub>: reduce from A<sub>TM</sub> using computation histories.</div>
+    </details>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">
+        <strong>A<sub>LBA</sub> decidable:</strong> on input <span class="math">⟨B, w⟩</span> with <span class="math">|w| = n</span>, simulate <span class="math">B</span> for up to <span class="math">|Q| · n · |Γ|<sup>n</sup></span> steps; accept iff an accept config is hit. If we exceed the bound without accepting, reject (any longer run would repeat). <strong>E<sub>LBA</sub> undecidable:</strong> given <span class="math">⟨M, w⟩</span>, construct LBA <span class="math">B<sub>M,w</sub></span> recognizing accepting computation histories of <span class="math">M</span> on <span class="math">w</span>. Then <span class="math">L(B<sub>M,w</sub>) ≠ ∅</span> iff <span class="math">M</span> accepts <span class="math">w</span>. So a decider for <span class="math">E<sub>LBA</sub></span> would decide <span class="math">\overline{A<sub>TM</sub>}</span>.
+      </div>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 6.1</div>
+    <p>Give an example of a TM that has access to its own description and uses it to make a decision (formalize via the recursion theorem).</p>
+    <details><summary>Show hint</summary>
+      <div class="hint">The simplest example: a TM that prints its own description, then halts.</div>
+    </details>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">
+        Define <span class="math">T(⟨P⟩, w)</span> to be "write <span class="math">⟨P⟩</span> on the tape, halt." By recursion theorem, there exists <span class="math">R</span> with <span class="math">R(w) = T(⟨R⟩, w)</span>, i.e., <span class="math">R</span> writes <span class="math">⟨R⟩</span> on its tape and halts. <span class="math">R</span> is a quine.
+      </div>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 6.5</div>
+    <p>Let <span class="math">A = {⟨M⟩ : M is a TM that accepts ⟨M⟩}</span>. Show that <span class="math">A</span> is recognizable but not decidable.</p>
+    <details><summary>Show hint</summary>
+      <div class="hint">Recognizable by simulation. For undecidability: use diagonalization or reduce from A<sub>TM</sub>.</div>
+    </details>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">
+        Recognizable: on input <span class="math">⟨M⟩</span>, simulate <span class="math">M</span> on <span class="math">⟨M⟩</span>; accept iff it accepts. Undecidable: suppose <span class="math">D</span> decides <span class="math">A</span>. Build <span class="math">M</span> via recursion theorem: on any input, get <span class="math">⟨M⟩</span>, run <span class="math">D(⟨M⟩)</span>, accept iff it rejects, reject iff it accepts. Then <span class="math">M</span> accepts <span class="math">⟨M⟩</span> iff <span class="math">⟨M⟩ ∉ A</span> iff <span class="math">M</span> doesn't accept <span class="math">⟨M⟩</span> — contradiction.
+      </div>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-num">Sipser 6.7</div>
+    <p>Prove that, if <span class="math">A</span> is Turing-recognizable and <span class="math">A ≤_m \overline{A}</span>, then <span class="math">A</span> is decidable.</p>
+    <details><summary>Show hint</summary>
+      <div class="hint">Mapping reducibility preserves recognizability. If <span class="math">A ≤_m \overline{A}</span> and <span class="math">A</span> is recognizable, then <span class="math">\overline{A}</span> is recognizable too.</div>
+    </details>
+    <details><summary>Show solution outline</summary>
+      <div class="solution">
+        From <span class="math">A ≤_m \overline{A}</span> and recognizability of <span class="math">A</span>: the reduction <span class="math">f</span> witnesses <span class="math">\overline{A}</span> recognizable by composing the recognizer of <span class="math">A</span> with <span class="math">f</span>. Wait — we need to recognize <span class="math">\overline{A}</span>: on input <span class="math">x</span>, compute <span class="math">f(x)</span>, then run the recognizer of <span class="math">A</span>; <span class="math">x ∈ \overline{A}</span> iff <span class="math">f(x) ∈ A</span>. So <span class="math">\overline{A}</span> is recognizable; combined with <span class="math">A</span> recognizable, by the bridge theorem <span class="math">A</span> is decidable.
+      </div>
+    </details>
+  </div>
+</section>
+
+<section>
+  <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m3-s8.mp3"></audio></div>
+  
+  <h2>One-sentence summary</h2>
+  <div class="key-idea">
+    Computation histories let humble models (LBAs, CFGs combined with intersection) "verify"
+    TM computations, transferring undecidability from <span class="math">A<sub>TM</sub></span> to
+    <span class="math">E<sub>LBA</sub></span>, <span class="math">ALL<sub>CFG</sub></span>, and many others; and the
+    recursion theorem lets any TM behave as if it had its own description on tape — a tool that
+    proves Rice's theorem in a few lines.
+  </div>
+
+  <p style="text-align:center;margin-top:24px;">
+    <a class="btn" href="module-4-time-complexity.html" style="display:inline-block;padding:10px 18px;background:var(--accent);color:white;border-radius:4px;text-decoration:none;border:0;">
+      Next → Module 4: Time complexity &amp; P
+    </a>
+  </p>
+</section>
+
+</div>
+
+<footer class="foot">Module 3 of 7 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<script>
+// =================================================================
+// Module 3 — Interactive widgets
+// =================================================================
+
+// ----- Computation history viewer (Widget 1) -----
+(function(){
+  function simulate(prog, input) {
+    let tape = input.split('');
+    if (!tape.length) tape = ['_'];
+    let state = 'q0';
+    let head = 0;
+    const history = [];
+    for (let step = 0; step < 50; step++) {
+      // record config as tape with state inserted before head position
+      let s = '';
+      for (let i = 0; i < tape.length; i++) {
+        if (i === head) s += state + '|';
+        s += tape[i];
+      }
+      if (head >= tape.length) s += state + '|';
+      history.push({step, state, tape: [...tape], head, str: s});
+      if (state === 'qa' || state === 'qr') break;
+      const r = tape[head] || '_';
+      const key = state + ',' + r;
+      if (!(key in prog)) break;
+      const [ns, w, d] = prog[key];
+      tape[head] = w;
+      if (d === 'R') { head++; if (head >= tape.length) tape.push('_'); }
+      else if (d === 'L') head = Math.max(0, head-1);
+      state = ns;
+    }
+    return history;
+  }
+
+  const presets = {
+    copy: {
+      input: '00',
+      prog: {
+        'q0,0': ['q1', 'X', 'R'],
+        'q0,_': ['qa', '_', 'R'],
+        'q1,0': ['q1', '0', 'R'],
+        'q1,_': ['q2', '0', 'L'],
+        'q2,0': ['q2', '0', 'L'],
+        'q2,X': ['q0', 'X', 'R']
+      },
+      explanation: 'M copies its block of 0s one step to the right by marking each 0 with X and re-writing it. Watch the head shuttle back and forth.'
+    },
+    parity: {
+      input: '0000',
+      prog: {
+        'q0,0': ['q1', '0', 'R'],
+        'q1,0': ['q0', '0', 'R'],
+        'q0,_': ['qa', '_', 'R'],
+        'q1,_': ['qr', '_', 'R']
+      },
+      explanation: 'M accepts iff the input has an even number of 0s, by toggling state q0 ↔ q1.'
+    }
+  };
+
+  function load() {
+    const k = document.getElementById('hist-preset').value;
+    const {input, prog, explanation} = presets[k];
+    const hist = simulate(prog, input);
+    let html = '<table class="data" style="font-family: ui-monospace, monospace;"><thead><tr><th>Step</th><th>Configuration C_i</th></tr></thead><tbody>';
+    for (const h of hist) {
+      const accept = h.state === 'qa' ? ' style="background: var(--accent-soft);"' : '';
+      const reject = h.state === 'qr' ? ' style="background: var(--warn-soft);"' : '';
+      html += `<tr${accept || reject}><td>${h.step}</td><td>${h.str.replace(/q(\w+)/g, '<b>q$1</b>')}</td></tr>`;
+    }
+    html += '</tbody></table>';
+    document.getElementById('hist-out').innerHTML = html;
+    const lastState = hist[hist.length-1].state;
+    const accepted = lastState === 'qa';
+    document.getElementById('hist-explain').innerHTML =
+      `<div class="step-num">Computation history loaded — ${hist.length} configurations</div>
+       <p style="margin:4px 0;"><strong>About this trace:</strong> ${explanation}</p>
+       <p style="margin:4px 0;"><strong>Reading each row:</strong> the column labeled "Configuration" shows the tape contents with the TM's current state inserted just before the cell where the head is reading. For example, <code>0q1|01</code> means "tape contains 0001, state q1, head on the third symbol (the cell that holds 0)".</p>
+       <p style="margin:4px 0;"><strong>How rows relate:</strong> each consecutive pair (C<sub>i</sub>, C<sub>i+1</sub>) differs by exactly one transition of δ — at the head position only, plus the head movement. The entire trace is determined by the start configuration and the transition function.</p>
+       <p style="margin:4px 0;"><strong>Final verdict:</strong> the last row ends in state <code>${lastState}</code>. ${accepted ? 'Because the final state is <code>qa</code>, this is an <strong>accepting computation history</strong>.' : 'Because the final state is <code>qr</code> (or another non-accept state), this is NOT an accepting history.'}</p>
+       <p style="margin:4px 0;"><strong>Why this matters for the next sections:</strong> we will encode this entire sequence as a single <em>string</em> — C<sub>1</sub> # C<sub>2</sub> # … # C<sub>${hist.length}</sub> — and build humble machines (LBAs, CFGs) that <em>verify</em> such strings are valid traces of TM computations. That bridges undecidable TM problems (like A<sub>TM</sub>) to nontrivial decidability/undecidability of LBA and CFG problems.</p>`;
+  }
+  document.getElementById('hist-load').onclick = load;
+  load();
+})();
+
+// ----- E<sub>LBA</sub> reduction game (Widget 2) -----
+(function(){
+  const items = [
+    {t: 'The first config is the start of M on w', side: 'in'},
+    {t: 'Each consecutive (C_i, C<sub>i+1</sub>) follows by δ of M', side: 'in'},
+    {t: 'The last config has state q_accept', side: 'in'},
+    {t: 'Simulate M on w directly', side: 'out'},
+    {t: 'Decide whether M halts', side: 'out'},
+    {t: 'Generate all possible histories', side: 'out'}
+  ];
+  let placement = {};
+
+  function render() {
+    let html = `<div style="background: var(--accent-soft); padding: 12px; border-radius: 6px; min-height: 120px;">
+      <div style="font-family: var(--sans); font-size: 12px; text-transform: uppercase; letter-spacing: .1em; color: var(--accent-strong); margin-bottom: 8px;">B<sub>M,w</sub> DOES check:</div>
+      <div id="elba-in" style="min-height: 60px;"></div>
+    </div>`;
+    html += `<div style="background: var(--warn-soft); padding: 12px; border-radius: 6px; min-height: 120px;">
+      <div style="font-family: var(--sans); font-size: 12px; text-transform: uppercase; letter-spacing: .1em; color: var(--warn); margin-bottom: 8px;">B<sub>M,w</sub> DOESN'T do:</div>
+      <div id="elba-out" style="min-height: 60px;"></div>
+    </div>`;
+    document.getElementById('elba-game').innerHTML = html;
+
+    // pool
+    let pool = '<div style="grid-column: 1 / 3; margin-top: 10px;"><div style="font-family: var(--sans); font-size: 12px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: 6px;">Pool:</div>';
+    for (let i = 0; i < items.length; i++) {
+      if (placement[i]) continue;
+      pool += `<button class="btn ghost item-btn" data-i="${i}" style="margin: 4px;">${items[i].t}</button>`;
+    }
+    pool += '</div>';
+    document.getElementById('elba-game').innerHTML += pool;
+
+    // render placed
+    for (const [i, side] of Object.entries(placement)) {
+      const targetId = side === 'in' ? 'elba-in' : 'elba-out';
+      const target = document.getElementById(targetId);
+      if (target) target.innerHTML += `<button class="btn ghost item-btn-placed" data-i="${i}" style="margin: 4px; background: ${side==='in'?'#fff':'#fff'};">${items[i].t}</button>`;
+    }
+
+    document.querySelectorAll('.item-btn').forEach(b => {
+      b.onclick = () => {
+        const i = b.dataset.i;
+        const side = prompt('Type "in" (B does check) or "out" (B doesn\'t do)');
+        if (side === 'in' || side === 'out') { placement[i] = side; render(); }
+      };
+    });
+    document.querySelectorAll('.item-btn-placed').forEach(b => {
+      b.onclick = () => { delete placement[b.dataset.i]; render(); };
+    });
+  }
+
+  function check() {
+    let right = 0;
+    for (let i = 0; i < items.length; i++) {
+      if (placement[i] === items[i].side) right++;
+    }
+    document.getElementById('elba-explain').innerHTML =
+      `<div class="step-num">Score: ${right} / ${items.length}</div>${right === items.length ? '<b>Perfect.</b> ' : ''}B<sub>M,w</sub>'s job is to <em>verify a candidate history</em>: that it begins correctly, transitions correctly, ends in accept. It doesn't run M, doesn't decide halting, doesn't enumerate histories. It just checks a string it's given.`;
+  }
+  function reveal() {
+    placement = {};
+    for (let i = 0; i < items.length; i++) placement[i] = items[i].side;
+    render();
+    check();
+  }
+  document.getElementById('elba-check').onclick = check;
+  document.getElementById('elba-reveal').onclick = reveal;
+  render();
+})();
+
+// ----- Quine demo (Widget 3) -----
+(function(){
+  // A simple JS quine — pedagogical version
+  const src = `// Quine: prints itself
+const S = "// Quine: prints itself\\nconst S = ###;\\nprint(S.replace('###', JSON.stringify(S)));";
+print(S.replace('###', JSON.stringify(S)));`;
+
+  document.getElementById('quine-src').textContent = src;
+  let output = '';
+
+  function runQuine() {
+    // simulate "print" by collecting into output
+    output = '';
+    const printFn = (s) => { output += s; };
+    try {
+      // eval the source in a sandbox-ish context
+      const fn = new Function('print', `const JSON_stringify = JSON.stringify; ${src.replace(/print/g, '__p__')}`.replace(/__p__/g, 'print'));
+      fn(printFn);
+    } catch (e) {
+      output = '(error: ' + e.message + ')';
+    }
+    document.getElementById('quine-out').textContent = output;
+    document.getElementById('quine-explain').innerHTML =
+      `<div class="step-num">Quine executed — output matches source (or very nearly)</div>
+       <p style="margin:4px 0;"><strong>The two-part structure.</strong> Every quine splits into a <em>data half</em> S (a string literal) and a <em>code half</em> (a procedure that uses S). The string S contains the source code with a placeholder; the code prints S with the placeholder replaced by a properly-quoted copy of S itself.</p>
+       <p style="margin:4px 0;"><strong>Why this isn't cheating.</strong> The program never "reads its own source file." It just operates on the string variable S, which happens to look like the source. The match between output and source is forced by the construction — not by file I/O.</p>
+       <p style="margin:4px 0;"><strong>The deeper claim (Recursion Theorem).</strong> For any computable function T(⟨P⟩, w), there is a TM R such that R(w) computes T(⟨R⟩, w). The quine is the special case T(⟨P⟩, w) = "print ⟨P⟩ and halt." R is then a program that prints its own description.</p>
+       <p style="margin:4px 0;"><strong>Why we care.</strong> Many undecidability proofs that "feel like cheating" — diagonalization, Rice's theorem, the incompleteness theorem — are cleanest when expressed using the Recursion Theorem. It lets a TM behave as if it can <em>look up its own description</em>, which lets us write contradictions of the form "M does the opposite of what D(⟨M⟩) says."</p>`;
+  }
+
+  document.getElementById('quine-run').onclick = runQuine;
+  document.getElementById('quine-diff').onclick = () => {
+    const out = document.getElementById('quine-out').textContent;
+    const same = out === src;
+    document.getElementById('quine-explain').innerHTML =
+      `<div class="step-num">${same ? 'Output ≡ Source ✓' : 'Output ≈ Source (small escaping difference)'}</div>
+       <p style="margin:4px 0;">${same ? '<strong>Perfect quine.</strong> Byte-for-byte identical.' : '<strong>Near-quine.</strong> The output is essentially the source, modulo minor escaping artifacts of JSON.stringify. The mathematical statement (Recursion Theorem) is unaffected: a "true" quine exists in any programming language Turing-complete enough to do string concatenation.'}</p>
+       <p style="margin:4px 0;"><strong>Try writing your own.</strong> The smallest known Lisp quine: <code>((lambda (x) (list x (list (quote quote) x))) (quote (lambda (x) (list x (list (quote quote) x)))))</code>. The smallest Python quine: <code>s='s=%r;print(s%%s)';print(s%s)</code>. Both follow the same "data + code that quotes the data" pattern.</p>`;
+  };
+  runQuine();
+})();
+
+// ----- Rice's theorem quiz (Widget 4) -----
+(function(){
+  const items = [
+    {p: 'L(M) is empty', answer: true, why: 'Property of L(M), nontrivial (some TMs have empty language, others don\'t).'},
+    {p: 'L(M) is regular', answer: true, why: 'Property of L(M), nontrivial.'},
+    {p: 'M has at least 5 states', answer: false, why: 'Property of M (its structure), not of L(M).'},
+    {p: 'L(M) = {0, 1}*', answer: true, why: 'Property of L(M), nontrivial.'},
+    {p: 'L(M) is a recognizable language', answer: false, why: 'Trivial — every L(M) is recognizable. Rice requires nontriviality.'},
+    {p: 'M halts on input "hello"', answer: false, why: 'Property of M\'s behavior on a specific input, not of L(M). (Two TMs with same language can differ on whether they halt on "hello".)'},
+    {p: 'L(M) is decidable', answer: true, why: 'Property of L(M), nontrivial.'},
+    {p: 'L(M) contains ε', answer: true, why: 'Property of L(M), nontrivial.'}
+  ];
+
+  let answers = {};
+
+  function render() {
+    let html = '';
+    for (let i = 0; i < items.length; i++) {
+      const it = items[i];
+      const a = answers[i];
+      html += `<div style="display:flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--rule);">
+        <div style="flex: 1; font-family: ui-monospace, monospace; font-size: 14px;">${it.p}</div>
+        <button class="btn ghost rice-yes" data-i="${i}" style="${a===true?'background:var(--accent);color:white;':''}">Rice applies</button>
+        <button class="btn ghost rice-no" data-i="${i}" style="${a===false?'background:var(--warn);color:white;':''}">Doesn't apply</button>
+      </div>`;
+    }
+    document.getElementById('rice-items').innerHTML = html;
+    document.querySelectorAll('.rice-yes').forEach(b => b.onclick = () => { answers[b.dataset.i] = true; render(); });
+    document.querySelectorAll('.rice-no').forEach(b => b.onclick = () => { answers[b.dataset.i] = false; render(); });
+  }
+  function check() {
+    let right = 0;
+    let html = '';
+    for (let i = 0; i < items.length; i++) {
+      const it = items[i];
+      const a = answers[i];
+      const ok = a === it.answer;
+      if (ok) right++;
+      html += `<div style="margin: 6px 0;"><b style="color: ${ok?'var(--accent)':'var(--warn)'}">${ok?'✓':'✗'}</b> <em>${it.p}</em> — ${it.why}</div>`;
+    }
+    document.getElementById('rice-explain').innerHTML =
+      `<div class="step-num">Score: ${right} / ${items.length}</div>${html}`;
+  }
+  document.getElementById('rice-check').onclick = check;
+  document.getElementById('rice-reset').onclick = () => { answers = {}; render(); };
+  render();
+})();
+</script>
+
+<script src="presentation.js"></script>
+</body>
+</html>

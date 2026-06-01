@@ -582,9 +582,9 @@
     </text>
     <!-- 2x2 grid of paired states -->
     <g font-family="var(--mono), ui-monospace, monospace" font-size="11" font-weight="700">
-      <!-- (a0,b0): start, a0 ∈ F_A only → XOR accept -->
-      <rect x="510" y="70" width="60" height="36" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2"/>
-      <circle cx="540" cy="88" r="14" fill="none" stroke="var(--warn-strong, #b95825)" stroke-width="2"/>
+      <!-- (a0,b0): start, a0 ∈ F_A only → accept -->
+      <rect x="510" y="70" width="60" height="36" rx="3" fill="#f4dfcf" stroke="var(--warn-strong, #b95825)" stroke-width="2.5"/><rect x="513.5" y="73.5" width="53" height="29" rx="2" fill="none" stroke="var(--warn-strong, #b95825)" stroke-width="1.2"/>
+      
       <text x="540" y="92" text-anchor="middle" font-size="10" fill="var(--warn-strong, #b95825)">(a₀,b₀)</text>
       <!-- (a0,b1): both accept -->
       <rect x="610" y="70" width="60" height="36" fill="#fff" stroke="#444"/>
@@ -592,13 +592,13 @@
       <!-- (a1,b0): neither accept -->
       <rect x="510" y="120" width="60" height="36" fill="#fff" stroke="#444"/>
       <text x="540" y="142" text-anchor="middle" font-size="10">(a₁,b₀)</text>
-      <!-- (a1,b1): b1 only → XOR accept -->
-      <rect x="610" y="120" width="60" height="36" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2"/>
-      <circle cx="640" cy="138" r="14" fill="none" stroke="var(--warn-strong, #b95825)" stroke-width="2"/>
+      <!-- (a1,b1): b1 only → accept -->
+      <rect x="610" y="120" width="60" height="36" rx="3" fill="#f4dfcf" stroke="var(--warn-strong, #b95825)" stroke-width="2.5"/><rect x="613.5" y="123.5" width="53" height="29" rx="2" fill="none" stroke="var(--warn-strong, #b95825)" stroke-width="1.2"/>
+      
       <text x="640" y="142" text-anchor="middle" font-size="10" fill="var(--warn-strong, #b95825)">(a₁,b₁)</text>
     </g>
     <text x="590" y="178" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="var(--warn-strong, #b95825)" font-weight="700">
-      circled = XOR accept
+      shaded = accept
     </text>
 
     <!-- Divider line -->
@@ -606,20 +606,20 @@
 
     <!-- ============ ROW 2: BFS reachability test ============ -->
     <text x="350" y="225" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="#1a1a1a">
-      Now test if any XOR-accept state of C is reachable from the start state
+      Now test if any accept state of C is reachable from the start state
     </text>
 
     <!-- C's transition graph laid out -->
     <g font-family="var(--mono), ui-monospace, monospace" font-size="11" font-weight="700">
       <!-- start state (a0,b0) -->
-      <rect x="100" y="270" width="80" height="44" rx="6" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2"/>
-      <circle cx="140" cy="292" r="20" fill="none" stroke="var(--warn-strong, #b95825)" stroke-width="2"/>
+      <rect x="100" y="270" width="80" height="44" rx="6" fill="#f4dfcf" stroke="var(--warn-strong, #b95825)" stroke-width="2.5"/><rect x="103.5" y="273.5" width="73" height="37" rx="4" fill="none" stroke="var(--warn-strong, #b95825)" stroke-width="1.2"/>
+      
       <text x="140" y="296" text-anchor="middle" fill="var(--warn-strong, #b95825)">(a₀,b₀)</text>
       <text x="140" y="262" text-anchor="middle" font-size="10" fill="#666">start</text>
 
       <!-- (a1,b1) reached on 0 -->
-      <rect x="280" y="270" width="80" height="44" rx="6" fill="white" stroke="#444"/>
-      <circle cx="320" cy="292" r="20" fill="none" stroke="var(--warn-strong, #b95825)" stroke-width="2"/>
+      <rect x="280" y="270" width="80" height="44" rx="6" fill="#f4dfcf" stroke="var(--warn-strong, #b95825)" stroke-width="2.5"/><rect x="283.5" y="273.5" width="73" height="37" rx="4" fill="none" stroke="var(--warn-strong, #b95825)" stroke-width="1.2"/>
+      
       <text x="320" y="296" text-anchor="middle" fill="var(--warn-strong, #b95825)">(a₁,b₁)</text>
 
       <!-- (a0,b1) reached on 1 then 0 -->
@@ -635,9 +635,9 @@
     <path d="M 182,292 L 277,292" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2" marker-end="url(#arr-eq-grn)"/>
     <text x="225" y="285" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" font-weight="700" fill="var(--accent-strong, #1c4a3f)">0</text>
 
-    <!-- BFS finds reachable XOR state -->
+    <!-- BFS finds reachable exactly-one state -->
     <text x="320" y="345" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--warn-strong, #b95825)">
-      ✗ XOR-accept reachable
+      ✗ accept state reachable
     </text>
     <text x="320" y="360" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--warn-strong, #b95825)">
       ⇒ L(A) ≠ L(B)
@@ -648,10 +648,10 @@
 
     <!-- Bottom caption -->
     <text x="350" y="430" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">
-      L(A) = L(B) ⇔ no XOR-accept state of C is reachable from (a₀, b₀).
+      L(A) = L(B) ⇔ no accept state of C is reachable from (a₀, b₀).
     </text>
   </svg>
-  <figcaption>EQ<sub>DFA</sub> is decided by running two DFAs in lock-step. Each product state is a pair (aᵢ, bⱼ) — XOR-accept iff exactly one of aᵢ, bⱼ is accepting. Reachability of any XOR-accept state witnesses a disagreement; absence proves L(A) = L(B). Polynomial in |Q<sub>A</sub>| · |Q<sub>B</sub>|.</figcaption>
+  <figcaption>EQ<sub>DFA</sub> is decided by running two DFAs in lock-step. Each product state is a pair (aᵢ, bⱼ) — accept iff exactly one of aᵢ, bⱼ is accepting. Reachability of any accept state witnesses a disagreement; absence proves L(A) = L(B). Polynomial in |Q<sub>A</sub>| · |Q<sub>B</sub>|.</figcaption>
 </figure>
 
 
@@ -685,8 +685,8 @@
   <p>
     Below: two small DFAs <span class="math">A</span> and <span class="math">B</span>, and the product
     construction for <span class="math">L(A) △ L(B)</span>. Click <strong>Build product</strong> to
-    fill in the table step by step. Cells marked <span style="background:var(--warn-soft);padding:0 6px;border-radius:3px;">XOR</span>
-    are accept states of the product; if no XOR state is reachable from the start pair, the
+    fill in the table step by step. Cells marked <span style="background:var(--warn-soft);padding:0 6px;border-radius:3px;">exactly-one</span>
+    are accept states of the product; if no exactly-one state is reachable from the start pair, the
     languages are equal.
   </p>
 
@@ -1734,7 +1734,7 @@ D -> d</textarea>
     const [p, r] = order[buildIdx];
     const d0p = A.delta[p]['0'], d1p = A.delta[p]['1'];
     const d0r = B.delta[r]['0'], d1r = B.delta[r]['1'];
-    const acc = (A.accept.has(p)) !== (B.accept.has(r)); // XOR
+    const acc = (A.accept.has(p)) !== (B.accept.has(r)); // exactly-one
     productCells.push({p, r, d0: [d0p, d0r], d1: [d1p, d1r], acc});
     buildIdx++;
     renderProduct();
@@ -1742,7 +1742,7 @@ D -> d</textarea>
   }
   function renderProduct() {
     const tbl = document.getElementById('eq-product-table');
-    let html = `<thead><tr><th>(p, r)</th><th>0 →</th><th>1 →</th><th>Accept (XOR)</th><th>Reachable?</th></tr></thead><tbody>`;
+    let html = `<thead><tr><th>(p, r)</th><th>0 →</th><th>1 →</th><th>Accept (exactly-one)</th><th>Reachable?</th></tr></thead><tbody>`;
     for (const c of productCells) {
       const pair = `(${c.p}, ${c.r})`;
       const isAcc = c.acc;
@@ -1751,7 +1751,7 @@ D -> d</textarea>
       html += `<td><b>${pair}</b></td>`;
       html += `<td>(${c.d0[0]}, ${c.d0[1]})</td>`;
       html += `<td>(${c.d1[0]}, ${c.d1[1]})</td>`;
-      html += `<td>${isAcc?'<b>XOR</b>':'—'}</td>`;
+      html += `<td>${isAcc?'<b>exactly-one</b>':'—'}</td>`;
       html += `<td>${isReach?'✓':''}</td></tr>`;
     }
     html += '</tbody>';
@@ -1776,8 +1776,8 @@ D -> d</textarea>
     renderProduct();
     document.getElementById('eq-explain').innerHTML =
       `<div class="step-num">Verdict</div>${hitXor ?
-        '<b>L(A) ≠ L(B)</b> — a reachable XOR state exists, witnessing a string on which A and B disagree.' :
-        '<b>L(A) = L(B)</b> — no reachable XOR state, so A and B agree on every input.'}`;
+        '<b>L(A) ≠ L(B)</b> — a reachable exactly-one state exists, witnessing a string on which A and B disagree.' :
+        '<b>L(A) = L(B)</b> — no reachable exactly-one state, so A and B agree on every input.'}`;
   }
   document.getElementById('eq-build').onclick = () => {
     if (!buildOneCell()) {
@@ -1786,7 +1786,7 @@ D -> d</textarea>
     } else {
       const last = productCells[productCells.length-1];
       document.getElementById('eq-explain').innerHTML =
-        `<div class="step-num">Cell ${productCells.length}/4</div>Added (${last.p}, ${last.r}). On '0' it goes to (${last.d0[0]}, ${last.d0[1]}). On '1' it goes to (${last.d1[0]}, ${last.d1[1]}). ${last.acc ? 'This pair is XOR-accepting.' : 'This pair is non-accepting in the product.'}`;
+        `<div class="step-num">Cell ${productCells.length}/4</div>Added (${last.p}, ${last.r}). On '0' it goes to (${last.d0[0]}, ${last.d0[1]}). On '1' it goes to (${last.d1[0]}, ${last.d1[1]}). ${last.acc ? 'This pair is accepting.' : 'This pair is non-accepting in the product.'}`;
     }
   };
   document.getElementById('eq-reach').onclick = runReach;

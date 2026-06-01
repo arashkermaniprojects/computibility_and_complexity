@@ -507,6 +507,54 @@
       machine <span class="math">D'</span> separately.
     </p>
   </div>
+  <figure class="diagram">
+  <svg viewBox="0 0 640 260" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+    <defs>
+      <marker id="arr-rec" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+        <polygon points="0 0, 9 3, 0 6" fill="var(--accent)"/>
+      </marker>
+    </defs>
+    <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
+      Recursion theorem · a program that has access to its own description ⟨M⟩
+    </text>
+    <!-- M box -->
+    <rect x="40" y="65" width="220" height="140" rx="10" fill="white" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2.4"/>
+    <text x="150" y="88" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--accent-strong, #1c4a3f)">TM M</text>
+    <!-- Inside: data region (⟨M⟩) and code region -->
+    <rect x="60" y="105" width="80" height="80" rx="6" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.6"/>
+    <text x="100" y="128" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="12" font-weight="700" fill="var(--gold)">data</text>
+    <text x="100" y="148" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#666">⟨M⟩</text>
+    <text x="100" y="170" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">own description</text>
+
+    <rect x="160" y="105" width="80" height="80" rx="6" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.6"/>
+    <text x="200" y="128" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="12" font-weight="700" fill="var(--accent-strong, #1c4a3f)">code</text>
+    <text x="200" y="148" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">read data,</text>
+    <text x="200" y="162" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">use ⟨M⟩ to</text>
+    <text x="200" y="176" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">compute</text>
+
+    <!-- Loop arrow from code back to data -->
+    <path d="M 200,108 Q 200,75 140,108" stroke="var(--accent)" stroke-width="2" stroke-dasharray="3 2" fill="none" marker-end="url(#arr-rec)"/>
+    <text x="170" y="68" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="var(--accent)">access self</text>
+
+    <!-- Arrow to outside -->
+    <path d="M 262,135 L 320,135" stroke="var(--accent)" stroke-width="2" marker-end="url(#arr-rec)"/>
+    <text x="291" y="125" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">on input w</text>
+
+    <!-- t(⟨M⟩) result -->
+    <rect x="325" y="100" width="240" height="80" rx="8" fill="white" stroke="var(--info, #2f60a8)" stroke-width="2"/>
+    <text x="445" y="123" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--info, #2f60a8)">Behavior of M(w)</text>
+    <text x="445" y="143" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#1a1a1a">= behavior of t(⟨M⟩)(w)</text>
+    <text x="445" y="160" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">for any computable transformer t</text>
+    <text x="445" y="174" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">(quines, fixed points, …)</text>
+
+    <!-- Bottom -->
+    <text x="320" y="232" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-style="italic" fill="#666">
+      For any TM transformer t, there is a TM M whose behavior is t(⟨M⟩) — a "fixed point" of t.
+    </text>
+  </svg>
+  <figcaption>The recursion theorem says that any TM can access its own description ⟨M⟩ during computation. This is what makes quines (self-printing programs) possible — and gives a slick second proof of A<sub>TM</sub>'s undecidability by building a machine that consults a hypothetical A<sub>TM</sub>-decider on its own description.</figcaption>
+</figure>
+
 </section>
 
 <!-- ============================================================ -->

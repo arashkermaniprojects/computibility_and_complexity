@@ -199,6 +199,51 @@
 <!-- ============================================================ -->
 <section id="bigO">
   <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m4-s2.mp3"></audio></div>
+  <figure class="diagram">
+  <svg viewBox="0 0 640 260" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+    <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
+      Big-O · what we throw away when n grows large
+    </text>
+    <!-- Original expression -->
+    <rect x="30" y="50" width="280" height="70" rx="8" fill="white" stroke="#888" stroke-width="1.4"/>
+    <text x="170" y="76" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="14" fill="#1a1a1a">
+      <tspan fill="var(--accent-strong, #1c4a3f)" font-weight="700">3 n²</tspan>
+      <tspan fill="#888"> + 100 n + 5000</tspan>
+    </text>
+    <text x="170" y="100" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#666">exact running time T(n)</text>
+
+    <!-- Arrow -->
+    <text x="330" y="92" font-family="var(--sans), system-ui" font-size="20" fill="var(--accent)">→</text>
+
+    <!-- Dominant term boxed -->
+    <rect x="350" y="50" width="260" height="70" rx="8" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2"/>
+    <text x="480" y="76" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="14" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
+      O(n²)
+    </text>
+    <text x="480" y="100" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#666">asymptotic growth rate</text>
+
+    <!-- Below: what we discarded -->
+    <text x="60" y="155" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="#1a1a1a">Discarded:</text>
+    <rect x="60" y="165" width="180" height="50" rx="6" fill="white" stroke="#bbb" stroke-dasharray="3 2"/>
+    <text x="150" y="184" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="12" fill="#888">constant 3</text>
+    <text x="150" y="202" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">(swallowed by O)</text>
+
+    <rect x="260" y="165" width="180" height="50" rx="6" fill="white" stroke="#bbb" stroke-dasharray="3 2"/>
+    <text x="350" y="184" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="12" fill="#888">100 n</text>
+    <text x="350" y="202" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">(lower-order term)</text>
+
+    <rect x="460" y="165" width="150" height="50" rx="6" fill="white" stroke="#bbb" stroke-dasharray="3 2"/>
+    <text x="535" y="184" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="12" fill="#888">5000</text>
+    <text x="535" y="202" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">(constant)</text>
+
+    <!-- Bottom -->
+    <text x="320" y="242" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-style="italic" fill="#666">
+      f(n) ∈ O(g(n)) ⇔ ∃ c, n₀ such that for all n ≥ n₀, f(n) ≤ c · g(n).
+    </text>
+  </svg>
+  <figcaption>Big-O notation discards constants and lower-order terms. The dominant term defines the complexity class. For n=1000, the n² term is 3,000,000 while the linear and constant terms total 105,000 — the quadratic term is what matters asymptotically.</figcaption>
+</figure>
+
   
   <h2>2 · Big-O — what we throw away</h2>
 

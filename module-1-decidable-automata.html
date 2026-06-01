@@ -389,7 +389,16 @@
     That is the whole proof. The widget above <em>is</em> the decision procedure — there is no
     separate "Turing machine" to imagine; this is what one would do.
   </p>
-</section>
+
+
+<div class="key-idea" style="margin: 18px 0;">
+  <strong>Corollaries (Sipser Theorems 4.2 and 4.3).</strong>  The same decidability extends immediately to NFAs and regular expressions:
+  <ul style="margin: 8px 0 0; padding-left: 22px;">
+    <li><span class="math">A<sub>NFA</sub> = {⟨N, w⟩ : N is an NFA, w ∈ L(N)}</span> is decidable — convert N to an equivalent DFA via the subset construction (prereq §2), then call the A<sub>DFA</sub> decider.</li>
+    <li><span class="math">A<sub>REX</sub> = {⟨R, w⟩ : R is a regular expression, w ∈ L(R)}</span> is decidable — convert R to an NFA via Sipser Theorem 1.54, then call the A<sub>NFA</sub> decider.</li>
+  </ul>
+  Sipser presents these as immediate consequences in L7, since the conversions are themselves computable.
+</div></section>
 
 <!-- ============================================================ -->
 <section id="edfa">

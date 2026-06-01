@@ -195,6 +195,14 @@
     polynomial-time verifier <span class="math">V</span> such that for every input <span class="math">x</span>,
     <span class="math">x ∈ L ⇔ ∃c (|c| polynomial in |x|) such that V(x, c) accepts</span>.
   </div>
+
+  <div class="key-idea" style="background: #f3f8f3;">
+    <strong>Equivalent definition (Sipser Theorem 7.20).</strong> NP is also exactly the class of languages decidable by a <em>nondeterministic Turing machine</em> in polynomial time:
+    <span class="math">NP = ⋃<sub>k</sub> NTIME(n<sup>k</sup>)</span>.
+    <p style="margin: 6px 0 0;">
+      The two definitions are equivalent: given a verifier <span class="math">V</span> and certificate <span class="math">c</span>, a nondeterministic TM can <em>guess</em> <span class="math">c</span> (one symbol per nondeterministic step) and then run <span class="math">V</span>; conversely, an NTM's accepting computation path is itself a polynomial-size certificate. Sipser proves this equivalence in L14 and uses both viewpoints interchangeably.
+    </p>
+  </div>
 </section>
 
 <!-- ============================================================ -->

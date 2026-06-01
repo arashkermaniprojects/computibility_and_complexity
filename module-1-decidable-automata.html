@@ -538,7 +538,7 @@
     </defs>
 
     <text x="350" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
-      EQ<tspan baseline-shift="sub" font-size="0.75em">DFA</tspan> is decidable · the product DFA, then test for emptiness
+      EQ<tspan baseline-shift="sub" font-size="0.75em">DFA</tspan> is decidable · build DFA C for the symmetric difference L(A) △ L(B)
     </text>
 
     <!-- ============ ROW 1: Two DFAs A and B ============ -->
@@ -583,11 +583,11 @@
 
     <!-- =, ↓ -->
     <text x="470" y="105" text-anchor="middle" font-family="var(--sans), system-ui" font-size="24" fill="#444">⊗</text>
-    <text x="470" y="125" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">product</text>
+    <text x="470" y="125" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">build C</text>
 
-    <!-- Product DFA C in a 2x2 grid -->
+    <!-- DFA C: L(C) = L(A) △ L(B), built from A and B via closure under Boolean ops -->
     <text x="540" y="58" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--gold)">
-      Product C · states (a, b)
+      DFA C with L(C) = L(A) △ L(B)
     </text>
     <!-- 2x2 grid of paired states -->
     <g font-family="var(--mono), ui-monospace, monospace" font-size="11" font-weight="700">
@@ -660,7 +660,7 @@
       L(A) = L(B) ⇔ no accept state of C is reachable from (a₀, b₀).
     </text>
   </svg>
-  <figcaption>EQ<sub>DFA</sub> is decided by running two DFAs in lock-step. Each product state is a pair (aᵢ, bⱼ) — accept iff exactly one of aᵢ, bⱼ is accepting. Reachability of any accept state witnesses a disagreement; absence proves L(A) = L(B). Polynomial in |Q<sub>A</sub>| · |Q<sub>B</sub>|.</figcaption>
+  <figcaption>EQ<sub>DFA</sub> is decided by building a DFA C whose language is the symmetric difference L(A) △ L(B), then testing whether L(C) is empty via the reachability procedure of E<sub>DFA</sub>. Regular-language closure under union, intersection, and complement guarantees C exists. A standard way to construct C is to pair states (aᵢ, bⱼ) and mark a pair accepting iff exactly one of aᵢ, bⱼ accepts in its DFA. L(A) = L(B) iff L(C) = ∅.</figcaption>
 </figure>
 
 
@@ -680,27 +680,24 @@
   <div class="callout">
     <h5>Algorithm</h5>
     <p style="margin:0;">
-      On input <span class="math">⟨A, B⟩</span>: (1) construct the product DFA <span class="math">C</span>
-      whose states are pairs <span class="math">(q_A, q_B)</span> and whose accept states are pairs in
-      which <em>exactly one</em> of <span class="math">q_A, q_B</span> is accepting; (2) test
-      <span class="math">L(C) = ∅</span> using the reachability procedure from §3. Accept iff yes.
+      On input <span class="math">⟨A, B⟩</span>: (1) construct a DFA <span class="math">C</span> with <span class="math">L(C) = L(A) △ L(B)</span>, the symmetric difference. Regular languages are closed under union, intersection, and complement, so such a <span class="math">C</span> exists. A standard construction sets <span class="math">C</span>'s states to pairs <span class="math">(q_A, q_B)</span> and marks the pair accepting iff exactly one of <span class="math">q_A, q_B</span> is accepting. (2) Test <span class="math">L(C) = ∅</span> using the reachability procedure from §3. Accept iff yes.
     </p>
   </div>
   
 
 
-  <h3>Try it: the product DFA, built one cell at a time</h3>
+  <h3>Try it: build DFA C for the symmetric difference, one cell at a time</h3>
 
   <p>
-    Below: two small DFAs <span class="math">A</span> and <span class="math">B</span>, and the product
-    construction for <span class="math">L(A) △ L(B)</span>. Click <strong>Build product</strong> to
+    Below: two small DFAs <span class="math">A</span> and <span class="math">B</span>, and a DFA <span class="math">C</span>
+    with <span class="math">L(C) = L(A) △ L(B)</span>. Click <strong>Build C</strong> to
     fill in the table step by step. Cells marked <span style="background:var(--warn-soft);padding:0 6px;border-radius:3px;">exactly-one</span>
-    are accept states of the product; if no exactly-one state is reachable from the start pair, the
+    are accept states of <span class="math">C</span>; if no exactly-one state is reachable from the start pair, the
     languages are equal.
   </p>
 
   <div class="widget" id="eqdfa-sim">
-    <div class="widget-title">EQ<sub>DFA</sub> product construction <span class="pill">Widget 3</span></div>
+    <div class="widget-title">EQ<sub>DFA</sub> · symmetric-difference DFA C <span class="pill">Widget 3</span></div>
 
     <div class="cols-2">
       <div>
@@ -714,12 +711,12 @@
     </div>
 
     <div class="controls">
-      <button class="btn" id="eq-build">Build product</button>
+      <button class="btn" id="eq-build">Build C</button>
       <button class="btn" id="eq-reach">Run reachability</button>
       <button class="btn ghost" id="eq-reset">Reset</button>
     </div>
 
-    <h4>Product DFA for the symmetric difference</h4>
+    <h4>DFA C · L(C) = L(A) △ L(B)</h4>
     <table class="data" id="eq-product-table" style="max-width: 480px;"></table>
 
     <div class="explain-panel" id="eq-explain">
@@ -729,13 +726,13 @@
       They disagree on, for example, <span class="math">"01"</span> &mdash; an odd number of 0s
       so <span class="math">A</span> rejects, but the last symbol is 1 so <span class="math">B</span>
       also rejects. Or on <span class="math">"0"</span>: one 0 so <span class="math">A</span> rejects,
-      but last symbol is 0 so <span class="math">B</span> accepts. The product DFA should witness one of
+      but last symbol is 0 so <span class="math">B</span> accepts. The DFA C should witness one of
       those disagreements.
     </div>
   </div>
 
   <div class="key-idea">
-    <strong>Why this works.</strong> The product construction is doing real work: it is computing
+    <strong>Why this works.</strong> Building C from A and B does real work: it is computing
     <em>two</em> DFAs in parallel, treating the pair of current states as a single state. The
     reduction <span class="math">EQ<sub>DFA</sub> ≤ E<sub>DFA</sub></span> is the prototype of every reduction we'll do
     later — turning a question about one machine into a question about another, where we already
@@ -1031,7 +1028,7 @@ D -> d</textarea>
   <div class="exercise">
     <div class="ex-num">Sipser 4.5</div>
     <p>
-      Let <span class="math">EQ<sub>DFA</sub> = {⟨A, B⟩ : L(A) = L(B)}</span>. Give the product-construction
+      Let <span class="math">EQ<sub>DFA</sub> = {⟨A, B⟩ : L(A) = L(B)}</span>. Give the symmetric-difference
       algorithm in pseudocode and analyze its running time as a function of
       <span class="math">|A|</span> and <span class="math">|B|</span>.
     </p>
@@ -1040,11 +1037,11 @@ D -> d</textarea>
     </details>
     <details><summary>Show solution outline</summary>
       <div class="solution">
-        Construct product DFA <span class="math">C</span> with state set
+        Construct DFA <span class="math">C</span> for L(A) △ L(B) with state set
         <span class="math">Q_A × Q_B</span>; accept states are pairs where exactly one component
         is accepting. Run <span class="math">E<sub>DFA</sub></span> on <span class="math">C</span>: do BFS
         from the start pair. Time is <span class="math">O(|Q_A| · |Q_B| · |Σ|)</span> to build the
-        product, plus the same to do reachability. So total
+        construction, plus the same to do reachability. So total
         <span class="math">O(|A| · |B| · |Σ|)</span>.
       </div>
     </details>
@@ -1078,11 +1075,11 @@ D -> d</textarea>
       Show that <span class="math">A</span> is decidable.
     </p>
     <details><summary>Show hint</summary>
-      <div class="hint"><span class="math">L(R) ⊆ L(S)</span> iff <span class="math">L(R) ∩ L(S)<sup>c</sup> = ∅</span>. Use the product construction for the intersection and complement.</div>
+      <div class="hint"><span class="math">L(R) ⊆ L(S)</span> iff <span class="math">L(R) ∩ L(S)<sup>c</sup> = ∅</span>. Use closure of regular languages under intersection and complement to build the necessary DFA.</div>
     </details>
     <details><summary>Show solution outline</summary>
       <div class="solution">
-        Convert <span class="math">R, S</span> to DFAs. Build a product DFA accepting
+        Convert <span class="math">R, S</span> to DFAs. Build a DFA accepting
         <span class="math">L(R) ∩ L(S)<sup>c</sup></span> (accept iff <span class="math">R</span>-component
         is accepting and <span class="math">S</span>-component is not). Run
         <span class="math">E<sub>DFA</sub></span>. Accept iff that language is empty.
@@ -1645,7 +1642,7 @@ D -> d</textarea>
   setTimeout(runAll, 1500);
 })();
 
-// ----- EQ<sub>DFA</sub> product construction (Widget 3) -----
+// ----- EQ<sub>DFA</sub> · symmetric-difference DFA C (Widget 3) -----
 (function(){
   const A = { states: ['p0','p1'], delta: {'p0':{'0':'p1','1':'p0'},'p1':{'0':'p0','1':'p1'}}, start:'p0', accept:new Set(['p0']) };
   const B = { states: ['r0','r1'], delta: {'r0':{'0':'r0','1':'r1'},'r1':{'0':'r0','1':'r1'}}, start:'r0', accept:new Set(['r0']) };
@@ -1731,7 +1728,7 @@ D -> d</textarea>
   drawMini('eq-A-svg', A, {'p0':{x:80,y:70},'p1':{x:200,y:70}});
   drawMini('eq-B-svg', B, {'r0':{x:80,y:70},'r1':{x:200,y:70}});
 
-  // Product DFA: states = p_i × r_j; accept iff exactly one is accepting
+  // DFA C with L(C) = L(A) △ L(B): states = pairs, accept iff exactly one component accepts
   // For symmetric difference of L(A) and L(B)
   let productCells = []; // list of {p,r,delta0,delta1,accept,reachable}
   let reachedSet = new Set();
@@ -1795,7 +1792,7 @@ D -> d</textarea>
     } else {
       const last = productCells[productCells.length-1];
       document.getElementById('eq-explain').innerHTML =
-        `<div class="step-num">Cell ${productCells.length}/4</div>Added (${last.p}, ${last.r}). On '0' it goes to (${last.d0[0]}, ${last.d0[1]}). On '1' it goes to (${last.d1[0]}, ${last.d1[1]}). ${last.acc ? 'This pair is accepting.' : 'This pair is non-accepting in the product.'}`;
+        `<div class="step-num">Cell ${productCells.length}/4</div>Added (${last.p}, ${last.r}). On '0' it goes to (${last.d0[0]}, ${last.d0[1]}). On '1' it goes to (${last.d1[0]}, ${last.d1[1]}). ${last.acc ? 'This pair is accepting.' : 'This pair is non-accepting.'}`;
     }
   };
   document.getElementById('eq-reach').onclick = runReach;
@@ -1803,7 +1800,7 @@ D -> d</textarea>
     productCells = []; reachedSet = new Set(); buildIdx = 0;
     document.getElementById('eq-product-table').innerHTML = '';
     document.getElementById('eq-explain').innerHTML =
-      `<div class="step-num">Reset</div>Click <strong>Build product</strong> to add the next product cell.`;
+      `<div class="step-num">Reset</div>Click <strong>Build C</strong> to add the next cell of C.`;
   };
 })();
 

@@ -147,6 +147,19 @@
         Array.from(document.querySelectorAll('#slide-dots .dot')).forEach((d, i) => {
           d.classList.toggle('active', i === current);
         });
+        // Top-nav: mark the link whose href matches the current section's id
+        const currentId = sections[current].id;
+        Array.from(document.querySelectorAll('nav a[href^="#"], .toc a[href^="#"], .modnav a[href^="#"], header a[href^="#"]')).forEach(a => {
+          const href = a.getAttribute('href') || '';
+          // Skip slide= hashes
+          if (href.startsWith('#slide=')) return;
+          const target = href.replace(/^#/, '');
+          if (target && target === currentId) {
+            a.classList.add('active');
+          } else if (target) {
+            a.classList.remove('active');
+          }
+        });
         // Progress bar
         const fill = document.getElementById('slide-progress-fill');
         if (fill) fill.style.width = ((current + 1) / sections.length * 100) + '%';

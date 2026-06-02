@@ -678,26 +678,38 @@
     impossible. There is no decider for <span class="math">A<sub>TM</sub></span>. ∎
   </p>
 
-  <h3>Walk the contradiction step by step</h3>
+  <h3>Walk Sipser's contradiction step by step</h3>
 
   <p>
-    The argument is short but slippery. Use the widget below to drive the diagonalization one row
-    at a time, watching the diagonal entry flip and create the contradiction.
+    Sipser's argument (Theorem 4.11): assume a decider <span class="math">H</span> for
+    <span class="math">A<sub>TM</sub></span> exists. Build a new TM
+    <span class="math">D</span> from <span class="math">H</span>:
+  </p>
+
+  <div class="math-block" style="font-family: var(--mono); font-size: 14px; line-height: 1.7;">
+    <b>D</b> on input <span class="math">⟨M⟩</span>:<br>
+    &nbsp;&nbsp;1. Run <span class="math">H</span> on <span class="math">⟨M, ⟨M⟩⟩</span>.<br>
+    &nbsp;&nbsp;2. Output the <b>opposite</b> of H's answer — accept iff H rejects.
+  </div>
+
+  <p>
+    The widget below is Sipser's <em>Figure 4.20</em>: rows are TMs, columns are TM descriptions,
+    and the cell at (i, j) is what <span class="math">M<sub>i</sub></span> does on
+    <span class="math">⟨M<sub>j</sub></span>⟩. The bottom row <span class="math">D</span> is the
+    <em>flipped diagonal</em> — it disagrees with each <span class="math">M<sub>i</sub></span>
+    at column <span class="math">i</span>. Click <strong>Walk diagonal</strong> to fill that bottom
+    row one column at a time.
   </p>
 
   <div class="widget" id="atm-diag">
-    <div class="widget-title">A<sub>TM</sub> diagonalization — the contradiction <span class="pill">Widget 3</span></div>
+    <div class="widget-title">A<sub>TM</sub> diagonalization — Sipser's Figure 4.20 walkthrough <span class="pill">Widget 3</span></div>
 
     <p style="font-size: 14px; color: var(--muted);">
-      Imagine listing every TM <span class="math">M<sub>1</sub>, M<sub>2</sub>, M<sub>3</sub>, …</span>. Each row shows how
-      <span class="math">M<sub>i</sub></span> behaves on each TM description <span class="math">⟨M<sub>j</sub>⟩</span>:
       <span style="color:var(--accent);font-weight:bold;">A</span> = accepts,
-      <span style="color:var(--warn);font-weight:bold;">R</span> = rejects/loops. (We collapse
-      "rejects" and "loops" into "does not accept" — both look the same to a non-decider.)
-      Click <strong>Walk diagonal</strong> to follow the proof: build a function
-      <span class="math">D</span> that flips the diagonal. <span class="math">D</span> must be
-      <em>some</em> machine <span class="math">M_k</span> in the list — but it can't be, because at
-      column <span class="math">k</span> it disagrees with itself.
+      <span style="color:var(--warn);font-weight:bold;">R</span> = rejects (or loops — both look
+      the same from outside). The diagonal (green) is highlighted because it's what each TM does
+      on its own description. <strong>Walk diagonal</strong> inspects one diagonal cell per click
+      and fills in the corresponding D cell as its flip.
     </p>
 
     <div class="controls">
@@ -1369,57 +1381,66 @@ q0, _ -> qr, _, R`
   reset();
 })();
 
-// ----- A<sub>TM</sub> diagonalization table (Widget 3) -----
+// ----- A<sub>TM</sub> diagonalization table (Widget 3) — Sipser Theorem 4.11 / Figure 4.20 -----
 (function(){
   const n = 6;
-  // pseudorandom matrix: m[i][j] = does M<sub>i+1</sub> accept ⟨M<sub>j+1</sub>⟩?  'A' or 'R'
-  const M = [];
-  let seed = 12345;
-  for (let i = 0; i < n; i++) {
-    const row = [];
-    for (let j = 0; j < n; j++) {
-      seed = (seed * 1103515245 + 12345) & 0x7fffffff;
-      row.push((seed % 2) ? 'A' : 'R');
-    }
-    M.push(row);
-  }
+  // Hand-crafted, varied matrix mirroring Sipser's exposition. M[i][j] = does M_(i+1) accept ⟨M_(j+1)⟩?
+  // Diagonal values are: A, R, A, R, A, R  → so D's row will be R, A, R, A, R, A.
+  const M = [
+    ['A','R','A','R','A','A'],   // M_1 — diag A → D rejects ⟨M_1⟩
+    ['A','R','A','A','A','R'],   // M_2 — diag R → D accepts ⟨M_2⟩
+    ['R','A','A','R','A','R'],   // M_3 — diag A → D rejects ⟨M_3⟩
+    ['A','A','R','R','A','A'],   // M_4 — diag R → D accepts ⟨M_4⟩
+    ['R','A','A','R','A','R'],   // M_5 — diag A → D rejects ⟨M_5⟩
+    ['A','R','A','A','A','R'],   // M_6 — diag R → D accepts ⟨M_6⟩
+  ];
 
-  let walked = 0; // how many diagonal cells we've inspected
-  let showD = false;
+  let walked = 0;      // how many diagonal cells we've inspected (also = how many D cells revealed)
+  let showFinal = false; // true once the final contradiction message is shown
 
-  function render() {
-    let html = '<table class="data" style="font-family: ui-monospace, monospace; text-align: center;"><thead><tr><th></th>';
-    for (let j = 0; j < n; j++) html += `<th>⟨M_<sub>${j+1}</sub>⟩</th>`;
-    if (showD) html += '<th style="background:var(--gold-soft);">D? (diagonal)</th>';
+  function render(activeCell) {
+    // activeCell = i for the cell being highlighted with a flash (or -1 for none)
+    let html = '<table class="data" style="font-family: ui-monospace, monospace; text-align: center; min-width: 540px;"><thead><tr><th style="text-align:right;padding-right:8px;">on input →</th>';
+    for (let j = 0; j < n; j++) html += `<th>⟨M<sub>${j+1}</sub>⟩</th>`;
     html += '</tr></thead><tbody>';
 
     for (let i = 0; i < n; i++) {
-      html += `<tr><th>M_<sub>${i+1}</sub></th>`;
+      html += `<tr><th style="text-align:right;padding-right:8px;">M<sub>${i+1}</sub></th>`;
       for (let j = 0; j < n; j++) {
         const v = M[i][j];
         const isDiag = (i === j);
+        const isActive = (activeCell === i) && isDiag;
         const inspected = isDiag && i < walked;
-        let hl = '';
-        if (isDiag) hl = inspected ? 'background: var(--warn-soft); font-weight: bold;' : 'background: var(--accent-soft); font-weight: bold;';
-        const color = v === 'A' ? 'var(--accent)' : 'var(--warn)';
-        html += `<td style="${hl}"><span style="color: ${color};">${v}</span></td>`;
-      }
-      if (showD) {
-        // D's diagonal: flip M[i][i]
-        const flipped = M[i][i] === 'A' ? 'R' : 'A';
-        html += `<td style="background:var(--gold-soft);font-weight:bold;color:${flipped==='A'?'var(--accent)':'var(--warn)'};">${flipped}</td>`;
+        let style = '';
+        if (isActive) {
+          style = 'background: var(--gold); color: white; font-weight: 800; outline: 3px solid var(--gold-strong, #a68526);';
+        } else if (inspected) {
+          style = 'background: var(--warn-soft); font-weight: bold;';
+        } else if (isDiag) {
+          style = 'background: var(--accent-soft); font-weight: bold;';
+        }
+        const color = isActive ? 'white' : (v === 'A' ? 'var(--accent)' : 'var(--warn)');
+        html += `<td style="${style} color: ${color};">${v}</td>`;
       }
       html += '</tr>';
     }
 
-    if (showD) {
-      html += '<tr style="border-top: 2px solid var(--gold);"><th style="color:var(--gold);">D</th>';
+    // D row — built incrementally: only show flipped cells up to `walked`
+    if (walked > 0) {
+      html += '<tr style="border-top: 2.5px solid var(--gold-strong, #a68526);"><th style="color:var(--gold-strong, #a68526); text-align:right; padding-right:8px;">D</th>';
       for (let j = 0; j < n; j++) {
-        const flipped = M[j][j] === 'A' ? 'R' : 'A';
-        const color = flipped === 'A' ? 'var(--accent)' : 'var(--warn)';
-        html += `<td style="background:var(--gold-soft);font-weight:bold;color:${color};">${flipped}</td>`;
+        if (j < walked) {
+          const flipped = M[j][j] === 'A' ? 'R' : 'A';
+          const color = flipped === 'A' ? 'var(--accent)' : 'var(--warn)';
+          const isJustAdded = (j === walked - 1);
+          const cellStyle = `background:${isJustAdded ? 'var(--gold)' : 'var(--gold-soft)'}; font-weight:bold; color:${isJustAdded ? 'white' : color};` +
+                            (isJustAdded ? ' outline: 3px solid var(--gold-strong, #a68526);' : '');
+          html += `<td style="${cellStyle}">${flipped}</td>`;
+        } else {
+          html += `<td style="color:#bbb;">?</td>`;
+        }
       }
-      html += '<td style="background:var(--gold-soft);">≠ every M<sub>i</sub> at i</td></tr>';
+      html += '</tr>';
     }
 
     html += '</tbody></table>';
@@ -1432,41 +1453,44 @@ q0, _ -> qr, _, R`
       const i = walked - 1;
       const diag = M[i][i];
       const dResp = diag === 'A' ? 'R' : 'A';
+      // Render with flashing active cell
+      render(i);
+      // After a short flash (350ms), redraw without the active highlight
+      setTimeout(() => { if (walked === i + 1) render(-1); }, 350);
       document.getElementById('atm-diag-explain').innerHTML =
-        `<div class="step-num">Step ${walked} — inspect diagonal cell M<sub>${walked}</sub>(⟨M<sub>${walked}</sub>⟩)</div>
-         <p style="margin:4px 0;"><strong>What this cell says:</strong> the TM M<sub>${walked}</sub>, when given its <em>own description</em> ⟨M<sub>${walked}</sub>⟩ as input, ${diag === 'A' ? '<b>accepts</b>' : '<b>rejects (or loops)</b>'}. Cell value: <b style="color:${diag==='A'?'var(--accent)':'var(--warn)'}">${diag}</b>.</p>
-         <p style="margin:4px 0;"><strong>What D will do here:</strong> on this same input ⟨M<sub>${walked}</sub>⟩, our diagonalizer D will produce the <em>opposite</em> answer — namely <b style="color:${dResp==='A'?'var(--accent)':'var(--warn)'}">${dResp}</b>. We're building D one column at a time, designed to disagree with M<sub>i</sub> exactly at column i.</p>
-         <p style="margin:4px 0;"><strong>How D can do this (under our assumption):</strong> if H decides A<sub>TM</sub>, then on input ⟨M<sub>${walked}</sub>, ⟨M<sub>${walked}</sub>⟩⟩, H tells us whether M<sub>${walked}</sub> accepts ⟨M<sub>${walked}</sub>⟩. D then outputs the opposite — accept iff H says reject.</p>`;
-      render();
-    } else if (!showD) {
-      showD = true;
-      render();
+        `<div class="step-num">Step ${walked} of ${n} — inspect diagonal cell M<sub>${walked}</sub>(⟨M<sub>${walked}</sub>⟩)</div>
+         <p style="margin:4px 0;"><strong>Look at row ${walked}, column ${walked}.</strong> That cell records what M<sub>${walked}</sub> does on the input ⟨M<sub>${walked}</sub>⟩ (its own description). Value: <b style="color:${diag==='A'?'var(--accent)':'var(--warn)'}">${diag}</b> — M<sub>${walked}</sub> ${diag === 'A' ? '<b>accepts</b>' : '<b>rejects (or loops)</b>'} ⟨M<sub>${walked}</sub>⟩.</p>
+         <p style="margin:4px 0;"><strong>D's column ${walked} = the flip:</strong> <b style="color:${dResp==='A'?'var(--accent)':'var(--warn)'}">${dResp}</b>. D was defined to do the opposite of H, and H knows what M<sub>${walked}</sub> does on its own description — so D outputs the opposite of <b>${diag}</b>, which is <b>${dResp}</b>.</p>
+         <p style="margin:4px 0;font-style:italic;color:#666;">Watch the bottom <b>D</b> row grow one column at a time as you keep walking the diagonal.</p>`;
+    } else if (!showFinal) {
+      showFinal = true;
+      render(-1);
       document.getElementById('atm-diag-explain').innerHTML =
-        `<div class="step-num">D is built — now find the contradiction</div>
-         <p style="margin:4px 0;"><strong>The gold row at the bottom is D.</strong> By construction, D(⟨M<sub>i</sub>⟩) is the opposite of M<sub>i</sub>(⟨M<sub>i</sub>⟩) for every i in our list.</p>
-         <p style="margin:4px 0;"><strong>The killer question:</strong> D is itself a Turing machine. So D must equal some M<sub>k</sub> in our enumeration of all TMs. Pick that k.</p>
-         <p style="margin:4px 0;"><strong>What happens at column k?</strong></p>
+        `<div class="step-num">D is fully built — now Sipser's killer question</div>
+         <p style="margin:4px 0;"><strong>D is a Turing machine</strong> (we built it from H, which was assumed to exist). So D must appear <em>somewhere</em> in our enumeration of all TMs. Say D = M<sub>k</sub>.</p>
+         <p style="margin:4px 0;"><strong>Look at column k of the table.</strong> Two things must be true at that cell:</p>
          <ul style="margin:4px 0;">
-           <li>By the table: M<sub>k</sub>(⟨M<sub>k</sub>⟩) is some value v.</li>
-           <li>By D's definition: D(⟨M<sub>k</sub>⟩) is the opposite of v.</li>
+           <li><b>Row k, column k</b>: M<sub>k</sub>(⟨M<sub>k</sub>⟩) is some value v (accept or reject) — that's literally the table entry.</li>
+           <li><b>D's column k</b>: by D's definition, D(⟨M<sub>k</sub>⟩) is the opposite of v.</li>
            <li>But D = M<sub>k</sub>, so D(⟨M<sub>k</sub>⟩) = M<sub>k</sub>(⟨M<sub>k</sub>⟩) = v.</li>
          </ul>
          <p style="margin:4px 0;">v equals its own opposite. Impossible.</p>
-         <p style="margin:4px 0;"><strong>The only way to escape:</strong> reject the assumption that started this. We assumed H — a decider for A<sub>TM</sub> — exists. It cannot exist. So <strong>A<sub>TM</sub> is undecidable.</strong></p>
-         <p style="margin:4px 0;"><strong>The thing to remember:</strong> diagonalization is exactly this move. Whatever your enumeration tries to capture, the diagonal builds something that escapes the list.</p>`;
+         <p style="margin:4px 0;"><strong>The only way out:</strong> reject the assumption. We assumed H — a decider for A<sub>TM</sub> — exists. It cannot. Therefore <strong>A<sub>TM</sub> is undecidable</strong> (Sipser Theorem 4.11).</p>`;
     }
   }
+
   function reset() {
     walked = 0;
-    showD = false;
-    render();
+    showFinal = false;
+    render(-1);
     document.getElementById('atm-diag-explain').innerHTML =
-      `<div class="step-num">Setup — what the table shows</div>
-       <p style="margin:4px 0;"><strong>Suppose for contradiction</strong> there is a TM H deciding A<sub>TM</sub>. Then H tells us, for any pair (M, w), whether M accepts w. In particular, H tells us whether M<sub>i</sub> accepts ⟨M<sub>j</sub>⟩ — the (i, j) cell of this table.</p>
-       <p style="margin:4px 0;"><strong>Define D</strong>: on input ⟨M⟩, D runs H on (M, ⟨M⟩), then outputs the opposite of H's answer.</p>
-       <p style="margin:4px 0;"><strong>Notation:</strong> <span style="color:var(--accent);font-weight:bold">A</span> in cell (i, j) means M<sub>i</sub> accepts ⟨M<sub>j</sub>⟩. <span style="color:var(--warn);font-weight:bold">R</span> means M<sub>i</sub> rejects (or loops). The diagonal is highlighted: it's the only thing D's behavior depends on.</p>
-       <p style="margin:4px 0;">Click <strong>Walk diagonal</strong> to step through each diagonal cell. After all are inspected, the bottom row D appears.</p>`;
+      `<div class="step-num">Setup — Sipser Theorem 4.11</div>
+       <p style="margin:4px 0;"><strong>Suppose for contradiction</strong> there is a TM <em>H</em> that decides A<sub>TM</sub>. Then for any TM M and string w, H(⟨M, w⟩) returns <b>accept</b> if M accepts w and <b>reject</b> otherwise — always halting.</p>
+       <p style="margin:4px 0;"><strong>Define D</strong>: on input ⟨M⟩ (where M is a TM), D runs H on ⟨M, ⟨M⟩⟩ and outputs the <em>opposite</em>. So D(⟨M⟩) = accept iff M does NOT accept ⟨M⟩.</p>
+       <p style="margin:4px 0;"><strong>The table:</strong> rows = TMs M<sub>1</sub>, M<sub>2</sub>, …; columns = TM descriptions ⟨M<sub>1</sub>⟩, ⟨M<sub>2</sub>⟩, … Cell (i, j) is what M<sub>i</sub> does on ⟨M<sub>j</sub>⟩ — <span style="color:var(--accent);font-weight:bold">A</span> = accept, <span style="color:var(--warn);font-weight:bold">R</span> = reject (or loop). The diagonal (green) is what each TM does on its own description.</p>
+       <p style="margin:4px 0;">Click <strong>Walk diagonal</strong> to inspect one diagonal cell at a time and watch D's row fill in by flipping that cell. After all 6 are done, the contradiction appears.</p>`;
   }
+
   let atmTimer = null;
   function cancelAtm() {
     if (atmTimer) { clearTimeout(atmTimer); atmTimer = null; document.getElementById('atm-diag-run').textContent = 'Walk all'; }
@@ -1477,9 +1501,9 @@ q0, _ -> qr, _, R`
     if (atmTimer) { cancelAtm(); return; }
     btn.textContent = '⏸ Pause';
     const tick = () => {
-      if (walked >= n && showD) { atmTimer = null; btn.textContent = 'Walk all'; return; }
+      if (walked >= n && showFinal) { atmTimer = null; btn.textContent = 'Walk all'; return; }
       step();
-      atmTimer = setTimeout(tick, 1100);
+      atmTimer = setTimeout(tick, 1600);  // slow enough to follow each cell + D-row update
     };
     tick();
   };

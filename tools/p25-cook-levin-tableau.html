@@ -143,7 +143,7 @@ const rows=7,cols=11; const cellW=(760-60)/cols, cellH=(360-60)/rows, sx=40, sy=
 function content(r,c){ if(r===0){if(c===0)return 'q₀'; if(c<=5)return '0'; if(c<=8)return '1'; return '_';} if(c===0)return '0'; if(c===r&&r<=5)return 'q'+r; if(c<r&&c<=5)return '0'; if(c<=5)return '0'; if(c<=8)return '1'; return '_';}
 let stage=0; const total=rows*cols;
 function render(){
-  let s=''; s+=`<text x="380" y="22" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" fill="var(--muted)">Each row = configuration C_i. Each column = tape cell.</text>`;
+  let s=''; s+=`<text x="380" y="22" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" fill="var(--muted)">Each row = configuration C<tspan baseline-shift="sub" font-size="0.75em">i</tspan>. Each column = tape cell.</text>`;
   for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){const idx=r*cols+c, filled=idx<stage; const x=sx+c*cellW, y=sy+r*cellH; const isHi=idx===stage-1;
     s+=`<rect x="${x}" y="${y}" width="${cellW-2}" height="${cellH-2}" fill="${isHi?'var(--gold-soft)':(filled?'#fff':'#f5f5f0')}" stroke="${isHi?'var(--gold)':'#ddd'}" stroke-width="${isHi?2:0.6}" opacity="${filled?1:0.3}"/>`;
     if(filled){const ch=content(r,c); const col=ch.startsWith('q')?'var(--info)':(ch==='_'?'#aaa':'#1a1a1a');

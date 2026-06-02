@@ -137,13 +137,15 @@ N = "on input ⟨M⟩:<br>
 
 <script>
 (function(){
+function fmtSub(s){return String(s).replace(/_([A-Za-z0-9]+)/g,'<sub>$1</sub>');}
+function fmtSubSvg(s){return String(s).replace(/_([A-Za-z0-9]+)/g,'<tspan baseline-shift="sub" font-size="0.75em">$1</tspan>');}
 const langs = [
   {name:'A_DFA', region:'D', why:'Decidable by simulation.'},
   {name:'E_DFA', region:'D', why:'Decidable by graph reachability.'},
   {name:'A_CFG', region:'D', why:'Decidable by CYK.'},
   {name:'A_TM', region:'R', why:'Universal TM recognizes; diagonalization rules out decidability.'},
-  {name:'HALT_TM', region:'R', why:'Recognizable; undecidable by reduction from A_TM.'},
-  {name:'¬A_TM', region:'C', why:'co-recognizable but not recognizable (else A_TM decidable).'},
+  {name:'HALT_TM', region:'R', why:'Recognizable; undecidable by reduction from A<sub>TM</sub>.'},
+  {name:'¬A_TM', region:'C', why:'co-recognizable but not recognizable (else A<sub>TM</sub> decidable).'},
   {name:'¬HALT_TM', region:'C', why:'co-recognizable; not recognizable.'},
   {name:'EQ_TM', region:'N', why:'Neither recognizable nor co-recognizable.'},
   {name:'¬E_TM', region:'R', why:'Recognizable: enumerate w; accept as soon as M accepts any w.'}
@@ -170,12 +172,12 @@ function render() {
     const L = langs[idx];
     const [px, py] = positions[L.region];
     s += `<rect x="${px-50}" y="${py-18}" width="100" height="32" fill="white" stroke="var(--gold)" stroke-width="2.5" rx="6"/>`;
-    s += `<text x="${px}" y="${py+3}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13" font-weight="bold" fill="var(--gold)">${L.name}</text>`;
+    s += `<text x="${px}" y="${py+3}" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13" font-weight="bold" fill="var(--gold)">${fmtSubSvg(L.name)}</text>`;
   }
   document.getElementById('v-svg').innerHTML = s;
   const el = document.getElementById('v-explain');
   if (idx < 0) el.innerHTML = `<div class="step-num">Watch each language land</div><p style="margin:4px 0;">9 example languages will be placed one at a time in the correct region. Pause to think about why each goes where it does.</p>`;
-  else { const L = langs[idx]; el.innerHTML = `<div class="step-num">${L.name} → ${ {D:'Decidable',R:'Recognizable \\ Decidable',C:'co-Rec \\ Decidable',N:'Neither'}[L.region]}</div><p style="margin:4px 0;">${L.why}</p>`; }
+  else { const L = langs[idx]; el.innerHTML = `<div class="step-num">${fmtSub(L.name)} → ${ {D:'Decidable',R:'Recognizable \\ Decidable',C:'co-Rec \\ Decidable',N:'Neither'}[L.region]}</div><p style="margin:4px 0;">${L.why}</p>`; }
 }
 function step() { if (idx < langs.length - 1) idx++; render(); }
 function reset() { idx = -1; render(); }

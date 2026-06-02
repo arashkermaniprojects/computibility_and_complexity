@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>P5 · HALT_TM via reduction</title>
+<title>P5 · HALT<sub>TM</sub> via reduction</title>
 <link rel="stylesheet" href="../styles.css">
 <link rel="stylesheet" href="tool-shell.css">
 <link rel="stylesheet" href="../presentation.css">
@@ -256,9 +256,9 @@
     // Input box
     draw('in', 40, 130, 110, 60, '⟨M, w⟩', 'input', 'var(--info)', true);
     // S box (outer)
-    draw('s', 200, 60, 460, 200, 'S = our decider for A_TM', '', 'var(--accent)', stage >= 1);
+    draw('s', 200, 60, 460, 200, 'S = our decider for A<tspan baseline-shift="sub" font-size="0.75em">TM</tspan>', '', 'var(--accent)', stage >= 1);
     // R box (inside S)
-    draw('r', 250, 110, 160, 60, 'R', 'decides HALT_TM', 'var(--warn)', stage >= 2);
+    draw('r', 250, 110, 160, 60, 'R', 'decides HALT<tspan baseline-shift="sub" font-size="0.75em">TM</tspan>', 'var(--warn)', stage >= 2);
     // simulator (inside S)
     draw('sim', 460, 110, 170, 60, 'simulate M(w)', 'guaranteed to halt', 'var(--gold)', stage >= 4);
     // output

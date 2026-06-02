@@ -22,7 +22,7 @@
 const families=[
   {n:'φ_cell',desc:'each cell has exactly one symbol/state',ex:'⋁<sub>s∈Γ∪Q</sub> x[r,c,s] ∧ ⋀ ¬(x[r,c,s] ∧ x[r,c,s\'])',color:'var(--accent)'},
   {n:'φ_start',desc:'row 0 = start configuration on (G, π)',ex:'x[0,0,q₀] ∧ x[0,1,#] ∧ x[0,2,(input bit)] ∧ …',color:'var(--info)'},
-  {n:'φ_accept',desc:'some row contains q_accept',ex:'⋁<sub>r,c</sub> x[r,c,q_accept]',color:'var(--gold)'},
+  {n:'φ_accept',desc:'some row contains q<sub>accept</sub>',ex:'⋁<sub>r,c</sub> x[r,c,q<sub>accept</sub>]',color:'var(--gold)'},
   {n:'φ_move',desc:'every 2×3 window is δ-legal',ex:'⋀<sub>r,c</sub> (window[r,c] is one of |δ| legal patterns)',color:'var(--warn)'}
 ];
 let i=-1;

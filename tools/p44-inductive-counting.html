@@ -9,7 +9,7 @@
 <div class="theorem-box"><div class="theorem-label">Theorem · NL = coNL</div><p style="margin:4px 0;">For each i, let c<sub>i</sub> = |{v : reachable from s in ≤ i steps}|. Compute c<sub>0</sub>, c<sub>1</sub>, …, c<sub>n</sub> inductively. Using c<sub>n</sub> as a witness count, we can certify "t is unreachable" by witnessing all c<sub>n</sub> reachable vertices and showing t isn't one of them.</p></div>
 <p>Surprising result: nondeterministic space is closed under complement (unlike nondeterministic time, where NP = coNP is open).</p></section>
 <section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
-<div class="widget"><div class="widget-title">Compute c_i one step at a time <span class="pill">Auto-plays</span></div>
+<div class="widget"><div class="widget-title">Compute c<sub>i</sub> one step at a time <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="ic-run">⏸ Pause</button><button class="btn ghost" id="ic-step">Step</button><button class="btn ghost" id="ic-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="ic-speed" min="0.25" max="3" step="0.25" value="1"><span id="ic-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="ic-svg" viewBox="0 0 760 320" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>

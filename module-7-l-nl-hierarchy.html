@@ -265,9 +265,9 @@
     To show <span class="math">\overline{PATH}</span> is in NL, we need an NL algorithm that
     accepts iff there is NO path from <span class="math">s</span> to <span class="math">t</span>.
     The idea: count the number of vertices reachable from <span class="math">s</span> in
-    <span class="math">≤ i</span> steps (call this <span class="math">c_i</span>), and use
-    <span class="math">c_i</span> to <em>certify</em> <span class="math">c<sub>i+1</sub></span>. If we
-    arrive at <span class="math">c_n</span> and the target <span class="math">t</span> is NOT in
+    <span class="math">≤ i</span> steps (call this <span class="math">c<sub>i</sub></span>), and use
+    <span class="math">c<sub>i</sub></span> to <em>certify</em> <span class="math">c<sub>i+1</sub></span>. If we
+    arrive at <span class="math">c<sub>n</sub></span> and the target <span class="math">t</span> is NOT in
     that count, then there is no path.
   </p>
 
@@ -287,7 +287,7 @@
 
     <div class="status">
       <div class="stat">Step i <b id="isz-i">0</b></div>
-      <div class="stat">c_i (vertices reachable in ≤ i steps) <b id="isz-c">1</b></div>
+      <div class="stat">c<sub>i</sub> (vertices reachable in ≤ i steps) <b id="isz-c">1</b></div>
     </div>
 
     <div class="explain-panel" id="isz-explain"></div>
@@ -296,8 +296,8 @@
   <div class="callout">
     <h5>What inductive counting buys us</h5>
     <p style="margin: 0;">
-      Once we know <span class="math">c_n</span>, we can in NL "for each vertex, certify it is
-      reachable or unreachable using <span class="math">c_n</span> as a witness count." Then
+      Once we know <span class="math">c<sub>n</sub></span>, we can in NL "for each vertex, certify it is
+      reachable or unreachable using <span class="math">c<sub>n</sub></span> as a witness count." Then
       checking <span class="math">t ∉ R</span> is a positive existential check, doable in NL.
       So <span class="math">\overline{PATH} ∈ NL</span>, and since PATH is NL-complete, every NL
       language is closed under complement. ∎
@@ -415,7 +415,7 @@
 
     <div class="explain-panel" id="hier-explain">
       <div class="step-num">The diagonal language</div>
-      Each row is a TM with space ≤ f(n). The diagonalizer D runs M_i on ⟨M_i⟩ in space slightly
+      Each row is a TM with space ≤ f(n). The diagonalizer D runs M<sub>i</sub> on ⟨M<sub>i</sub>⟩ in space slightly
       larger than f, and flips the answer. D cannot be in SPACE(f) — so SPACE(g) strictly
       contains SPACE(f).
     </div>
@@ -918,9 +918,9 @@
     document.getElementById('isz-explain').innerHTML =
       `<div class="step-num">Step 0 — initialize</div>
        <p style="margin:4px 0;"><strong>The big idea (Immerman–Szelepcsényi):</strong> we want an NL algorithm for <em>\\overline{PATH}</em> — i.e., one that accepts if there is NO path from S to T. NL is naturally good at <em>positive</em> existential checks ("some path exists"), not negative ones. So we cheat by counting.</p>
-       <p style="margin:4px 0;"><strong>Key definition.</strong> Let R_i = "set of vertices reachable from S in ≤ i steps". Let c_i = |R_i|.</p>
-       <p style="margin:4px 0;"><strong>Plan:</strong> we'll compute c_i one i at a time, in log space. Once we know c_n, we can certify "T is not reachable" by certifying "the n reachable vertices are exactly {S, A, B, …} and T is not among them."</p>
-       <p style="margin:4px 0;"><strong>Starting point:</strong> R_0 = {S}, c_0 = 1.</p>`;
+       <p style="margin:4px 0;"><strong>Key definition.</strong> Let R<sub>i</sub> = "set of vertices reachable from S in ≤ i steps". Let c<sub>i</sub> = |R<sub>i</sub>|.</p>
+       <p style="margin:4px 0;"><strong>Plan:</strong> we'll compute c<sub>i</sub> one i at a time, in log space. Once we know c<sub>n</sub>, we can certify "T is not reachable" by certifying "the n reachable vertices are exactly {S, A, B, …} and T is not among them."</p>
+       <p style="margin:4px 0;"><strong>Starting point:</strong> R<sub>0</sub> = {S}, c<sub>0</sub> = 1.</p>`;
     const loop = () => {
       const newReach = new Set(reach);
       for (const u of reach) {

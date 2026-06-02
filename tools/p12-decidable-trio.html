@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>P12 · A_DFA, E_DFA, A_CFG</title>
+<title>P12 · A<sub>DFA</sub>, E<sub>DFA</sub>, A<sub>CFG</sub></title>
 <link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
 <link rel="stylesheet" href="../presentation.css">
 <script src="../widget-loop.js"></script></head><body>
@@ -47,6 +47,8 @@
 
 <script>
 (function(){
+function fmtSub(s){return String(s).replace(/_([A-Za-z0-9]+)/g,'<sub>$1</sub>');}
+function fmtSubSvg(s){return String(s).replace(/_([A-Za-z0-9]+)/g,'<tspan baseline-shift="sub" font-size="0.75em">$1</tspan>');}
 const probs = [
   {name: 'A_DFA', algo: 'Simulate DFA on input', time: 'O(n)', why: 'One state at a time, n transitions.'},
   {name: 'E_DFA', algo: 'BFS from start state', time: 'O(|Q|·|Σ|)', why: 'Reachable accept state ⇔ non-empty.'},
@@ -61,7 +63,7 @@ function render() {
     const shown = i <= revealed;
     const op = shown ? 1 : 0.25;
     s += `<rect x="${x}" y="70" width="200" height="180" rx="10" fill="white" stroke="${shown ? 'var(--accent)' : '#ccc'}" stroke-width="${shown ? 2.5 : 1}" opacity="${op}"/>`;
-    s += `<text x="${x+100}" y="100" text-anchor="middle" font-family="ui-monospace, monospace" font-size="16" font-weight="bold" fill="${shown ? 'var(--accent-strong)' : '#888'}" opacity="${op}">${p.name}</text>`;
+    s += `<text x="${x+100}" y="100" text-anchor="middle" font-family="ui-monospace, monospace" font-size="16" font-weight="bold" fill="${shown ? 'var(--accent-strong)' : '#888'}" opacity="${op}">${fmtSubSvg(p.name)}</text>`;
     s += `<text x="${x+100}" y="135" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="13" fill="${shown ? '#1a1a1a' : '#888'}" opacity="${op}">${p.algo}</text>`;
     s += `<text x="${x+100}" y="172" text-anchor="middle" font-family="ui-monospace, monospace" font-size="14" font-weight="bold" fill="${shown ? 'var(--gold)' : '#bbb'}" opacity="${op}">${p.time}</text>`;
     s += `<text x="${x+100}" y="200" text-anchor="middle" font-family="var(--sans), sans-serif" font-size="11" fill="${shown ? 'var(--muted)' : '#bbb'}" opacity="${op}">${p.why}</text>`;
@@ -70,7 +72,7 @@ function render() {
   document.getElementById('t-svg').innerHTML = s;
   if (revealed < 0) document.getElementById('t-explain').innerHTML = `<div class="step-num">Three decidable problems</div><p style="margin:4px 0;">For each, watch the algorithm and time complexity appear.</p>`;
   else if (revealed >= 2) document.getElementById('t-explain').innerHTML = `<div class="step-num">All three decidable in polynomial time</div><p style="margin:4px 0;">Decidability boundary: finite-state ⇒ decidable. Adding TM = unbounded memory ⇒ undecidable for the same questions.</p>`;
-  else { const p = probs[revealed]; document.getElementById('t-explain').innerHTML = `<div class="step-num">${p.name} — ${p.algo}</div><p style="margin:4px 0;">${p.why} Time: ${p.time}.</p>`; }
+  else { const p = probs[revealed]; document.getElementById('t-explain').innerHTML = `<div class="step-num">${fmtSub(p.name)} — ${p.algo}</div><p style="margin:4px 0;">${p.why} Time: ${p.time}.</p>`; }
 }
 function step() { if (revealed < 2) revealed++; render(); }
 function reset() { revealed = -1; render(); }

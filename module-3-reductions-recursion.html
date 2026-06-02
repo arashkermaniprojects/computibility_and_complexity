@@ -220,13 +220,13 @@
   </p>
 
   <div class="math-block">
-    C_1 # C_2 # C_3 # … # C_ℓ
+    C<sub>1</sub> # C<sub>2</sub> # C<sub>3</sub> # … # C_ℓ
   </div>
 
   <p>
-    where <span class="math">C_1</span> is the start configuration (state <span class="math">q_0</span>,
+    where <span class="math">C<sub>1</sub></span> is the start configuration (state <span class="math">q<sub>0</sub></span>,
     head at position 0, tape = <span class="math">w</span> followed by blanks),
-    <span class="math">C<sub>i+1</sub></span> follows from <span class="math">C_i</span> by one application
+    <span class="math">C<sub>i+1</sub></span> follows from <span class="math">C<sub>i</sub></span> by one application
     of <span class="math">δ</span>, and <span class="math">C_ℓ</span> is an accepting configuration
     (a configuration whose state is the accept state). The symbol <span class="math">#</span> is
     just a separator.
@@ -236,7 +236,7 @@
     <strong>The trick.</strong> A string <span class="math">x</span> is "an accepting computation
     history of <span class="math">M</span> on <span class="math">w</span>" iff a list of <em>local</em>
     properties holds: it is a sequence of configurations separated by <span class="math">#</span>;
-    each adjacent pair <span class="math">(C_i, C<sub>i+1</sub>)</span> agrees on the unchanged parts of
+    each adjacent pair <span class="math">(C<sub>i</sub>, C<sub>i+1</sub>)</span> agrees on the unchanged parts of
     the tape and differs only at the head position by one transition of <span class="math">δ</span>;
     the first configuration is correct; and the last is accepting. Local properties can be checked
     by humble machines (DFAs, NFAs, LBAs, CFGs combined with intersection) — and that is the whole
@@ -399,7 +399,7 @@
   <div class="key-idea">
     <strong>The twist.</strong> "Is a valid accepting history" is checkable by an LBA but
     <em>not</em> by a CFG (because checking that <span class="math">C<sub>i+1</sub></span> faithfully
-    follows from <span class="math">C_i</span> needs matching them position by position, which
+    follows from <span class="math">C<sub>i</sub></span> needs matching them position by position, which
     requires an unbounded memory). But "is <em>not</em> a valid accepting history" can be done by
     a CFG, because to fail it is enough to find <em>one</em> local violation, and a CFG can
     guess where the violation is and verify it locally.
@@ -789,7 +789,7 @@
     const k = document.getElementById('hist-preset').value;
     const {input, prog, explanation} = presets[k];
     const hist = simulate(prog, input);
-    let html = '<table class="data" style="font-family: ui-monospace, monospace;"><thead><tr><th>Step</th><th>Configuration C_i</th></tr></thead><tbody>';
+    let html = '<table class="data" style="font-family: ui-monospace, monospace;"><thead><tr><th>Step</th><th>Configuration C<sub>i</sub></th></tr></thead><tbody>';
     for (const h of hist) {
       const accept = h.state === 'qa' ? ' style="background: var(--accent-soft);"' : '';
       const reject = h.state === 'qr' ? ' style="background: var(--warn-soft);"' : '';
@@ -815,8 +815,8 @@
 (function(){
   const items = [
     {t: 'The first config is the start of M on w', side: 'in'},
-    {t: 'Each consecutive (C_i, C<sub>i+1</sub>) follows by δ of M', side: 'in'},
-    {t: 'The last config has state q_accept', side: 'in'},
+    {t: 'Each consecutive (C<sub>i</sub>, C<sub>i+1</sub>) follows by δ of M', side: 'in'},
+    {t: 'The last config has state q<sub>accept</sub>', side: 'in'},
     {t: 'Simulate M on w directly', side: 'out'},
     {t: 'Decide whether M halts', side: 'out'},
     {t: 'Generate all possible histories', side: 'out'}

@@ -158,7 +158,7 @@
     </g>
     <!-- horizontal rule below header -->
     <line x1="170" y1="68" x2="540" y2="68" stroke="#888" stroke-width="1"/>
-    <!-- 5 rows of f_i with diagonal cells highlighted -->
+    <!-- 5 rows of f<sub>i</sub> with diagonal cells highlighted -->
     <g font-family="var(--mono), ui-monospace" font-size="13">
       <!-- row 1: diagonal is column 0 -->
       <text x="100" y="95" font-weight="700">f&#8321;</text>
@@ -262,8 +262,8 @@
     <div class="explain-panel" id="cantor-explain">
       <div class="step-num">Step 0</div>
       Click <strong>Build next row</strong> to fill in one row at a time. Each row
-      <span class="math">f_i</span> is a function ℕ → {0,1}, and column <span class="math">j</span>
-      shows <span class="math">f_i(j)</span>. Once all rows are filled, click <strong>Flip the
+      <span class="math">f<sub>i</sub></span> is a function ℕ → {0,1}, and column <span class="math">j</span>
+      shows <span class="math">f<sub>i</sub>(j)</span>. Once all rows are filled, click <strong>Flip the
       diagonal</strong> to construct a function <span class="math">g</span> that
       <em>cannot be in the list</em>.
     </div>
@@ -272,7 +272,7 @@
   <div class="key-idea">
     <strong>The diagonal lemma.</strong> If you list any countable family of functions
     <span class="math">f_1, f_2, …</span> from ℕ to {0,1}, you can construct a new function
-    <span class="math">g(n) = 1 - f_n(n)</span> that disagrees with each <span class="math">f_i</span>
+    <span class="math">g(n) = 1 - f<sub>n</sub>(n)</span> that disagrees with each <span class="math">f<sub>i</sub></span>
     at position <span class="math">i</span>. So <span class="math">g</span> is not in the list.
     Conclusion: no countable list can contain every function ℕ → {0,1}.
   </div>
@@ -493,7 +493,7 @@
 
     <p style="font-size: 14px; color: var(--muted);">
       Imagine listing every TM <span class="math">M<sub>1</sub>, M<sub>2</sub>, M<sub>3</sub>, …</span>. Each row shows how
-      <span class="math">M_i</span> behaves on each TM description <span class="math">⟨M_j⟩</span>:
+      <span class="math">M<sub>i</sub></span> behaves on each TM description <span class="math">⟨M<sub>j</sub>⟩</span>:
       <span style="color:var(--accent);font-weight:bold;">A</span> = accepts,
       <span style="color:var(--warn);font-weight:bold;">R</span> = rejects/loops. (We collapse
       "rejects" and "loops" into "does not accept" — both look the same to a non-decider.)
@@ -513,9 +513,9 @@
 
     <div class="explain-panel" id="atm-diag-explain">
       <div class="step-num">Setup</div>
-      The table shows what each <span class="math">M_i</span> does on each input
-      <span class="math">⟨M_j⟩</span>. The diagonal — cell
-      <span class="math">(i, i)</span> — is what <span class="math">M_i</span> does on its own
+      The table shows what each <span class="math">M<sub>i</sub></span> does on each input
+      <span class="math">⟨M<sub>j</sub>⟩</span>. The diagonal — cell
+      <span class="math">(i, i)</span> — is what <span class="math">M<sub>i</sub></span> does on its own
       description. <span class="math">D</span> is built to <em>disagree</em> with every diagonal cell.
     </div>
   </div>
@@ -523,7 +523,7 @@
   <div class="callout warn">
     <h5>Why the diagonal cell matters</h5>
     <p style="margin: 0;">
-      <span class="math">D</span> only disagrees with every <span class="math">M_i</span>
+      <span class="math">D</span> only disagrees with every <span class="math">M<sub>i</sub></span>
       <em>at the diagonal position</em>. That is enough — if a TM <span class="math">D</span> in the
       list has index <span class="math">k</span>, then <span class="math">D</span> disagrees with
       <span class="math">M_k</span> at column <span class="math">k</span>, but
@@ -1302,7 +1302,7 @@ q0, _ -> qr, _, R`
         const color = flipped === 'A' ? 'var(--accent)' : 'var(--warn)';
         html += `<td style="background:var(--gold-soft);font-weight:bold;color:${color};">${flipped}</td>`;
       }
-      html += '<td style="background:var(--gold-soft);">≠ every M_i at i</td></tr>';
+      html += '<td style="background:var(--gold-soft);">≠ every M<sub>i</sub> at i</td></tr>';
     }
 
     html += '</tbody></table>';

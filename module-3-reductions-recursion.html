@@ -40,6 +40,12 @@
 @media (max-width: 640px) {
   .section-audio { flex-wrap: wrap; }
 }
+
+.overline {
+  text-decoration: overline;
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.1em;
+}
 </style>
 
 
@@ -326,7 +332,7 @@
   </p>
 
   <div class="callout">
-    <h5>The reduction A<sub>TM</sub> ≤_m \overline{E<sub>LBA</sub>}</h5>
+    <h5>The reduction A<sub>TM</sub> ≤_m <span class="overline">E<sub>LBA</sub></span></h5>
     <p style="margin: 0;">
       Given <span class="math">⟨M, w⟩</span>, build an LBA <span class="math">B<sub>M,w</sub></span>
       whose language is the set of <em>accepting computation histories</em> of <span class="math">M</span>
@@ -352,7 +358,7 @@
   </p>
 
   <div class="widget" id="elba-reduce">
-    <div class="widget-title">Reduction A<sub>TM</sub> ≤ \overline{E<sub>LBA</sub>} — the moving parts <span class="pill">Widget 2</span></div>
+    <div class="widget-title">Reduction A<sub>TM</sub> ≤ <span class="overline">E<sub>LBA</sub></span> — the moving parts <span class="pill">Widget 2</span></div>
 
     <p style="font-size: 14px; color: var(--muted);">
       Drag the assertions onto the appropriate side: things <span class="math">B<sub>M,w</sub></span> needs
@@ -391,7 +397,7 @@
 
   <p>
     The proof again uses computation histories, with a twist. We reduce <span class="math">A<sub>TM</sub></span>
-    to <span class="math">\overline{ALL<sub>CFG</sub>}</span>. Given <span class="math">⟨M, w⟩</span>, we
+    to <span class="math"><span class="overline">ALL<sub>CFG</sub></span></span>. Given <span class="math">⟨M, w⟩</span>, we
     build a CFG <span class="math">G<sub>M,w</sub></span> that generates <em>everything except the
     accepting histories of <span class="math">M</span> on <span class="math">w</span></em>.
   </p>
@@ -408,7 +414,7 @@
   <p>
     So <span class="math">L(G<sub>M,w</sub>) = Σ*</span> iff no accepting history exists iff
     <span class="math">M</span> does not accept <span class="math">w</span>. A decider for
-    <span class="math">ALL<sub>CFG</sub></span> would decide <span class="math">\overline{A<sub>TM</sub>}</span>,
+    <span class="math">ALL<sub>CFG</sub></span> would decide <span class="math"><span class="overline">A<sub>TM</sub></span></span>,
     so it can't exist.
   </p>
 
@@ -657,7 +663,7 @@
     </details>
     <details><summary>Show solution outline</summary>
       <div class="solution">
-        <strong>A<sub>LBA</sub> decidable:</strong> on input <span class="math">⟨B, w⟩</span> with <span class="math">|w| = n</span>, simulate <span class="math">B</span> for up to <span class="math">|Q| · n · |Γ|<sup>n</sup></span> steps; accept iff an accept config is hit. If we exceed the bound without accepting, reject (any longer run would repeat). <strong>E<sub>LBA</sub> undecidable:</strong> given <span class="math">⟨M, w⟩</span>, construct LBA <span class="math">B<sub>M,w</sub></span> recognizing accepting computation histories of <span class="math">M</span> on <span class="math">w</span>. Then <span class="math">L(B<sub>M,w</sub>) ≠ ∅</span> iff <span class="math">M</span> accepts <span class="math">w</span>. So a decider for <span class="math">E<sub>LBA</sub></span> would decide <span class="math">\overline{A<sub>TM</sub>}</span>.
+        <strong>A<sub>LBA</sub> decidable:</strong> on input <span class="math">⟨B, w⟩</span> with <span class="math">|w| = n</span>, simulate <span class="math">B</span> for up to <span class="math">|Q| · n · |Γ|<sup>n</sup></span> steps; accept iff an accept config is hit. If we exceed the bound without accepting, reject (any longer run would repeat). <strong>E<sub>LBA</sub> undecidable:</strong> given <span class="math">⟨M, w⟩</span>, construct LBA <span class="math">B<sub>M,w</sub></span> recognizing accepting computation histories of <span class="math">M</span> on <span class="math">w</span>. Then <span class="math">L(B<sub>M,w</sub>) ≠ ∅</span> iff <span class="math">M</span> accepts <span class="math">w</span>. So a decider for <span class="math">E<sub>LBA</sub></span> would decide <span class="math"><span class="overline">A<sub>TM</sub></span></span>.
       </div>
     </details>
   </div>
@@ -690,13 +696,13 @@
 
   <div class="exercise">
     <div class="ex-num">Sipser 6.7</div>
-    <p>Prove that, if <span class="math">A</span> is Turing-recognizable and <span class="math">A ≤_m \overline{A}</span>, then <span class="math">A</span> is decidable.</p>
+    <p>Prove that, if <span class="math">A</span> is Turing-recognizable and <span class="math">A ≤_m <span class="overline">A</span></span>, then <span class="math">A</span> is decidable.</p>
     <details><summary>Show hint</summary>
-      <div class="hint">Mapping reducibility preserves recognizability. If <span class="math">A ≤_m \overline{A}</span> and <span class="math">A</span> is recognizable, then <span class="math">\overline{A}</span> is recognizable too.</div>
+      <div class="hint">Mapping reducibility preserves recognizability. If <span class="math">A ≤_m <span class="overline">A</span></span> and <span class="math">A</span> is recognizable, then <span class="math"><span class="overline">A</span></span> is recognizable too.</div>
     </details>
     <details><summary>Show solution outline</summary>
       <div class="solution">
-        From <span class="math">A ≤_m \overline{A}</span> and recognizability of <span class="math">A</span>: the reduction <span class="math">f</span> witnesses <span class="math">\overline{A}</span> recognizable by composing the recognizer of <span class="math">A</span> with <span class="math">f</span>. Wait — we need to recognize <span class="math">\overline{A}</span>: on input <span class="math">x</span>, compute <span class="math">f(x)</span>, then run the recognizer of <span class="math">A</span>; <span class="math">x ∈ \overline{A}</span> iff <span class="math">f(x) ∈ A</span>. So <span class="math">\overline{A}</span> is recognizable; combined with <span class="math">A</span> recognizable, by the bridge theorem <span class="math">A</span> is decidable.
+        From <span class="math">A ≤_m <span class="overline">A</span></span> and recognizability of <span class="math">A</span>: the reduction <span class="math">f</span> witnesses <span class="math"><span class="overline">A</span></span> recognizable by composing the recognizer of <span class="math">A</span> with <span class="math">f</span>. Wait — we need to recognize <span class="math"><span class="overline">A</span></span>: on input <span class="math">x</span>, compute <span class="math">f(x)</span>, then run the recognizer of <span class="math">A</span>; <span class="math">x ∈ <span class="overline">A</span></span> iff <span class="math">f(x) ∈ A</span>. So <span class="math"><span class="overline">A</span></span> is recognizable; combined with <span class="math">A</span> recognizable, by the bridge theorem <span class="math">A</span> is decidable.
       </div>
     </details>
   </div>

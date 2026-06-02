@@ -40,6 +40,12 @@
 @media (max-width: 640px) {
   .section-audio { flex-wrap: wrap; }
 }
+
+.overline {
+  text-decoration: overline;
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.1em;
+}
 </style>
 
 
@@ -262,7 +268,7 @@
   </p>
 
   <p>
-    To show <span class="math">\overline{PATH}</span> is in NL, we need an NL algorithm that
+    To show <span class="math"><span class="overline">PATH</span></span> is in NL, we need an NL algorithm that
     accepts iff there is NO path from <span class="math">s</span> to <span class="math">t</span>.
     The idea: count the number of vertices reachable from <span class="math">s</span> in
     <span class="math">≤ i</span> steps (call this <span class="math">c<sub>i</sub></span>), and use
@@ -299,7 +305,7 @@
       Once we know <span class="math">c<sub>n</sub></span>, we can in NL "for each vertex, certify it is
       reachable or unreachable using <span class="math">c<sub>n</sub></span> as a witness count." Then
       checking <span class="math">t ∉ R</span> is a positive existential check, doable in NL.
-      So <span class="math">\overline{PATH} ∈ NL</span>, and since PATH is NL-complete, every NL
+      So <span class="math"><span class="overline">PATH</span> ∈ NL</span>, and since PATH is NL-complete, every NL
       language is closed under complement. ∎
     </p>
   </div>

@@ -40,6 +40,12 @@
 @media (max-width: 640px) {
   .section-audio { flex-wrap: wrap; }
 }
+
+.overline {
+  text-decoration: overline;
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.1em;
+}
 </style>
 
 
@@ -914,16 +920,16 @@
     <tbody>
       <tr><td>Decidable</td><td>Some TM always halts and answers correctly.</td><td><span class="math">A<sub>DFA</sub></span>, <span class="math">E<sub>DFA</sub></span>, all finite languages.</td></tr>
       <tr><td>Recognizable \ Decidable</td><td>Some TM accepts iff in language, but may loop otherwise.</td><td><span class="math">A<sub>TM</sub></span>, <span class="math">HALT<sub>TM</sub></span>.</td></tr>
-      <tr><td>co-Recognizable \ Decidable</td><td>Complement is in Recognizable \ Decidable.</td><td><span class="math">\overline{A<sub>TM</sub>}</span>, <span class="math">\overline{HALT<sub>TM</sub>}</span>.</td></tr>
+      <tr><td>co-Recognizable \ Decidable</td><td>Complement is in Recognizable \ Decidable.</td><td><span class="math"><span class="overline">A<sub>TM</sub></span></span>, <span class="math"><span class="overline">HALT<sub>TM</sub></span></span>.</td></tr>
       <tr><td>Neither</td><td>Not even recognizable; the complement isn't either.</td><td><span class="math">EQ<sub>TM</sub></span> (we'll show this later).</td></tr>
     </tbody>
   </table>
 
   <div class="key-idea">
     <strong>The bridge theorem.</strong> A language <span class="math">L</span> is decidable iff
-    <em>both</em> <span class="math">L</span> and its complement <span class="math">\overline{L}</span>
+    <em>both</em> <span class="math">L</span> and its complement <span class="math"><span class="overline">L</span></span>
     are Turing-recognizable. So a language sits in "neither" iff at least one of
-    <span class="math">L, \overline{L}</span> is non-recognizable.
+    <span class="math">L, <span class="overline">L</span></span> is non-recognizable.
   </div>
 
 <figure class="diagram">
@@ -1013,11 +1019,11 @@
     <div class="ex-num">Sipser 5.9</div>
     <p>Let <span class="math">T = {⟨M⟩ : M is a TM that accepts w<sup>R</sup> whenever it accepts w}</span> (same problem). Show <span class="math">T</span> is <em>not</em> Turing-recognizable.</p>
     <details><summary>Show hint</summary>
-      <div class="hint">It suffices to show <span class="math">\overline{T}</span> is not co-recognizable, i.e., that <span class="math">T</span> is not recognizable. Try a reduction <em>from</em> <span class="math">\overline{A<sub>TM</sub>}</span>.</div>
+      <div class="hint">It suffices to show <span class="math"><span class="overline">T</span></span> is not co-recognizable, i.e., that <span class="math">T</span> is not recognizable. Try a reduction <em>from</em> <span class="math"><span class="overline">A<sub>TM</sub></span></span>.</div>
     </details>
     <details><summary>Show solution outline</summary>
       <div class="solution">
-        Reduce <span class="math">\overline{A<sub>TM</sub>}</span> to <span class="math">T</span>. Given <span class="math">⟨M, w⟩</span>, build <span class="math">M'</span>: on input <span class="math">x</span>, if <span class="math">x = 01</span> simulate <span class="math">M</span> on <span class="math">w</span> and accept iff it rejects (impossible to do directly — needs co-recognizability!) ... use a more refined "search" technique that exhausts the input space. The standard solution constructs <span class="math">M'</span> so that <span class="math">L(M')</span> equals <span class="math">\{01\}</span> if <span class="math">M</span> doesn't accept <span class="math">w</span> and equals <span class="math">\{01, 10\}</span> otherwise — leveraging the recognizable property gives a recognizer for <span class="math">\overline{A<sub>TM</sub>}</span>, contradicting its non-recognizability.
+        Reduce <span class="math"><span class="overline">A<sub>TM</sub></span></span> to <span class="math">T</span>. Given <span class="math">⟨M, w⟩</span>, build <span class="math">M'</span>: on input <span class="math">x</span>, if <span class="math">x = 01</span> simulate <span class="math">M</span> on <span class="math">w</span> and accept iff it rejects (impossible to do directly — needs co-recognizability!) ... use a more refined "search" technique that exhausts the input space. The standard solution constructs <span class="math">M'</span> so that <span class="math">L(M')</span> equals <span class="math">\{01\}</span> if <span class="math">M</span> doesn't accept <span class="math">w</span> and equals <span class="math">\{01, 10\}</span> otherwise — leveraging the recognizable property gives a recognizer for <span class="math"><span class="overline">A<sub>TM</sub></span></span>, contradicting its non-recognizability.
       </div>
     </details>
   </div>
@@ -1052,11 +1058,11 @@
     <div class="ex-num">Sipser 5.22</div>
     <p>Show that <span class="math">A<sub>TM</sub></span> is not mapping reducible to <span class="math">E<sub>TM</sub></span>. In other words, show that no computable function reduces <span class="math">A<sub>TM</sub></span> to <span class="math">E<sub>TM</sub></span>.</p>
     <details><summary>Show hint</summary>
-      <div class="hint">If <span class="math">A<sub>TM</sub> ≤_m E<sub>TM</sub></span> then <span class="math">\overline{A<sub>TM</sub>} ≤_m \overline{E<sub>TM</sub>}</span>. Since <span class="math">\overline{E<sub>TM</sub>}</span> is recognizable, that would make <span class="math">\overline{A<sub>TM</sub>}</span> recognizable — but we proved it isn't.</div>
+      <div class="hint">If <span class="math">A<sub>TM</sub> ≤_m E<sub>TM</sub></span> then <span class="math"><span class="overline">A<sub>TM</sub></span> ≤_m <span class="overline">E<sub>TM</sub></span></span>. Since <span class="math"><span class="overline">E<sub>TM</sub></span></span> is recognizable, that would make <span class="math"><span class="overline">A<sub>TM</sub></span></span> recognizable — but we proved it isn't.</div>
     </details>
     <details><summary>Show solution outline</summary>
       <div class="solution">
-        Mapping reductions transfer recognizability along their direction: if <span class="math">L_1 ≤_m L_2</span> and <span class="math">L_2</span> is recognizable, so is <span class="math">L_1</span>. Same for complements. So <span class="math">A<sub>TM</sub> ≤_m E<sub>TM</sub></span> would imply <span class="math">\overline{A<sub>TM</sub>} ≤_m \overline{E<sub>TM</sub>}</span> (just complement both sides), and since <span class="math">\overline{E<sub>TM</sub>}</span> is recognizable (loop over inputs <span class="math">w</span>, simulate <span class="math">M</span> in parallel; accept as soon as one accepts), <span class="math">\overline{A<sub>TM</sub>}</span> would be recognizable. But it isn't (Module 5 of Sipser).
+        Mapping reductions transfer recognizability along their direction: if <span class="math">L_1 ≤_m L_2</span> and <span class="math">L_2</span> is recognizable, so is <span class="math">L_1</span>. Same for complements. So <span class="math">A<sub>TM</sub> ≤_m E<sub>TM</sub></span> would imply <span class="math"><span class="overline">A<sub>TM</sub></span> ≤_m <span class="overline">E<sub>TM</sub></span></span> (just complement both sides), and since <span class="math"><span class="overline">E<sub>TM</sub></span></span> is recognizable (loop over inputs <span class="math">w</span>, simulate <span class="math">M</span> in parallel; accept as soon as one accepts), <span class="math"><span class="overline">A<sub>TM</sub></span></span> would be recognizable. But it isn't (Module 5 of Sipser).
       </div>
     </details>
   </div>
@@ -1530,7 +1536,7 @@ q0, _ -> qr, _, R`
         {label: 'Then L(M\') equals', correct: 'Σ* if M accepts w, ∅ otherwise', options: ['Σ* if M accepts w, ∅ otherwise', '{w} always', '∅ always']},
         {label: 'So ⟨M\'⟩ ∈ E<sub>TM</sub> iff', correct: 'M does NOT accept w', options: ['M accepts w', 'M does NOT accept w', 'M halts on w']}
       ],
-      explanation: 'M\' ignores its actual input and just tests "does M accept w?". So L(M\') is either everything (if yes) or nothing (if no). Then "L(M\') = ∅" is equivalent to "M does not accept w", i.e. ⟨M, w⟩ ∉ A<sub>TM</sub>. Reduction is from \\overline{A<sub>TM</sub>} to E<sub>TM</sub>, equivalently A<sub>TM</sub> to \\overline{E<sub>TM</sub>}; either way E<sub>TM</sub> is undecidable.'
+      explanation: 'M\' ignores its actual input and just tests "does M accept w?". So L(M\') is either everything (if yes) or nothing (if no). Then "L(M\') = ∅" is equivalent to "M does not accept w", i.e. ⟨M, w⟩ ∉ A<sub>TM</sub>. Reduction is from <span class="overline">A<sub>TM</sub></span> to E<sub>TM</sub>, equivalently A<sub>TM</sub> to <span class="overline">E<sub>TM</sub></span>; either way E<sub>TM</sub> is undecidable.'
     },
     reg: {
       problem: 'REGULAR<sub>TM</sub> = {⟨M⟩ : L(M) is regular}',
@@ -1606,15 +1612,15 @@ q0, _ -> qr, _, R`
 // ----- Venn classification (Widget 5) -----
 (function(){
   const langs = [
-    {name: 'A<sub>DFA</sub>', region: 'D', why: 'Decidable by simulating the DFA on the input.'},
-    {name: 'E<sub>DFA</sub>', region: 'D', why: 'Decidable by graph reachability.'},
-    {name: 'A<sub>CFG</sub>', region: 'D', why: 'Decidable by CYK in O(n^3).'},
-    {name: 'A<sub>TM</sub>', region: 'R', why: 'Recognizable by the universal TM, but undecidable by diagonalization.'},
-    {name: 'HALT<sub>TM</sub>', region: 'R', why: 'Recognizable (simulate until halt); undecidable by reduction from A<sub>TM</sub>.'},
-    {name: '\\overline{A<sub>TM</sub>}', region: 'C', why: 'Co-recognizable but not recognizable; complement of A<sub>TM</sub>.'},
-    {name: 'EQ<sub>TM</sub>', region: 'N', why: 'Neither recognizable nor co-recognizable.'},
-    {name: '{w : |w| even}', region: 'D', why: 'Trivially decidable.'},
-    {name: '\\overline{E<sub>TM</sub>}', region: 'R', why: 'Recognizable: enumerate w\'s and run M on each; accept if any accepts.'}
+    {id: 'A_DFA',         name: 'A<sub>DFA</sub>',                                  region: 'D', why: 'Decidable by simulating the DFA on the input.'},
+    {id: 'E_DFA',         name: 'E<sub>DFA</sub>',                                  region: 'D', why: 'Decidable by graph reachability.'},
+    {id: 'A_CFG',         name: 'A<sub>CFG</sub>',                                  region: 'D', why: 'Decidable by CYK in O(n^3).'},
+    {id: 'A_TM',          name: 'A<sub>TM</sub>',                                   region: 'R', why: 'Recognizable by the universal TM, but undecidable by diagonalization.'},
+    {id: 'HALT_TM',       name: 'HALT<sub>TM</sub>',                                region: 'R', why: 'Recognizable (simulate until halt); undecidable by reduction from A<sub>TM</sub>.'},
+    {id: 'OVL_A_TM',      name: '<span class="overline">A<sub>TM</sub></span>',   region: 'C', why: 'Co-recognizable but not recognizable; complement of A<sub>TM</sub>.'},
+    {id: 'EQ_TM',         name: 'EQ<sub>TM</sub>',                                  region: 'N', why: 'Neither recognizable nor co-recognizable.'},
+    {id: 'W_EVEN',        name: '{w : |w| even}',                                   region: 'D', why: 'Trivially decidable.'},
+    {id: 'OVL_E_TM',      name: '<span class="overline">E<sub>TM</sub></span>',   region: 'R', why: 'Recognizable: enumerate w\'s and run M on each; accept if any accepts.'}
   ];
 
   let placement = {};
@@ -1647,11 +1653,11 @@ q0, _ -> qr, _, R`
   function renderPills() {
     let html = '';
     for (const l of langs) {
-      const isPlaced = placement[l.name];
-      const cls = selected === l.name ? 'background: var(--accent); color: white;' :
+      const isPlaced = placement[l.id];
+      const cls = selected === l.id ? 'background: var(--accent); color: white;' :
                   isPlaced ? 'background: var(--accent-soft); color: var(--accent-strong); opacity: 0.6;' :
                   'background: var(--paper); color: var(--ink);';
-      html += `<span class="lang-pill" data-name="${l.name}" style="${cls} padding: 4px 10px; border-radius: 99px; border: 1px solid var(--rule-strong); font-family: ui-monospace, monospace; font-size: 13px; cursor: pointer;">${l.name}${isPlaced ? ` → ${placement[l.name]}` : ''}</span>`;
+      html += `<span class="lang-pill" data-name="${l.id}" style="${cls} padding: 4px 10px; border-radius: 99px; border: 1px solid var(--rule-strong); font-family: ui-monospace, monospace; font-size: 13px; cursor: pointer;">${l.name}${isPlaced ? ` → ${placement[l.id]}` : ''}</span>`;
     }
     document.getElementById('venn-langs').innerHTML = html;
     document.querySelectorAll('.lang-pill').forEach(el => {
@@ -1659,7 +1665,7 @@ q0, _ -> qr, _, R`
         selected = el.getAttribute('data-name');
         renderPills();
         document.getElementById('venn-explain').innerHTML =
-          `<div class="step-num">Selected ${selected}</div>Now click a region of the Venn diagram (Decidable, Recognizable\\Dec, co-Rec\\Dec, or outside everything for Neither).`;
+          `<div class="step-num">Selected ${(langs.find(x => x.id === selected) || {name: selected}).name}</div>Now click a region of the Venn diagram (Decidable, Recognizable\\Dec, co-Rec\\Dec, or outside everything for Neither).`;
       };
     });
   }
@@ -1672,7 +1678,7 @@ q0, _ -> qr, _, R`
   function check() {
     let right = 0, wrong = [];
     for (const l of langs) {
-      if (placement[l.name] === l.region) right++;
+      if (placement[l.id] === l.region) right++;
       else wrong.push(l);
     }
     let html = `<div class="step-num">Score: ${right} / ${langs.length}</div>`;

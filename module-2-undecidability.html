@@ -429,6 +429,100 @@
     Turing-recognizable. (Try the "loops forever" preset and watch the universal TM never stop.)
   </p>
 
+<figure class="diagram">
+  <svg viewBox="0 0 700 400" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+    <defs>
+      <marker id="arr-utm-static" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#444"/>
+      </marker>
+    </defs>
+    <text x="350" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
+      Universal TM U · simulates any M on any w using a 3-region tape
+    </text>
+    <text x="20" y="58" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="#1a1a1a">
+      U's tape (single tape, three logical regions):
+    </text>
+    <g>
+      <rect x="20" y="70" width="280" height="50" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.6"/>
+      <text x="160" y="95" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#1a1a1a">
+        q₀ , 0 → q₁ , 0 , R ; q₁ , 0 → q₀ , 0 , R ; …
+      </text>
+      <text x="160" y="111" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="var(--gold)" font-weight="700">
+        ⟨M⟩ · transition table (read-only)
+      </text>
+    </g>
+    <rect x="300" y="70" width="20" height="50" fill="#1a1a1a"/>
+    <text x="310" y="100" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="14" fill="white" font-weight="700">#</text>
+    <g font-family="var(--mono), ui-monospace, monospace" font-size="14" font-weight="700">
+      <rect x="320" y="70" width="30" height="50" fill="white" stroke="#444"/>
+      <text x="335" y="103" text-anchor="middle">0</text>
+      <rect x="350" y="70" width="30" height="50" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2"/>
+      <text x="365" y="103" text-anchor="middle">0</text>
+      <rect x="380" y="70" width="30" height="50" fill="white" stroke="#444"/>
+      <text x="395" y="103" text-anchor="middle">0</text>
+      <rect x="410" y="70" width="30" height="50" fill="white" stroke="#444"/>
+      <text x="425" y="103" text-anchor="middle">0</text>
+      <rect x="440" y="70" width="30" height="50" fill="white" stroke="#444"/>
+      <text x="455" y="103" text-anchor="middle" fill="#aaa">_</text>
+      <rect x="470" y="70" width="30" height="50" fill="white" stroke="#444"/>
+      <text x="485" y="103" text-anchor="middle" fill="#aaa">_</text>
+    </g>
+    <text x="410" y="138" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="var(--gold)" font-weight="700">
+      M's simulated tape (initially w, evolves under M's δ)
+    </text>
+    <rect x="500" y="70" width="20" height="50" fill="#1a1a1a"/>
+    <text x="510" y="100" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="14" fill="white" font-weight="700">#</text>
+    <g>
+      <rect x="520" y="70" width="160" height="50" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.6"/>
+      <text x="600" y="95" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="12" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
+        M's state: q₁
+      </text>
+      <text x="600" y="111" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">
+        head position: cell 1
+      </text>
+    </g>
+    <path d="M 365,145 L 365,130" stroke="var(--warn-strong, #b95825)" stroke-width="2.5" marker-end="url(#arr-utm-static)"/>
+    <text x="365" y="160" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-weight="700" fill="var(--warn-strong, #b95825)">M's head</text>
+    <line x1="20" y1="185" x2="680" y2="185" stroke="#ddd" stroke-width="1"/>
+    <text x="350" y="210" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="#1a1a1a">
+      One step of the simulation: U does this in a loop
+    </text>
+    <g>
+      <rect x="40" y="240" width="140" height="80" rx="8" fill="white" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.6"/>
+      <text x="110" y="263" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700">① Read M's state</text>
+      <text x="110" y="280" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">from work region</text>
+      <text x="110" y="298" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="10" fill="var(--accent-strong, #1c4a3f)">e.g., q₁</text>
+      <path d="M 182,278 L 220,278" stroke="#444" stroke-width="1.5" marker-end="url(#arr-utm-static)"/>
+      <rect x="220" y="240" width="140" height="80" rx="8" fill="white" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.6"/>
+      <text x="290" y="263" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700">② Read symbol</text>
+      <text x="290" y="280" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">at M's head pos</text>
+      <text x="290" y="298" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="10" fill="var(--accent-strong, #1c4a3f)">e.g., 0</text>
+      <path d="M 362,278 L 400,278" stroke="#444" stroke-width="1.5" marker-end="url(#arr-utm-static)"/>
+      <rect x="400" y="240" width="140" height="80" rx="8" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.6"/>
+      <text x="470" y="263" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--gold)">③ Look up δ in ⟨M⟩</text>
+      <text x="470" y="280" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">scan transition table</text>
+      <text x="470" y="298" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="10" fill="var(--gold)">→ (q₀, 0, R)</text>
+      <path d="M 542,278 L 580,278" stroke="#444" stroke-width="1.5" marker-end="url(#arr-utm-static)"/>
+      <rect x="580" y="240" width="100" height="80" rx="8" fill="white" stroke="var(--warn-strong, #b95825)" stroke-width="1.6"/>
+      <text x="630" y="263" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--warn-strong, #b95825)">④ Apply</text>
+      <text x="630" y="280" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">write 0,</text>
+      <text x="630" y="294" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">move R,</text>
+      <text x="630" y="308" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">state ← q₀</text>
+      <path d="M 630,330 Q 630,355 350,355 Q 110,355 110,330" fill="none" stroke="#888" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr-utm-static)"/>
+      <text x="350" y="370" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">
+        repeat until M reaches q<tspan baseline-shift="sub" font-size="0.75em">accept</tspan> or q<tspan baseline-shift="sub" font-size="0.75em">reject</tspan> — or loop forever
+      </text>
+    </g>
+  </svg>
+  <figcaption>The universal TM U lays out three regions on its single tape: M's transition table (loaded from ⟨M⟩), M's simulated tape (initially w), and a small work area tracking M's current state and head position. The 4-step cycle below is U's main loop — read state, read symbol, look up δ in the program region, apply the transition. U is one fixed machine that runs every other machine.</figcaption>
+</figure>
+
+  <div class="callout">
+    <p style="margin:4px 0;"><strong>What the widget does:</strong> a <em>universal Turing machine</em> simulates any other TM you give it as a program. The transitions you write below ARE the TM <span class="math">M</span>; the universal TM <span class="math">U</span> interprets them step by step, just like an interpreter for a programming language.</p>
+    <p style="margin:4px 0;"><strong>How A<sub>TM</sub> gets its "recognizable" stamp:</strong> on input <span class="math">⟨M, w⟩</span>, <span class="math">U</span> just simulates <span class="math">M</span> on <span class="math">w</span>. If <span class="math">M</span> accepts, <span class="math">U</span> accepts. If <span class="math">M</span> rejects, <span class="math">U</span> rejects. If <span class="math">M</span> loops, <span class="math">U</span> also loops. So <span class="math">U</span> is a recognizer for <span class="math">A<sub>TM</sub></span> (accepts iff the input is in <span class="math">A<sub>TM</sub></span>) — but it cannot guarantee halting, so it's not a decider.</p>
+    <p style="margin:4px 0;"><strong>Try the three presets</strong> via the dropdown. The <em>loops forever</em> preset is illustrative: load it, hit Run, and the simulator caps at 200 steps with no halt — exactly the behavior that makes <span class="math">A<sub>TM</sub></span> recognizable but not decidable.</p>
+  </div>
+
   <div class="widget" id="utm">
     <div class="widget-title">Universal TM — simulator for A<sub>TM</sub> <span class="pill">Widget 2</span></div>
 
@@ -1264,125 +1358,7 @@ q0, _ -> qr, _, R`
     renderTape();
     document.getElementById('utm-explain').innerHTML =
       `<div class="step-num">Universal TM ready — state ${state}, head at position 0</div>
-  <figure class="diagram">
-  <svg viewBox="0 0 700 400" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
-    <defs>
-      <marker id="arr-utm" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
-        <polygon points="0 0, 8 3, 0 6" fill="#444"/>
-      </marker>
-    </defs>
-
-    <text x="350" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
-      Universal TM U · simulates any M on any w using a 3-region tape
-    </text>
-
-    <!-- The TM's tape with 3 regions -->
-    <text x="20" y="58" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="#1a1a1a">
-      U's tape (single tape, three logical regions):
-    </text>
-
-    <!-- Region 1: encoded M description -->
-    <g>
-      <rect x="20" y="70" width="280" height="50" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.6"/>
-      <text x="160" y="95" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#1a1a1a">
-        q₀ , 0 → q₁ , 0 , R ; q₁ , 0 → q₀ , 0 , R ; …
-      </text>
-      <text x="160" y="111" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="var(--gold)" font-weight="700">
-        ⟨M⟩ · transition table (read-only)
-      </text>
-    </g>
-    <!-- separator -->
-    <rect x="300" y="70" width="20" height="50" fill="#1a1a1a"/>
-    <text x="310" y="100" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="14" fill="white" font-weight="700">#</text>
-
-    <!-- Region 2: M's simulated tape -->
-    <g font-family="var(--mono), ui-monospace, monospace" font-size="14" font-weight="700">
-      <rect x="320" y="70" width="30" height="50" fill="white" stroke="#444"/>
-      <text x="335" y="103" text-anchor="middle">0</text>
-      <rect x="350" y="70" width="30" height="50" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2"/>
-      <text x="365" y="103" text-anchor="middle">0</text>
-      <rect x="380" y="70" width="30" height="50" fill="white" stroke="#444"/>
-      <text x="395" y="103" text-anchor="middle">0</text>
-      <rect x="410" y="70" width="30" height="50" fill="white" stroke="#444"/>
-      <text x="425" y="103" text-anchor="middle">0</text>
-      <rect x="440" y="70" width="30" height="50" fill="white" stroke="#444"/>
-      <text x="455" y="103" text-anchor="middle" fill="#aaa">_</text>
-      <rect x="470" y="70" width="30" height="50" fill="white" stroke="#444"/>
-      <text x="485" y="103" text-anchor="middle" fill="#aaa">_</text>
-    </g>
-    <text x="410" y="138" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="var(--gold)" font-weight="700">
-      M's simulated tape (initially w, evolves under M's δ)
-    </text>
-
-    <!-- separator -->
-    <rect x="500" y="70" width="20" height="50" fill="#1a1a1a"/>
-    <text x="510" y="100" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="14" fill="white" font-weight="700">#</text>
-
-    <!-- Region 3: M's current state (work area) -->
-    <g>
-      <rect x="520" y="70" width="160" height="50" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.6"/>
-      <text x="600" y="95" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="12" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
-        M's state: q₁
-      </text>
-      <text x="600" y="111" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">
-        head position: cell 1
-      </text>
-    </g>
-
-    <!-- M's simulated head pointer -->
-    <path d="M 365,145 L 365,130" stroke="var(--warn-strong, #b95825)" stroke-width="2.5" marker-end="url(#arr-utm)"/>
-    <text x="365" y="160" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-weight="700" fill="var(--warn-strong, #b95825)">M's head</text>
-
-    <!-- Divider -->
-    <line x1="20" y1="185" x2="680" y2="185" stroke="#ddd" stroke-width="1"/>
-
-    <!-- One step of U's simulation cycle -->
-    <text x="350" y="210" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="#1a1a1a">
-      One step of the simulation: U does this in a loop
-    </text>
-
-    <g>
-      <!-- 4 boxes in a cycle -->
-      <rect x="40" y="240" width="140" height="80" rx="8" fill="white" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.6"/>
-      <text x="110" y="263" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700">① Read M's state</text>
-      <text x="110" y="280" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">from work region</text>
-      <text x="110" y="298" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="10" fill="var(--accent-strong, #1c4a3f)">e.g., q₁</text>
-
-      <path d="M 182,278 L 220,278" stroke="#444" stroke-width="1.5" marker-end="url(#arr-utm)"/>
-
-      <rect x="220" y="240" width="140" height="80" rx="8" fill="white" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.6"/>
-      <text x="290" y="263" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700">② Read symbol</text>
-      <text x="290" y="280" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">at M's head pos</text>
-      <text x="290" y="298" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="10" fill="var(--accent-strong, #1c4a3f)">e.g., 0</text>
-
-      <path d="M 362,278 L 400,278" stroke="#444" stroke-width="1.5" marker-end="url(#arr-utm)"/>
-
-      <rect x="400" y="240" width="140" height="80" rx="8" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.6"/>
-      <text x="470" y="263" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--gold)">③ Look up δ in ⟨M⟩</text>
-      <text x="470" y="280" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">scan transition table</text>
-      <text x="470" y="298" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="10" fill="var(--gold)">→ (q₀, 0, R)</text>
-
-      <path d="M 542,278 L 580,278" stroke="#444" stroke-width="1.5" marker-end="url(#arr-utm)"/>
-
-      <rect x="580" y="240" width="100" height="80" rx="8" fill="white" stroke="var(--warn-strong, #b95825)" stroke-width="1.6"/>
-      <text x="630" y="263" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--warn-strong, #b95825)">④ Apply</text>
-      <text x="630" y="280" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">write 0,</text>
-      <text x="630" y="294" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">move R,</text>
-      <text x="630" y="308" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">state ← q₀</text>
-
-      <!-- loop back arrow -->
-      <path d="M 630,330 Q 630,355 350,355 Q 110,355 110,330" fill="none" stroke="#888" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr-utm)"/>
-      <text x="350" y="370" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">
-        repeat until M reaches q<tspan baseline-shift="sub" font-size="0.75em">accept</tspan> or q<tspan baseline-shift="sub" font-size="0.75em">reject</tspan> — or loop forever
-      </text>
-    </g>
-  </svg>
-  <figcaption>The universal TM U lays out three regions on its single tape: M's transition table (loaded from ⟨M⟩), M's simulated tape (initially w), and a small work area tracking M's current state and head position. The 4-step cycle below is U's main loop — read state, read symbol, look up δ in the program region, apply the transition. U is one fixed machine that runs every other machine.</figcaption>
-</figure>
-
-       <p style="margin:4px 0;"><strong>What this widget does:</strong> a <em>universal Turing machine</em> simulates any other TM you give it as a program. The transitions you wrote above ARE the TM M; the universal TM U interprets them step by step, just like an interpreter for a programming language.</p>
-       <p style="margin:4px 0;"><strong>How A<sub>TM</sub> gets its "recognizable" stamp:</strong> on input ⟨M, w⟩, U just simulates M on w. If M accepts, U accepts. If M rejects, U rejects. If M loops, U also loops. So U is a recognizer for A<sub>TM</sub> (accepts iff input is in A<sub>TM</sub>) — but it cannot guarantee halting, so it's not a decider.</p>
-       <p style="margin:4px 0;"><strong>Try the three presets</strong> via the dropdown. The "loops forever" preset is illustrative: load it, hit Run, and the simulator caps at 200 steps with no halt — exactly the behavior that makes A<sub>TM</sub> recognizable-but-not-decidable.</p>`;
+       Click <strong>Step</strong> to apply one transition, or <strong>Run</strong> to execute up to 200 steps. The tape, state, and step counter above update live; the simulator stops only when M reaches q<sub>a</sub> or q<sub>r</sub> (or hits the step cap).`;
   }
   document.getElementById('utm-prog').value = presets.accept;
   document.getElementById('utm-load').onclick = load;

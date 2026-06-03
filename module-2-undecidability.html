@@ -475,7 +475,7 @@
   </p>
 
 <figure class="diagram">
-  <svg viewBox="0 0 700 400" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+  <svg viewBox="0 0 700 410" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
     <defs>
       <marker id="arr-utm-static" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
         <polygon points="0 0, 8 3, 0 6" fill="#444"/>
@@ -512,9 +512,6 @@
       <rect x="470" y="70" width="30" height="50" fill="white" stroke="#444"/>
       <text x="485" y="103" text-anchor="middle" fill="#aaa">_</text>
     </g>
-    <text x="410" y="138" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="var(--gold)" font-weight="700">
-      M's simulated tape (initially w, evolves under M's δ)
-    </text>
     <rect x="500" y="70" width="20" height="50" fill="#1a1a1a"/>
     <text x="510" y="100" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="14" fill="white" font-weight="700">#</text>
     <g>
@@ -526,35 +523,40 @@
         head position: cell 1
       </text>
     </g>
+    <!-- Head pointer (arrow tip just under highlighted cell) + "M's head" label -->
     <path d="M 365,145 L 365,130" stroke="var(--warn-strong, #b95825)" stroke-width="2.5" marker-end="url(#arr-utm-static)"/>
     <text x="365" y="160" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-weight="700" fill="var(--warn-strong, #b95825)">M's head</text>
-    <line x1="20" y1="185" x2="680" y2="185" stroke="#ddd" stroke-width="1"/>
-    <text x="350" y="210" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="#1a1a1a">
+    <!-- Simulated-tape caption moved BELOW the head pointer + label so it doesn't collide with the triangle -->
+    <text x="410" y="180" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="var(--gold)" font-weight="700">
+      M's simulated tape (initially w, evolves under M's δ)
+    </text>
+    <line x1="20" y1="200" x2="680" y2="200" stroke="#ddd" stroke-width="1"/>
+    <text x="350" y="222" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="#1a1a1a">
       One step of the simulation: U does this in a loop
     </text>
     <g>
-      <rect x="40" y="240" width="140" height="80" rx="8" fill="white" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.6"/>
-      <text x="110" y="263" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700">① Read M's state</text>
-      <text x="110" y="280" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">from work region</text>
-      <text x="110" y="298" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="10" fill="var(--accent-strong, #1c4a3f)">e.g., q₁</text>
-      <path d="M 182,278 L 220,278" stroke="#444" stroke-width="1.5" marker-end="url(#arr-utm-static)"/>
-      <rect x="220" y="240" width="140" height="80" rx="8" fill="white" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.6"/>
-      <text x="290" y="263" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700">② Read symbol</text>
-      <text x="290" y="280" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">at M's head pos</text>
-      <text x="290" y="298" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="10" fill="var(--accent-strong, #1c4a3f)">e.g., 0</text>
-      <path d="M 362,278 L 400,278" stroke="#444" stroke-width="1.5" marker-end="url(#arr-utm-static)"/>
-      <rect x="400" y="240" width="140" height="80" rx="8" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.6"/>
-      <text x="470" y="263" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--gold)">③ Look up δ in ⟨M⟩</text>
-      <text x="470" y="280" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">scan transition table</text>
-      <text x="470" y="298" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="10" fill="var(--gold)">→ (q₀, 0, R)</text>
-      <path d="M 542,278 L 580,278" stroke="#444" stroke-width="1.5" marker-end="url(#arr-utm-static)"/>
-      <rect x="580" y="240" width="100" height="80" rx="8" fill="white" stroke="var(--warn-strong, #b95825)" stroke-width="1.6"/>
-      <text x="630" y="263" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--warn-strong, #b95825)">④ Apply</text>
-      <text x="630" y="280" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">write 0,</text>
-      <text x="630" y="294" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">move R,</text>
-      <text x="630" y="308" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">state ← q₀</text>
-      <path d="M 630,330 Q 630,355 350,355 Q 110,355 110,330" fill="none" stroke="#888" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr-utm-static)"/>
-      <text x="350" y="370" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">
+      <rect x="40" y="252" width="140" height="80" rx="8" fill="white" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.6"/>
+      <text x="110" y="275" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700">① Read M's state</text>
+      <text x="110" y="292" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">from work region</text>
+      <text x="110" y="310" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="10" fill="var(--accent-strong, #1c4a3f)">e.g., q₁</text>
+      <path d="M 182,290 L 220,290" stroke="#444" stroke-width="1.5" marker-end="url(#arr-utm-static)"/>
+      <rect x="220" y="252" width="140" height="80" rx="8" fill="white" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.6"/>
+      <text x="290" y="275" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700">② Read symbol</text>
+      <text x="290" y="292" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">at M's head pos</text>
+      <text x="290" y="310" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="10" fill="var(--accent-strong, #1c4a3f)">e.g., 0</text>
+      <path d="M 362,290 L 400,290" stroke="#444" stroke-width="1.5" marker-end="url(#arr-utm-static)"/>
+      <rect x="400" y="252" width="140" height="80" rx="8" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.6"/>
+      <text x="470" y="275" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--gold)">③ Look up δ in ⟨M⟩</text>
+      <text x="470" y="292" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">scan transition table</text>
+      <text x="470" y="310" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="10" fill="var(--gold)">→ (q₀, 0, R)</text>
+      <path d="M 542,290 L 580,290" stroke="#444" stroke-width="1.5" marker-end="url(#arr-utm-static)"/>
+      <rect x="580" y="252" width="100" height="80" rx="8" fill="white" stroke="var(--warn-strong, #b95825)" stroke-width="1.6"/>
+      <text x="630" y="275" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--warn-strong, #b95825)">④ Apply</text>
+      <text x="630" y="292" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">write 0,</text>
+      <text x="630" y="306" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">move R,</text>
+      <text x="630" y="320" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">state ← q₀</text>
+      <path d="M 630,342 Q 630,367 350,367 Q 110,367 110,342" fill="none" stroke="#888" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr-utm-static)"/>
+      <text x="350" y="384" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">
         repeat until M reaches q<tspan baseline-shift="sub" font-size="0.75em">accept</tspan> or q<tspan baseline-shift="sub" font-size="0.75em">reject</tspan> — or loop forever
       </text>
     </g>

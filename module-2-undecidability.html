@@ -1443,45 +1443,80 @@ q0, _ -> qr, _, R`
   ];
 
   let walked = 0;      // how many diagonal cells we've inspected (also = how many D cells revealed)
-  let showFinal = false; // true once the final contradiction message is shown
+  let showFinal = false; // true once the diagonal is complete
+  let pickedK = -1;    // -1 = none; 0..n-1 = "suppose D = M_(k+1)"
 
   function render(activeCell) {
     // activeCell = i for the cell being highlighted with a flash (or -1 for none)
     let html = '<table class="data" style="font-family: ui-monospace, monospace; text-align: center; min-width: 540px;"><thead><tr><th style="text-align:right;padding-right:8px;">on input →</th>';
-    for (let j = 0; j < n; j++) html += `<th>⟨M<sub>${j+1}</sub>⟩</th>`;
+    for (let j = 0; j < n; j++) {
+      const isPicked = (pickedK === j);
+      const thStyle = isPicked ? 'background: #fffbe6; outline: 2px solid var(--gold-strong, #a68526);' : '';
+      html += `<th style="${thStyle}">⟨M<sub>${j+1}</sub>⟩${isPicked ? '<br><span style="font-size:9px;font-weight:700;color:var(--gold-strong, #a68526);">= ⟨D⟩</span>' : ''}</th>`;
+    }
     html += '</tr></thead><tbody>';
 
     for (let i = 0; i < n; i++) {
-      html += `<tr><th style="text-align:right;padding-right:8px;">M<sub>${i+1}</sub></th>`;
+      const isPickedRow = (pickedK === i);
+      const rowBg = isPickedRow ? 'background: #fffbe6;' : '';
+      // Row labels become clickable only after the diagonal is fully walked AND no k picked yet
+      const clickable = showFinal && pickedK === -1;
+      const labelExtra = clickable ? ' style="cursor: pointer; text-decoration: underline dotted; color: var(--accent-strong, #1c4a3f);" data-pick="' + i + '"' : '';
+      const labelMarker = isPickedRow ? '<br><span style="font-size:9px;font-weight:700;color:var(--gold-strong, #a68526);">= D</span>' : '';
+      html += `<tr style="${rowBg}"><th${labelExtra} style="text-align:right; padding-right:8px;${isPickedRow ? 'outline:2px solid var(--gold-strong, #a68526);' : ''}">M<sub>${i+1}</sub>${labelMarker}</th>`;
       for (let j = 0; j < n; j++) {
         const v = M[i][j];
         const isDiag = (i === j);
+        const isPickedCol = (pickedK === j);
+        const isCritical = isPickedRow && isPickedCol;
         const isActive = (activeCell === i) && isDiag;
         const inspected = isDiag && i < walked;
+
         let style = '';
-        if (isActive) {
+        let inner = `<span style="color:${v === 'A' ? 'var(--accent)' : 'var(--warn)'};">${v}</span>`;
+
+        if (isCritical) {
+          // Show side-by-side conflict
+          const flipped = v === 'A' ? 'R' : 'A';
+          const vColor = v === 'A' ? 'var(--accent)' : 'var(--warn)';
+          const fColor = flipped === 'A' ? 'var(--accent)' : 'var(--warn)';
+          style = 'background: #fff4ee; border: 2.5px solid var(--warn-strong, #b95825); padding: 4px;';
+          inner =
+            '<div style="font-size:10px; line-height:1.3; color:#444;">M<sub>'+(i+1)+'</sub> says <b style="color:'+vColor+';">'+v+'</b></div>' +
+            '<div style="font-size:10px; line-height:1.3; color:#444;">D says <b style="color:'+fColor+';">'+flipped+'</b></div>' +
+            '<div style="color: var(--warn-strong, #b95825); font-weight:900; font-size:14px; line-height:1;">✗</div>';
+        } else if (isActive) {
           style = 'background: var(--gold); color: white; font-weight: 800; outline: 3px solid var(--gold-strong, #a68526);';
+          inner = '<span style="color:white;">' + v + '</span>';
         } else if (inspected) {
           style = 'background: var(--warn-soft); font-weight: bold;';
         } else if (isDiag) {
           style = 'background: var(--accent-soft); font-weight: bold;';
+        } else if (isPickedCol || isPickedRow) {
+          style = 'background: #fffbe6;';
         }
-        const color = isActive ? 'white' : (v === 'A' ? 'var(--accent)' : 'var(--warn)');
-        html += `<td style="${style} color: ${color};">${v}</td>`;
+        html += `<td style="${style}">${inner}</td>`;
       }
       html += '</tr>';
     }
 
-    // D row — built incrementally: only show flipped cells up to `walked`
+    // D row — built incrementally
     if (walked > 0) {
-      html += '<tr style="border-top: 2.5px solid var(--gold-strong, #a68526);"><th style="color:var(--gold-strong, #a68526); text-align:right; padding-right:8px;">D</th>';
+      const dLabelMarker = pickedK >= 0 ? '<br><span style="font-size:9px;font-weight:700;color:var(--gold-strong, #a68526);">= M<sub>'+(pickedK+1)+'</sub></span>' : '';
+      html += `<tr style="border-top: 2.5px solid var(--gold-strong, #a68526);"><th style="color:var(--gold-strong, #a68526); text-align:right; padding-right:8px;">D${dLabelMarker}</th>`;
       for (let j = 0; j < n; j++) {
         if (j < walked) {
           const flipped = M[j][j] === 'A' ? 'R' : 'A';
           const color = flipped === 'A' ? 'var(--accent)' : 'var(--warn)';
-          const isJustAdded = (j === walked - 1);
-          const cellStyle = `background:${isJustAdded ? 'var(--gold)' : 'var(--gold-soft)'}; font-weight:bold; color:${isJustAdded ? 'white' : color};` +
-                            (isJustAdded ? ' outline: 3px solid var(--gold-strong, #a68526);' : '');
+          const isJustAdded = (j === walked - 1) && !showFinal;
+          const isPickedColCell = (pickedK === j);
+          let cellStyle;
+          if (isPickedColCell && pickedK >= 0) {
+            cellStyle = 'background: #fff4ee; border: 2.5px solid var(--warn-strong, #b95825); font-weight:bold; color:' + color + ';';
+          } else {
+            cellStyle = `background:${isJustAdded ? 'var(--gold)' : 'var(--gold-soft)'}; font-weight:bold; color:${isJustAdded ? 'white' : color};` +
+                        (isJustAdded ? ' outline: 3px solid var(--gold-strong, #a68526);' : '');
+          }
           html += `<td style="${cellStyle}">${flipped}</td>`;
         } else {
           html += `<td style="color:#bbb;">?</td>`;
@@ -1491,7 +1526,55 @@ q0, _ -> qr, _, R`
     }
 
     html += '</tbody></table>';
+
+    // Helper banner under the table once D is built
+    if (showFinal && pickedK === -1) {
+      html += '<div style="margin-top: 12px; padding: 10px 14px; background: #fffdf3; border: 1px solid var(--gold-soft); border-left: 3px solid var(--gold); border-radius: 6px; font-size: 13px; line-height: 1.5;"><b>Now suppose D = M<sub>k</sub> for some k.</b> Click any of the <b style="color:var(--accent-strong, #1c4a3f); text-decoration:underline dotted;">M<sub>1</sub>, M<sub>2</sub>, …, M<sub>6</sub></b> row labels on the left to pick that k. Column ⟨M<sub>k</sub>⟩ becomes ⟨D⟩, row M<sub>k</sub> becomes D, and the cell where they cross shows two incompatible values — Sipser\'s contradiction.</div>';
+    } else if (pickedK >= 0) {
+      html += '<div style="margin-top: 12px; padding: 10px 14px; background: #fff4ee; border-left: 3px solid var(--warn-strong, #b95825); border-radius: 6px; font-size: 13px;">Picked <b>k = ' + (pickedK+1) + '</b>. The orange-outlined cell shows the contradiction. <a href="#" data-clear-pick="1" style="color: var(--accent); margin-left: 8px;">Try a different k</a></div>';
+    }
+
     document.getElementById('atm-diag-wrap').innerHTML = html;
+  }
+
+  // Event delegation for row-label clicks + "Try a different k" link
+  document.getElementById('atm-diag-wrap').addEventListener('click', (e) => {
+    const pickT = e.target.closest('th[data-pick]');
+    if (pickT && showFinal && pickedK === -1) {
+      pickedK = parseInt(pickT.getAttribute('data-pick'));
+      render(-1);
+      const k = pickedK + 1;
+      const v = M[pickedK][pickedK];
+      const opp = v === 'A' ? 'R' : 'A';
+      const vWord = v === 'A' ? '<b>accepts</b>' : '<b>rejects (or loops)</b>';
+      document.getElementById('atm-diag-explain').innerHTML =
+        `<div class="step-num">Picked k = ${k} — suppose D = M<sub>${k}</sub>. Now look at column ${k}.</div>
+         <p style="margin:4px 0;"><strong>Column k is highlighted yellow.</strong> Its header now reads ⟨M<sub>${k}</sub>⟩ = ⟨D⟩, because we just said D is the same TM as M<sub>${k}</sub>.</p>
+         <p style="margin:4px 0;"><strong>The orange-outlined cell at (M<sub>${k}</sub>, ⟨M<sub>${k}</sub>⟩) carries two claims at once:</strong></p>
+         <ul style="margin:4px 0;">
+           <li><b>Table entry:</b> M<sub>${k}</sub>(⟨M<sub>${k}</sub>⟩) = <b style="color:${v==='A'?'var(--accent)':'var(--warn)'};">${v}</b>. M<sub>${k}</sub> ${vWord} its own description.</li>
+           <li><b>D's bottom-row value at column ${k}:</b> by construction, D(⟨M<sub>${k}</sub>⟩) = opposite of ${v} = <b style="color:${opp==='A'?'var(--accent)':'var(--warn)'};">${opp}</b>.</li>
+           <li><b>But D = M<sub>${k}</sub>:</b> a TM is a single deterministic function — on input ⟨M<sub>${k}</sub>⟩, D and M<sub>${k}</sub> must produce the SAME output. The cell can't be both <b style="color:${v==='A'?'var(--accent)':'var(--warn)'};">${v}</b> and <b style="color:${opp==='A'?'var(--accent)':'var(--warn)'};">${opp}</b>.</li>
+         </ul>
+         <p style="margin:4px 0;"><strong>Contradiction</strong> ⇒ D ≠ M<sub>${k}</sub>. Try a different k — same thing happens, because cell (i, i) and D's column i are <em>always</em> opposites by construction. So D ≠ M<sub>i</sub> for <em>every</em> i in the list. But D is a TM, so D MUST be in the list. Therefore the starting assumption (H exists) is false. <strong>A<sub>TM</sub> is undecidable</strong> (Sipser Theorem 4.11).</p>`;
+      return;
+    }
+    const clearT = e.target.closest('a[data-clear-pick]');
+    if (clearT) {
+      e.preventDefault();
+      pickedK = -1;
+      render(-1);
+      showFinalExplanation();
+      return;
+    }
+  });
+
+  function showFinalExplanation() {
+    document.getElementById('atm-diag-explain').innerHTML =
+      `<div class="step-num">D is fully built — now Sipser's killer question</div>
+       <p style="margin:4px 0;"><strong>D is a Turing machine</strong> (built from H, which we assumed exists). So D must appear <em>somewhere</em> in our enumeration of all TMs. Say D = M<sub>k</sub>.</p>
+       <p style="margin:4px 0;"><strong>Where does ⟨D⟩ live?</strong> Since D = M<sub>k</sub>, the description ⟨D⟩ is just ⟨M<sub>k</sub>⟩ — one of the columns already in the table. We don't yet know which k, but pick any one and let's see what happens.</p>
+       <p style="margin:4px 0;font-style:italic;color:#666;">Click any row label M<sub>1</sub>, M<sub>2</sub>, …, M<sub>6</sub> below the table to "pick" that k and reveal the contradiction.</p>`;
   }
 
   function step() {
@@ -1512,23 +1595,14 @@ q0, _ -> qr, _, R`
     } else if (!showFinal) {
       showFinal = true;
       render(-1);
-      document.getElementById('atm-diag-explain').innerHTML =
-        `<div class="step-num">D is fully built — now Sipser's killer question</div>
-         <p style="margin:4px 0;"><strong>D is a Turing machine</strong> (we built it from H, which was assumed to exist). So D must appear <em>somewhere</em> in our enumeration of all TMs. Say D = M<sub>k</sub>.</p>
-         <p style="margin:4px 0;"><strong>Look at column k of the table.</strong> Two things must be true at that cell:</p>
-         <ul style="margin:4px 0;">
-           <li><b>Row k, column k</b>: M<sub>k</sub>(⟨M<sub>k</sub>⟩) is some value v (accept or reject) — that's literally the table entry.</li>
-           <li><b>D's column k</b>: by D's definition, D(⟨M<sub>k</sub>⟩) is the opposite of v.</li>
-           <li>But D = M<sub>k</sub>, so D(⟨M<sub>k</sub>⟩) = M<sub>k</sub>(⟨M<sub>k</sub>⟩) = v.</li>
-         </ul>
-         <p style="margin:4px 0;">v equals its own opposite. Impossible.</p>
-         <p style="margin:4px 0;"><strong>The only way out:</strong> reject the assumption. We assumed H — a decider for A<sub>TM</sub> — exists. It cannot. Therefore <strong>A<sub>TM</sub> is undecidable</strong> (Sipser Theorem 4.11).</p>`;
+      showFinalExplanation();
     }
   }
 
   function reset() {
     walked = 0;
     showFinal = false;
+    pickedK = -1;
     render(-1);
     document.getElementById('atm-diag-explain').innerHTML =
       `<div class="step-num">Setup — Sipser Theorem 4.11</div>

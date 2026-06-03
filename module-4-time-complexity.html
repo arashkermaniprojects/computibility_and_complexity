@@ -424,7 +424,7 @@
       <div class="toggle-group" id="p-toggle">
         <button class="active" data-p="path">PATH (graph reachability)</button>
         <button data-p="rel">RELPRIME (Euclid)</button>
-        <button data-p="cfg">A<sub>CFG</sub> (CYK)</button>
+        <button data-p="cfg" title="CYK = Cocke–Younger–Kasami">A<sub>CFG</sub> (CYK)</button>
       </div>
     </div>
 
@@ -1219,7 +1219,7 @@
 
       render();
       document.getElementById('p-explain').innerHTML =
-        `<div class="step-num">A<sub>CFG</sub> = {⟨G, w⟩ : w ∈ L(G)}</div>Grammar: S→AB|BA, A→a, B→b. Input: "${input}". The CYK table fills bottom-up.`;
+        `<div class="step-num">A<sub>CFG</sub> = {⟨G, w⟩ : w ∈ L(G)} · decided by CYK (<em>Cocke–Younger–Kasami</em>, 1960s)</div>Grammar: S→AB|BA, A→a, B→b. Input: "${input}". The CYK table fills bottom-up — cell T[i,j] holds every variable that derives the substring w<sub>i</sub>…w<sub>j</sub>.`;
       timer = setTimeout(step, 700);
     }
   };

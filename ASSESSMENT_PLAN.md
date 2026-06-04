@@ -14,19 +14,45 @@ The result: a curated pool of **39 genuine problems** (14 R1 + 13 R2 + 12 R3), e
 
 ## Logistics
 
-- 16 lectures total, 3 hours each.
-- Lectures 1–4 are instructor-led (foundations).
-- Lectures 5–16 are mixed: instructor teaches the module first (60–90 min), then **3–5 students** present (90–120 min, ≈ 15–18 min per presenter including Q&A).
-- 18 students × 3 presentations each = **54 student slots**.
+- Instructor's lectures finish by **Thu Jun 11, 2026** (end of the preceding teaching week).
+- **Mon Jun 15 – Tue Jun 30** is the student-only block. Classes meet **Mon–Thu only** (no Fri / weekend), giving **10 class days**:
+  - Week 1: Mon Jun 15, Tue Jun 16, Wed Jun 17, Thu Jun 18
+  - Week 2: Mon Jun 22, Tue Jun 23, Wed Jun 24, Thu Jun 25
+  - Week 3: Mon Jun 29, Tue Jun 30
+- 18 students × 3 presentations each = **54 student slots** → **5.4 presentations per class on average** (4–6 per class in practice).
+- Suggested time per slot: 12–15 min including Q&A. So a typical day runs ≈ 75–105 min of presentations.
 - Each student presents **once per round**.
+
+### Daily schedule (Jun 15 – Jun 30, 2026)
+
+| Day | Date | Round | Theme | Slots | Problems |
+|---:|---|:---:|---|---:|---|
+|  1 | Mon Jun 15 | R1 | Direct reductions + bridge thm (Mod. 2–3) | 6 | R1.1, R1.2, R1.3, R1.4, R1.9 ×2 |
+|  2 | Tue Jun 16 | R1 | Computation-history + Rice + recursion thm (Mod. 3) | 6 | R1.5, R1.6, R1.7, R1.8, R1.10, R1.11 |
+|  3 | Wed Jun 17 | R1 | Self-reference & LBA contrasts (Mod. 3) | 6 | R1.12 ×2, R1.13 ×2, R1.14 ×2 |
+|  4 | Thu Jun 18 | R2 | Cook–Levin NP-complete reductions (Mod. 5) | 6 | R2.1, R2.2, R2.3, R2.4, R2.5, R2.6 |
+|  5 | Mon Jun 22 | R2 | Verifiers & self-reducibility (Mod. 5) | 6 | R2.7 ×2, R2.8 ×2, R2.9 ×2 |
+|  6 | Tue Jun 23 | R2 | Class containments + Cook–Levin specifics (Mod. 4–5) | 6 | R2.10, R2.11, R2.12 ×2, R2.13 ×2 |
+|  7 | Wed Jun 24 | R3 | Savitch & TQBF (Mod. 6) | 5 | R3.1 ×2, R3.2, R3.3 ×2 |
+|  8 | Thu Jun 25 | R3 | PSPACE-hardness of games + start NL ⊊ PSPACE (Mod. 6–7) | 4 | R3.4, R3.5 ×2, R3.6 |
+|  9 | Mon Jun 29 | R3 | Hierarchy theorems & L/NL consequences (Mod. 7) | 4 | R3.6 *variant*, R3.7 ×2, R3.8 |
+| 10 | Tue Jun 30 | R3 | Exotic completeness & inductive counting (Mod. 7) | 5 | R3.9 ×2, R3.10, R3.11, R3.12 |
+| **Total** | | | | **54** | |
+
+Round structure:
+- **Round 1** = Days 1–3 (Mon Jun 15 – Wed Jun 17). Modules 2–3 (undecidability, reductions, recursion theorem). **CLOs 1, 2.** 30 points.
+- **Round 2** = Days 4–6 (Thu Jun 18, Mon Jun 22, Tue Jun 23). Modules 4–5 (time, P, NP, Cook–Levin). **CLOs 3, 4.** 30 points.
+- **Round 3** = Days 7–10 (Wed Jun 24, Thu Jun 25, Mon Jun 29, Tue Jun 30). Modules 6–7 (space, PSPACE, L/NL, hierarchy). **CLOs 4, 5.** 40 points. Highest-stakes round — gets the extra day for more time per presenter.
+
+Notes on R3.6: it has two presenters; one gives the introductory pass on Day 8 (right after the PSPACE-hardness games), the other gives the *variant* on Day 9 (alongside the hierarchy-theorem block) — that lets the second presenter build on the first.
 
 ### Grading
 
-| Round | Lectures | Per-student score | Total weight |
+| Round | Days | Per-student score | Total weight |
 |------:|:--------:|:-----------------:|:------:|
-| Round 1 | 5–8   | 30 | first presentation |
-| Round 2 | 9–12  | 30 | second presentation |
-| Round 3 | 13–16 | 40 | third (highest-stakes) presentation |
+| Round 1 | 1–3 (Jun 15–17)  | 30 | first presentation |
+| Round 2 | 4–6 (Jun 18, 22, 23)  | 30 | second presentation |
+| Round 3 | 7–10 (Jun 24, 25, 29, 30) | 40 | third (highest-stakes) presentation |
 | **Total** | | **100** | |
 
 ### Course Learning Outcomes
@@ -83,11 +109,11 @@ For comparison, the ones marked "kept but reframed" (R3.7, R3.9, R3.12) ask the 
 
 ---
 
-## ROUND 1 · Lectures 5–8 · 30 points each
+## ROUND 1 · Days 1–3 (Mon Jun 15 – Wed Jun 17) · 30 points each
 
 *Theme: undecidability, diagonalization, reductions, recursion theorem.* Built on Modules 2–3. CLOs **1, 2**.
 
-### Lecture 5 — Reductions for undecidability (Module 2)
+### Day 1 — Mon Jun 15 — Direct reductions + bridge theorem (Modules 2–3)
 
 | ID | Problem | CLO |
 |----|---|:--:|
@@ -96,7 +122,7 @@ For comparison, the ones marked "kept but reframed" (R3.7, R3.9, R3.12) ask the 
 | **R1.3** | **REGULAR_TM undecidability.** Build M_w whose language is {0ⁿ1ⁿ : n≥0} if M does NOT accept w, otherwise Σ*. Argue L(M_w) is regular iff M accepts w. | CLO-2 |
 | **R1.4** | **A_TM ≤_m EQ_TM mapping reduction.** Construct ⟨M_1, M_2⟩ such that L(M_1) = L(M_2) iff M accepts w. Defend why this proves EQ_TM undecidable. | CLO-2 |
 
-### Lecture 6 — Computation-history method (Module 3)
+### Day 2 — Tue Jun 16 — Computation-history method + Rice + recursion theorem (Module 3)
 
 | ID | Problem | CLO |
 |----|---|:--:|
@@ -105,7 +131,7 @@ For comparison, the ones marked "kept but reframed" (R3.7, R3.9, R3.12) ask the 
 | **R1.7** | **FINITE_TM undecidability.** Reduce A_TM to FINITE_TM: given ⟨M, w⟩, build M′ whose language is finite iff M does NOT accept w. | CLO-2 |
 | **R1.8** | **PCP undecidability via computation history.** Encode an arbitrary TM's accepting computation as a Post Correspondence System; sketch the domino tile sets (start, transition, accept) that force solvability ⇔ acceptance. | CLO-2 |
 
-### Lecture 7 — Decidability foundations and Rice / Recursion theorems (Module 3)
+### Day 3 — Wed Jun 17 — Self-reference & LBA contrasts (Module 3)
 
 | ID | Problem | CLO |
 |----|---|:--:|
@@ -113,7 +139,7 @@ For comparison, the ones marked "kept but reframed" (R3.7, R3.9, R3.12) ask the 
 | **R1.10** | **Rice's theorem applied to three properties.** Choose three concrete properties P (e.g., "L(M) is regular", "L(M) is finite", "L(M) contains ε"). For each: confirm Rice's preconditions (nontrivial + semantic), then conclude the property is undecidable. Walk the contradiction at one chosen property. | CLO-2 |
 | **R1.11** | **Recursion theorem fixed point for a chosen t(x).** Pick a computable function t (e.g., "append `bye` to the input"). Construct the fixed-point program p with p ≡ t(⟨p⟩) explicitly. Verify by running p that the fixed-point property holds. | CLO-2 |
 
-### Lecture 8 — Self-reference & recognizable-but-not-decidable contrasts (Module 3)
+<!-- Day 4 reassigned to Round 2 — see ROUND 2 section -->
 
 | ID | Problem | CLO |
 |----|---|:--:|
@@ -123,11 +149,11 @@ For comparison, the ones marked "kept but reframed" (R3.7, R3.9, R3.12) ask the 
 
 ---
 
-## ROUND 2 · Lectures 9–12 · 30 points each
+## ROUND 2 · Days 4–6 (Thu Jun 18, Mon Jun 22, Tue Jun 23) · 30 points each
 
 *Theme: time complexity, P, NP, Cook–Levin, NP-completeness.* Built on Modules 4–5. CLOs **3, 4**.
 
-### Lecture 9 — Cook–Levin reductions begin (Module 5)
+### Day 4 — Thu Jun 18 — Cook–Levin NP-complete reductions (Module 5)
 
 | ID | Problem | CLO |
 |----|---|:--:|
@@ -136,7 +162,7 @@ For comparison, the ones marked "kept but reframed" (R3.7, R3.9, R3.12) ask the 
 | **R2.3** | **CLIQUE → VERTEX-COVER.** Complement-graph trick: clique of size k in G ⇔ vertex cover of size n−k in G̅. Show the bijection on a 5-vertex graph. | CLO-4 |
 | **R2.4** | **3SAT → SUBSET-SUM.** Construct the digit-position number system; show the target sum forces a satisfying assignment. Walk a 2-clause, 3-variable example. | CLO-4 |
 
-### Lecture 10 — More Cook–Levin & verifier-style (Module 5)
+### Day 5 — Mon Jun 22 — Verifiers & self-reducibility (Module 5)
 
 | ID | Problem | CLO |
 |----|---|:--:|
@@ -145,7 +171,7 @@ For comparison, the ones marked "kept but reframed" (R3.7, R3.9, R3.12) ask the 
 | **R2.7** | **SAT self-reducibility (search ↔ decision).** Given a poly-time oracle deciding SAT, find an actual satisfying assignment in poly time. Defend why this means "if P = NP, finding is as easy as deciding." | CLO-3 |
 | **R2.8** | **COMPOSITES verifier.** Certificate = a non-trivial divisor. Check divisibility in poly time. Argue COMPOSITES ∈ NP. (Footnote: AKS later put it in P; the verifier was the simpler witness.) | CLO-3 |
 
-### Lecture 11 — Cook–Levin's full machinery (Module 5)
+### Day 6 — Tue Jun 23 — Class containments + Cook–Levin specifics (Modules 4–5)
 
 | ID | Problem | CLO |
 |----|---|:--:|
@@ -153,7 +179,7 @@ For comparison, the ones marked "kept but reframed" (R3.7, R3.9, R3.12) ask the 
 | **R2.10** | **SET-COVER NP-completeness.** Reduce VERTEX-COVER ≤_p SET-COVER. Show the gadget on a small example: vertices of VC ↔ elements of SET-COVER; edges ↔ sets. | CLO-4 |
 | **R2.11** | **Cook–Levin on a tiny TM.** Pick a 3-state non-deterministic TM that decides a small NP-language. For input |x| = 3, write down the SAT formula φ_{M, x} **explicitly** — all clause families (cell, start, move, accept). | CLO-4 |
 
-### Lecture 12 — Class containments (Module 4–5)
+<!-- Day 8 absorbed into Day 6 -->
 
 | ID | Problem | CLO |
 |----|---|:--:|
@@ -162,11 +188,11 @@ For comparison, the ones marked "kept but reframed" (R3.7, R3.9, R3.12) ask the 
 
 ---
 
-## ROUND 3 · Lectures 13–16 · 40 points each (highest-stakes)
+## ROUND 3 · Days 7–10 (Wed Jun 24, Thu Jun 25, Mon Jun 29, Tue Jun 30) · 40 points each (highest-stakes)
 
 *Theme: space complexity, PSPACE, games, L/NL, hierarchy theorems.* Built on Modules 6–7. CLOs **4, 5**.
 
-### Lecture 13 — Savitch & TQBF (Module 6)
+### Day 7 — Wed Jun 24 — Savitch & TQBF (Module 6)
 
 | ID | Problem | CLO |
 |----|---|:--:|
@@ -174,14 +200,14 @@ For comparison, the ones marked "kept but reframed" (R3.7, R3.9, R3.12) ask the 
 | **R3.2** | **TQBF ↔ TQBF₃ (alternating, ≤3 literals).** Take an arbitrary QBF; convert to the alternating-quantifier ≤3-literal form. Show satisfiability preserved. | CLO-4 |
 | **R3.3** | **TQBF → Generalized Geography.** Encode a small QBF (say ∃x ∀y ∃z. φ) as a directed-graph game. Show the ∃-player wins iff QBF is true. Walk the variable + clause gadgets. | CLO-4 |
 
-### Lecture 14 — PSPACE-hardness of games (Module 6)
+### Day 8 — Thu Jun 25 — PSPACE-hardness of games + start NL ⊊ PSPACE (Modules 6–7)
 
 | ID | Problem | CLO |
 |----|---|:--:|
 | **R3.4** | **Generalized chess PSPACE-hardness.** Encode TQBF as an n × n chess endgame. Sketch the role of each piece in encoding existential vs. universal quantifier moves. | CLO-4 |
 | **R3.5** | **Generalized Othello or Hex PSPACE-completeness.** Pick one; show TQBF ≤_p the game on an n × n board. Walk the encoding. | CLO-4 |
 
-### Lecture 15 — L, NL, Savitch consequences (Modules 6 & 7)
+### Day 9 — Mon Jun 29 — Hierarchy theorems & L/NL consequences (Module 7)
 
 | ID | Problem | CLO |
 |----|---|:--:|
@@ -189,7 +215,7 @@ For comparison, the ones marked "kept but reframed" (R3.7, R3.9, R3.12) ask the 
 | **R3.7** | **P ⊊ EXPTIME via time hierarchy.** Use the time hierarchy theorem (TIME(2^n) ⊋ TIME(n^k) for every constant k) to derive P ⊊ EXPTIME explicitly. Defend why this is one of the few known *proven* separations. | CLO-5 |
 | **R3.8** | **2-SAT ∈ NL via implication graph.** Build the implication graph (each literal x_i and ¬x_i is a node, each 2-clause gives two implication edges). Show how an NL machine guesses a path from x to ¬x (and back) to detect unsatisfiability. Use NL = coNL to finish. | CLO-3 |
 
-### Lecture 16 — Hierarchy theorems & exotic completeness (Module 7)
+### Day 10 — Tue Jun 30 — Exotic completeness & inductive counting (Module 7)
 
 | ID | Problem | CLO |
 |----|---|:--:|
@@ -228,50 +254,32 @@ The 15 problems below get two student presentations. Both presenters work the sa
 
 Each student touches **3 distinct CLOs** across their three presentations.
 
-| Student | Round 1 (lec) | Round 2 (lec) | Round 3 (lec) | CLOs touched |
+| Student | Round 1 | Round 2 | Round 3 | CLOs touched |
 |---|---|---|---|---|
-| **S01** | R1.1  HALT_TM ≤_m A_TM  (L5) | R2.7  SAT self-reducibility  (L10) | R3.2  TQBF ↔ TQBF₃  (L13) | CLO-2, CLO-3, CLO-4 |
-| **S02** | R1.2  E_TM undecidability  (L5) | R2.7  SAT self-reducibility *(variant)*  (L10) | R3.1  Savitch on small graph  (L13) | CLO-2, CLO-3, CLO-4 |
-| **S03** | R1.3  REGULAR_TM undecidability  (L5) | R2.13 P closure properties  (L12) | R3.5  Othello/Hex PSPACE-completeness  (L14) | CLO-2, CLO-3, CLO-4 |
-| **S04** | R1.9  Bridge theorem  (L7) | R2.2  3SAT → CLIQUE  (L9) | R3.7  P ⊊ EXPTIME *(variant)*  (L15) | CLO-1, CLO-4, CLO-5 |
-| **S05** | R1.4  A_TM ≤_m EQ_TM  (L5) | R2.8  COMPOSITES verifier *(variant)*  (L10) | R3.4  Generalized chess PSPACE-hardness  (L14) | CLO-2, CLO-3, CLO-4 |
-| **S06** | R1.9  Bridge theorem *(variant)*  (L7) | R2.9  HAMPATH verifier  (L11) | R3.12 PATH NL-complete  (L16) | CLO-1, CLO-3, CLO-4 |
-| **S07** | R1.5  E_LBA undecidability  (L6) | R2.3  CLIQUE → VC  (L9) | R3.6  NL ⊊ PSPACE  (L15) | CLO-2, CLO-4, CLO-5 |
-| **S08** | R1.12 Self-destructing TM (Kamikaze)  (L8) | R2.1  SAT → 3SAT  (L9) | R3.10 EXPTIME vs PSPACE  (L16) | CLO-1, CLO-4, CLO-5 |
-| **S09** | R1.6  ALL_CFG undecidability  (L6) | R2.4  3SAT → SUBSET-SUM  (L9) | R3.8  2-SAT ∈ NL  (L15) | CLO-2, CLO-4, CLO-3 |
-| **S10** | R1.12 Kamikaze *(variant)*  (L8) | R2.10 SET-COVER NP-completeness  (L11) | R3.9  Immerman–Szelepcsényi  (L16) | CLO-1, CLO-4, CLO-5 |
-| **S11** | R1.7  FINITE_TM undecidability  (L6) | R2.6  3SAT → 3COLOR  (L10) | R3.11 EXPSPACE-complete REGEX  (L16) | CLO-2, CLO-4, CLO-5 |
-| **S12** | R1.13 Quine + annotation  (L8) | R2.11 Cook–Levin on a tiny TM  (L11) | R3.9  Immerman–Szelepcsényi *(variant)*  (L16) | CLO-1, CLO-4, CLO-5 |
-| **S13** | R1.8  PCP undecidability  (L6) | R2.9  HAMPATH verifier *(variant)*  (L11) | R3.3  TQBF → Geography *(variant)*  (L13) | CLO-2, CLO-3, CLO-4 |
-| **S14** | R1.13 Quine *(variant)*  (L8) | R2.5  3SAT → HAMPATH  (L10) | R3.6  NL ⊊ PSPACE *(variant)*  (L15) | CLO-1, CLO-4, CLO-5 |
-| **S15** | R1.10 Rice's theorem on 3 properties  (L7) | R2.13 P closure properties *(variant)*  (L12) | R3.5  Othello/Hex *(variant)*  (L14) | CLO-2, CLO-3, CLO-4 |
-| **S16** | R1.14 A_LBA vs E_LBA contrast  (L8) | R2.12 NP ⊆ EXPTIME  (L12) | R3.7  P ⊊ EXPTIME  (L15) | CLO-1, CLO-3, CLO-5 |
-| **S17** | R1.11 Recursion fixed-point  (L7) | R2.8  COMPOSITES verifier  (L10) | R3.1  Savitch on small graph *(variant)*  (L13) | CLO-2, CLO-3, CLO-4 |
-| **S18** | R1.14 A_LBA vs E_LBA *(variant)*  (L8) | R2.12 NP ⊆ EXPTIME *(variant)*  (L12) | R3.3  TQBF → Geography  (L13) | CLO-1, CLO-3, CLO-4 |
+| **S01** | R1.1  HALT_TM ≤_m A_TM *(Mon Jun 15)* | R2.7  SAT self-reducibility *(Mon Jun 22)* | R3.2  TQBF ↔ TQBF₃ *(Wed Jun 24)* | CLO-2, CLO-3, CLO-4 |
+| **S02** | R1.2  E_TM undecidability *(Mon Jun 15)* | R2.7  SAT self-reducibility *variant* *(Mon Jun 22)* | R3.1  Savitch on small graph *(Wed Jun 24)* | CLO-2, CLO-3, CLO-4 |
+| **S03** | R1.3  REGULAR_TM undecidability *(Mon Jun 15)* | R2.13 P closure properties *(Tue Jun 23)* | R3.5  Othello/Hex PSPACE-completeness *(Thu Jun 25)* | CLO-2, CLO-3, CLO-4 |
+| **S04** | R1.9  Bridge theorem *(Mon Jun 15)* | R2.2  3SAT → CLIQUE *(Thu Jun 18)* | R3.7  P ⊊ EXPTIME *variant* *(Mon Jun 29)* | CLO-1, CLO-4, CLO-5 |
+| **S05** | R1.4  A_TM ≤_m EQ_TM *(Mon Jun 15)* | R2.8  COMPOSITES verifier *variant* *(Mon Jun 22)* | R3.4  Generalized chess PSPACE-hardness *(Thu Jun 25)* | CLO-2, CLO-3, CLO-4 |
+| **S06** | R1.9  Bridge theorem *variant* *(Mon Jun 15)* | R2.9  HAMPATH verifier *(Mon Jun 22)* | R3.12 PATH NL-complete *(Tue Jun 30)* | CLO-1, CLO-3, CLO-4 |
+| **S07** | R1.5  E_LBA undecidability *(Tue Jun 16)* | R2.3  CLIQUE → VC *(Thu Jun 18)* | R3.6  NL ⊊ PSPACE *(Thu Jun 25)* | CLO-2, CLO-4, CLO-5 |
+| **S08** | R1.12 Self-destructing TM (Kamikaze) *(Wed Jun 17)* | R2.1  SAT → 3SAT *(Thu Jun 18)* | R3.10 EXPTIME vs PSPACE *(Tue Jun 30)* | CLO-1, CLO-4, CLO-5 |
+| **S09** | R1.6  ALL_CFG undecidability *(Tue Jun 16)* | R2.4  3SAT → SUBSET-SUM *(Thu Jun 18)* | R3.8  2-SAT ∈ NL *(Mon Jun 29)* | CLO-2, CLO-4, CLO-3 |
+| **S10** | R1.12 Kamikaze *variant* *(Wed Jun 17)* | R2.10 SET-COVER NP-completeness *(Tue Jun 23)* | R3.9  Immerman–Szelepcsényi *(Tue Jun 30)* | CLO-1, CLO-4, CLO-5 |
+| **S11** | R1.7  FINITE_TM undecidability *(Tue Jun 16)* | R2.6  3SAT → 3COLOR *(Thu Jun 18)* | R3.11 EXPSPACE-complete REGEX *(Tue Jun 30)* | CLO-2, CLO-4, CLO-5 |
+| **S12** | R1.13 Quine + annotation *(Wed Jun 17)* | R2.11 Cook–Levin on a tiny TM *(Tue Jun 23)* | R3.9  Immerman–Szelepcsényi *variant* *(Tue Jun 30)* | CLO-1, CLO-4, CLO-5 |
+| **S13** | R1.8  PCP undecidability *(Tue Jun 16)* | R2.9  HAMPATH verifier *variant* *(Mon Jun 22)* | R3.3  TQBF → Geography *variant* *(Wed Jun 24)* | CLO-2, CLO-3, CLO-4 |
+| **S14** | R1.13 Quine *variant* *(Wed Jun 17)* | R2.5  3SAT → HAMPATH *(Thu Jun 18)* | R3.6  NL ⊊ PSPACE *variant* *(Mon Jun 29)* | CLO-1, CLO-4, CLO-5 |
+| **S15** | R1.10 Rice's theorem on 3 properties *(Tue Jun 16)* | R2.13 P closure properties *variant* *(Tue Jun 23)* | R3.5  Othello/Hex *variant* *(Thu Jun 25)* | CLO-2, CLO-3, CLO-4 |
+| **S16** | R1.14 A_LBA vs E_LBA contrast *(Wed Jun 17)* | R2.12 NP ⊆ EXPTIME *(Tue Jun 23)* | R3.7  P ⊊ EXPTIME *(Mon Jun 29)* | CLO-1, CLO-3, CLO-5 |
+| **S17** | R1.11 Recursion fixed-point *(Tue Jun 16)* | R2.8  COMPOSITES verifier *(Mon Jun 22)* | R3.1  Savitch on small graph *variant* *(Wed Jun 24)* | CLO-2, CLO-3, CLO-4 |
+| **S18** | R1.14 A_LBA vs E_LBA *variant* *(Wed Jun 17)* | R2.12 NP ⊆ EXPTIME *variant* *(Tue Jun 23)* | R3.3  TQBF → Geography *(Wed Jun 24)* | CLO-1, CLO-3, CLO-4 |
 
 ### Verification
 
 - Every CLO appears in every student's three-presentation set as a distinct touch (CLO diversity = 3/3 for all 18 students).
 - 39 distinct problems, 54 slots — 15 problems have two presenters, 24 problems have one.
-- Lectures with the most presenters: L8 (6), L10 (6). Lectures with fewest: L14 (3). Every lecture has between 3 and 6.
-
-### Per-lecture slot counts
-
-| Lecture | Slots | Problems |
-|---:|---:|---|
-| L5  | 4 | R1.1, R1.2, R1.3, R1.4 |
-| L6  | 4 | R1.5, R1.6, R1.7, R1.8 |
-| L7  | 4 | R1.9 ×2, R1.10, R1.11 |
-| L8  | 6 | R1.12 ×2, R1.13 ×2, R1.14 ×2 |
-| L9  | 4 | R2.1, R2.2, R2.3, R2.4 |
-| L10 | 6 | R2.5, R2.6, R2.7 ×2, R2.8 ×2 |
-| L11 | 4 | R2.9 ×2, R2.10, R2.11 |
-| L12 | 4 | R2.12 ×2, R2.13 ×2 |
-| L13 | 5 | R3.1 ×2, R3.2, R3.3 ×2 |
-| L14 | 3 | R3.4, R3.5 ×2 |
-| L15 | 5 | R3.6 ×2, R3.7 ×2, R3.8 |
-| L16 | 5 | R3.9 ×2, R3.10, R3.11, R3.12 |
-| **Total** | **54** | |
+- Day-by-day load: 6, 6, 6, 6, 6, 6, 5, 4, 4, 5. Min 4 (Thu Jun 25 and Mon Jun 29), max 6 (Days 1–6).
 
 ---
 

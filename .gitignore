@@ -4,6 +4,10 @@ _test*.js
 # Source document
 *.docx
 
+# Student PII — assessment schedule with names + IDs stays local only
+SEMESTER_SCHEDULE.xlsx
+*.xlsx
+
 # OS / editor artifacts
 .DS_Store
 .fuse_hidden*

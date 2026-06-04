@@ -23,6 +23,11 @@ The result: a curated pool of **39 genuine problems** (14 R1 + 13 R2 + 12 R3), e
 - Suggested time per slot: 12–15 min including Q&A. So a typical day runs ≈ 75–105 min of presentations.
 - Each student presents **once per round**.
 
+> **Privacy note.** This file (ASSESSMENT_PLAN.md) is the *public* version — it uses
+> anonymous slot codes **S01 … S18**. The mapping from slot codes to real student names
+> and IDs lives in `SEMESTER_SCHEDULE.xlsx` (gitignored, local-only).
+
+
 ### Daily schedule (Jun 15 – Jun 30, 2026)
 
 | Day | Date | Round | Theme | Slots | Problems |
@@ -66,33 +71,6 @@ Notes on R3.6: it has two presenters; one gives the introductory pass on Day 8 (
 | CLO-5 | Hierarchy theorems → class separation | 9 | **8** |
 
 CLO-4 runs slightly over target because the bulk of Cook–Levin-style and PSPACE-hardness reductions naturally fall there. CLO-1 / CLO-5 are slightly under because the lectures themselves do most of the heavy lifting on diagonalization and hierarchy — the student presentations focus on the surrounding constructions.
-
----
-
-## Class roster
-
-BCS 402 · Summer 2026 · MTWR 09:30–11:29 · CWalk-MGT-206. 18 students after the drop of student #14 from the original roster (Daher, Heba).
-
-| # | Student ID | Full name (last, first) | Advisor |
-|---:|---|---|---|
-| 1 | 20210001201 | Alkassem, Mouhamad Basher | Mr. Ahmed Ali Seyam |
-| 2 | 20210001983 | Rodrigo, Leanne Jessica | Dr. Arash Kermani Kolankeh |
-| 3 | 20210002264 | Muhammad, Hamdan Habib Baig | Mr. Abdulhamid Alsebakh |
-| 4 | 20220001493 | El Chaar, Fadi | Dr. Sahil Garg |
-| 5 | 20220002085 | Mujtaba, Hassan | Dr. Sahil Garg |
-| 6 | 20220002112 | Aldakkak, Massa Mhd Osama | Mr. Adel Yousefi |
-| 7 | 20220002386 | Haroon, Wagd Mohamed Hassan Mohamed | Mr. Abdulhamid Alsebakh |
-| 8 | 20220002483 | Huang, Yijie | Mr. Abdulhamid Alsebakh |
-| 9 | 20220002516 | Tewfik, Reyan Fethi | Mr. Abdulhamid Alsebakh |
-| 10 | 20220002536 | Al-Yaseen, Maryam Saad Khairullah | Dr. Ahmed El Sayed |
-| 11 | 20220002575 | Al-zaidi, Sarah Ammar Husham | Mr. Abdulhamid Alsebakh |
-| 12 | 20230003344 | Aftab, Sami | Mr. Adel Yousefi |
-| 13 | 20230003490 | Adenew, Kety Berhanu | Dr. Sahil Garg |
-| 14 | 20230003860 | Al-Zuraiqi, Mohammed Hesham Raweh | Dr. Yasir Faheem |
-| 15 | 20230003920 | Najafi, Fatemeh Mohammad Taghi | Dr. Lobna A. AbuSerrieh |
-| 16 | 20230003979 | Alkayyali, Shahed | Dr. Hamza Ouarnoughi |
-| 17 | 20230004221 | Rahmatiandroud, Sahar Hojatollah | Dr. Arash Kermani Kolankeh |
-| 18 | 20240004471 | Mire, Marwan Mohamud | Dr. Khalid Elgazzar |
 
 ---
 
@@ -259,21 +237,21 @@ The 15 problems below get two student presentations. Both presenters work the sa
 
 | Problem | Presenters | Suggested variation |
 |---|---|---|
-| R1.9 Bridge theorem | Fadi El Chaar (20220001493), Massa Aldakkak (20220002112) | One does the constructive direction in full; the other focuses on the converse + interleaved-simulation detail. |
-| R1.12 Kamikaze TM | Yijie Huang (20220002483), Maryam Al-Yaseen (20220002536) | Different deliverable styles (Python program vs. abstract TM transitions). |
-| R1.13 Quine | Sami Aftab (20230003344), Mohammed Al-Zuraiqi (20230003860) | Different host languages. |
-| R1.14 LBA contrast | Shahed Alkayyali (20230003979), Marwan Mire (20240004471) | One emphasizes A_LBA decider; the other contrasts with E_LBA. |
-| R2.7 SAT self-reducibility | Mouhamad Alkassem (20210001201), Leanne Rodrigo (20210001983) | Different number-of-variables; different reduction "trees." |
-| R2.8 COMPOSITES verifier | Hassan Mujtaba (20220002085), Sahar Rahmatiandroud (20230004221) | Different size composites; one mentions AKS. |
-| R2.9 HAMPATH verifier | Massa Aldakkak (20220002112), Kety Adenew (20230003490) | Different graphs; different rejection examples. |
-| R2.12 NP ⊆ EXPTIME | Shahed Alkayyali (20230003979), Marwan Mire (20240004471) | Different worked NTMs. |
-| R2.13 P closure | Hamdan Muhammad (20210002264), Fatemeh Najafi (20230003920) | One focuses on union/intersection; other on complement + contrast with NP. |
-| R3.1 Savitch run | Leanne Rodrigo (20210001983), Sahar Rahmatiandroud (20230004221) | Different graphs/path-lengths. |
-| R3.3 TQBF → Geography | Kety Adenew (20230003490), Marwan Mire (20240004471) | Different QBF examples. |
-| R3.5 Othello/Hex | Hamdan Muhammad (20210002264), Fatemeh Najafi (20230003920) | Different game choice. |
-| R3.6 NL ⊊ PSPACE | Wagd Haroon (20220002386), Mohammed Al-Zuraiqi (20230003860) | Different chains of containments. |
-| R3.7 P ⊊ EXPTIME | Fadi El Chaar (20220001493), Shahed Alkayyali (20230003979) | Different machine examples in the diagonalization. |
-| R3.9 Immerman–Szelepcsényi | Maryam Al-Yaseen (20220002536), Sami Aftab (20230003344) | Different graphs. |
+| R1.9 Bridge theorem | S04, S06 | One does the constructive direction in full; the other focuses on the converse + interleaved-simulation detail. |
+| R1.12 Kamikaze TM | S08, S10 | Different deliverable styles (Python program vs. abstract TM transitions). |
+| R1.13 Quine | S12, S14 | Different host languages. |
+| R1.14 LBA contrast | S16, S18 | One emphasizes A_LBA decider; the other contrasts with E_LBA. |
+| R2.7 SAT self-reducibility | S01, S02 | Different number-of-variables; different reduction "trees." |
+| R2.8 COMPOSITES verifier | S05, S17 | Different size composites; one mentions AKS. |
+| R2.9 HAMPATH verifier | S06, S13 | Different graphs; different rejection examples. |
+| R2.12 NP ⊆ EXPTIME | S16, S18 | Different worked NTMs. |
+| R2.13 P closure | S03, S15 | One focuses on union/intersection; other on complement + contrast with NP. |
+| R3.1 Savitch run | S02, S17 | Different graphs/path-lengths. |
+| R3.3 TQBF → Geography | S13, S18 | Different QBF examples. |
+| R3.5 Othello/Hex | S03, S15 | Different game choice. |
+| R3.6 NL ⊊ PSPACE | S07, S14 | Different chains of containments. |
+| R3.7 P ⊊ EXPTIME | S04, S16 | Different machine examples in the diagonalization. |
+| R3.9 Immerman–Szelepcsényi | S10, S12 | Different graphs. |
 
 ---
 
@@ -283,24 +261,24 @@ Each student touches **3 distinct CLOs** across their three presentations.
 
 | Student | Round 1 | Round 2 | Round 3 | CLOs touched |
 |---|---|---|---|---|
-| **Mouhamad Alkassem (20210001201)** | R1.1  HALT_TM ≤_m A_TM *(Mon Jun 15)* | R2.7  SAT self-reducibility *(Mon Jun 22)* | R3.2  TQBF ↔ TQBF₃ *(Wed Jun 24)* | CLO-2, CLO-3, CLO-4 |
-| **Leanne Rodrigo (20210001983)** | R1.2  E_TM undecidability *(Mon Jun 15)* | R2.7  SAT self-reducibility *variant* *(Mon Jun 22)* | R3.1  Savitch on small graph *(Wed Jun 24)* | CLO-2, CLO-3, CLO-4 |
-| **Hamdan Muhammad (20210002264)** | R1.3  REGULAR_TM undecidability *(Mon Jun 15)* | R2.13 P closure properties *(Tue Jun 23)* | R3.5  Othello/Hex PSPACE-completeness *(Thu Jun 25)* | CLO-2, CLO-3, CLO-4 |
-| **Fadi El Chaar (20220001493)** | R1.9  Bridge theorem *(Mon Jun 15)* | R2.2  3SAT → CLIQUE *(Thu Jun 18)* | R3.7  P ⊊ EXPTIME *variant* *(Mon Jun 29)* | CLO-1, CLO-4, CLO-5 |
-| **Hassan Mujtaba (20220002085)** | R1.4  A_TM ≤_m EQ_TM *(Mon Jun 15)* | R2.8  COMPOSITES verifier *variant* *(Mon Jun 22)* | R3.4  Generalized chess PSPACE-hardness *(Thu Jun 25)* | CLO-2, CLO-3, CLO-4 |
-| **Massa Aldakkak (20220002112)** | R1.9  Bridge theorem *variant* *(Mon Jun 15)* | R2.9  HAMPATH verifier *(Mon Jun 22)* | R3.12 PATH NL-complete *(Tue Jun 30)* | CLO-1, CLO-3, CLO-4 |
-| **Wagd Haroon (20220002386)** | R1.5  E_LBA undecidability *(Tue Jun 16)* | R2.3  CLIQUE → VC *(Thu Jun 18)* | R3.6  NL ⊊ PSPACE *(Thu Jun 25)* | CLO-2, CLO-4, CLO-5 |
-| **Yijie Huang (20220002483)** | R1.12 Self-destructing TM (Kamikaze) *(Wed Jun 17)* | R2.1  SAT → 3SAT *(Thu Jun 18)* | R3.10 EXPTIME vs PSPACE *(Tue Jun 30)* | CLO-1, CLO-4, CLO-5 |
-| **Reyan Tewfik (20220002516)** | R1.6  ALL_CFG undecidability *(Tue Jun 16)* | R2.4  3SAT → SUBSET-SUM *(Thu Jun 18)* | R3.8  2-SAT ∈ NL *(Mon Jun 29)* | CLO-2, CLO-4, CLO-3 |
-| **Maryam Al-Yaseen (20220002536)** | R1.12 Kamikaze *variant* *(Wed Jun 17)* | R2.10 SET-COVER NP-completeness *(Tue Jun 23)* | R3.9  Immerman–Szelepcsényi *(Tue Jun 30)* | CLO-1, CLO-4, CLO-5 |
-| **Sarah Al-zaidi (20220002575)** | R1.7  FINITE_TM undecidability *(Tue Jun 16)* | R2.6  3SAT → 3COLOR *(Thu Jun 18)* | R3.11 EXPSPACE-complete REGEX *(Tue Jun 30)* | CLO-2, CLO-4, CLO-5 |
-| **Sami Aftab (20230003344)** | R1.13 Quine + annotation *(Wed Jun 17)* | R2.11 Cook–Levin on a tiny TM *(Tue Jun 23)* | R3.9  Immerman–Szelepcsényi *variant* *(Tue Jun 30)* | CLO-1, CLO-4, CLO-5 |
-| **Kety Adenew (20230003490)** | R1.8  PCP undecidability *(Tue Jun 16)* | R2.9  HAMPATH verifier *variant* *(Mon Jun 22)* | R3.3  TQBF → Geography *variant* *(Wed Jun 24)* | CLO-2, CLO-3, CLO-4 |
-| **Mohammed Al-Zuraiqi (20230003860)** | R1.13 Quine *variant* *(Wed Jun 17)* | R2.5  3SAT → HAMPATH *(Thu Jun 18)* | R3.6  NL ⊊ PSPACE *variant* *(Mon Jun 29)* | CLO-1, CLO-4, CLO-5 |
-| **Fatemeh Najafi (20230003920)** | R1.10 Rice's theorem on 3 properties *(Tue Jun 16)* | R2.13 P closure properties *variant* *(Tue Jun 23)* | R3.5  Othello/Hex *variant* *(Thu Jun 25)* | CLO-2, CLO-3, CLO-4 |
-| **Shahed Alkayyali (20230003979)** | R1.14 A_LBA vs E_LBA contrast *(Wed Jun 17)* | R2.12 NP ⊆ EXPTIME *(Tue Jun 23)* | R3.7  P ⊊ EXPTIME *(Mon Jun 29)* | CLO-1, CLO-3, CLO-5 |
-| **Sahar Rahmatiandroud (20230004221)** | R1.11 Recursion fixed-point *(Tue Jun 16)* | R2.8  COMPOSITES verifier *(Mon Jun 22)* | R3.1  Savitch on small graph *variant* *(Wed Jun 24)* | CLO-2, CLO-3, CLO-4 |
-| **Marwan Mire (20240004471)** | R1.14 A_LBA vs E_LBA *variant* *(Wed Jun 17)* | R2.12 NP ⊆ EXPTIME *variant* *(Tue Jun 23)* | R3.3  TQBF → Geography *(Wed Jun 24)* | CLO-1, CLO-3, CLO-4 |
+| **S01** | R1.1  HALT_TM ≤_m A_TM *(Mon Jun 15)* | R2.7  SAT self-reducibility *(Mon Jun 22)* | R3.2  TQBF ↔ TQBF₃ *(Wed Jun 24)* | CLO-2, CLO-3, CLO-4 |
+| **S02** | R1.2  E_TM undecidability *(Mon Jun 15)* | R2.7  SAT self-reducibility *variant* *(Mon Jun 22)* | R3.1  Savitch on small graph *(Wed Jun 24)* | CLO-2, CLO-3, CLO-4 |
+| **S03** | R1.3  REGULAR_TM undecidability *(Mon Jun 15)* | R2.13 P closure properties *(Tue Jun 23)* | R3.5  Othello/Hex PSPACE-completeness *(Thu Jun 25)* | CLO-2, CLO-3, CLO-4 |
+| **S04** | R1.9  Bridge theorem *(Mon Jun 15)* | R2.2  3SAT → CLIQUE *(Thu Jun 18)* | R3.7  P ⊊ EXPTIME *variant* *(Mon Jun 29)* | CLO-1, CLO-4, CLO-5 |
+| **S05** | R1.4  A_TM ≤_m EQ_TM *(Mon Jun 15)* | R2.8  COMPOSITES verifier *variant* *(Mon Jun 22)* | R3.4  Generalized chess PSPACE-hardness *(Thu Jun 25)* | CLO-2, CLO-3, CLO-4 |
+| **S06** | R1.9  Bridge theorem *variant* *(Mon Jun 15)* | R2.9  HAMPATH verifier *(Mon Jun 22)* | R3.12 PATH NL-complete *(Tue Jun 30)* | CLO-1, CLO-3, CLO-4 |
+| **S07** | R1.5  E_LBA undecidability *(Tue Jun 16)* | R2.3  CLIQUE → VC *(Thu Jun 18)* | R3.6  NL ⊊ PSPACE *(Thu Jun 25)* | CLO-2, CLO-4, CLO-5 |
+| **S08** | R1.12 Self-destructing TM (Kamikaze) *(Wed Jun 17)* | R2.1  SAT → 3SAT *(Thu Jun 18)* | R3.10 EXPTIME vs PSPACE *(Tue Jun 30)* | CLO-1, CLO-4, CLO-5 |
+| **S09** | R1.6  ALL_CFG undecidability *(Tue Jun 16)* | R2.4  3SAT → SUBSET-SUM *(Thu Jun 18)* | R3.8  2-SAT ∈ NL *(Mon Jun 29)* | CLO-2, CLO-4, CLO-3 |
+| **S10** | R1.12 Kamikaze *variant* *(Wed Jun 17)* | R2.10 SET-COVER NP-completeness *(Tue Jun 23)* | R3.9  Immerman–Szelepcsényi *(Tue Jun 30)* | CLO-1, CLO-4, CLO-5 |
+| **S11** | R1.7  FINITE_TM undecidability *(Tue Jun 16)* | R2.6  3SAT → 3COLOR *(Thu Jun 18)* | R3.11 EXPSPACE-complete REGEX *(Tue Jun 30)* | CLO-2, CLO-4, CLO-5 |
+| **S12** | R1.13 Quine + annotation *(Wed Jun 17)* | R2.11 Cook–Levin on a tiny TM *(Tue Jun 23)* | R3.9  Immerman–Szelepcsényi *variant* *(Tue Jun 30)* | CLO-1, CLO-4, CLO-5 |
+| **S13** | R1.8  PCP undecidability *(Tue Jun 16)* | R2.9  HAMPATH verifier *variant* *(Mon Jun 22)* | R3.3  TQBF → Geography *variant* *(Wed Jun 24)* | CLO-2, CLO-3, CLO-4 |
+| **S14** | R1.13 Quine *variant* *(Wed Jun 17)* | R2.5  3SAT → HAMPATH *(Thu Jun 18)* | R3.6  NL ⊊ PSPACE *variant* *(Mon Jun 29)* | CLO-1, CLO-4, CLO-5 |
+| **S15** | R1.10 Rice's theorem on 3 properties *(Tue Jun 16)* | R2.13 P closure properties *variant* *(Tue Jun 23)* | R3.5  Othello/Hex *variant* *(Thu Jun 25)* | CLO-2, CLO-3, CLO-4 |
+| **S16** | R1.14 A_LBA vs E_LBA contrast *(Wed Jun 17)* | R2.12 NP ⊆ EXPTIME *(Tue Jun 23)* | R3.7  P ⊊ EXPTIME *(Mon Jun 29)* | CLO-1, CLO-3, CLO-5 |
+| **S17** | R1.11 Recursion fixed-point *(Tue Jun 16)* | R2.8  COMPOSITES verifier *(Mon Jun 22)* | R3.1  Savitch on small graph *variant* *(Wed Jun 24)* | CLO-2, CLO-3, CLO-4 |
+| **S18** | R1.14 A_LBA vs E_LBA *variant* *(Wed Jun 17)* | R2.12 NP ⊆ EXPTIME *variant* *(Tue Jun 23)* | R3.3  TQBF → Geography *(Wed Jun 24)* | CLO-1, CLO-3, CLO-4 |
 
 ### Verification
 

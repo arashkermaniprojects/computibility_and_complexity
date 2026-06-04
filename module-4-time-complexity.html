@@ -414,8 +414,32 @@
 
   <p>
     A language is in <strong>P</strong> if some TM decides it in time polynomial in the input
-    length. Watch a few classic P-class problems below.
+    length. Sipser §7.2 highlights three classic, non-trivial examples — pick a toggle in the
+    widget below and watch each algorithm run.
   </p>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 14px 0;">
+    <div style="border: 1px solid var(--rule-strong); border-left: 4px solid var(--accent-strong, #1c4a3f); border-radius: 6px; padding: 12px 14px; background: var(--paper);">
+      <h4 style="margin: 0 0 6px 0; color: var(--accent-strong, #1c4a3f);">PATH · graph reachability</h4>
+      <p style="font-family: var(--mono); font-size: 11.5px; margin: 0 0 8px 0;">PATH = {⟨G, s, t⟩ : G has a directed path s → t}</p>
+      <p style="margin: 0 0 4px 0; font-size: 13px;"><strong>Why is it in P?</strong> Naive "try every path" blows up — there can be exponentially many paths. <strong>Algorithm:</strong> BFS from s. Touch each vertex and edge at most once. <strong>O(|V| + |E|)</strong> ⇒ polynomial.</p>
+      <p style="margin: 6px 0 0 0; font-size: 12px; color: var(--muted); font-style: italic;">Sipser Theorem 7.14.</p>
+    </div>
+
+    <div style="border: 1px solid var(--rule-strong); border-left: 4px solid var(--gold-strong, #a68526); border-radius: 6px; padding: 12px 14px; background: var(--paper);">
+      <h4 style="margin: 0 0 6px 0; color: var(--gold-strong, #a68526);">RELPRIME · Euclid's algorithm</h4>
+      <p style="font-family: var(--mono); font-size: 11.5px; margin: 0 0 8px 0;">RELPRIME = {⟨a, b⟩ : gcd(a, b) = 1}</p>
+      <p style="margin: 0 0 4px 0; font-size: 13px;"><strong>Why is it in P?</strong> Input size is the number of digits — log of the values. <strong>Algorithm:</strong> gcd(a, b) = gcd(b, a mod b) until the second is 0. Each step at least halves the smaller. <strong>O(log min(a,b))</strong> divisions ⇒ polynomial in the bit-length.</p>
+      <p style="margin: 6px 0 0 0; font-size: 12px; color: var(--muted); font-style: italic;">Sipser Theorem 7.15.</p>
+    </div>
+
+    <div style="border: 1px solid var(--rule-strong); border-left: 4px solid var(--warn-strong, #b95825); border-radius: 6px; padding: 12px 14px; background: var(--paper);">
+      <h4 style="margin: 0 0 6px 0; color: var(--warn-strong, #b95825);">A<sub>CFG</sub> · CYK parsing</h4>
+      <p style="font-family: var(--mono); font-size: 11.5px; margin: 0 0 8px 0;">A<sub>CFG</sub> = {⟨G, w⟩ : G generates w}</p>
+      <p style="margin: 0 0 4px 0; font-size: 13px;"><strong>Why is it in P?</strong> Module 1's enumerate-derivations bound was exponential. <strong>Algorithm:</strong> CYK (<em>Cocke–Younger–Kasami</em>) — dynamic programming. Fill T[i, j] = "vars deriving w<sub>i</sub>…w<sub>j</sub>" bottom-up. <strong>O(n³ · |G|)</strong> ⇒ polynomial.</p>
+      <p style="margin: 6px 0 0 0; font-size: 12px; color: var(--muted); font-style: italic;">Sipser Theorem 7.16.</p>
+    </div>
+  </div>
 
   <div class="widget" id="p-problems">
     <div class="widget-title">Classic P problems <span class="pill">Widget 5</span></div>
@@ -743,7 +767,8 @@
 // ----- Single-tape TM on 0^n 1^n (Widget 3) -----
 (function(){
   const W = 760, H = 200;
-  let tape = [], head = 0, state = 'q0', steps = 0, phase = 'find0', halted = false;
+  let tape = [], head = 0, state = 'q0', steps = 0, phase = 'scan', halted = false;
+  let sawOne = false;  // for the first-pass structural scan
   let input = '000111';
   let raf = null;
 
@@ -751,7 +776,8 @@
     input = document.getElementById('onbn-input').value;
     tape = input.split('');
     if (!tape.length) tape = ['_'];
-    head = 0; state = 'q0'; steps = 0; phase = 'find0'; halted = false;
+    head = 0; state = 'qs'; steps = 0; phase = 'scan'; halted = false;
+    sawOne = false;
     if (raf) { cancelAnimationFrame(raf); raf = null; }
     render(); update();
   }
@@ -782,6 +808,10 @@
   }
   function describePhase() {
     switch (phase) {
+      case 'scan':
+        return `<strong>Phase 0 — structural scan (Sipser M1, step 1).</strong> Before any pairing, the head sweeps left-to-right once to check the input is of the form 0*1*. The TM tracks "have I seen a 1 yet?" — if it later sees a 0 after a 1, the structure is wrong and the machine rejects immediately. <br><em>Why this matters:</em> if we skipped this check, an input like <span class="math">"010"</span> could pass the pairing logic spuriously. Sipser explicitly puts this scan first.`;
+      case 'rewindStart':
+        return `<strong>Phase 0.5 — rewind to position 0.</strong> Structural scan passed, so the head walks all the way back to the leftmost cell to start the pairing phase. Costs O(n).`;
       case 'find0':
         return `<strong>Phase 1 — hunting an unmarked 0.</strong> The head is scanning <em>rightward</em>, skipping over any cells already marked X or Y. When it finds a 0, it will rewrite it as X (claiming "this 0 has been paired") and switch to Phase 2. If it instead sees a blank (_), it has run out of 0s — and the algorithm checks whether any 1s remain (those would be unpaired). <br><em>Why this phase exists:</em> the only way to match equal counts of 0s and 1s on a single tape is to <strong>pair them up</strong>, one at a time.`;
       case 'find1':
@@ -801,7 +831,23 @@
     if (halted) return;
     const r = tape[head] || '_';
     steps++;
-    if (phase === 'find0') {
+    if (phase === 'scan') {
+      // Sipser M1 step 1: scan right; reject if a 0 appears to the right of any 1.
+      if (r === '0') {
+        if (sawOne) { halted = true; state = 'qr'; phase = 'reject'; }
+        else head++;
+      } else if (r === '1') {
+        sawOne = true; head++;
+      } else if (r === '_' || head >= tape.length) {
+        // End of tape — structural check passed. Rewind to start.
+        phase = 'rewindStart'; head--;
+      } else {
+        halted = true; state = 'qr'; phase = 'reject';
+      }
+    } else if (phase === 'rewindStart') {
+      if (head <= 0) { head = 0; phase = 'find0'; }
+      else head--;
+    } else if (phase === 'find0') {
       if (r === '0') {
         tape[head] = 'X';
         phase = 'find1'; head++;
@@ -822,7 +868,7 @@
       else if (r === '_' || r === '0' || r === 'X' || r === 'Y') { head--; }
       else { halted = true; state = 'qr'; phase = 'reject'; }
     }
-    state = phase === 'find0' ? 'q0' : phase === 'find1' ? 'q1' : phase === 'rewind' ? 'q2' : phase === 'accept' ? 'qa' : 'qr';
+    state = phase === 'scan' ? 'qs' : phase === 'rewindStart' ? 'qrw' : phase === 'find0' ? 'q0' : phase === 'find1' ? 'q1' : phase === 'rewind' ? 'q2' : phase === 'accept' ? 'qa' : 'qr';
     render(); update();
   }
   let onbnLooping = true, onbnLoopTimer = null;
@@ -866,13 +912,13 @@
 
   function initS1() {
     const inp = makeInput(n);
-    return { tape: inp.split(''), head: 0, steps: 0, phase: 'find0', state: 'q0', halted: false };
+    return { tape: inp.split(''), head: 0, steps: 0, phase: 'scan', sawOne: false, state: 'qs', halted: false };
   }
   function initS2() {
     const inp = makeInput(n);
     return {
       tape1: inp.split(''), tape2: ['_'],
-      head1: 0, head2: 0, steps: 0, phase: 'copy', halted: false, accept: null
+      head1: 0, head2: 0, steps: 0, phase: 'scan', sawOne: false, halted: false, accept: null
     };
   }
 
@@ -936,7 +982,21 @@
     if (s1.halted) return false;
     s1.steps++;
     const r = s1.tape[s1.head];
-    if (s1.phase === 'find0') {
+    if (s1.phase === 'scan') {
+      // Sipser M1 step 1 — scan once, reject any 0 found after a 1
+      if (r === '0') {
+        if (s1.sawOne) { s1.halted = true; s1.state = 'qr'; }
+        else s1.head++;
+      } else if (r === '1') {
+        s1.sawOne = true; s1.head++;
+      } else if (r === undefined || r === '_') {
+        // scan finished cleanly — rewind to start
+        s1.phase = 'rewindStart'; s1.head--;
+      } else { s1.halted = true; s1.state = 'qr'; }
+    } else if (s1.phase === 'rewindStart') {
+      if (s1.head <= 0) { s1.head = 0; s1.phase = 'find0'; }
+      else s1.head--;
+    } else if (s1.phase === 'find0') {
       if (r === '0') { s1.tape[s1.head] = 'X'; s1.phase = 'find1'; s1.head++; }
       else if (r === 'X' || r === 'Y') { s1.head++; }
       else { s1.halted = true; s1.state = (r === undefined || r === '_') ? 'qa' : 'qr'; }
@@ -955,7 +1015,22 @@
   function stepS2() {
     if (s2.halted) return false;
     s2.steps++;
-    if (s2.phase === 'copy') {
+    if (s2.phase === 'scan') {
+      // Sipser M1 step 1 — scan tape 1 once, reject any 0 after a 1
+      const r = s2.tape1[s2.head1];
+      if (r === '0') {
+        if (s2.sawOne) { s2.halted = true; s2.accept = false; }
+        else s2.head1++;
+      } else if (r === '1') {
+        s2.sawOne = true; s2.head1++;
+      } else if (r === undefined || r === '_') {
+        // scan finished — rewind tape 1 head to 0, then start copy phase
+        s2.phase = 'rewindS2'; s2.head1--;
+      } else { s2.halted = true; s2.accept = false; }
+    } else if (s2.phase === 'rewindS2') {
+      if (s2.head1 <= 0) { s2.head1 = 0; s2.phase = 'copy'; }
+      else s2.head1--;
+    } else if (s2.phase === 'copy') {
       // copy 0s to tape 2
       const r = s2.tape1[s2.head1];
       if (r === '0') {

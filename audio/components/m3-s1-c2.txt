@@ -1,7 +1,7 @@
-Here, you see a computation history for a machine M processing an input w. Each row represents a different configuration of the machine at successive time steps, starting from time zero on the left. 
+Look at this picture. Each row is one snapshot of the Turing machine M as it runs on input w. The catch is that each row mixes two things: the tape contents AND the state, with the state symbol inserted right where the head is. So a row reading 0, q sub 1, 1, 1, 0 means the tape holds 0 1 1 0, the head is on the second cell, and the machine is in state q sub 1. This is just notation — the state isn't really on the tape — but it lets a single row encode the whole machine state.
 
-The first row shows the initial state of the machine, with the tape containing the input and the head positioned at the beginning. As time progresses, the machine transitions through various states, denoted by q0, q1, and so on, while updating the tape contents. 
+Now watch the state column shift as time goes down: q sub 0, q sub 1, q sub 0, q sub 2, q sub a. The state moves because the head moves. Each transition writes a symbol and moves left or right by one cell, so the state symbol appears one column over in the next row.
 
-Notice how the positions on the tape change as the computation unfolds. This visual representation helps us understand how the machine processes information step by step, a key concept in computability theory, as discussed by Sipser. 
+The dashed box is a 2 by 3 window — the smallest rectangle that fully determines whether one transition was legal. Two rows because you need before and after to check a transition. Three columns because the head can move at most one cell, so the next row's middle cell depends only on three neighboring cells of the previous row. A 3 by 4 window would work, but it wastes space. A 3 by 2 window doesn't work — you can't tell if the head came from the left or the right neighbor.
 
-Remember, this computation history is essential for grasping how machines operate over time.
+Here's the punchline: the whole tableau is a valid computation if and only if EVERY 2 by 3 window obeys the transition function delta. That local-to-global check is the engine behind the reductions for E sub L B A, ALL sub CFG, and Cook–Levin.

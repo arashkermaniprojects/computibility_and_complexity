@@ -219,6 +219,36 @@
   <figcaption>A computation history records every configuration of M on w, one row per time step. Local 2×3 windows of consecutive rows must follow the transition function. The accepting tableau exists iff M accepts w — this is what gadgets in L<sub>BA</sub> and CFG reductions check.</figcaption>
 </figure>
 
+  <div class="callout gold" style="margin: 14px 0;">
+    <h5 style="margin-top: 0;">Reading this picture — four common questions</h5>
+
+    <p style="margin: 10px 0 4px 0;"><strong>1. Why does a single row mix the <em>state</em> and the <em>tape contents</em>?</strong></p>
+    <p style="margin: 0 0 10px 0;">
+      Each row is a <strong>configuration</strong>: Sipser's compact snapshot of the whole machine at one moment. We write the tape contents in order, with the state symbol <em>inserted at the head's position</em>. So <span class="math">"0 q<sub>1</sub> 1 1 0"</span> means: the tape reads <span class="math">0 1 1 0</span> (left to right), the head is over the cell that holds the leftmost <span class="math">1</span>, and the machine's control is in state <span class="math">q<sub>1</sub></span>. The state isn't literally written on the tape — it's a notational convention that lets one string encode the entire configuration.
+    </p>
+
+    <p style="margin: 10px 0 4px 0;"><strong>2. Why does the state "move forwards" as time progresses?</strong></p>
+    <p style="margin: 0 0 10px 0;">
+      In this example the head moves right at every step (column 0 → 1 → 2 → 3 → 4). Since the state symbol sits where the head sits, watching its column shift IS watching the head move. A TM transition <span class="math">δ(q, a) = (q', b, L/R)</span> writes <span class="math">b</span> in place of <span class="math">a</span> and moves the head one cell left or right; in the next row, the state symbol appears one column over.
+    </p>
+
+    <p style="margin: 10px 0 4px 0;"><strong>3. Why exactly a <em>2×3</em> window — not 3×4 or 3×2?</strong></p>
+    <p style="margin: 0 0 6px 0;">
+      A 2×3 window is the <em>smallest</em> rectangle that fully determines whether a transition is legal:
+    </p>
+    <ul style="margin: 0 0 10px 18px; padding: 0;">
+      <li><strong>2 rows</strong> — you need exactly two consecutive time steps to <em>check</em> a single transition: the "before" row and the "after" row. One row alone has nothing to compare against; three rows is overkill.</li>
+      <li><strong>3 columns</strong> — the cell at position <span class="math">p</span> in the next row can be affected only by positions <span class="math">p−1, p, p+1</span> in the previous row, because the head moves at most one cell. So the next row's middle cell is a function of the previous row's three-cell neighborhood.</li>
+    </ul>
+    <p style="margin: 0 0 10px 0;">
+      3×4 would still work, but it's wasteful (12 cells per check instead of 6, and the extra row/column carry no information). 3×2 doesn't work: 2 columns can't capture the head's left + right neighborhood, so you can't tell whether a head now at position <span class="math">p</span> came from <span class="math">p−1</span> or from <span class="math">p+1</span>.
+    </p>
+
+    <p style="margin: 10px 0 4px 0;"><strong>4. Why does that make 2×3 the <em>indicator</em> of validity?</strong></p>
+    <p style="margin: 0;">
+      Local-to-global. If <em>every</em> 2×3 window in the tableau is consistent with <span class="math">δ</span>, then every transition between every pair of consecutive rows is legal — so the whole tableau is a valid computation. Conversely, one bad window kills validity. This is exactly the lever that <strong>Cook–Levin</strong>, <strong>E<sub>LBA</sub> undecidability</strong>, and <strong>ALL<sub>CFG</sub> undecidability</strong> all pull: encode "every 2×3 window obeys <span class="math">δ</span>" as a finite set of constraints (SAT clauses / LBA states / CFG productions) and you've encoded "M accepts w."
+    </p>
+  </div>
 
   <p>
     A <strong>computation history</strong> of a TM <span class="math">M</span> on input <span class="math">w</span>

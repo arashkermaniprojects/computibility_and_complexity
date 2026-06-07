@@ -1,0 +1,5 @@
+In this widget, we explore Savitch's theorem using a recursion tree. Imagine a tree where each node represents a call to the function CANYIELD with parameters A, B, and t. As we animate the tree, you'll notice that each node branches into two children, both making the same call but with t reduced by half. This process continues until we reach the base case.
+
+Importantly, we don’t store every node in memory; instead, at any moment, only one path through the tree is active. This means the depth of our call stack is logarithmic in relation to t, specifically log t. 
+
+Savitch's theorem shows that nondeterministic space complexity can be simulated using deterministic space, which is a powerful insight in computational theory. Remember, this illustrates how NSPACE is contained within SPACE of squared space complexity.

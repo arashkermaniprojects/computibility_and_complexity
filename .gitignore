@@ -19,3 +19,6 @@ SEMESTER_SCHEDULE.xlsx
 
 # Smoke test (kept locally)
 tools/_smoketest.js
+
+# OpenAI key (never commit)
+.openai_key

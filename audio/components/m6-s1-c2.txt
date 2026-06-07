@@ -1,0 +1,5 @@
+In this diagram, we explore the relationship between time and space in computational complexity. On the vertical axis, we see time increasing, while the horizontal axis represents space. The diagonal illustrates a critical trade-off: generally, the amount of space used by an algorithm is less than or equal to the time it takes. However, time can grow exponentially based on space, specifically up to two raised to the power of some function of space. 
+
+For instance, polynomial time fits neatly within polynomial space, while polynomial space can lead to exponential time requirements. As we move through the hierarchy, we find classes like L, NL, P, NP, and PSPACE, with the statement that PSPACE is equal to NPSPACE and is contained within EXPTIME. 
+
+Overall, the key takeaway is that while space is usually a limiting factor, it can significantly influence the time complexity of an algorithm.

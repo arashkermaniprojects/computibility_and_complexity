@@ -1,0 +1,7 @@
+Here, you see a computation history for a machine M processing an input w. Each row represents a different configuration of the machine at successive time steps, starting from time zero on the left. 
+
+The first row shows the initial state of the machine, with the tape containing the input and the head positioned at the beginning. As time progresses, the machine transitions through various states, denoted by q0, q1, and so on, while updating the tape contents. 
+
+Notice how the positions on the tape change as the computation unfolds. This visual representation helps us understand how the machine processes information step by step, a key concept in computability theory, as discussed by Sipser. 
+
+Remember, this computation history is essential for grasping how machines operate over time.

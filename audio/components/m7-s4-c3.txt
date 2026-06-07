@@ -1,0 +1,5 @@
+In this slide, we’re discussing the hierarchy theorems, specifically focusing on the concept of diagonalization. Imagine we have a list of Turing machines, each using space that is less than or equal to a function f of the input size. Our diagonalizer, denoted as D, takes each machine M_i and operates on its own description, flipping the result to ensure that D produces an output different from M_i.
+
+Because D requires slightly more space than f, it cannot be confined within the same space bounds, meaning that the class of languages recognizable in space g is strictly larger than those recognizable in space f. This illustrates a key point: as we increase our space limits, we can recognize strictly more languages. 
+
+The takeaway here is that the hierarchy theorems show how increasing computational resources, like space, expands our ability to solve problems.

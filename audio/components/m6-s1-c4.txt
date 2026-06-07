@@ -1,0 +1,5 @@
+In this slide, we explore the relationship between time complexity and space complexity. The expression states that the class of functions that can be computed in time f(n) is a subset of those that can be computed in space f(n). This means that if an algorithm runs in a certain amount of time, it can also be executed using that amount of space. 
+
+Next, we see that the space complexity is contained within the time complexity of 2 raised to the order of f(n). This implies that if you have a space-bound algorithm, its time complexity can grow exponentially based on the space used. 
+
+Overall, this relationship highlights how time and space complexities are interconnected. Understanding these concepts is crucial for analyzing algorithm efficiency and resource management.

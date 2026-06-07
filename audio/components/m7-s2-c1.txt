@@ -1,0 +1,5 @@
+In this widget, we're exploring the concept of nondeterminism in the context of the PATH problem, which is known to be NL-complete. Imagine a computation that can make multiple guesses simultaneously—this is the essence of nondeterminism. As we auto-play through the paths, each branch of our computation represents a different possible path through the graph. 
+
+What's fascinating is that each of these branches only needs log n bits to keep track of its current vertex and a step counter. This efficient use of space allows us to explore all potential paths in parallel without excessive memory usage. 
+
+In summary, this widget illustrates how nondeterministic computations can efficiently navigate through complex paths using minimal space. Remember, this is a key feature of problems classified as NL-complete.

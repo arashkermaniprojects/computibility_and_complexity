@@ -1,0 +1,5 @@
+In this section, we focus on an important result known as the hierarchy theorem for space complexity. It states that if we have a function f(n) that can be constructed using space and is at least as large as the logarithm of n, then the class of problems that can be solved using space f(n) is strictly smaller than the class that can be solved using space that grows slightly faster, specifically o(f(n) times the logarithm of f(n)). 
+
+This means there are problems that require more space than f(n) but can be tackled with just a bit more than that, revealing a structured hierarchy in how we classify computational resources. 
+
+The key takeaway is that as we increase our space limits, we can solve strictly more complex problems, illustrating the layered nature of computational complexity.

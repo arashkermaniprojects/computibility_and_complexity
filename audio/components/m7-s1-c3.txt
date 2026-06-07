@@ -1,0 +1,5 @@
+Imagine a log-space machine working on a palindrome check. This machine uses a limited amount of memory—specifically, logarithmic memory. It auto-plays through the input, simulating a deterministic finite automaton (DFA). As it processes the string, it keeps track of the characters it reads and compares them to determine if the input is the same forwards and backwards. 
+
+The work tape is empty at the start, and it only uses a small number of cells, reflecting its efficient use of space. When it finishes, it gives a verdict: whether the input is a palindrome or not. This is a clear example of how log-space computation can solve problems efficiently, demonstrating the power of limited memory. 
+
+The takeaway? Log-space machines showcase how we can solve complex problems with minimal resources.

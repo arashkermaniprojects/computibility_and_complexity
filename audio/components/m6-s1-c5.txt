@@ -1,0 +1,5 @@
+In this widget, we explore the relationship between space and time when solving the same problem. Imagine you have a task that can be completed in polynomial time, which means the time taken grows at a reasonable rate as the input size increases. However, some algorithms are clever enough to reuse memory cells, allowing them to operate in logarithmic space. 
+
+This means they use a minimal amount of memory, even while processing large amounts of data. The graph here illustrates how different algorithms balance their space and time usage. Understanding this balance is crucial, especially in computational theory, as highlighted by Sipser. 
+
+The key takeaway is that optimizing space can sometimes lead to more efficient algorithms, even if it means taking a bit longer to run.

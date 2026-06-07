@@ -1,0 +1,7 @@
+In this slide, we’re exploring the complexity zoo, which categorizes various complexity classes from L, representing problems solvable in logarithmic space, to EXPSPACE, which includes problems solvable in exponential space. 
+
+We observe strict containments, meaning some classes are strictly smaller than others. For example, L is strictly contained within PSPACE, indicating that problems in L require less memory than those in PSPACE. Similarly, P is strictly contained in EXPTIME, and PSPACE is strictly contained in EXPSPACE. 
+
+While some relationships, like P versus NP, remain unresolved, the hierarchy theorems confirm these clear separations. In essence, the hierarchy theorems help us understand the landscape of computational complexity and the resources needed to solve different types of problems. 
+
+Takeaway: The hierarchy theorems reveal crucial insights about the relationships between complexity classes, particularly that L is strictly smaller than PSPACE.

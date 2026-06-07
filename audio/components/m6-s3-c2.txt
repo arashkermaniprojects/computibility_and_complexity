@@ -1,0 +1,5 @@
+In this widget, we explore TQBF, which stands for "True Quantified Boolean Formula." Think of it as a game tree where we evaluate logical statements using quantifiers. The game alternates between existential nodes, marked in green, that aim for at least one true outcome, and universal nodes, in orange, that require all outcomes to be true. 
+
+For example, consider the formula "there exists x such that for all y, (x or y) and (x or not y)." This is true, meaning the green node wins. The tree evaluates from the bottom up, determining the truth value of each node based on the rules of the game. 
+
+This interactive approach illustrates how complex logical statements can be resolved systematically. Remember, TQBF is a prime example of a PSPACE-complete problem, highlighting the intricacies of space complexity.

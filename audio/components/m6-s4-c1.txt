@@ -1,0 +1,5 @@
+In this interactive game of Generalized Geography, you will play against the computer, which takes the role of Player 2. You start with a red token on a map, and your goal is to move to a neighboring node by clicking on it. Remember, you can only move to nodes that have an arrow pointing from your current position. 
+
+After you make your move, the computer will respond by playing optimally to try to win. The key to victory lies in your ability to force the computer into a position where it has no legal moves left. If you succeed, you win the game! 
+
+This exercise not only enhances your understanding of strategy but also illustrates concepts from complexity theory, as discussed in Sipser's work. The takeaway here is that understanding optimal moves can be crucial in decision-making processes.

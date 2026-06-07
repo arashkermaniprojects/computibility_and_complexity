@@ -1,0 +1,5 @@
+In this component, we’re discussing the Immerman–Szelepcsényi theorem, which shows that non-deterministic logarithmic space, or NL, is equal to co-NL. To understand this, we can use a configuration graph. Picture a graph where each vertex represents a state of computation, and edges show possible transitions. 
+
+As we perform inductive counting, we keep track of how many vertices can be reached within a certain number of steps, denoted as i. The widget allows you to auto-play this process, pause, or reset, and it shows the count of reachable vertices in real-time.
+
+This visual tool helps illustrate that for every path we can explore non-deterministically, there’s a corresponding way to count paths that aren’t taken, reinforcing that NL equals co-NL. The key takeaway here is that non-deterministic logarithmic space and its complement are fundamentally equivalent.

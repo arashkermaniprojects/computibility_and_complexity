@@ -1,0 +1,7 @@
+In this module, we’re exploring the relationships between different complexity classes: L, NL, P, NP, and PSPACE. 
+
+L, or logarithmic space, refers to problems solvable using a logarithmic amount of memory. NL, or nondeterministic logarithmic space, allows for nondeterministic computation, meaning it can explore multiple possibilities simultaneously, still within logarithmic space. 
+
+The relationships here show a hierarchy: L is a subset of NL, indicating that every problem solvable in logarithmic space can also be solved in nondeterministic logarithmic space. Moving up, we have P, which consists of problems solvable in polynomial time, and NP, where solutions can be verified in polynomial time. Finally, PSPACE contains problems solvable using polynomial space. 
+
+The key takeaway is that as we move up this hierarchy, each class encompasses more complex problems while still maintaining the properties of the classes below.

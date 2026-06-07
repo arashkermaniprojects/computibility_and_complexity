@@ -1,0 +1,5 @@
+In computational theory, we often discuss the concept of space complexity, which tells us how much memory a machine uses while solving a problem. The notation SPACE(f(n)) refers to the set of languages that can be decided by a Turing machine using a number of cells that grows at most as fast as a function f(n). 
+
+Now, when we talk about PSPACE, we're looking at a broader class. PSPACE is defined as the union of all SPACE functions for polynomial growth, denoted as the union over k of SPACE(n raised to the k). This means PSPACE encompasses all problems that can be solved using a polynomial amount of memory, regardless of the specific polynomial. 
+
+In summary, PSPACE includes all problems solvable with limited space, highlighting the importance of memory in computation.

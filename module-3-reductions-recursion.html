@@ -643,74 +643,74 @@
   </p>
 
 <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Diagram</span><audio controls preload="none" src="audio/components/m3-s4-c1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><figure class="diagram">
-  <svg viewBox="0 0 760 460" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+  <svg viewBox="0 0 760 600" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
     <defs>
       <marker id="arr-gmw" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
         <polygon points="0 0, 8 3, 0 6" fill="#444"/>
       </marker>
     </defs>
 
-    <text x="380" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
+    <text x="380" y="26" text-anchor="middle" font-family="var(--sans), system-ui" font-size="17" font-weight="700" fill="#1a1a1a">
       The CFG  G<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>  · generates every string EXCEPT valid accepting histories
     </text>
 
     <!-- Universe diagram -->
-    <text x="40" y="55" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="#1a1a1a">Universe of strings over Σ*:</text>
-    <rect x="40" y="65" width="680" height="80" rx="6" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/>
-    <ellipse cx="380" cy="105" rx="55" ry="25" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2"/>
-    <text x="380" y="100" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10.5" font-weight="700" fill="var(--accent-strong, #1c4a3f)">valid accepting</text>
-    <text x="380" y="114" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10.5" font-weight="700" fill="var(--accent-strong, #1c4a3f)">histories of M on w</text>
-    <text x="180" y="100" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="var(--warn-strong, #b95825)">G<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan> generates this whole strip ←</text>
-    <text x="600" y="100" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="var(--warn-strong, #b95825)">→ also generates this strip</text>
+    <text x="40" y="60" font-family="var(--sans), system-ui" font-size="15" font-weight="700" fill="#1a1a1a">Universe of strings over Σ*:</text>
+    <rect x="40" y="72" width="680" height="100" rx="8" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/>
+    <ellipse cx="380" cy="122" rx="80" ry="34" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2"/>
+    <text x="380" y="118" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--accent-strong, #1c4a3f)">valid accepting</text>
+    <text x="380" y="135" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--accent-strong, #1c4a3f)">histories of M on w</text>
+    <text x="170" y="118" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-style="italic" fill="var(--warn-strong, #b95825)">G<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan> generates this strip ←</text>
+    <text x="600" y="118" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-style="italic" fill="var(--warn-strong, #b95825)">→ also generates this strip</text>
 
     <!-- CFG box -->
-    <text x="40" y="170" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="#1a1a1a">
+    <text x="40" y="200" font-family="var(--sans), system-ui" font-size="15" font-weight="700" fill="#1a1a1a">
       G<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>'s strategy: nondeterministically guess WHERE the input violates "valid accepting history"
     </text>
 
-    <rect x="40" y="180" width="680" height="200" rx="10" fill="white" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2"/>
-    <text x="380" y="202" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700">S  →  S_badStart  |  S_badTrans  |  S_badEnd</text>
+    <rect x="40" y="214" width="680" height="290" rx="10" fill="white" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2"/>
+    <text x="380" y="244" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="16" font-weight="700">S  →  S<tspan baseline-shift="sub" font-size="0.75em">badStart</tspan>  |  S<tspan baseline-shift="sub" font-size="0.75em">badTrans</tspan>  |  S<tspan baseline-shift="sub" font-size="0.75em">badEnd</tspan></text>
 
     <!-- Three branches -->
     <g>
       <!-- Branch 1: bad start -->
-      <rect x="55" y="220" width="220" height="140" rx="8" fill="#fff4ee" stroke="var(--warn-strong, #b95825)" stroke-width="1.5"/>
-      <text x="165" y="240" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--warn-strong, #b95825)">Branch 1 · bad start</text>
-      <text x="165" y="258" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#1a1a1a">First config C₁ ≠ q₀w</text>
-      <text x="65"  y="280" font-family="var(--mono), ui-monospace, monospace" font-size="10">S_badStart →</text>
-      <text x="65"  y="295" font-family="var(--mono), ui-monospace, monospace" font-size="9.5" fill="#666">   (anything not starting with q₀w)</text>
-      <text x="65"  y="313" font-family="var(--mono), ui-monospace, monospace" font-size="9.5" fill="#666">   · # · arbitrary tail</text>
-      <text x="165" y="345" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" font-style="italic" fill="#666">CFG checks first chunk against</text>
-      <text x="165" y="356" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" font-style="italic" fill="#666">hardwired q₀w (finite memory)</text>
+      <rect x="55" y="266" width="220" height="226" rx="8" fill="#fff4ee" stroke="var(--warn-strong, #b95825)" stroke-width="1.5"/>
+      <text x="165" y="290" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="var(--warn-strong, #b95825)">Branch 1 · bad start</text>
+      <text x="165" y="312" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" fill="#1a1a1a">First config C₁ ≠ q₀w</text>
+      <text x="65"  y="342" font-family="var(--mono), ui-monospace, monospace" font-size="12">S<tspan baseline-shift="sub" font-size="0.75em">badStart</tspan> →</text>
+      <text x="65"  y="362" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#666">   (anything not starting</text>
+      <text x="65"  y="380" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#666">    with q₀w) · # · tail</text>
+      <text x="165" y="430" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">CFG checks first chunk against</text>
+      <text x="165" y="446" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">hardwired q₀w (finite memory)</text>
 
       <!-- Branch 2: bad transition (TRICK!) -->
-      <rect x="285" y="220" width="220" height="140" rx="8" fill="#fff4ee" stroke="var(--warn-strong, #b95825)" stroke-width="1.5"/>
-      <text x="395" y="240" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--warn-strong, #b95825)">Branch 2 · bad transition  ★</text>
-      <text x="395" y="258" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#1a1a1a">Some (Cᵢ, Cᵢ₊₁) violates δ</text>
-      <text x="295" y="280" font-family="var(--mono), ui-monospace, monospace" font-size="10">S_badTrans →</text>
-      <text x="295" y="295" font-family="var(--mono), ui-monospace, monospace" font-size="9.5" fill="#666">   prefix · Cᵢ # C′ᵢ₊₁ · suffix</text>
-      <text x="295" y="310" font-family="var(--mono), ui-monospace, monospace" font-size="9.5" fill="#666">   where C′ᵢ₊₁ ≠ δ-successor</text>
-      <text x="395" y="335" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" font-style="italic" fill="#666">writing Cᵢ₊₁ in REVERSE</text>
-      <text x="395" y="346" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" font-style="italic" fill="#666">lets a CFG match it cell-by-cell</text>
-      <text x="395" y="357" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" font-style="italic" fill="#666">against Cᵢ — the technical trick</text>
+      <rect x="285" y="266" width="220" height="226" rx="8" fill="#fff4ee" stroke="var(--warn-strong, #b95825)" stroke-width="1.5"/>
+      <text x="395" y="290" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="var(--warn-strong, #b95825)">Branch 2 · bad transition  ★</text>
+      <text x="395" y="312" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" fill="#1a1a1a">Some (Cᵢ, Cᵢ₊₁) violates δ</text>
+      <text x="295" y="342" font-family="var(--mono), ui-monospace, monospace" font-size="12">S<tspan baseline-shift="sub" font-size="0.75em">badTrans</tspan> →</text>
+      <text x="295" y="362" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#666">   prefix · Cᵢ # C′ᵢ₊₁ · suffix</text>
+      <text x="295" y="380" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#666">   where C′ᵢ₊₁ ≠ δ-successor</text>
+      <text x="395" y="416" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">writing Cᵢ₊₁ in REVERSE</text>
+      <text x="395" y="432" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">lets a CFG match it cell-by-cell</text>
+      <text x="395" y="448" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">against Cᵢ — the technical trick</text>
 
       <!-- Branch 3: bad end -->
-      <rect x="515" y="220" width="220" height="140" rx="8" fill="#fff4ee" stroke="var(--warn-strong, #b95825)" stroke-width="1.5"/>
-      <text x="625" y="240" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--warn-strong, #b95825)">Branch 3 · bad end</text>
-      <text x="625" y="258" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#1a1a1a">Last config C_ℓ has no q_accept</text>
-      <text x="525" y="280" font-family="var(--mono), ui-monospace, monospace" font-size="10">S_badEnd →</text>
-      <text x="525" y="295" font-family="var(--mono), ui-monospace, monospace" font-size="9.5" fill="#666">   arbitrary prefix · #</text>
-      <text x="525" y="310" font-family="var(--mono), ui-monospace, monospace" font-size="9.5" fill="#666">   · (config without q_accept)</text>
-      <text x="625" y="345" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" font-style="italic" fill="#666">CFG scans the last chunk for any</text>
-      <text x="625" y="356" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" font-style="italic" fill="#666">accept-state symbol; finds none ⇒ bad</text>
+      <rect x="515" y="266" width="220" height="226" rx="8" fill="#fff4ee" stroke="var(--warn-strong, #b95825)" stroke-width="1.5"/>
+      <text x="625" y="290" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="var(--warn-strong, #b95825)">Branch 3 · bad end</text>
+      <text x="625" y="312" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" fill="#1a1a1a">Last config C_ℓ lacks q_accept</text>
+      <text x="525" y="342" font-family="var(--mono), ui-monospace, monospace" font-size="12">S<tspan baseline-shift="sub" font-size="0.75em">badEnd</tspan> →</text>
+      <text x="525" y="362" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#666">   arbitrary prefix · #</text>
+      <text x="525" y="380" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#666">   · (config w/o q_accept)</text>
+      <text x="625" y="430" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">CFG scans the last chunk for any</text>
+      <text x="625" y="446" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">accept-state symbol; finds none ⇒ bad</text>
     </g>
 
     <!-- Punchline -->
-    <text x="380" y="405" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="#1a1a1a">
+    <text x="380" y="535" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
       L(G<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>) = Σ*  ⇔  EVERY string is bad  ⇔  no valid accepting history exists  ⇔  M does NOT accept w
     </text>
-    <rect x="100" y="420" width="560" height="32" rx="8" fill="#eef9f3" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.8"/>
-    <text x="380" y="441" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
+    <rect x="100" y="552" width="560" height="40" rx="8" fill="#eef9f3" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.8"/>
+    <text x="380" y="578" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="15" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
       A<tspan baseline-shift="sub" font-size="0.75em">TM</tspan>  ≤<tspan baseline-shift="sub" font-size="0.75em">m</tspan>  co-ALL<tspan baseline-shift="sub" font-size="0.75em">CFG</tspan>     ⇒     ALL<tspan baseline-shift="sub" font-size="0.75em">CFG</tspan> is undecidable
     </text>
   </svg>

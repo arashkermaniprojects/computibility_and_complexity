@@ -454,7 +454,7 @@ footer.foot {
   min-height: 260px;
   /* If a narration is ever longer than that, scroll inside the panel rather
      than push everything else down the page. */
-  max-height: 360px;
+  max-height: 720px;
   overflow-y: auto;
   transition: background .3s;
 }

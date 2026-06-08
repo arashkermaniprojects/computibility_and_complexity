@@ -61,7 +61,7 @@
 .diagram svg {
   width: 100%;
   height: auto;
-  max-height: 360px;
+  max-height: 720px;
   display: block;
 }
 .diagram figcaption {
@@ -657,7 +657,7 @@
   </p>
 
 <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Diagram</span><audio controls preload="none" src="audio/components/m3-s4-c1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><figure class="diagram">
-  <svg viewBox="0 0 760 600" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+  <svg viewBox="0 0 760 600" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;max-height:none !important;width:100%;height:auto;display:block;">
     <defs>
       <marker id="arr-gmw" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
         <polygon points="0 0, 8 3, 0 6" fill="#444"/>
@@ -785,75 +785,75 @@
   </p>
 
 <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Diagram</span><audio controls preload="none" src="audio/components/m3-s5-c2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><figure class="diagram">
-  <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+  <svg viewBox="0 0 760 620" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;max-height:none !important;width:100%;height:auto;display:block;">
     <defs>
       <marker id="arr-rec2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
         <polygon points="0 0, 8 3, 0 6" fill="#444"/>
       </marker>
     </defs>
 
-    <text x="380" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
+    <text x="380" y="28" text-anchor="middle" font-family="var(--sans), system-ui" font-size="18" font-weight="700" fill="#1a1a1a">
       Sipser's recursion-theorem construction · build T = A·B that prints ⟨T⟩
     </text>
 
     <!-- ============ Phase 1: assemble T = AB ============ -->
-    <text x="40" y="60" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
+    <text x="40" y="74" font-family="var(--sans), system-ui" font-size="15" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
       The TM T is the concatenation of two parts:
     </text>
 
     <!-- A part -->
-    <rect x="60" y="75" width="280" height="80" rx="10" fill="var(--gold-soft)" stroke="var(--gold-strong, #a68526)" stroke-width="2"/>
-    <text x="200" y="98" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="14" font-weight="700">A</text>
-    <text x="200" y="118" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">a constant printer:</text>
-    <text x="200" y="135" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--gold-strong, #a68526)">"write ⟨B⟩ on tape and halt"</text>
-    <text x="200" y="150" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" font-style="italic" fill="#666">A is a finite program whose only action is outputting the fixed string ⟨B⟩</text>
+    <rect x="40" y="88" width="320" height="118" rx="10" fill="var(--gold-soft)" stroke="var(--gold-strong, #a68526)" stroke-width="2"/>
+    <text x="200" y="116" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="18" font-weight="700">A</text>
+    <text x="200" y="142" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" fill="#1a1a1a">a constant printer:</text>
+    <text x="200" y="167" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="var(--gold-strong, #a68526)">"write ⟨B⟩ on tape and halt"</text>
+    <text x="200" y="192" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">A is a finite program whose only action is outputting ⟨B⟩</text>
 
     <!-- · symbol -->
-    <text x="370" y="120" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="22" font-weight="700">·</text>
+    <text x="380" y="156" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="28" font-weight="700">·</text>
 
     <!-- B part -->
-    <rect x="400" y="75" width="320" height="80" rx="10" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2"/>
-    <text x="560" y="98" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="14" font-weight="700">B</text>
-    <text x="560" y="118" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">the "real work" plus the self-print logic:</text>
-    <text x="560" y="135" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--accent-strong, #1c4a3f)">"read tape (= ⟨B⟩), build ⟨T⟩, do the work"</text>
-    <text x="560" y="150" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" font-style="italic" fill="#666">B reads what A left and assembles its own complete source</text>
+    <rect x="400" y="88" width="320" height="118" rx="10" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2"/>
+    <text x="560" y="116" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="18" font-weight="700">B</text>
+    <text x="560" y="142" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" fill="#1a1a1a">the "real work" + self-print logic:</text>
+    <text x="560" y="167" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="var(--accent-strong, #1c4a3f)">"read tape (= ⟨B⟩), build ⟨T⟩, do work"</text>
+    <text x="560" y="192" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">B reads what A left and assembles its own complete source</text>
 
     <!-- ============ Phase 2: T's run on tape ============ -->
-    <text x="40" y="190" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
+    <text x="40" y="244" font-family="var(--sans), system-ui" font-size="15" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
       What happens when T runs:
     </text>
 
     <!-- step 1 -->
-    <text x="55" y="216" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="#1a1a1a">Step 1 · A runs first.</text>
-    <text x="55" y="232" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">A is just "write ⟨B⟩." After it halts, the tape contains:</text>
-    <g font-family="var(--mono), ui-monospace, monospace" font-size="12">
-      <rect x="55" y="240" width="320" height="28" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.5"/>
-      <text x="215" y="258" text-anchor="middle" font-weight="700">⟨B⟩ — the description of B as a string</text>
+    <text x="55" y="274" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">Step 1 · A runs first.</text>
+    <text x="55" y="295" font-family="var(--sans), system-ui" font-size="14" fill="#1a1a1a">A is just "write ⟨B⟩." After it halts, the tape contains:</text>
+    <g font-family="var(--mono), ui-monospace, monospace" font-size="15">
+      <rect x="55" y="306" width="420" height="36" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.5"/>
+      <text x="265" y="330" text-anchor="middle" font-weight="700">⟨B⟩ — the description of B as a string</text>
     </g>
 
     <!-- step 2 -->
-    <text x="55" y="294" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="#1a1a1a">Step 2 · B starts. It reads ⟨B⟩ off the tape and constructs ⟨A⟩.</text>
-    <text x="55" y="310" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">Key trick: <tspan font-style="italic">given</tspan> any string s, there's a fixed pattern for building "the description of a TM that prints s."</text>
-    <text x="55" y="324" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">So B uses ⟨B⟩ (now on tape) to compute ⟨A⟩, the description of A:</text>
-    <g font-family="var(--mono), ui-monospace, monospace" font-size="12">
-      <rect x="55" y="332" width="160" height="28" fill="var(--gold-soft)" stroke="var(--gold-strong, #a68526)" stroke-width="1.5"/>
-      <text x="135" y="350" text-anchor="middle" font-weight="700">⟨A⟩</text>
-      <rect x="215" y="332" width="160" height="28" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.5"/>
-      <text x="295" y="350" text-anchor="middle" font-weight="700">⟨B⟩</text>
+    <text x="55" y="375" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">Step 2 · B starts. It reads ⟨B⟩ off the tape and constructs ⟨A⟩.</text>
+    <text x="55" y="396" font-family="var(--sans), system-ui" font-size="14" fill="#1a1a1a">Key trick: <tspan font-style="italic">given</tspan> any string s, there's a fixed recipe for "TM that prints s."</text>
+    <text x="55" y="417" font-family="var(--sans), system-ui" font-size="14" fill="#1a1a1a">So B uses ⟨B⟩ (now on tape) to compute ⟨A⟩, the description of A:</text>
+    <g font-family="var(--mono), ui-monospace, monospace" font-size="16">
+      <rect x="55" y="428" width="200" height="36" fill="var(--gold-soft)" stroke="var(--gold-strong, #a68526)" stroke-width="1.5"/>
+      <text x="155" y="452" text-anchor="middle" font-weight="700">⟨A⟩</text>
+      <rect x="255" y="428" width="200" height="36" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.5"/>
+      <text x="355" y="452" text-anchor="middle" font-weight="700">⟨B⟩</text>
     </g>
-    <text x="55" y="378" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">… which concatenated is <span style="font-family: var(--mono);">⟨A⟩⟨B⟩ = ⟨A·B⟩ = ⟨T⟩</span>.  Now B has T's own description on its tape.</text>
+    <text x="55" y="492" font-family="var(--sans), system-ui" font-size="14" fill="#1a1a1a">… which concatenated is <tspan font-family="var(--mono)" font-weight="700">⟨A⟩⟨B⟩ = ⟨A·B⟩ = ⟨T⟩</tspan>.  Now B has T's own description on its tape.</text>
 
     <!-- ============ Phase 3: T uses ⟨T⟩ ============ -->
-    <line x1="40" y1="395" x2="720" y2="395" stroke="#ddd" stroke-width="1"/>
-    <text x="380" y="418" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="#1a1a1a">
+    <line x1="40" y1="512" x2="720" y2="512" stroke="#ddd" stroke-width="1"/>
+    <text x="380" y="540" text-anchor="middle" font-family="var(--sans), system-ui" font-size="16" font-weight="700" fill="#1a1a1a">
       That's the punchline: B can finish by using ⟨T⟩ as data.
     </text>
-    <text x="380" y="436" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">
+    <text x="380" y="563" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" fill="#1a1a1a">
       Print ⟨T⟩ verbatim ⇒ quine.   Feed ⟨T⟩ into a hypothetical decider D ⇒ slick A<tspan baseline-shift="sub" font-size="0.75em">TM</tspan>-undecidability.
     </text>
 
-    <rect x="100" y="447" width="560" height="28" rx="6" fill="#eef9f3" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.5"/>
-    <text x="380" y="466" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="12" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
+    <rect x="80" y="578" width="600" height="34" rx="6" fill="#eef9f3" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.5"/>
+    <text x="380" y="601" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="14" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
       Recursion theorem (Sipser 6.3): every TM can construct ⟨itself⟩ at runtime.
     </text>
   </svg>
@@ -887,11 +887,12 @@
     </div>
 
     <div class="explain-panel" id="quine-explain">
-      <div class="step-num">Idea</div>
-      The program has two parts: a string <code>S</code> containing the program text with a
-      placeholder, and a printer that fills the placeholder with a quoted copy of <code>S</code>.
-      Because the printer's behavior is captured in <code>S</code> itself, the output matches the
-      source.
+      <div class="step-num">How to use this widget</div>
+      <p style="margin: 4px 0;"><strong>1.</strong> The left pane shows the <em>source</em> of a tiny JavaScript quine.</p>
+      <p style="margin: 4px 0;"><strong>2.</strong> The right pane is empty — click <strong>▶ Run</strong> to execute the program.</p>
+      <p style="margin: 4px 0;"><strong>3.</strong> The program will <code>print(…)</code> some text into the right pane. If it's a real quine, the right pane will end up showing <em>the exact same text</em> as the left pane.</p>
+      <p style="margin: 4px 0;"><strong>4.</strong> Press <strong>Compare source vs output</strong> to verify they match byte-for-byte.</p>
+      <p style="margin: 4px 0; color: #666; font-style: italic;">Idea: <code>S</code> is a string containing the program text with a placeholder; the code prints <code>S</code> with the placeholder replaced by a quoted copy of <code>S</code> itself. Because the printer's behavior is captured in <code>S</code>, the output matches the source.</p>
     </div>
   </div>
 
@@ -919,65 +920,75 @@
     </p>
   </div>
   <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Diagram</span><audio controls preload="none" src="audio/components/m3-s5-c5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><figure class="diagram">
-  <svg viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+  <div class="callout" style="border-left-color: var(--gold, #c0a04e); background: #fbf6ef; margin: 6px 0 10px;">
+    <h5 style="margin-top: 0; color: var(--gold-strong, #a68526);">Vocabulary · what is a <em>quine</em>?</h5>
+    <p style="margin: 0;">
+      A <strong>quine</strong> (pronounced <em>kwine</em>, after logician W. V. O. Quine) is a program that, when run with no input, <strong>prints its own source code exactly</strong>. It's the canonical "self-reproducing program." The recursion theorem shows that quines exist in <em>every</em> reasonable model of computation — and the same self-reference trick powers slick undecidability proofs.
+    </p>
+  </div>
+  <svg viewBox="0 0 760 560" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;max-height:none !important;width:100%;height:auto;display:block;">
     <defs>
       <marker id="arr-rec" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
         <polygon points="0 0, 8 3, 0 6" fill="#444"/>
       </marker>
     </defs>
 
-    <text x="350" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
+    <text x="380" y="30" text-anchor="middle" font-family="var(--sans), system-ui" font-size="18" font-weight="700" fill="#1a1a1a">
       Recursion theorem · M has its own description ⟨M⟩ available on tape
     </text>
 
     <!-- TM M outer box -->
-    <rect x="20" y="55" width="660" height="220" rx="12" fill="white" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2.4"/>
-    <text x="350" y="80" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
+    <rect x="20" y="62" width="720" height="330" rx="12" fill="white" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2.4"/>
+    <text x="380" y="92" text-anchor="middle" font-family="var(--sans), system-ui" font-size="16" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
       TM M · on input w
     </text>
 
-    <!-- M's tape, split into 2 sections -->
-    <text x="50" y="110" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="#666">M's tape:</text>
-    <g font-family="var(--mono), ui-monospace, monospace" font-size="11">
+    <!-- M's tape, split into sections -->
+    <text x="50" y="128" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#666">M's tape:</text>
+    <g font-family="var(--mono), ui-monospace, monospace" font-size="14">
       <!-- Data region: M's own description -->
-      <rect x="50" y="120" width="280" height="36" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.6"/>
-      <text x="190" y="141" text-anchor="middle" font-weight="700" fill="var(--gold)">data: ⟨M⟩ (M's own description)</text>
+      <rect x="50" y="142" width="320" height="52" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.6"/>
+      <text x="210" y="174" text-anchor="middle" font-weight="700" fill="var(--gold)">data: ⟨M⟩ (M's own description)</text>
       <!-- Separator -->
-      <rect x="330" y="120" width="20" height="36" fill="#1a1a1a"/>
-      <text x="340" y="143" text-anchor="middle" font-weight="700" fill="white">#</text>
+      <rect x="370" y="142" width="26" height="52" fill="#1a1a1a"/>
+      <text x="383" y="174" text-anchor="middle" font-weight="700" fill="white">#</text>
       <!-- Input region -->
-      <rect x="350" y="120" width="100" height="36" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.6"/>
-      <text x="400" y="141" text-anchor="middle" font-weight="700" fill="var(--accent-strong, #1c4a3f)">input w</text>
+      <rect x="396" y="142" width="120" height="52" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.6"/>
+      <text x="456" y="174" text-anchor="middle" font-weight="700" fill="var(--accent-strong, #1c4a3f)">input w</text>
       <!-- work area -->
-      <rect x="450" y="120" width="200" height="36" fill="white" stroke="#888" stroke-dasharray="3 2"/>
-      <text x="550" y="141" text-anchor="middle" fill="#888">work area (scratch)</text>
+      <rect x="516" y="142" width="214" height="52" fill="white" stroke="#888" stroke-dasharray="3 2"/>
+      <text x="623" y="174" text-anchor="middle" fill="#888">work area (scratch)</text>
     </g>
 
     <!-- Code box (the "code" section of M) -->
-    <rect x="50" y="170" width="600" height="90" rx="8" fill="white" stroke="#444" stroke-width="1.2"/>
-    <text x="350" y="188" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="#1a1a1a">M's program (code):</text>
-    <g font-family="var(--mono), ui-monospace, monospace" font-size="11">
-      <text x="70" y="208">  step 1: read the data region — this gives ⟨M⟩, my own description</text>
-      <text x="70" y="226">  step 2: read the input w from the next region</text>
-      <text x="70" y="244">  step 3: compute whatever (e.g., simulate t(⟨M⟩) on w, or output ⟨M⟩, …)</text>
+    <rect x="50" y="220" width="680" height="148" rx="8" fill="white" stroke="#444" stroke-width="1.2"/>
+    <text x="390" y="243" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">M's program (code):</text>
+    <g font-family="var(--mono), ui-monospace, monospace" font-size="14">
+      <text x="72" y="270">  step 1: read the data region — this gives ⟨M⟩, my own description</text>
+      <text x="72" y="296">  step 2: read the input w from the next region</text>
+      <text x="72" y="322">  step 3: compute whatever (e.g., simulate t(⟨M⟩) on w, or output ⟨M⟩, …)</text>
+      <text x="72" y="352" font-style="italic" fill="var(--gold-strong, #a68526)">       a quine is just: step 3 = "print the data region verbatim."</text>
     </g>
 
     <!-- "uses self" arrow from code to data -->
-    <path d="M 130,200 Q 100,180 100,160" stroke="var(--accent)" stroke-width="1.6" stroke-dasharray="4 2" fill="none" marker-end="url(#arr-rec)"/>
-    <text x="50" y="180" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="var(--accent)">uses self</text>
+    <path d="M 140,260 Q 110,225 110,200" stroke="var(--accent)" stroke-width="1.8" stroke-dasharray="4 2" fill="none" marker-end="url(#arr-rec)"/>
+    <text x="50" y="228" font-family="var(--sans), system-ui" font-size="12" font-style="italic" fill="var(--accent)">uses self</text>
 
     <!-- Below the box: the theorem statement and one application -->
-    <text x="350" y="305" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="#1a1a1a">
+    <text x="380" y="430" text-anchor="middle" font-family="var(--sans), system-ui" font-size="16" font-weight="700" fill="#1a1a1a">
       Theorem (Recursion).  For every computable function t, there exists a TM M with L(M) = L(t(⟨M⟩)).
     </text>
-    <text x="350" y="325" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#666">
+    <text x="380" y="458" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" fill="#666">
       Equivalently: M can "look up" its own source code at runtime and compute with it.
     </text>
-    <text x="350" y="350" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">
-      Apps: quines (print ⟨M⟩), self-checking proofs, slick re-derivation of A<tspan baseline-shift="sub" font-size="0.75em">TM</tspan> undecidability.
+    <text x="380" y="492" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-style="italic" fill="#666">
+      Apps: quines (a TM that prints ⟨M⟩), self-checking proofs, slick re-derivation of A<tspan baseline-shift="sub" font-size="0.75em">TM</tspan> undecidability.
+    </text>
+    <text x="380" y="528" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" fill="var(--gold-strong, #a68526)" font-weight="700">
+      "quine" = a program that prints its own source code (named after logician W. V. O. Quine).
     </text>
   </svg>
-  <figcaption>Recursion theorem in pictures: M's tape has a dedicated <em>data region</em> holding M's own description ⟨M⟩, plus the usual input region and work area. The "code" part of M references this data region whenever it needs to know its own source. This is the formal version of "programs can quote themselves" — and is the engine behind quines and several short undecidability proofs.</figcaption>
+  <figcaption>Recursion theorem in pictures: M's tape has a dedicated <em>data region</em> holding M's own description ⟨M⟩, plus the usual input region and work area. The "code" part of M references this data region whenever it needs to know its own source. This is the formal version of "programs can quote themselves" — and is the engine behind <strong>quines</strong> (programs that print their own source code, pronounced <em>kwine</em>) and several short undecidability proofs.</figcaption>
 </figure>
 
 </section>
@@ -994,7 +1005,7 @@
   </p>
 
 <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Diagram</span><audio controls preload="none" src="audio/components/m3-s6-c1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><figure class="diagram">
-  <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+  <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;max-height:none !important;width:100%;height:auto;display:block;">
     <defs>
       <marker id="arr-rice" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
         <polygon points="0 0, 8 3, 0 6" fill="#444"/>
@@ -1385,39 +1396,83 @@
 const S = "// Quine: prints itself\\nconst S = ###;\\nprint(S.replace('###', JSON.stringify(S)));";
 print(S.replace('###', JSON.stringify(S)));`;
 
-  document.getElementById('quine-src').textContent = src;
-  let output = '';
+  const srcEl = document.getElementById('quine-src');
+  const outEl = document.getElementById('quine-out');
+  const runBtn = document.getElementById('quine-run');
+  const diffBtn = document.getElementById('quine-diff');
+  const explainEl = document.getElementById('quine-explain');
 
-  function runQuine() {
-    // simulate "print" by collecting into output
-    output = '';
+  srcEl.textContent = src;
+  outEl.textContent = '(click ▶ Run to execute the program)';
+  outEl.style.color = '#999';
+  outEl.style.fontStyle = 'italic';
+
+  let lastOutput = '';
+
+  function executeQuine() {
+    let output = '';
     const printFn = (s) => { output += s; };
     try {
-      // eval the source in a sandbox-ish context
-      const fn = new Function('print', `const JSON_stringify = JSON.stringify; ${src.replace(/print/g, '__p__')}`.replace(/__p__/g, 'print'));
+      const fn = new Function('print', src);
       fn(printFn);
     } catch (e) {
       output = '(error: ' + e.message + ')';
     }
-    document.getElementById('quine-out').textContent = output;
-    document.getElementById('quine-explain').innerHTML =
-      `<div class="step-num">Quine executed — output matches source (or very nearly)</div>
-       <p style="margin:4px 0;"><strong>The two-part structure.</strong> Every quine splits into a <em>data half</em> S (a string literal) and a <em>code half</em> (a procedure that uses S). The string S contains the source code with a placeholder; the code prints S with the placeholder replaced by a properly-quoted copy of S itself.</p>
-       <p style="margin:4px 0;"><strong>Why this isn't cheating.</strong> The program never "reads its own source file." It just operates on the string variable S, which happens to look like the source. The match between output and source is forced by the construction — not by file I/O.</p>
-       <p style="margin:4px 0;"><strong>The deeper claim (Recursion Theorem).</strong> For any computable function T(⟨P⟩, w), there is a TM R such that R(w) computes T(⟨R⟩, w). The quine is the special case T(⟨P⟩, w) = "print ⟨P⟩ and halt." R is then a program that prints its own description.</p>
-       <p style="margin:4px 0;"><strong>Why we care.</strong> Many undecidability proofs that "feel like cheating" — diagonalization, Rice's theorem, the incompleteness theorem — are cleanest when expressed using the Recursion Theorem. It lets a TM behave as if it can <em>look up its own description</em>, which lets us write contradictions of the form "M does the opposite of what D(⟨M⟩) says."</p>`;
+    return output;
   }
 
-  document.getElementById('quine-run').onclick = runQuine;
-  document.getElementById('quine-diff').onclick = () => {
-    const out = document.getElementById('quine-out').textContent;
-    const same = out === src;
-    document.getElementById('quine-explain').innerHTML =
-      `<div class="step-num">${same ? 'Output ≡ Source ✓' : 'Output ≈ Source (small escaping difference)'}</div>
-       <p style="margin:4px 0;">${same ? '<strong>Perfect quine.</strong> Byte-for-byte identical.' : '<strong>Near-quine.</strong> The output is essentially the source, modulo minor escaping artifacts of JSON.stringify. The mathematical statement (Recursion Theorem) is unaffected: a "true" quine exists in any programming language Turing-complete enough to do string concatenation.'}</p>
-       <p style="margin:4px 0;"><strong>Try writing your own.</strong> The smallest known Lisp quine: <code>((lambda (x) (list x (list (quote quote) x))) (quote (lambda (x) (list x (list (quote quote) x)))))</code>. The smallest Python quine: <code>s='s=%r;print(s%%s)';print(s%s)</code>. Both follow the same "data + code that quotes the data" pattern.</p>`;
+  function runQuine() {
+    // Step 1: clear the output pane immediately so the user sees the change
+    outEl.style.color = '';
+    outEl.style.fontStyle = 'normal';
+    outEl.textContent = '▶ running…';
+    outEl.style.background = 'var(--gold-soft, #fff3d6)';
+    runBtn.disabled = true;
+    runBtn.textContent = 'Running…';
+
+    // Step 2: after a brief pause, run and populate
+    setTimeout(() => {
+      const output = executeQuine();
+      lastOutput = output;
+      outEl.textContent = output;
+      outEl.style.background = 'var(--accent-soft)';
+
+      // Step 3: highlight effect — flash green briefly
+      setTimeout(() => {
+        outEl.style.transition = 'background 0.6s ease';
+        outEl.style.background = '';  // back to original (CSS handles it)
+        runBtn.disabled = false;
+        runBtn.textContent = 'Run again';
+      }, 400);
+
+      // Step 4: update verdict box right after running
+      const same = (output === src);
+      const verdict = same
+        ? '<div class="step-num" style="background: #c8e6c9; color: #1b5e20;">✓ Quine executed — output is byte-for-byte identical to source</div>'
+        : '<div class="step-num" style="background: #fff3d6; color: #8a6500;">✓ Quine executed — output is essentially identical (minor escape differences)</div>';
+      explainEl.innerHTML = verdict +
+        `<p style="margin:6px 0;"><strong>What you should see.</strong> The "Output" pane on the right now contains the <em>same text</em> as the "Source code" pane on the left. That's the entire point of a quine — running the program reproduces its own source. Press <strong>Compare source vs output</strong> below to verify byte-for-byte.</p>
+         <p style="margin:6px 0;"><strong>The two-part structure.</strong> Every quine splits into a <em>data half</em> <code>S</code> (a string literal containing the program text with a placeholder <code>###</code>) and a <em>code half</em> (a procedure that prints <code>S</code> with the placeholder replaced by a properly-quoted copy of <code>S</code> itself).</p>
+         <p style="margin:6px 0;"><strong>Why this isn't cheating.</strong> The program never "reads its own source file." It only operates on the string variable <code>S</code>, which happens to look like the source. The match between output and source is forced by the construction — not by file I/O.</p>
+         <p style="margin:6px 0;"><strong>The deeper claim (Recursion Theorem).</strong> For any computable function <code>T(⟨P⟩, w)</code>, there is a TM <code>R</code> such that <code>R(w)</code> computes <code>T(⟨R⟩, w)</code>. The quine is the special case <code>T(⟨P⟩, w) = "print ⟨P⟩ and halt."</code> <code>R</code> is then a program that prints its own description.</p>
+         <p style="margin:6px 0;"><strong>Why we care.</strong> Many undecidability proofs that "feel like cheating" — diagonalization, Rice's theorem, Gödel's incompleteness — are cleanest when expressed using the Recursion Theorem. It lets a TM behave as if it can <em>look up its own description</em>, which lets us write contradictions of the form "M does the opposite of what D(⟨M⟩) says."</p>`;
+    }, 350);
+  }
+
+  runBtn.onclick = runQuine;
+  diffBtn.onclick = () => {
+    if (!lastOutput) {
+      explainEl.innerHTML =
+        '<div class="step-num" style="background: #fbe9e7; color: #c62828;">Run the program first</div>' +
+        '<p style="margin:6px 0;">Click <strong>▶ Run</strong> above so the Output pane gets populated, then come back and click Compare.</p>';
+      return;
+    }
+    const same = lastOutput === src;
+    explainEl.innerHTML =
+      `<div class="step-num" style="background: ${same ? '#c8e6c9' : '#fff3d6'}; color: ${same ? '#1b5e20' : '#8a6500'};">${same ? '✓ Output ≡ Source (perfect quine — byte-for-byte identical)' : '≈ Output matches Source up to escape characters (near-quine)'}</div>
+       <p style="margin:6px 0;">${same ? '<strong>Perfect quine.</strong> The string returned by <code>S.replace(\'###\', JSON.stringify(S))</code> equals the entire source verbatim. This is the fixed-point property: source = output.' : '<strong>Near-quine.</strong> The output is essentially the source, modulo minor escaping artifacts of JSON.stringify. The Recursion Theorem guarantees a "true" quine exists in any programming language Turing-complete enough to do string concatenation.'}</p>
+       <p style="margin:6px 0;"><strong>Famous tiny quines.</strong> Lisp: <code>((lambda (x) (list x (list 'quote x))) '(lambda (x) (list x (list 'quote x))))</code>. Python: <code>s='s=%r;print(s%%s)';print(s%s)</code>. Both follow the same "data + code that quotes the data" pattern.</p>`;
   };
-  runQuine();
 })();
 
 // ----- Rice's theorem quiz (Widget 4) -----

@@ -599,7 +599,7 @@
   <figcaption>The LBA B<sub>M,w</sub> hardcodes the TM M and the string w. On any input x, it performs three local checks (start, transition, accept) on x interpreted as a sequence of configurations C₁ # … # C_ℓ. Because each check is local, the LBA never needs more tape than |x|. Therefore L(B<sub>M,w</sub>) is non-empty exactly when an accepting history of M on w exists — i.e., when M accepts w. A decider for E<sub>LBA</sub> would let us decide A<sub>TM</sub>, which is impossible.</figcaption>
 </figure>
 
-  <div class="callout" style="border-left-color: var(--info, #2f60a8); background: #f3f6fb; margin: 12px 0;">
+  <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Direction note</span><audio controls preload="none" src="audio/components/m3-s3-cco.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="callout" style="border-left-color: var(--info, #2f60a8); background: #f3f6fb; margin: 12px 0;">
     <h5 style="margin-top: 0; color: var(--info, #2f60a8);">Wait — isn't this proof actually about <span class="math"><span class="overline">E<sub>LBA</sub></span></span> (non-emptiness)?</h5>
     <p style="margin: 0 0 6px;">
       <strong>Yes — and that's fine.</strong> Look at the punchline of the figure: <span class="math">L(B<sub>M,w</sub>) ≠ ∅ ⇔ M accepts w</span>. Read literally, this says <span class="math">M</span> accepts <span class="math">w</span> iff <span class="math">⟨B<sub>M,w</sub>⟩ ∈ <span class="overline">E<sub>LBA</sub></span></span> (i.e., the LBA's language is <em>non-empty</em>). So the function <span class="math">⟨M, w⟩ ↦ ⟨B<sub>M,w</sub>⟩</span> is a many-one reduction <span class="math">A<sub>TM</sub> ≤<sub>m</sub> <span class="overline">E<sub>LBA</sub></span></span>, <em>not</em> <span class="math">A<sub>TM</sub> ≤<sub>m</sub> E<sub>LBA</sub></span>.
@@ -747,7 +747,7 @@
   <figcaption>The CFG G<sub>M,w</sub> generates every string EXCEPT valid accepting histories of M on w. It does this by three nondeterministic branches, each detecting one kind of local violation: wrong start, wrong transition (the trick is writing odd-indexed configs in reverse so a CFG can match them position-by-position), or non-accepting end. So L(G<sub>M,w</sub>) = Σ* exactly when there is no accepting history, i.e., M does not accept w. A decider for ALL<sub>CFG</sub> would decide A<sub>TM</sub> (Sipser Theorem 5.13).</figcaption>
 </figure>
 
-  <div class="callout" style="border-left-color: var(--info, #2f60a8); background: #f3f6fb; margin: 12px 0;">
+  <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Direction note</span><audio controls preload="none" src="audio/components/m3-s4-cco.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="callout" style="border-left-color: var(--info, #2f60a8); background: #f3f6fb; margin: 12px 0;">
     <h5 style="margin-top: 0; color: var(--info, #2f60a8);">Same question as slide 3 — isn't this proof actually about <span class="math"><span class="overline">ALL<sub>CFG</sub></span></span>?</h5>
     <p style="margin: 0 0 6px;">
       <strong>Yes, exactly the same pattern as E<sub>LBA</sub>.</strong> The figure footer literally states <span class="math">A<sub>TM</sub> ≤<sub>m</sub> <span class="overline">ALL<sub>CFG</sub></span></span>. Read off the punchline: <span class="math">L(G<sub>M,w</sub>) = Σ* ⇔ M does NOT accept w</span>. So <span class="math">⟨G<sub>M,w</sub>⟩ ∈ ALL<sub>CFG</sub> ⇔ M does not accept w</span>, which means <span class="math">⟨G<sub>M,w</sub>⟩ ∈ <span class="overline">ALL<sub>CFG</sub></span> ⇔ M accepts w</span>. The mapping <span class="math">⟨M, w⟩ ↦ ⟨G<sub>M,w</sub>⟩</span> is a reduction <span class="math">A<sub>TM</sub> ≤<sub>m</sub> <span class="overline">ALL<sub>CFG</sub></span></span>, <em>not</em> <span class="math">A<sub>TM</sub> ≤<sub>m</sub> ALL<sub>CFG</sub></span>.
@@ -805,7 +805,7 @@
     </p>
   </div>
 
-  <div class="callout" style="border-left-color: var(--info, #2f60a8); background: #f3f6fb; margin: 12px 0;">
+  <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Friendly read</span><audio controls preload="none" src="audio/components/m3-s5-c1-friendly.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="callout" style="border-left-color: var(--info, #2f60a8); background: #f3f6fb; margin: 12px 0;">
     <h5 style="margin-top: 0; color: var(--info, #2f60a8);">Wait, what does that even mean? — a friendlier read</h5>
     <p style="margin: 0 0 8px;">
       Read the statement in two steps.
@@ -937,7 +937,7 @@
     <figcaption>The recursion theorem in one picture. Top: you supply a 2-input "template" T. Middle: the puzzle — R is supposed to behave like T with R's own code plugged into slot 1, but R can't simply read its own code. Bottom: the recursion theorem's answer — R has two phases. Phase (a) re-creates ⟨R⟩ on the tape from scratch using the A · B construction in the previous diagram (no need to "read" anything — the description is computed, not retrieved). Phase (b) then runs T on (⟨R⟩, w). The net effect is R(w) = T(⟨R⟩, w), exactly as the theorem promises.</figcaption>
   </figure>
 
-  <div class="callout" style="border-left-color: var(--gold-strong, #a68526); background: #fbf6ef; margin: 12px 0;">
+  <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Examples</span><audio controls preload="none" src="audio/components/m3-s5-c1-examples.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="callout" style="border-left-color: var(--gold-strong, #a68526); background: #fbf6ef; margin: 12px 0;">
     <h5 style="margin-top: 0; color: var(--gold-strong, #a68526);">Two examples to anchor the idea</h5>
     <p style="margin: 0 0 8px;">
       <strong>Example 1 · the quine.</strong> Pick <code>T(⟨M⟩, w) = "print ⟨M⟩ and halt"</code> — T just echoes whatever's in slot 1. Plug T into the recursion theorem. You get back R with the behavior <code>R(w) = T(⟨R⟩, w) = "print ⟨R⟩ and halt"</code>. So R is a TM that prints its own source code — a quine. The recursion theorem says quines always exist in any Turing-complete language. (We just built one in the widget above.)

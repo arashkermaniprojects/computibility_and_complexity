@@ -1,0 +1,7 @@
+Let's unpack the formal statement of the recursion theorem into something more intuitive. Read it in two steps.
+
+Step one: YOU write a template called T. T is just a two-argument program. Its first slot expects the source code of some Turing machine. Its second slot expects an input string. Inside T, you can do whatever you want with those two arguments. For instance, T could be the program "print whatever's in slot one and halt." Or it could be "simulate the machine from slot one on the input from slot two, but flip the accept-reject answer." T is your design choice.
+
+Step two: the theorem hands you back a machine R. R is a single-argument machine. Its behavior is exactly this: act like T with R's own source code already plugged into slot one. Plug T equals "print slot one" into the theorem — you get R, a machine that prints its own source. That's a quine. Plug T equals "simulate slot one and flip the answer" — you get R, a machine that contradicts itself. That's the engine behind slick undecidability proofs.
+
+Why is this called RECURSION? Because every recursive function in a programming language secretly needs a reference to itself. In Python, when you write "def f of w" with f calling itself inside, the interpreter binds the name f to its own body. The recursion theorem says Turing machines have the same superpower. "Reading my own source code" sounds impossible — where would it come from? But the previous figure showed it's effectively constructible.

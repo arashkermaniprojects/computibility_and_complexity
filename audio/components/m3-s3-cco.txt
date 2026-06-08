@@ -1,0 +1,5 @@
+Quick warning about direction. The diagram above says L of B-sub-M,w is non-empty if and only if M accepts w. That literally means M accepts w if and only if our constructed LBA's encoding is in co-E-sub-L-B-A — the complement of E-sub-L-B-A, the language of LBAs with non-empty languages. So the literal reduction we just built is from A-sub-T-M into co-E-sub-L-B-A, not into E-sub-L-B-A.
+
+That's actually fine, and here's why. Decidability is closed under complement. If a language is decidable, you can flip the decider's output bit and get a decider for its complement. So co-E-sub-L-B-A being undecidable is mathematically the SAME statement as E-sub-L-B-A being undecidable. We can use either as the target.
+
+Equivalently: A-sub-T-M reduces to co-E-sub-L-B-A if and only if the complement of A-sub-T-M reduces to E-sub-L-B-A. They're two ways to write the same theorem. The "output the opposite" trick in the next paragraph is just the complement-flip made concrete in code.

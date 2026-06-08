@@ -1,7 +1,11 @@
-Rice's theorem says: every nontrivial semantic property of a TM's language is undecidable. Here is the proof in pictures.
+Rice's theorem says every interesting question about what a Turing machine's language looks like — is it empty, is it regular, is it finite — is undecidable. This diagram shows why, in three steps.
 
-Suppose, for contradiction, we have a decider R for some such property P. Because P is nontrivial, there are TMs T-yes and T-no whose languages have, and don't have, property P. Without loss of generality, pick T-no as the trivial machine that rejects everything, so L of T-no is empty.
+Step one. Assume the opposite for contradiction. Suppose some property P is nontrivial and semantic. Nontrivial means some recognizable languages have P and others don't. Semantic means only the language matters, not how the machine is wired. Suppose, on top of that, some Turing machine R can decide P — given any machine's description, R answers yes or no.
 
-The reduction maps angle-bracket M, w angle-bracket to angle-bracket M sub M, w angle-bracket. The TM M sub M, w on any input x first runs M on w, ignoring x. If M does not accept w, M sub M, w rejects x and stops. Otherwise, M sub M, w hands x to T-yes and copies T-yes's answer. So L of M sub M, w is L of T-yes when M accepts w, and is empty when M does not accept w.
+Step two. Build the gate. Because P is nontrivial, two witness machines must exist. Call them T-yes and T-no. T-yes's language has property P. T-no's language doesn't. We pick T-no to be the trivial machine that rejects everything, so its language is just the empty set.
 
-Now feed angle-bracket M sub M, w angle-bracket to R. R tells us whether L of M sub M, w has property P. By the case analysis: yes if and only if M accepts w. We've decided A-T-M, which is impossible. So R cannot exist; property P is undecidable. This is Sipser theorem 6.10.
+Now the trick. Given any pair — a machine M and a string w — we construct a brand new machine. Call it M-sub-Mw. It takes an input x and behaves like this: first, ignore x for a moment and run M on w. If M does not accept w, M-sub-Mw immediately rejects x. Otherwise, M has accepted w, and now M-sub-Mw hands x off to T-yes and copies whatever T-yes does.
+
+What is the language of this new machine? If M accepts w, M-sub-Mw accepts exactly the same strings T-yes does — so its language equals T-yes's language and has property P. If M does not accept w, M-sub-Mw rejects everything — so its language is empty, which has the same shape as T-no's language and does not have property P. We've engineered a machine whose language has property P exactly when M accepts w.
+
+Step three. Derive the contradiction. Feed our newly built machine into our hypothetical decider R. Because R decides property P, it says yes if and only if M accepts w. But that gives us a procedure for deciding A-sub-T-M — accepting computations of arbitrary TMs on arbitrary strings — which we proved is undecidable back in Module 2. So R cannot exist. Property P is undecidable. This is Sipser theorem 6.10.

@@ -334,7 +334,7 @@
   </p>
 
 <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Diagram</span><audio controls preload="none" src="audio/components/m3-s2-c1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><figure class="diagram">
-  <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+  <svg viewBox="0 0 720 390" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
     <defs>
       <marker id="arr-lba" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
         <polygon points="0 0, 8 3, 0 6" fill="var(--warn-strong, #b95825)"/>
@@ -432,9 +432,12 @@
     </text>
 
     <!-- key insight box -->
-    <rect x="20" y="320" width="680" height="32" rx="6" fill="#eef9f3" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.5"/>
+    <rect x="20" y="320" width="680" height="58" rx="6" fill="#eef9f3" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.5"/>
     <text x="360" y="340" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11.5" fill="var(--accent-strong, #1c4a3f)">
-      <tspan font-weight="700">The only difference from a TM:</tspan> the LBA can read and write the n input cells but must never move past ⊢ or ⊣. That single restriction collapses ∞ to a polynomial bound.
+      <tspan font-weight="700">The only difference from a TM:</tspan> the LBA can read and write the n input cells
+    </text>
+    <text x="360" y="360" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11.5" fill="var(--accent-strong, #1c4a3f)">
+      but must never move past ⊢ or ⊣ — that single restriction collapses ∞ to a polynomial bound.
     </text>
   </svg>
   <figcaption>An LBA is a Turing machine whose tape is exactly as long as the input — visualized by the end markers ⊢ and ⊣ that the head may not cross. With only n cells available, the number of configurations is finite, so A<sub>LBA</sub> = {⟨M, w⟩ : M is an LBA that accepts w} is decidable (Sipser Theorem 5.9). E<sub>LBA</sub> remains undecidable — see the next slide.</figcaption>

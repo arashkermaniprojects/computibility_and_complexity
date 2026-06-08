@@ -701,6 +701,38 @@
     languages are equal.
   </p>
 
+  <div class="callout" style="border-left-color: var(--info, #2f60a8); background: #f3f6fb; margin: 12px 0;">
+    <h5 style="margin-top: 0; color: var(--info, #2f60a8);">How to read the widget — step by step</h5>
+
+    <p style="margin: 6px 0;"><strong>1 · The two input DFAs.</strong></p>
+    <ul style="margin: 4px 0 8px 18px; padding: 0;">
+      <li><span class="math">A</span> tracks the parity of <code>0</code>s. State <code>p<sub>0</sub></code> (start, double-circled = accept) means "even count so far." State <code>p<sub>1</sub></code> means "odd count." A <code>0</code> toggles between them; a <code>1</code> is a self-loop. So <code>L(A) = {strings with an even number of 0s}</code>.</li>
+      <li><span class="math">B</span> tracks the last symbol. State <code>r<sub>0</sub></code> (start, accept) means "last symbol was a <code>0</code>" (also accepts ε). State <code>r<sub>1</sub></code> means "last symbol was a <code>1</code>." So <code>L(B) ≈ {strings whose last symbol is 0}</code>.</li>
+    </ul>
+    <p style="margin: 4px 0 8px;">Quick test: on input <code>"0"</code> — <span class="math">A</span> rejects (1 zero, odd), <span class="math">B</span> accepts (last is 0). They disagree, so <code>"0" ∈ L(A) △ L(B)</code>. Similarly <code>"1"</code> is a witness: <span class="math">A</span> accepts (0 zeros, even), <span class="math">B</span> rejects.</p>
+
+    <p style="margin: 6px 0;"><strong>2 · Why <span class="math">C</span>'s states are pairs <code>(p, r)</code>.</strong> To check whether <span class="math">A</span> and <span class="math">B</span> agree on a string, we run them <strong>in parallel</strong> on the same input. The current "joint state" is the pair (A's state, B's state). When the next input symbol arrives, both machines move at once: <code>(p, r) →σ (δ<sub>A</sub>(p, σ), δ<sub>B</sub>(r, σ))</code>. With 2 states in <span class="math">A</span> and 2 in <span class="math">B</span>, we get 2 × 2 = 4 product states.</p>
+
+    <p style="margin: 6px 0;"><strong>3 · Reading the four columns of the table.</strong></p>
+    <ul style="margin: 4px 0 8px 18px; padding: 0;">
+      <li><code>(p, r)</code> — the product state.</li>
+      <li><code>0 →</code> — where it goes on input <code>0</code>. E.g. <code>(p<sub>0</sub>, r<sub>0</sub>) →0 (p<sub>1</sub>, r<sub>0</sub>)</code> because <code>p<sub>0</sub> →0 p<sub>1</sub></code> in <span class="math">A</span> and <code>r<sub>0</sub> →0 r<sub>0</sub></code> in <span class="math">B</span>.</li>
+      <li><code>1 →</code> — same on input <code>1</code>.</li>
+      <li><strong>Accept (exactly-one)</strong> — marked when <em>exactly one</em> of <code>p ∈ accept(A)</code> and <code>r ∈ accept(B)</code> holds. This is the symmetric-difference accept rule: at this joint state, <span class="math">A</span> says "yes" and <span class="math">B</span> says "no" (or vice-versa), so the string read so far is in <code>L(A) △ L(B)</code>.</li>
+      <li><strong>Reachable?</strong> — can we reach this pair from the start pair <code>(p<sub>0</sub>, r<sub>0</sub>)</code> via some input string? Click <strong>Run reachability</strong> to do a BFS and fill this column with ✓.</li>
+    </ul>
+
+    <p style="margin: 6px 0;"><strong>4 · Verifying the four rows.</strong></p>
+    <ul style="margin: 4px 0 8px 18px; padding: 0;">
+      <li><code>(p<sub>0</sub>, r<sub>0</sub>)</code> — both <span class="math">A</span> and <span class="math">B</span> accept here (think: input "" or "00"). Two accepts → not exactly-one → <strong>not</strong> a witness.</li>
+      <li><code>(p<sub>0</sub>, r<sub>1</sub>)</code> — <span class="math">A</span> accepts, <span class="math">B</span> rejects (think: input "1"). One accepts → <strong>exactly-one</strong>. ✓</li>
+      <li><code>(p<sub>1</sub>, r<sub>0</sub>)</code> — <span class="math">A</span> rejects, <span class="math">B</span> accepts (think: input "0"). One accepts → <strong>exactly-one</strong>. ✓</li>
+      <li><code>(p<sub>1</sub>, r<sub>1</sub>)</code> — both reject (think: input "01"). Zero accepts → not exactly-one.</li>
+    </ul>
+
+    <p style="margin: 6px 0;"><strong>5 · The verdict.</strong> Decide <span class="math">EQ<sub>DFA</sub></span> by asking: <em>is any exactly-one state reachable from the start pair?</em> If yes, there's a string that reaches it; that string is a witness <span class="math">x ∈ L(A) △ L(B)</span>, proving <span class="math">L(A) ≠ L(B)</span>. If no, the symmetric difference is empty and <span class="math">L(A) = L(B)</span>. For these specific A and B, the input "1" reaches <code>(p<sub>0</sub>, r<sub>1</sub>)</code> in one step — a witness exists, so <strong>L(A) ≠ L(B)</strong>.</p>
+  </div>
+
   <div class="widget" id="eqdfa-sim">
     <div class="widget-title">EQ<sub>DFA</sub> · symmetric-difference DFA C <span class="pill">Widget 3</span></div>
 
@@ -2066,32 +2098,77 @@ D -> d</textarea>
     if (productCells.length < 4) { while (buildOneCell()) {} }
     const startPair = `(${A.start}, ${B.start})`;
     reachedSet = new Set([startPair]);
+    // BFS with predecessor tracking so we can reconstruct a witness string
+    const predecessor = {}; // pair -> {from: prevPair, symbol: '0' or '1'}
+    predecessor[startPair] = null;
     let frontier = [startPair];
     while (frontier.length) {
       const newF = [];
       for (const pair of frontier) {
         const cell = productCells.find(c => `(${c.p}, ${c.r})` === pair);
-        for (const next of [`(${cell.d0[0]}, ${cell.d0[1]})`, `(${cell.d1[0]}, ${cell.d1[1]})`]) {
-          if (!reachedSet.has(next)) { reachedSet.add(next); newF.push(next); }
+        const nexts = [
+          { sym: '0', next: `(${cell.d0[0]}, ${cell.d0[1]})` },
+          { sym: '1', next: `(${cell.d1[0]}, ${cell.d1[1]})` },
+        ];
+        for (const { sym, next } of nexts) {
+          if (!reachedSet.has(next)) {
+            reachedSet.add(next);
+            predecessor[next] = { from: pair, symbol: sym };
+            newF.push(next);
+          }
         }
       }
       frontier = newF;
     }
-    const hitXor = productCells.some(c => c.acc && reachedSet.has(`(${c.p}, ${c.r})`));
+    const acceptingReached = productCells.find(c => c.acc && reachedSet.has(`(${c.p}, ${c.r})`));
     renderProduct();
-    document.getElementById('eq-explain').innerHTML =
-      `<div class="step-num">Verdict</div>${hitXor ?
-        '<b>L(A) ≠ L(B)</b> — a reachable exactly-one state exists, witnessing a string on which A and B disagree.' :
-        '<b>L(A) = L(B)</b> — no reachable exactly-one state, so A and B agree on every input.'}`;
+    let verdictHtml;
+    if (acceptingReached) {
+      // Reconstruct witness string by walking predecessors backward
+      const targetPair = `(${acceptingReached.p}, ${acceptingReached.r})`;
+      const path = [];
+      let cur = targetPair;
+      while (predecessor[cur]) {
+        path.unshift(predecessor[cur].symbol);
+        cur = predecessor[cur].from;
+      }
+      const witness = path.join('') || 'ε';
+      const aAcc = A.accept.has(acceptingReached.p);
+      const bAcc = B.accept.has(acceptingReached.r);
+      const aSide = aAcc ? '<b>A accepts</b>' : '<b>A rejects</b>';
+      const bSide = bAcc ? '<b>B accepts</b>' : '<b>B rejects</b>';
+      verdictHtml =
+        `<div class="step-num" style="background: var(--warn-soft); color: #7a3a18;">Verdict · L(A) ≠ L(B)</div>` +
+        `<p style="margin:6px 0;"><strong>A reachable exactly-one state exists:</strong> <code>(${acceptingReached.p}, ${acceptingReached.r})</code>.</p>` +
+        `<p style="margin:6px 0;"><strong>Witness string:</strong> <code style="font-size: 14px; background: #fff3d6; padding: 2px 6px; border-radius: 3px;">"${witness}"</code> — reading this string from the start pair lands at <code>(${acceptingReached.p}, ${acceptingReached.r})</code>, where ${aSide} but ${bSide}. So <code>"${witness}" ∈ L(A) △ L(B)</code>, proving L(A) and L(B) are different.</p>` +
+        `<p style="margin:6px 0; font-size: 12.5px; color: #555;"><em>Read the witness as a path in the product DFA: each character ${path.length ? 'takes you one step along the BFS tree until you reach the orange exactly-one row.' : 'is the empty string ε — meaning A and B already disagree on the empty input.'}</em></p>`;
+    } else {
+      verdictHtml =
+        `<div class="step-num" style="background: var(--accent-soft); color: #1b5e20;">Verdict · L(A) = L(B)</div>` +
+        `<p style="margin:6px 0;">No reachable exactly-one state. Every input either lands in an "<em>A accepts, B accepts</em>" row or an "<em>A rejects, B rejects</em>" row. The two machines agree on every input string, so their languages are identical.</p>`;
+    }
+    document.getElementById('eq-explain').innerHTML = verdictHtml;
   }
   document.getElementById('eq-build').onclick = () => {
     if (!buildOneCell()) {
       document.getElementById('eq-explain').innerHTML =
-        `<div class="step-num">All cells built</div>Click <strong>Run reachability</strong> to test which pairs are reachable from (p0, r0).`;
+        `<div class="step-num">All 4 cells built — now run reachability</div>
+         <p style="margin:6px 0;">DFA <span class="math">C</span> now has all four product states. The orange rows are exactly-one accept states (where <span class="math">A</span> and <span class="math">B</span> disagree). Next: click <strong>Run reachability</strong> to BFS from start pair <code>(p<sub>0</sub>, r<sub>0</sub>)</code>. If any orange row is reachable, the languages differ; if none are reachable, they're equal.</p>`;
     } else {
       const last = productCells[productCells.length-1];
+      const aAcc = A.accept.has(last.p);
+      const bAcc = B.accept.has(last.r);
+      const acceptanceText = last.acc
+        ? `<strong>Exactly one accepts:</strong> ${aAcc ? 'A accepts (' + last.p + ' is in A\'s accept set)' : 'A rejects'} but ${bAcc ? 'B accepts (' + last.r + ' is in B\'s accept set)' : 'B rejects'}. → This pair becomes an <strong>accept state of C</strong> (highlighted orange).`
+        : `<strong>${aAcc && bAcc ? 'Both A and B accept' : 'Neither A nor B accepts'}.</strong> → Not exactly-one, so this pair is <strong>not</strong> an accept state of C.`;
       document.getElementById('eq-explain').innerHTML =
-        `<div class="step-num">Cell ${productCells.length}/4</div>Added (${last.p}, ${last.r}). On '0' it goes to (${last.d0[0]}, ${last.d0[1]}). On '1' it goes to (${last.d1[0]}, ${last.d1[1]}). ${last.acc ? 'This pair is accepting.' : 'This pair is non-accepting.'}`;
+        `<div class="step-num">Built cell ${productCells.length} of 4 · added (${last.p}, ${last.r})</div>
+         <p style="margin:4px 0;"><strong>Transitions of this product state:</strong></p>
+         <ul style="margin:4px 0 6px 18px; padding: 0;">
+           <li>On input <code>0</code>: <code>(${last.p}, ${last.r}) →0 (${last.d0[0]}, ${last.d0[1]})</code> because <span class="math">A</span> says <code>${last.p}→0 ${last.d0[0]}</code> and <span class="math">B</span> says <code>${last.r}→0 ${last.d0[1]}</code>.</li>
+           <li>On input <code>1</code>: <code>(${last.p}, ${last.r}) →1 (${last.d1[0]}, ${last.d1[1]})</code> because <span class="math">A</span> says <code>${last.p}→1 ${last.d1[0]}</code> and <span class="math">B</span> says <code>${last.r}→1 ${last.d1[1]}</code>.</li>
+         </ul>
+         <p style="margin:4px 0;"><strong>Acceptance check:</strong> ${acceptanceText}</p>`;
     }
   };
   document.getElementById('eq-reach').onclick = runReach;

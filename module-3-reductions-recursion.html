@@ -1283,12 +1283,14 @@
         s += tape[i];
       }
       if (head >= tape.length) s += state + '|';
-      history.push({step, state, tape: [...tape], head, str: s});
+      const read = tape[head] || '_';
+      history.push({step, state, tape: [...tape], head, str: s, read, transition: null});
       if (state === 'qa' || state === 'qr') break;
-      const r = tape[head] || '_';
-      const key = state + ',' + r;
+      const key = state + ',' + read;
       if (!(key in prog)) break;
       const [ns, w, d] = prog[key];
+      // record the transition that fires from THIS row to produce the next row
+      history[history.length - 1].transition = {state, read, ns, w, d};
       tape[head] = w;
       if (d === 'R') { head++; if (head >= tape.length) tape.push('_'); }
       else if (d === 'L') head = Math.max(0, head-1);
@@ -1300,6 +1302,18 @@
   const presets = {
     copy: {
       input: '00',
+      Q: 'q<sub>0</sub>, q<sub>1</sub>, q<sub>2</sub>, q<sub>a</sub>, q<sub>r</sub>',
+      Sigma: '{0}',
+      Gamma: '{0, X, _}',
+      // English description for each prog rule, keyed by 'state,read'
+      deltaDesc: {
+        'q0,0': 'in state q₀ reading a 0: write X (mark this 0 as "seen"), move right, switch to q₁',
+        'q0,_': 'in state q₀ reading blank: input fully processed, accept',
+        'q1,0': 'in state q₁ reading 0: keep walking right past existing 0s',
+        'q1,_': 'in state q₁ reading blank: write a fresh 0 (this is the "shift"), move left, switch to q₂',
+        'q2,0': 'in state q₂ reading 0: walking back left to find the X marker',
+        'q2,X': 'in state q₂ reading X: step over, switch back to q₀ for the next round'
+      },
       prog: {
         'q0,0': ['q1', 'X', 'R'],
         'q0,_': ['qa', '_', 'R'],
@@ -1308,40 +1322,84 @@
         'q2,0': ['q2', '0', 'L'],
         'q2,X': ['q0', 'X', 'R']
       },
-      explanation: 'M copies its block of 0s one step to the right by marking each 0 with X and re-writing it. Watch the head shuttle back and forth.'
+      explanation: 'M shifts its block of 0s one step to the right by marking each 0 with X and writing a fresh 0 at the blank. Watch the head shuttle back and forth.'
     },
     parity: {
       input: '0000',
+      Q: 'q<sub>0</sub>, q<sub>1</sub>, q<sub>a</sub>, q<sub>r</sub>',
+      Sigma: '{0}',
+      Gamma: '{0, _}',
+      deltaDesc: {
+        'q0,0': 'in state q₀ (even so far) reading 0: stay on tape, move right, toggle to q₁ (now odd)',
+        'q1,0': 'in state q₁ (odd so far) reading 0: stay on tape, move right, toggle to q₀ (now even)',
+        'q0,_': 'in q₀ (even) at end of input: accept (even count)',
+        'q1,_': 'in q₁ (odd) at end of input: reject (odd count)'
+      },
       prog: {
         'q0,0': ['q1', '0', 'R'],
         'q1,0': ['q0', '0', 'R'],
         'q0,_': ['qa', '_', 'R'],
         'q1,_': ['qr', '_', 'R']
       },
-      explanation: 'M accepts iff the input has an even number of 0s, by toggling state q0 ↔ q1.'
+      explanation: 'M accepts iff the input has an even number of 0s, by toggling state q₀ ↔ q₁ on every 0.'
     }
   };
 
+  function fmtState(s) {
+    if (s === 'qa') return '<b style="color: var(--accent-strong);">q<sub>a</sub></b>';
+    if (s === 'qr') return '<b style="color: var(--warn-strong);">q<sub>r</sub></b>';
+    return '<b>q<sub>' + s.slice(1) + '</sub></b>';
+  }
+  function fmtTrans(t) {
+    if (!t) return '<span style="color:#999;">— halt —</span>';
+    return `δ(${fmtState(t.state)}, <code>${t.read}</code>) = (${fmtState(t.ns)}, <code>${t.w}</code>, <code>${t.d}</code>)`;
+  }
+  function fmtConfig(str) {
+    return str.replace(/q(\w+)/g, '<b>q<sub>$1</sub></b>');
+  }
+
   function load() {
     const k = document.getElementById('hist-preset').value;
-    const {input, prog, explanation} = presets[k];
+    const preset = presets[k];
+    const {input, prog, deltaDesc, Q, Sigma, Gamma, explanation} = preset;
     const hist = simulate(prog, input);
-    let html = '<table class="data" style="font-family: ui-monospace, monospace;"><thead><tr><th>Step</th><th>Configuration C<sub>i</sub></th></tr></thead><tbody>';
+
+    // === (1) Formal machine definition ===
+    let html = `<div style="background: #f3f8f3; border-left: 3px solid var(--accent-strong, #1c4a3f); padding: 8px 12px; margin: 8px 0; font-size: 13px; border-radius: 4px;">
+      <strong>Formal definition of M = (Q, Σ, Γ, δ, q<sub>0</sub>, q<sub>a</sub>, q<sub>r</sub>):</strong><br>
+      <code>Q = {${Q}}</code> &nbsp;·&nbsp; <code>Σ = ${Sigma}</code> &nbsp;·&nbsp; <code>Γ = ${Gamma}</code> &nbsp;·&nbsp; start state <code>q<sub>0</sub></code> &nbsp;·&nbsp; input = <code>${input}</code>
+    </div>`;
+
+    // === (2) Transition table δ ===
+    html += '<div style="font-size: 13px; margin: 8px 0 4px;"><strong>Transition function δ (read this first):</strong></div>';
+    html += '<table class="data" style="font-family: ui-monospace, monospace; font-size: 12.5px; margin-bottom: 14px;"><thead><tr><th style="width: 30%;">δ(state, read)</th><th style="width: 25%;">→ (new state, write, move)</th><th>What it means</th></tr></thead><tbody>';
+    for (const key in prog) {
+      const [st, r] = key.split(',');
+      const [ns, w, d] = prog[key];
+      html += `<tr><td>δ(${fmtState(st)}, <code>${r}</code>)</td><td>(${fmtState(ns)}, <code>${w}</code>, <code>${d}</code>)</td><td style="font-size:11.5px; color:#555;">${deltaDesc[key] || ''}</td></tr>`;
+    }
+    html += '</tbody></table>';
+
+    // === (3) Trace with "transition that fires next" column ===
+    html += '<div style="font-size: 13px; margin: 4px 0;"><strong>Computation trace — applying δ produces each next row:</strong></div>';
+    html += '<table class="data" style="font-family: ui-monospace, monospace; font-size: 13px;"><thead><tr><th>Step</th><th>Configuration C<sub>i</sub></th><th>Transition applied to get C<sub>i+1</sub></th></tr></thead><tbody>';
     for (const h of hist) {
       const accept = h.state === 'qa' ? ' style="background: var(--accent-soft);"' : '';
       const reject = h.state === 'qr' ? ' style="background: var(--warn-soft);"' : '';
-      html += `<tr${accept || reject}><td>${h.step}</td><td>${h.str.replace(/q(\w+)/g, '<b>q$1</b>')}</td></tr>`;
+      html += `<tr${accept || reject}><td>${h.step}</td><td>${fmtConfig(h.str)}</td><td style="font-size:12px;">${fmtTrans(h.transition)}</td></tr>`;
     }
     html += '</tbody></table>';
+
     document.getElementById('hist-out').innerHTML = html;
     const lastState = hist[hist.length-1].state;
     const accepted = lastState === 'qa';
     document.getElementById('hist-explain').innerHTML =
       `<div class="step-num">Computation history loaded — ${hist.length} configurations</div>
        <p style="margin:4px 0;"><strong>About this trace:</strong> ${explanation}</p>
-       <p style="margin:4px 0;"><strong>Reading each row:</strong> the column labeled "Configuration" shows the tape contents with the TM's current state inserted just before the cell where the head is reading. For example, <code>0q1|01</code> has 6 characters: <code>0</code> · <code>q1|</code> · <code>0</code> · <code>1</code>. The <code>q1|</code> is the head marker (state name + delimiter, NOT tape content). So the actual tape is just the 3 symbols <code>0</code>, <code>0</code>, <code>1</code> — tape = <code>001</code>, state = q1, head on cell 1 (the second <code>0</code>).</p>
-       <p style="margin:4px 0;"><strong>How rows relate:</strong> each consecutive pair (C<sub>i</sub>, C<sub>i+1</sub>) differs by exactly one transition of δ — at the head position only, plus the head movement. The entire trace is determined by the start configuration and the transition function.</p>
-       <p style="margin:4px 0;"><strong>Final verdict:</strong> the last row ends in state <code>${lastState}</code>. ${accepted ? 'Because the final state is <code>qa</code>, this is an <strong>accepting computation history</strong>.' : 'Because the final state is <code>qr</code> (or another non-accept state), this is NOT an accepting history.'}</p>
+       <p style="margin:4px 0;"><strong>Read the δ-table first.</strong> Every row of the trace below applies the row of δ whose "state, read" matches its <code>state</code> + the cell the head sits on. Look at row 0 (Configuration <code>q₀|…</code>): the head reads the cell to the right of the bar. Find the δ-row whose first column matches "<code>q₀</code>, &lt;that cell&gt;" — that's the transition that creates row 1.</p>
+       <p style="margin:4px 0;"><strong>Reading the "Configuration" column.</strong> The TM's current state is inserted just before the cell where the head is reading. For example, <code>0q<sub>1</sub>|01</code> has 6 characters: <code>0</code> · <code>q1|</code> · <code>0</code> · <code>1</code>. The <code>q<sub>1</sub>|</code> is the head marker (state name + delimiter, NOT tape content). So the actual tape is just the 3 symbols <code>001</code>, state = q<sub>1</sub>, head on cell 1 (the second <code>0</code>).</p>
+       <p style="margin:4px 0;"><strong>How rows relate:</strong> each consecutive pair (C<sub>i</sub>, C<sub>i+1</sub>) differs by exactly the transition shown in the right-hand column of row <em>i</em> — one cell change at the head position, plus head movement. The entire trace is determined by the start configuration plus δ.</p>
+       <p style="margin:4px 0;"><strong>Final verdict:</strong> the last row ends in state <code>${lastState}</code>. ${accepted ? 'Because the final state is <code>q<sub>a</sub></code>, this is an <strong>accepting computation history</strong>.' : 'Because the final state is <code>q<sub>r</sub></code> (or another non-accept state), this is NOT an accepting history.'}</p>
        <p style="margin:4px 0;"><strong>Why this matters for the next sections:</strong> we will encode this entire sequence as a single <em>string</em> — C<sub>1</sub> # C<sub>2</sub> # … # C<sub>${hist.length}</sub> — and build humble machines (LBAs, CFGs) that <em>verify</em> such strings are valid traces of TM computations. That bridges undecidable TM problems (like A<sub>TM</sub>) to nontrivial decidability/undecidability of LBA and CFG problems.</p>`;
   }
   document.getElementById('hist-load').onclick = load;

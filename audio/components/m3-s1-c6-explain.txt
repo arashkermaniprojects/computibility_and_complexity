@@ -1,0 +1,11 @@
+This green panel appears after you click Load. It walks you through the trace you just generated.
+
+About this trace: M is the small TM you selected from the preset. With "shift zeros right by one", M marks each zero with an X, walks to the end, writes a fresh zero past it, and shuttles back to mark the next one. The X is M's own working symbol, not part of the input.
+
+Reading each row: every line is one configuration. The state symbol sits just before the cell where the head is reading, with a vertical bar as a visual delimiter. So a string like zero q-one bar zero one represents three tape cells — zero, zero, one — with the head on cell one (the second zero) and the machine in state q-one. The state and the bar are bookkeeping, not tape symbols.
+
+How rows relate: each consecutive pair, C-i and C-i-plus-one, differs by exactly one transition of delta. Only the head cell and its neighbour change between rows; everything else carries over. The entire trace is determined once you fix the start configuration and the transition function.
+
+Final verdict: the panel tells you which state the last row ended in. If it's q-accept, the trace is an accepting computation history; if it's q-reject or another non-accept state, it isn't. This terminology will matter in the next two slides, where we'll build L B As and C F Gs whose job is to verify whether a given string IS a valid accepting history.
+
+That single bridge — from "TM accepts w" to "valid history exists" to "humble machine recognizes it" — is what powers the undecidability of E sub L B A and ALL sub C F G.

@@ -310,7 +310,7 @@
     </div>
 
     <div id="hist-out"></div>
-    <div class="explain-panel" id="hist-explain">
+    <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Trace explanation</span><audio controls preload="none" src="audio/components/m3-s1-c6-explain.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="explain-panel" id="hist-explain">
       <div class="step-num">Configuration format</div>
       Each row is one <strong>configuration</strong>: tape content with the current state inserted
       to the left of the head's position. So <code>q0|00</code> means "tape contains 00, state is
@@ -383,7 +383,7 @@
 
     <!-- TM can have unbounded configurations -->
     <text x="20" y="155" font-family="var(--sans), system-ui" font-size="11" fill="#666">
-      Number of configurations: <tspan font-family="var(--mono), ui-monospace, monospace">|Q| · ∞ · |Γ|<tspan baseline-shift="super" font-size="0.75em">∞</tspan></tspan> = <tspan font-weight="700" fill="var(--warn-strong, #b95825)">infinite</tspan> — A<tspan baseline-shift="sub" font-size="0.75em">TM</tspan> only <em>recognizable</em>, not decidable
+      Number of configurations: <tspan font-family="var(--mono), ui-monospace, monospace">|Q| · ∞ · |Γ|<tspan baseline-shift="super" font-size="0.75em">∞</tspan></tspan> = <tspan font-weight="700" fill="var(--warn-strong, #b95825)">infinite</tspan> — A<tspan baseline-shift="sub" font-size="0.75em">TM</tspan> only <tspan font-style="italic">recognizable</tspan>, not decidable
     </text>
 
     <!-- ========================== Divider ========================== -->
@@ -428,7 +428,7 @@
 
     <!-- Configurations count -->
     <text x="20" y="305" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">
-      Number of configurations: <tspan font-family="var(--mono), ui-monospace, monospace" font-weight="700">|Q| · n · |Γ|<tspan baseline-shift="super" font-size="0.75em">n</tspan></tspan> = <tspan font-weight="700" fill="var(--accent-strong, #1c4a3f)">finite</tspan> — so A<tspan baseline-shift="sub" font-size="0.75em">LBA</tspan> is <em>decidable</em> by step-out detection
+      Number of configurations: <tspan font-family="var(--mono), ui-monospace, monospace" font-weight="700">|Q| · n · |Γ|<tspan baseline-shift="super" font-size="0.75em">n</tspan></tspan> = <tspan font-weight="700" fill="var(--accent-strong, #1c4a3f)">finite</tspan> — so A<tspan baseline-shift="sub" font-size="0.75em">LBA</tspan> is <tspan font-style="italic">decidable</tspan> by step-out detection
     </text>
 
     <!-- key insight box -->
@@ -819,7 +819,7 @@
 
     <!-- step 2 -->
     <text x="55" y="294" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="#1a1a1a">Step 2 · B starts. It reads ⟨B⟩ off the tape and constructs ⟨A⟩.</text>
-    <text x="55" y="310" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">Key trick: <em>given</em> any string s, there's a fixed pattern for building "the description of a TM that prints s."</text>
+    <text x="55" y="310" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">Key trick: <tspan font-style="italic">given</tspan> any string s, there's a fixed pattern for building "the description of a TM that prints s."</text>
     <text x="55" y="324" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">So B uses ⟨B⟩ (now on tape) to compute ⟨A⟩, the description of A:</text>
     <g font-family="var(--mono), ui-monospace, monospace" font-size="12">
       <rect x="55" y="332" width="160" height="28" fill="var(--gold-soft)" stroke="var(--gold-strong, #a68526)" stroke-width="1.5"/>

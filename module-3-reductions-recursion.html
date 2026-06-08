@@ -497,6 +497,98 @@
     accepting. The LBA can do this in space proportional to its input (the history itself).
   </p>
 
+<div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Diagram</span><audio controls preload="none" src="audio/components/m3-s3-c2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><figure class="diagram">
+  <svg viewBox="0 0 760 500" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+    <defs>
+      <marker id="arr-bmw" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#444"/>
+      </marker>
+      <marker id="arr-bmw-acc" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="var(--accent-strong, #1c4a3f)"/>
+      </marker>
+    </defs>
+
+    <text x="380" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
+      The LBA  B<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>  — a validator for computation histories
+    </text>
+
+    <!-- ============ INPUT TAPE (top) ============ -->
+    <text x="20" y="58" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="#666">Input to B<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan> · a candidate history string x</text>
+    <g font-family="var(--mono), ui-monospace, monospace" font-size="13">
+      <rect x="20"  y="68" width="60"  height="32" fill="#fff" stroke="#444"/>
+      <text x="50"  y="89" text-anchor="middle">C₁</text>
+      <rect x="80"  y="68" width="22"  height="32" fill="#1a1a1a"/>
+      <text x="91"  y="89" text-anchor="middle" fill="white" font-weight="700">#</text>
+      <rect x="102" y="68" width="60"  height="32" fill="#fff" stroke="#444"/>
+      <text x="132" y="89" text-anchor="middle">C₂</text>
+      <rect x="162" y="68" width="22"  height="32" fill="#1a1a1a"/>
+      <text x="173" y="89" text-anchor="middle" fill="white" font-weight="700">#</text>
+      <rect x="184" y="68" width="60"  height="32" fill="#fff" stroke="#444"/>
+      <text x="214" y="89" text-anchor="middle">C₃</text>
+      <text x="252" y="89" font-size="14">…</text>
+      <rect x="280" y="68" width="22"  height="32" fill="#1a1a1a"/>
+      <text x="291" y="89" text-anchor="middle" fill="white" font-weight="700">#</text>
+      <rect x="302" y="68" width="60"  height="32" fill="#fff" stroke="#444"/>
+      <text x="332" y="89" text-anchor="middle">C_ℓ</text>
+    </g>
+    <text x="190" y="116" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#888" font-style="italic">x  =  C₁ # C₂ # C₃ # … # C_ℓ  (configurations separated by #)</text>
+
+    <!-- Arrow from input down to B box -->
+    <path d="M 190,125 L 190,160" stroke="#444" stroke-width="1.8" marker-end="url(#arr-bmw)"/>
+
+    <!-- ============ B_{M,w} BOX (middle) ============ -->
+    <rect x="60" y="165" width="640" height="220" rx="12" fill="white" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2.5"/>
+    <text x="80" y="190" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
+      B<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>  ·  hardcoded with the TM M and string w (NOT given as input)
+    </text>
+
+    <!-- Three checks the LBA performs -->
+    <g>
+      <!-- Check 1: start config -->
+      <rect x="80" y="210" width="190" height="80" rx="8" fill="var(--gold-soft)" stroke="var(--gold-strong, #a68526)" stroke-width="1.6"/>
+      <text x="175" y="232" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--gold-strong, #a68526)">Check 1 · Start config</text>
+      <text x="175" y="252" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10.5" fill="#1a1a1a">Is C₁ = q₀w with the head</text>
+      <text x="175" y="266" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10.5" fill="#1a1a1a">on the leftmost cell?</text>
+      <text x="175" y="282" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" fill="#666" font-style="italic">(LBA compares to its hardwired w)</text>
+
+      <!-- Check 2: local 2×3 windows -->
+      <rect x="285" y="210" width="190" height="80" rx="8" fill="var(--gold-soft)" stroke="var(--gold-strong, #a68526)" stroke-width="1.6"/>
+      <text x="380" y="232" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--gold-strong, #a68526)">Check 2 · Each transition</text>
+      <text x="380" y="252" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10.5" fill="#1a1a1a">Does each (Cᵢ, Cᵢ₊₁) follow</text>
+      <text x="380" y="266" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10.5" fill="#1a1a1a">by one δ-step of M?</text>
+      <text x="380" y="282" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" fill="#666" font-style="italic">(every 2×3 window obeys δ — slide 1)</text>
+
+      <!-- Check 3: accepting end -->
+      <rect x="490" y="210" width="190" height="80" rx="8" fill="var(--gold-soft)" stroke="var(--gold-strong, #a68526)" stroke-width="1.6"/>
+      <text x="585" y="232" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--gold-strong, #a68526)">Check 3 · Accepting end</text>
+      <text x="585" y="252" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10.5" fill="#1a1a1a">Does the last config C_ℓ</text>
+      <text x="585" y="266" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10.5" fill="#1a1a1a">contain the state q_accept?</text>
+      <text x="585" y="282" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" fill="#666" font-style="italic">(LBA compares to M's δ)</text>
+    </g>
+
+    <!-- AND gate -->
+    <text x="380" y="316" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="14" font-weight="700" fill="#1a1a1a">all three pass  ⇒  ACCEPT x</text>
+    <text x="380" y="334" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">otherwise  ⇒  REJECT x</text>
+
+    <text x="380" y="368" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10.5" font-style="italic" fill="#666">
+      All checks are local (constant-size windows of x) — done in space ≤ |x|, so B<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan> is genuinely an LBA.
+    </text>
+
+    <!-- ============ CONCLUSION (bottom) ============ -->
+    <line x1="60" y1="405" x2="700" y2="405" stroke="#ddd" stroke-width="1"/>
+
+    <text x="380" y="428" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="#1a1a1a">
+      L(B<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>) = { x : x is a valid accepting computation history of M on w }
+    </text>
+
+    <rect x="100" y="445" width="560" height="40" rx="8" fill="#eef9f3" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.8"/>
+    <text x="380" y="467" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="14" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
+      L(B<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>) ≠ ∅   ⇔   M accepts w
+    </text>
+  </svg>
+  <figcaption>The LBA B<sub>M,w</sub> hardcodes the TM M and the string w. On any input x, it performs three local checks (start, transition, accept) on x interpreted as a sequence of configurations C₁ # … # C_ℓ. Because each check is local, the LBA never needs more tape than |x|. Therefore L(B<sub>M,w</sub>) is non-empty exactly when an accepting history of M on w exists — i.e., when M accepts w. A decider for E<sub>LBA</sub> would let us decide A<sub>TM</sub>, which is impossible.</figcaption>
+</figure>
+
   <p>
     So if we had a decider for <span class="math">E<sub>LBA</sub></span>, we could decide
     <span class="math">A<sub>TM</sub></span>: given <span class="math">⟨M, w⟩</span>, build
@@ -505,7 +597,7 @@
     <span class="math">E<sub>LBA</sub></span>.
   </p>
 
-  <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Widget</span><audio controls preload="none" src="audio/components/m3-s3-c2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="widget" id="elba-reduce">
+  <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Widget</span><audio controls preload="none" src="audio/components/m3-s3-c3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="widget" id="elba-reduce">
     <div class="widget-title">Reduction A<sub>TM</sub> ≤ <span class="overline">E<sub>LBA</sub></span> — the moving parts <span class="pill">Widget 2</span></div>
 
     <p style="font-size: 14px; color: var(--muted);">
@@ -550,7 +642,82 @@
     accepting histories of <span class="math">M</span> on <span class="math">w</span></em>.
   </p>
 
-  <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Key idea</span><audio controls preload="none" src="audio/components/m3-s4-c1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="key-idea">
+<div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Diagram</span><audio controls preload="none" src="audio/components/m3-s4-c1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><figure class="diagram">
+  <svg viewBox="0 0 760 460" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+    <defs>
+      <marker id="arr-gmw" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#444"/>
+      </marker>
+    </defs>
+
+    <text x="380" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
+      The CFG  G<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>  · generates every string EXCEPT valid accepting histories
+    </text>
+
+    <!-- Universe diagram -->
+    <text x="40" y="55" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="#1a1a1a">Universe of strings over Σ*:</text>
+    <rect x="40" y="65" width="680" height="80" rx="6" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/>
+    <ellipse cx="380" cy="105" rx="55" ry="25" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2"/>
+    <text x="380" y="100" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10.5" font-weight="700" fill="var(--accent-strong, #1c4a3f)">valid accepting</text>
+    <text x="380" y="114" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10.5" font-weight="700" fill="var(--accent-strong, #1c4a3f)">histories of M on w</text>
+    <text x="180" y="100" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="var(--warn-strong, #b95825)">G<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan> generates this whole strip ←</text>
+    <text x="600" y="100" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="var(--warn-strong, #b95825)">→ also generates this strip</text>
+
+    <!-- CFG box -->
+    <text x="40" y="170" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="#1a1a1a">
+      G<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>'s strategy: nondeterministically guess WHERE the input violates "valid accepting history"
+    </text>
+
+    <rect x="40" y="180" width="680" height="200" rx="10" fill="white" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2"/>
+    <text x="380" y="202" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700">S  →  S_badStart  |  S_badTrans  |  S_badEnd</text>
+
+    <!-- Three branches -->
+    <g>
+      <!-- Branch 1: bad start -->
+      <rect x="55" y="220" width="220" height="140" rx="8" fill="#fff4ee" stroke="var(--warn-strong, #b95825)" stroke-width="1.5"/>
+      <text x="165" y="240" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--warn-strong, #b95825)">Branch 1 · bad start</text>
+      <text x="165" y="258" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#1a1a1a">First config C₁ ≠ q₀w</text>
+      <text x="65"  y="280" font-family="var(--mono), ui-monospace, monospace" font-size="10">S_badStart →</text>
+      <text x="65"  y="295" font-family="var(--mono), ui-monospace, monospace" font-size="9.5" fill="#666">   (anything not starting with q₀w)</text>
+      <text x="65"  y="313" font-family="var(--mono), ui-monospace, monospace" font-size="9.5" fill="#666">   · # · arbitrary tail</text>
+      <text x="165" y="345" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" font-style="italic" fill="#666">CFG checks first chunk against</text>
+      <text x="165" y="356" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" font-style="italic" fill="#666">hardwired q₀w (finite memory)</text>
+
+      <!-- Branch 2: bad transition (TRICK!) -->
+      <rect x="285" y="220" width="220" height="140" rx="8" fill="#fff4ee" stroke="var(--warn-strong, #b95825)" stroke-width="1.5"/>
+      <text x="395" y="240" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--warn-strong, #b95825)">Branch 2 · bad transition  ★</text>
+      <text x="395" y="258" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#1a1a1a">Some (Cᵢ, Cᵢ₊₁) violates δ</text>
+      <text x="295" y="280" font-family="var(--mono), ui-monospace, monospace" font-size="10">S_badTrans →</text>
+      <text x="295" y="295" font-family="var(--mono), ui-monospace, monospace" font-size="9.5" fill="#666">   prefix · Cᵢ # C′ᵢ₊₁ · suffix</text>
+      <text x="295" y="310" font-family="var(--mono), ui-monospace, monospace" font-size="9.5" fill="#666">   where C′ᵢ₊₁ ≠ δ-successor</text>
+      <text x="395" y="335" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" font-style="italic" fill="#666">writing Cᵢ₊₁ in REVERSE</text>
+      <text x="395" y="346" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" font-style="italic" fill="#666">lets a CFG match it cell-by-cell</text>
+      <text x="395" y="357" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" font-style="italic" fill="#666">against Cᵢ — the technical trick</text>
+
+      <!-- Branch 3: bad end -->
+      <rect x="515" y="220" width="220" height="140" rx="8" fill="#fff4ee" stroke="var(--warn-strong, #b95825)" stroke-width="1.5"/>
+      <text x="625" y="240" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--warn-strong, #b95825)">Branch 3 · bad end</text>
+      <text x="625" y="258" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#1a1a1a">Last config C_ℓ has no q_accept</text>
+      <text x="525" y="280" font-family="var(--mono), ui-monospace, monospace" font-size="10">S_badEnd →</text>
+      <text x="525" y="295" font-family="var(--mono), ui-monospace, monospace" font-size="9.5" fill="#666">   arbitrary prefix · #</text>
+      <text x="525" y="310" font-family="var(--mono), ui-monospace, monospace" font-size="9.5" fill="#666">   · (config without q_accept)</text>
+      <text x="625" y="345" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" font-style="italic" fill="#666">CFG scans the last chunk for any</text>
+      <text x="625" y="356" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" font-style="italic" fill="#666">accept-state symbol; finds none ⇒ bad</text>
+    </g>
+
+    <!-- Punchline -->
+    <text x="380" y="405" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="#1a1a1a">
+      L(G<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>) = Σ*  ⇔  EVERY string is bad  ⇔  no valid accepting history exists  ⇔  M does NOT accept w
+    </text>
+    <rect x="100" y="420" width="560" height="32" rx="8" fill="#eef9f3" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.8"/>
+    <text x="380" y="441" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
+      A<tspan baseline-shift="sub" font-size="0.75em">TM</tspan>  ≤<tspan baseline-shift="sub" font-size="0.75em">m</tspan>  co-ALL<tspan baseline-shift="sub" font-size="0.75em">CFG</tspan>     ⇒     ALL<tspan baseline-shift="sub" font-size="0.75em">CFG</tspan> is undecidable
+    </text>
+  </svg>
+  <figcaption>The CFG G<sub>M,w</sub> generates every string EXCEPT valid accepting histories of M on w. It does this by three nondeterministic branches, each detecting one kind of local violation: wrong start, wrong transition (the trick is writing odd-indexed configs in reverse so a CFG can match them position-by-position), or non-accepting end. So L(G<sub>M,w</sub>) = Σ* exactly when there is no accepting history, i.e., M does not accept w. A decider for ALL<sub>CFG</sub> would decide A<sub>TM</sub> (Sipser Theorem 5.13).</figcaption>
+</figure>
+
+  <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Key idea</span><audio controls preload="none" src="audio/components/m3-s4-c2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="key-idea">
     <strong>The twist.</strong> "Is a valid accepting history" is checkable by an LBA but
     <em>not</em> by a CFG (because checking that <span class="math">C<sub>i+1</sub></span> faithfully
     follows from <span class="math">C<sub>i</sub></span> needs matching them position by position, which
@@ -603,9 +770,85 @@
     of the code half.
   </p>
 
+<div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Diagram</span><audio controls preload="none" src="audio/components/m3-s5-c2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><figure class="diagram">
+  <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+    <defs>
+      <marker id="arr-rec2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#444"/>
+      </marker>
+    </defs>
+
+    <text x="380" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
+      Sipser's recursion-theorem construction · build T = A·B that prints ⟨T⟩
+    </text>
+
+    <!-- ============ Phase 1: assemble T = AB ============ -->
+    <text x="40" y="60" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
+      The TM T is the concatenation of two parts:
+    </text>
+
+    <!-- A part -->
+    <rect x="60" y="75" width="280" height="80" rx="10" fill="var(--gold-soft)" stroke="var(--gold-strong, #a68526)" stroke-width="2"/>
+    <text x="200" y="98" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="14" font-weight="700">A</text>
+    <text x="200" y="118" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">a constant printer:</text>
+    <text x="200" y="135" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--gold-strong, #a68526)">"write ⟨B⟩ on tape and halt"</text>
+    <text x="200" y="150" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" font-style="italic" fill="#666">A is a finite program whose only action is outputting the fixed string ⟨B⟩</text>
+
+    <!-- · symbol -->
+    <text x="370" y="120" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="22" font-weight="700">·</text>
+
+    <!-- B part -->
+    <rect x="400" y="75" width="320" height="80" rx="10" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2"/>
+    <text x="560" y="98" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="14" font-weight="700">B</text>
+    <text x="560" y="118" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">the "real work" plus the self-print logic:</text>
+    <text x="560" y="135" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--accent-strong, #1c4a3f)">"read tape (= ⟨B⟩), build ⟨T⟩, do the work"</text>
+    <text x="560" y="150" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" font-style="italic" fill="#666">B reads what A left and assembles its own complete source</text>
+
+    <!-- ============ Phase 2: T's run on tape ============ -->
+    <text x="40" y="190" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
+      What happens when T runs:
+    </text>
+
+    <!-- step 1 -->
+    <text x="55" y="216" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="#1a1a1a">Step 1 · A runs first.</text>
+    <text x="55" y="232" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">A is just "write ⟨B⟩." After it halts, the tape contains:</text>
+    <g font-family="var(--mono), ui-monospace, monospace" font-size="12">
+      <rect x="55" y="240" width="320" height="28" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.5"/>
+      <text x="215" y="258" text-anchor="middle" font-weight="700">⟨B⟩ — the description of B as a string</text>
+    </g>
+
+    <!-- step 2 -->
+    <text x="55" y="294" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="#1a1a1a">Step 2 · B starts. It reads ⟨B⟩ off the tape and constructs ⟨A⟩.</text>
+    <text x="55" y="310" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">Key trick: <em>given</em> any string s, there's a fixed pattern for building "the description of a TM that prints s."</text>
+    <text x="55" y="324" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">So B uses ⟨B⟩ (now on tape) to compute ⟨A⟩, the description of A:</text>
+    <g font-family="var(--mono), ui-monospace, monospace" font-size="12">
+      <rect x="55" y="332" width="160" height="28" fill="var(--gold-soft)" stroke="var(--gold-strong, #a68526)" stroke-width="1.5"/>
+      <text x="135" y="350" text-anchor="middle" font-weight="700">⟨A⟩</text>
+      <rect x="215" y="332" width="160" height="28" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.5"/>
+      <text x="295" y="350" text-anchor="middle" font-weight="700">⟨B⟩</text>
+    </g>
+    <text x="55" y="378" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">… which concatenated is <span style="font-family: var(--mono);">⟨A⟩⟨B⟩ = ⟨A·B⟩ = ⟨T⟩</span>.  Now B has T's own description on its tape.</text>
+
+    <!-- ============ Phase 3: T uses ⟨T⟩ ============ -->
+    <line x1="40" y1="395" x2="720" y2="395" stroke="#ddd" stroke-width="1"/>
+    <text x="380" y="418" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="#1a1a1a">
+      That's the punchline: B can finish by using ⟨T⟩ as data.
+    </text>
+    <text x="380" y="436" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">
+      Print ⟨T⟩ verbatim ⇒ quine.   Feed ⟨T⟩ into a hypothetical decider D ⇒ slick A<tspan baseline-shift="sub" font-size="0.75em">TM</tspan>-undecidability.
+    </text>
+
+    <rect x="100" y="447" width="560" height="28" rx="6" fill="#eef9f3" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.5"/>
+    <text x="380" y="466" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="12" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
+      Recursion theorem (Sipser 6.3): every TM can construct ⟨itself⟩ at runtime.
+    </text>
+  </svg>
+  <figcaption>The construction. T is built as T = A · B. The "front" part A is a tiny constant printer whose only job is to dump ⟨B⟩ on the tape and halt. The "back" part B then reads ⟨B⟩, mechanically reconstructs ⟨A⟩ from it (there's a uniform recipe for "TM that prints any fixed string s"), concatenates them to get ⟨A·B⟩ = ⟨T⟩, and now has T's own description available as data. With ⟨T⟩ in hand, T can do anything that depends on its own source — print it (quine), feed it to a hypothetical decider and flip the answer (A<sub>TM</sub> undecidability proof), and so on.</figcaption>
+</figure>
+
   <h3>Build a quine, step by step</h3>
 
-  <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Widget</span><audio controls preload="none" src="audio/components/m3-s5-c2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="widget" id="quine">
+  <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Widget</span><audio controls preload="none" src="audio/components/m3-s5-c3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="widget" id="quine">
     <div class="widget-title">Quine builder <span class="pill">Widget 3</span></div>
 
     <p style="font-size: 14px; color: var(--muted);">
@@ -649,7 +892,7 @@
     diagonal argument with the awkward "self-reference" smoothed out.
   </p>
 
-  <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Callout</span><audio controls preload="none" src="audio/components/m3-s5-c3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="callout">
+  <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Callout</span><audio controls preload="none" src="audio/components/m3-s5-c4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="callout">
     <h5>Re-deriving A<sub>TM</sub> undecidability via recursion</h5>
     <p style="margin: 0;">
       Suppose <span class="math">D</span> decides <span class="math">A<sub>TM</sub></span>. By the recursion
@@ -661,7 +904,7 @@
       machine <span class="math">D'</span> separately.
     </p>
   </div>
-  <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Diagram</span><audio controls preload="none" src="audio/components/m3-s5-c4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><figure class="diagram">
+  <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Diagram</span><audio controls preload="none" src="audio/components/m3-s5-c5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><figure class="diagram">
   <svg viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
     <defs>
       <marker id="arr-rec" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
@@ -736,7 +979,93 @@
     properties" results in one stroke.
   </p>
 
-  <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Callout</span><audio controls preload="none" src="audio/components/m3-s6-c1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="callout gold">
+<div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Diagram</span><audio controls preload="none" src="audio/components/m3-s6-c1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><figure class="diagram">
+  <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+    <defs>
+      <marker id="arr-rice" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#444"/>
+      </marker>
+      <marker id="arr-rice-acc" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="var(--accent-strong, #1c4a3f)"/>
+      </marker>
+    </defs>
+
+    <text x="380" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
+      Rice's theorem · proof by reduction A<tspan baseline-shift="sub" font-size="0.75em">TM</tspan> ≤<tspan baseline-shift="sub" font-size="0.75em">m</tspan> Lang<tspan baseline-shift="sub" font-size="0.75em">P</tspan>
+    </text>
+
+    <!-- ============ Setup ============ -->
+    <text x="40" y="55" font-family="var(--sans), system-ui" font-size="11.5" font-weight="700" fill="#1a1a1a">
+      Suppose for contradiction: property P is nontrivial + semantic, AND P is decidable by some TM R.
+    </text>
+    <text x="40" y="72" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">
+      Nontrivial ⇒ ∃ TMs T<tspan baseline-shift="sub" font-size="0.75em">yes</tspan> with P(L(T<tspan baseline-shift="sub" font-size="0.75em">yes</tspan>)) = accept, T<tspan baseline-shift="sub" font-size="0.75em">no</tspan> with P(L(T<tspan baseline-shift="sub" font-size="0.75em">no</tspan>)) = reject. Pick T<tspan baseline-shift="sub" font-size="0.75em">no</tspan> = "reject everything", so L(T<tspan baseline-shift="sub" font-size="0.75em">no</tspan>) = ∅.
+    </text>
+
+    <line x1="40" y1="92" x2="720" y2="92" stroke="#ddd" stroke-width="1"/>
+
+    <!-- ============ The reduction ============ -->
+    <text x="380" y="113" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
+      Define reduction f : ⟨M, w⟩  →  ⟨M<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>⟩  where M<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan> is the TM:
+    </text>
+
+    <!-- M_{M,w} pseudocode box -->
+    <rect x="60" y="125" width="640" height="120" rx="10" fill="white" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2"/>
+    <text x="80" y="148" font-family="var(--mono), ui-monospace, monospace" font-size="11.5" font-weight="700" fill="#1a1a1a">M<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>(x):</text>
+    <text x="100" y="168" font-family="var(--mono), ui-monospace, monospace" font-size="11.5" fill="#1a1a1a">  1.  Run M on w  (ignore input x for now)</text>
+    <text x="100" y="186" font-family="var(--mono), ui-monospace, monospace" font-size="11.5" fill="#1a1a1a">  2.  If M did NOT accept w  →  reject x.</text>
+    <text x="100" y="204" font-family="var(--mono), ui-monospace, monospace" font-size="11.5" fill="#1a1a1a">  3.  Otherwise (M accepted w)  →  simulate T<tspan baseline-shift="sub" font-size="0.75em">yes</tspan>(x) and return its answer.</text>
+    <text x="100" y="230" font-family="var(--sans), system-ui" font-size="10.5" font-style="italic" fill="#666">⇒  L(M<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>) = L(T<tspan baseline-shift="sub" font-size="0.75em">yes</tspan>)  if M accepts w,  and  L(M<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>) = ∅ = L(T<tspan baseline-shift="sub" font-size="0.75em">no</tspan>)  if M does not accept w.</text>
+
+    <!-- ============ The contradiction ============ -->
+    <line x1="40" y1="265" x2="720" y2="265" stroke="#ddd" stroke-width="1"/>
+
+    <text x="380" y="288" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="#1a1a1a">
+      Build a decider for A<tspan baseline-shift="sub" font-size="0.75em">TM</tspan>:
+    </text>
+
+    <!-- Input ⟨M, w⟩ -->
+    <rect x="40" y="305" width="120" height="40" rx="8" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.6"/>
+    <text x="100" y="329" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="12" font-weight="700" fill="var(--accent-strong, #1c4a3f)">⟨M, w⟩</text>
+
+    <path d="M 162,325 L 200,325" stroke="#444" stroke-width="1.6" marker-end="url(#arr-rice)"/>
+
+    <!-- Build M_{M,w} -->
+    <rect x="205" y="305" width="170" height="40" rx="8" fill="var(--gold-soft)" stroke="var(--gold-strong, #a68526)" stroke-width="1.6"/>
+    <text x="290" y="322" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--gold-strong, #a68526)">construct ⟨M<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>⟩</text>
+    <text x="290" y="338" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" fill="#666" font-style="italic">computable from ⟨M, w⟩</text>
+
+    <path d="M 377,325 L 415,325" stroke="#444" stroke-width="1.6" marker-end="url(#arr-rice)"/>
+
+    <!-- R = decider for P -->
+    <rect x="420" y="305" width="190" height="40" rx="8" fill="#fff4ee" stroke="var(--warn-strong, #b95825)" stroke-width="1.6"/>
+    <text x="515" y="322" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--warn-strong, #b95825)">run R on ⟨M<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>⟩</text>
+    <text x="515" y="338" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" fill="#666" font-style="italic">(the assumed P-decider)</text>
+
+    <path d="M 612,325 L 650,325" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.8" marker-end="url(#arr-rice-acc)"/>
+    <rect x="655" y="305" width="65" height="40" rx="8" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.6"/>
+    <text x="687" y="329" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" font-weight="700" fill="var(--accent-strong, #1c4a3f)">A<tspan baseline-shift="sub" font-size="0.75em">TM</tspan>?</text>
+
+    <!-- Truth table for the reduction -->
+    <text x="40" y="375" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="#1a1a1a">Case analysis:</text>
+    <g font-family="var(--sans), system-ui" font-size="10.5">
+      <text x="55" y="395" fill="#1a1a1a">• If M accepts w  ⇒  L(M<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>) = L(T<tspan baseline-shift="sub" font-size="0.75em">yes</tspan>)  has property P  ⇒  R accepts ⟨M<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>⟩  ⇒  output ACCEPT.</text>
+      <text x="55" y="412" fill="#1a1a1a">• If M does NOT accept w  ⇒  L(M<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>) = ∅ = L(T<tspan baseline-shift="sub" font-size="0.75em">no</tspan>)  does NOT have P  ⇒  R rejects ⟨M<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>⟩  ⇒  output REJECT.</text>
+    </g>
+
+    <!-- Conclusion -->
+    <rect x="80" y="427" width="600" height="42" rx="10" fill="#fff4ee" stroke="var(--warn-strong, #b95825)" stroke-width="2"/>
+    <text x="380" y="447" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--warn-strong, #b95825)">
+      So R + the reduction would decide A<tspan baseline-shift="sub" font-size="0.75em">TM</tspan>.  But A<tspan baseline-shift="sub" font-size="0.75em">TM</tspan> is undecidable.
+    </text>
+    <text x="380" y="463" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700" fill="var(--warn-strong, #b95825)">
+      Contradiction.  R cannot exist.  ⇒  property P is undecidable.
+    </text>
+  </svg>
+  <figcaption>Rice's theorem proof in pictures (Sipser §6.3, Theorem 6.10). Assume a decider R for any nontrivial semantic property P. For each ⟨M, w⟩, construct a TM M<sub>M,w</sub> that "gates" T<sub>yes</sub> behind M-accepts-w: if M accepts w, M<sub>M,w</sub>'s language equals L(T<sub>yes</sub>) (so it has property P); if M doesn't, M<sub>M,w</sub>'s language is ∅ = L(T<sub>no</sub>) (so it doesn't have P). Running R on ⟨M<sub>M,w</sub>⟩ therefore answers "does M accept w?" — which would decide A<sub>TM</sub>. Impossible, so R doesn't exist.</figcaption>
+</figure>
+
+  <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Callout</span><audio controls preload="none" src="audio/components/m3-s6-c2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="callout gold">
     <h5>Rice's theorem</h5>
     <p style="margin: 0;">
       Let <span class="math">P</span> be any property of recognizable languages such that
@@ -755,7 +1084,7 @@
 
   <h3>Predict-the-property quiz</h3>
 
-  <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Widget</span><audio controls preload="none" src="audio/components/m3-s6-c2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="widget" id="rice-quiz">
+  <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Widget</span><audio controls preload="none" src="audio/components/m3-s6-c3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="widget" id="rice-quiz">
     <div class="widget-title">Does Rice's theorem apply? <span class="pill">Widget 4</span></div>
     <div id="rice-items"></div>
     <div class="controls">

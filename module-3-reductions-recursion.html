@@ -599,11 +599,24 @@
   <figcaption>The LBA B<sub>M,w</sub> hardcodes the TM M and the string w. On any input x, it performs three local checks (start, transition, accept) on x interpreted as a sequence of configurations C₁ # … # C_ℓ. Because each check is local, the LBA never needs more tape than |x|. Therefore L(B<sub>M,w</sub>) is non-empty exactly when an accepting history of M on w exists — i.e., when M accepts w. A decider for E<sub>LBA</sub> would let us decide A<sub>TM</sub>, which is impossible.</figcaption>
 </figure>
 
+  <div class="callout" style="border-left-color: var(--info, #2f60a8); background: #f3f6fb; margin: 12px 0;">
+    <h5 style="margin-top: 0; color: var(--info, #2f60a8);">Wait — isn't this proof actually about <span class="math"><span class="overline">E<sub>LBA</sub></span></span> (non-emptiness)?</h5>
+    <p style="margin: 0 0 6px;">
+      <strong>Yes — and that's fine.</strong> Look at the punchline of the figure: <span class="math">L(B<sub>M,w</sub>) ≠ ∅ ⇔ M accepts w</span>. Read literally, this says <span class="math">M</span> accepts <span class="math">w</span> iff <span class="math">⟨B<sub>M,w</sub>⟩ ∈ <span class="overline">E<sub>LBA</sub></span></span> (i.e., the LBA's language is <em>non-empty</em>). So the function <span class="math">⟨M, w⟩ ↦ ⟨B<sub>M,w</sub>⟩</span> is a many-one reduction <span class="math">A<sub>TM</sub> ≤<sub>m</sub> <span class="overline">E<sub>LBA</sub></span></span>, <em>not</em> <span class="math">A<sub>TM</sub> ≤<sub>m</sub> E<sub>LBA</sub></span>.
+    </p>
+    <p style="margin: 0 0 6px;">
+      <strong>Why does this still prove E<sub>LBA</sub> undecidable?</strong> Because <em>decidability is closed under complement</em>: a language <span class="math">L</span> is decidable iff <span class="math"><span class="overline">L</span></span> is decidable (just flip the decider's output). So <span class="math"><span class="overline">E<sub>LBA</sub></span></span> undecidable <em>and</em> <span class="math">E<sub>LBA</sub></span> undecidable are the <em>same statement</em>. We can use either as the target of the reduction.
+    </p>
+    <p style="margin: 0;">
+      <strong>Equivalently:</strong> <span class="math">A<sub>TM</sub> ≤<sub>m</sub> <span class="overline">E<sub>LBA</sub></span></span> is the same as <span class="math"><span class="overline">A<sub>TM</sub></span> ≤<sub>m</sub> E<sub>LBA</sub></span> (apply the bar to both sides — mapping reductions are symmetric in that sense). And since <span class="math"><span class="overline">A<sub>TM</sub></span></span> is undecidable (Module 2 · slide 5), <span class="math">E<sub>LBA</sub></span> is undecidable. The "output the opposite" trick below is just this complement-flip made concrete in code.
+    </p>
+  </div>
+
   <p>
     So if we had a decider for <span class="math">E<sub>LBA</sub></span>, we could decide
     <span class="math">A<sub>TM</sub></span>: given <span class="math">⟨M, w⟩</span>, build
     <span class="math">B<sub>M,w</sub></span>, test whether <span class="math">L(B<sub>M,w</sub>) = ∅</span>;
-    output the opposite. Since <span class="math">A<sub>TM</sub></span> is undecidable, so is
+    <strong>output the opposite</strong> (this is the complement-flip — it turns a decider for emptiness into a decider for non-emptiness). Since <span class="math">A<sub>TM</sub></span> is undecidable, so is
     <span class="math">E<sub>LBA</sub></span>.
   </p>
 

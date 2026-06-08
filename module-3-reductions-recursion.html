@@ -805,6 +805,145 @@
     </p>
   </div>
 
+  <div class="callout" style="border-left-color: var(--info, #2f60a8); background: #f3f6fb; margin: 12px 0;">
+    <h5 style="margin-top: 0; color: var(--info, #2f60a8);">Wait, what does that even mean? — a friendlier read</h5>
+    <p style="margin: 0 0 8px;">
+      Read the statement in two steps.
+    </p>
+    <p style="margin: 0 0 8px;">
+      <strong>Step 1 · You give me a "template" T.</strong> <span class="math">T</span> is just a 2-argument program. Slot #1 is "a TM's source code"; slot #2 is "some input string." You can write whatever you want inside T — for instance:
+    </p>
+    <ul style="margin: 4px 0 8px 22px; padding: 0;">
+      <li><code>T(⟨M⟩, w)</code> = "print <code>⟨M⟩</code> and halt." (T just echoes its first argument.)</li>
+      <li><code>T(⟨M⟩, w)</code> = "simulate <span class="math">M</span> on <span class="math">w</span> and accept iff <span class="math">M</span> rejects."</li>
+      <li><code>T(⟨M⟩, w)</code> = "count states of <span class="math">M</span>, accept iff that number divides <span class="math">|w|</span>."</li>
+    </ul>
+    <p style="margin: 0 0 8px;">
+      <strong>Step 2 · The theorem hands you back R.</strong> The recursion theorem promises: I can compile your <span class="math">T</span> into a one-argument TM <span class="math">R</span> whose runtime behavior is exactly "<em>plug my own source code into slot #1 of T, plug the input into slot #2, and do whatever T does</em>." So:
+    </p>
+    <ul style="margin: 4px 0 8px 22px; padding: 0;">
+      <li>Plug T = "print slot #1" into the theorem → R is a TM that prints its own source code — a <strong>quine</strong>.</li>
+      <li>Plug T = "simulate slot #1 on slot #2, flip the answer" → R(w) = "simulate R on w, flip the answer" — a TM that contradicts itself. Useful for slick undecidability proofs.</li>
+    </ul>
+    <p style="margin: 0;">
+      <strong>Why is this called "recursion"?</strong> Because R is doing exactly what every recursive function in a programming language secretly needs: <em>a reference to itself</em>. In Python, <code>def f(w): ... f(...) ...</code> works because the interpreter binds the name <code>f</code> to its own body. The recursion theorem says Turing machines have the same superpower — even though "reading my own code" sounds impossible (where would it come from?), it's actually <em>effectively constructible</em>, exactly as the previous diagram (T = A · B) showed.
+    </p>
+  </div>
+
+  <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Diagram</span><audio controls preload="none" src="audio/components/m3-s5-c1b.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><figure class="diagram">
+    <svg viewBox="0 0 800 660" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;max-height:none !important;width:100%;height:auto;display:block;">
+      <defs>
+        <marker id="arr-rec3" markerWidth="10" markerHeight="10" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#444"/>
+        </marker>
+        <marker id="arr-rec3-acc" markerWidth="10" markerHeight="10" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="var(--accent-strong, #1c4a3f)"/>
+        </marker>
+      </defs>
+
+      <!-- ======== Title ======== -->
+      <text x="400" y="30" text-anchor="middle" font-family="var(--sans), system-ui" font-size="19" font-weight="700" fill="#1a1a1a">
+        From template T to self-aware R — what the recursion theorem really says
+      </text>
+
+      <!-- ======== ROW 1: Template T (a 2-input TM) ======== -->
+      <text x="40" y="78" font-family="var(--sans), system-ui" font-size="15" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
+        ① You write any 2-input template T :
+      </text>
+
+      <!-- T box -->
+      <rect x="200" y="98" width="400" height="100" rx="12" fill="#fff" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2.5"/>
+      <text x="400" y="124" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="18" font-weight="700" fill="var(--accent-strong, #1c4a3f)">T</text>
+      <text x="400" y="148" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" fill="#1a1a1a">your code — takes ⟨M⟩ in slot 1, w in slot 2,</text>
+      <text x="400" y="167" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" fill="#1a1a1a">does whatever you want with them.</text>
+      <text x="400" y="187" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">e.g. "print ⟨M⟩"  ·  "simulate M on w and flip the answer"  ·  …</text>
+
+      <!-- two input slots -->
+      <rect x="80"  y="130" width="100" height="32" rx="6" fill="var(--gold-soft)" stroke="var(--gold-strong, #a68526)" stroke-width="1.5"/>
+      <text x="130" y="151" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700" fill="var(--gold-strong, #a68526)">⟨M⟩</text>
+      <text x="130" y="178" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="#666">slot 1: a TM's code</text>
+      <path d="M 180,146 L 198,146" stroke="#444" stroke-width="2" marker-end="url(#arr-rec3)"/>
+
+      <rect x="620" y="130" width="100" height="32" rx="6" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.5"/>
+      <text x="670" y="151" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700">w</text>
+      <text x="670" y="178" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="#666">slot 2: the input</text>
+      <path d="M 600,146 L 620,146" stroke="#444" stroke-width="2" marker-end="url(#arr-rec3)" transform="translate(20,0) scale(-1,1) translate(-620,0)"/>
+      <path d="M 618,146 L 600,146" stroke="#444" stroke-width="2" marker-end="url(#arr-rec3)"/>
+
+      <!-- ======== ROW 2: The puzzle ======== -->
+      <line x1="40" y1="220" x2="760" y2="220" stroke="#ddd" stroke-width="1" stroke-dasharray="4 3"/>
+
+      <text x="40" y="248" font-family="var(--sans), system-ui" font-size="15" font-weight="700" fill="var(--warn-strong, #b95825)">
+        ② The chicken-and-egg puzzle:
+      </text>
+      <text x="40" y="272" font-family="var(--sans), system-ui" font-size="13" fill="#1a1a1a">
+        We'd like R to behave like "<tspan font-family="var(--mono)">T with ⟨R⟩ already in slot 1</tspan>." But ⟨R⟩ is R's <em>own</em> source — R doesn't have it yet.
+      </text>
+      <text x="40" y="292" font-family="var(--sans), system-ui" font-size="13" fill="#1a1a1a">
+        Where could ⟨R⟩ come from? You can't put R's code inside R before R exists.
+      </text>
+
+      <!-- "?" box hinting at the puzzle -->
+      <rect x="240" y="308" width="320" height="60" rx="10" fill="#fff4ee" stroke="var(--warn-strong, #b95825)" stroke-width="2" stroke-dasharray="6 3"/>
+      <text x="400" y="333" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--warn-strong, #b95825)">R(w) should compute T(⟨R⟩, w)</text>
+      <text x="400" y="355" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="var(--warn-strong, #b95825)">…but how does R know its own ⟨R⟩?</text>
+
+      <!-- ======== ROW 3: The theorem's answer ======== -->
+      <line x1="40" y1="390" x2="760" y2="390" stroke="#ddd" stroke-width="1" stroke-dasharray="4 3"/>
+
+      <text x="40" y="418" font-family="var(--sans), system-ui" font-size="15" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
+        ③ The recursion theorem hands you R, built using the A · B trick from the previous diagram :
+      </text>
+
+      <!-- The R machine box (1-input TM, internally constructs ⟨R⟩) -->
+      <rect x="60" y="438" width="680" height="158" rx="12" fill="#fff" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2.5"/>
+      <text x="80" y="462" font-family="var(--mono), ui-monospace, monospace" font-size="16" font-weight="700" fill="var(--accent-strong, #1c4a3f)">R</text>
+      <text x="105" y="462" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--accent-strong, #1c4a3f)">· takes ONE input w:</text>
+
+      <!-- input w into R -->
+      <rect x="60" y="500" width="80" height="32" rx="6" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.5"/>
+      <text x="100" y="521" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700">w</text>
+
+      <!-- step 1: self-print ⟨R⟩ on the tape -->
+      <rect x="172" y="478" width="232" height="76" rx="8" fill="var(--gold-soft)" stroke="var(--gold-strong, #a68526)" stroke-width="1.6"/>
+      <text x="288" y="498" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--gold-strong, #a68526)">Step a · self-print phase</text>
+      <text x="288" y="516" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">build ⟨R⟩ on the tape using the</text>
+      <text x="288" y="530" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">"A · B" construction (previous figure)</text>
+      <text x="288" y="546" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="#666">— no I/O, just data assembly</text>
+
+      <!-- arrow -->
+      <path d="M 410,514 L 444,514" stroke="#444" stroke-width="2" marker-end="url(#arr-rec3)"/>
+
+      <!-- step 2: invoke T(⟨R⟩, w) -->
+      <rect x="450" y="478" width="232" height="76" rx="8" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.6"/>
+      <text x="566" y="498" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--accent-strong, #1c4a3f)">Step b · invoke T</text>
+      <text x="566" y="516" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">feed ⟨R⟩ into T's slot 1,</text>
+      <text x="566" y="530" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">feed w into T's slot 2,</text>
+      <text x="566" y="546" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--accent-strong, #1c4a3f)">run T and output its result</text>
+
+      <!-- arrow w into Step b -->
+      <path d="M 100,532 L 100,580 L 566,580 L 566,558" stroke="#444" stroke-width="1.6" fill="none" stroke-dasharray="3 2" marker-end="url(#arr-rec3)"/>
+      <text x="333" y="595" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="#666">w is delivered to step b alongside the freshly-built ⟨R⟩</text>
+
+      <!-- ======== Conclusion ======== -->
+      <rect x="60" y="616" width="680" height="34" rx="6" fill="#eef9f3" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.8"/>
+      <text x="400" y="638" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="14" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
+        R(w)  =  T(⟨R⟩, w)    — R "knows" its own code because the A · B trick made the code, not because R read it from a file
+      </text>
+    </svg>
+    <figcaption>The recursion theorem in one picture. Top: you supply a 2-input "template" T. Middle: the puzzle — R is supposed to behave like T with R's own code plugged into slot 1, but R can't simply read its own code. Bottom: the recursion theorem's answer — R has two phases. Phase (a) re-creates ⟨R⟩ on the tape from scratch using the A · B construction in the previous diagram (no need to "read" anything — the description is computed, not retrieved). Phase (b) then runs T on (⟨R⟩, w). The net effect is R(w) = T(⟨R⟩, w), exactly as the theorem promises.</figcaption>
+  </figure>
+
+  <div class="callout" style="border-left-color: var(--gold-strong, #a68526); background: #fbf6ef; margin: 12px 0;">
+    <h5 style="margin-top: 0; color: var(--gold-strong, #a68526);">Two examples to anchor the idea</h5>
+    <p style="margin: 0 0 8px;">
+      <strong>Example 1 · the quine.</strong> Pick <code>T(⟨M⟩, w) = "print ⟨M⟩ and halt"</code> — T just echoes whatever's in slot 1. Plug T into the recursion theorem. You get back R with the behavior <code>R(w) = T(⟨R⟩, w) = "print ⟨R⟩ and halt"</code>. So R is a TM that prints its own source code — a quine. The recursion theorem says quines always exist in any Turing-complete language. (We just built one in the widget above.)
+    </p>
+    <p style="margin: 0;">
+      <strong>Example 2 · slick A<sub>TM</sub> undecidability.</strong> Suppose for contradiction that some TM <span class="math">D</span> decides <span class="math">A<sub>TM</sub></span>. Pick <code>T(⟨M⟩, w) = "run D on ⟨M, w⟩; accept iff D rejects"</code>. The recursion theorem gives R with <code>R(w) = T(⟨R⟩, w) = "run D on ⟨R, w⟩; accept iff D rejects"</code>. But now: <span class="math">R</span> accepts <span class="math">w</span> iff <span class="math">D</span> says R does NOT accept <span class="math">w</span> — direct contradiction, so <span class="math">D</span> can't exist. The recursion theorem lets us skip the awkward self-reference dance of the original diagonal proof.
+    </p>
+  </div>
+
   <p>
     The simplest consequence is <em>quines</em>: programs that, when run, print their own source
     code. That sounds magical until you see how it's done. The trick is to split the program

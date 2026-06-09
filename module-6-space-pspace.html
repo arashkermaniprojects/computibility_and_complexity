@@ -227,17 +227,17 @@
     <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
       Savitch's recursion tree · log depth × O(f) bits per frame = O(f²) space
     </text>
-    <!-- root -->
-    <circle cx="320" cy="60" r="16" fill="var(--gold)" stroke="var(--gold)" stroke-width="2"/>
-    <text x="320" y="65" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11" font-weight="700" fill="#fff">A→B, t</text>
-    <!-- level 2 -->
-    <line x1="320" y1="76" x2="180" y2="120" stroke="#888" stroke-width="1.4"/>
-    <line x1="320" y1="76" x2="460" y2="120" stroke="#888" stroke-width="1.4"/>
-    <circle cx="180" cy="130" r="14" fill="var(--accent)" stroke="var(--accent-strong)" stroke-width="1.5"/>
-    <text x="180" y="134" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="10" fill="#fff">A→M, t/2</text>
-    <circle cx="460" cy="130" r="14" fill="var(--accent)" stroke="var(--accent-strong)" stroke-width="1.5"/>
-    <text x="460" y="134" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="10" fill="#fff">M→B, t/2</text>
-    <!-- level 3 --><line x1="180" y1="144" x2="120" y2="180" stroke="#888" stroke-width="1.2"/><circle cx="120" cy="190" r="11" fill="#fff" stroke="#888" stroke-width="1.4"/><line x1="180" y1="144" x2="240" y2="180" stroke="#888" stroke-width="1.2"/><circle cx="240" cy="190" r="11" fill="#fff" stroke="#888" stroke-width="1.4"/><line x1="460" y1="144" x2="400" y2="180" stroke="#888" stroke-width="1.2"/><circle cx="400" cy="190" r="11" fill="#fff" stroke="#888" stroke-width="1.4"/><line x1="460" y1="144" x2="520" y2="180" stroke="#888" stroke-width="1.2"/><circle cx="520" cy="190" r="11" fill="#fff" stroke="#888" stroke-width="1.4"/>
+    <!-- root (wide ellipse to fit "A→B, t" label) -->
+    <ellipse cx="320" cy="60" rx="46" ry="18" fill="var(--gold)" stroke="var(--gold)" stroke-width="2"/>
+    <text x="320" y="65" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="12" font-weight="700" fill="#fff">A → B, t</text>
+    <!-- level 1 -->
+    <line x1="320" y1="78" x2="180" y2="116" stroke="#888" stroke-width="1.4"/>
+    <line x1="320" y1="78" x2="460" y2="116" stroke="#888" stroke-width="1.4"/>
+    <ellipse cx="180" cy="130" rx="48" ry="16" fill="var(--accent)" stroke="var(--accent-strong)" stroke-width="1.5"/>
+    <text x="180" y="134" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11" font-weight="700" fill="#fff">A → M, t/2</text>
+    <ellipse cx="460" cy="130" rx="48" ry="16" fill="var(--accent)" stroke="var(--accent-strong)" stroke-width="1.5"/>
+    <text x="460" y="134" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11" font-weight="700" fill="#fff">M → B, t/2</text>
+    <!-- level 2 --><line x1="180" y1="146" x2="120" y2="180" stroke="#888" stroke-width="1.2"/><circle cx="120" cy="190" r="11" fill="#fff" stroke="#888" stroke-width="1.4"/><line x1="180" y1="146" x2="240" y2="180" stroke="#888" stroke-width="1.2"/><circle cx="240" cy="190" r="11" fill="#fff" stroke="#888" stroke-width="1.4"/><line x1="460" y1="146" x2="400" y2="180" stroke="#888" stroke-width="1.2"/><circle cx="400" cy="190" r="11" fill="#fff" stroke="#888" stroke-width="1.4"/><line x1="460" y1="146" x2="520" y2="180" stroke="#888" stroke-width="1.2"/><circle cx="520" cy="190" r="11" fill="#fff" stroke="#888" stroke-width="1.4"/>
     <!-- level 4 (leaves) --><line x1="120" y1="200" x2="100" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="100" cy="248" r="6" fill="#eee" stroke="#bbb"/><line x1="120" y1="200" x2="160" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="160" cy="248" r="6" fill="#eee" stroke="#bbb"/><line x1="240" y1="200" x2="220" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="220" cy="248" r="6" fill="#eee" stroke="#bbb"/><line x1="240" y1="200" x2="280" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="280" cy="248" r="6" fill="#eee" stroke="#bbb"/><line x1="360" y1="200" x2="340" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="340" cy="248" r="6" fill="#eee" stroke="#bbb"/><line x1="360" y1="200" x2="400" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="400" cy="248" r="6" fill="#eee" stroke="#bbb"/><line x1="480" y1="200" x2="460" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="460" cy="248" r="6" fill="#eee" stroke="#bbb"/><line x1="480" y1="200" x2="520" y2="240" stroke="#ccc" stroke-width="0.8"/><circle cx="520" cy="248" r="6" fill="#eee" stroke="#bbb"/>
     <!-- side annotations -->
     <text x="540" y="65"  font-family="var(--sans), system-ui" font-size="11" fill="#666">level 0 · t = full</text>
@@ -445,10 +445,14 @@
       <text x="595" y="349" text-anchor="middle" font-size="13" fill="#7a3a18">GO</text>
     </g>
 
-    <!-- All PSPACE-complete reduce to each other (bidirectional arrows hint at equivalence) -->
+    <!-- All PSPACE-complete reduce to each other (bidirectional arrows hint at equivalence).
+         Each arrow ends just OUTSIDE the target circle (radius 34) so the arrowhead doesn't cover the label. -->
     <g fill="none" stroke="#8a6a2c" stroke-width="1.6" stroke-dasharray="0">
-      <path d="M 690 195 C 715 200, 730 210, 728 215" marker-end="url(#m6-arr)"/>
-      <path d="M 738 260 C 720 285, 712 295, 712 295" marker-end="url(#m6-arr)"/>
+      <!-- TQBF (660,175) → GENER.GEOGR. (755,230); end at upper-left edge of target -->
+      <path d="M 690 195 C 712 205, 723 215, 727 217" marker-end="url(#m6-arr)"/>
+      <!-- GENER.GEOGR. (755,230) → CHESS (700,305); end at upper-right edge of target -->
+      <path d="M 738 260 C 728 270, 724 274, 722 276" marker-end="url(#m6-arr)"/>
+      <!-- CHESS (700,305) → GO (595,345); end at right edge of target -->
       <path d="M 672 326 C 655 340, 640 345, 631 345" marker-end="url(#m6-arr)"/>
     </g>
 

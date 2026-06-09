@@ -1,0 +1,11 @@
+Here's why the recursion theorem deserves its name, even though at first glance the equation R-of-w equals T applied to angle-bracket-R-angle-bracket and w doesn't look like a function calling itself.
+
+Let's use a concrete example. A countdown program: take a number n, print it, then count down. In Python, we'd write: "def countdown of n: if n equals zero, print done and return; otherwise print n and then call countdown of n minus one." That last line is the recursive call. It works because Python's interpreter binds the name "countdown" to the body of the function — so when you mention "countdown" inside the body, it refers back to itself.
+
+Now try to do the same thing with a Turing machine. The TM has no names. To call yourself, you'd have to literally simulate yourself — and to simulate yourself, you need a copy of your own source code, angle-bracket-R-angle-bracket, on your tape. But a fresh TM doesn't have its own description lying around. This is the chicken-and-egg problem from the previous figure. Recursion in the Python sense is blocked.
+
+The recursion theorem unblocks it. Step one: you write a TEMPLATE. The template is a two-argument program. The first slot is the "self" placeholder — wherever you would normally call yourself, you instead write "simulate slot one on smaller input." For the countdown, the template T of angle-bracket-M-angle-bracket comma n would be: "if n equals zero, halt; print n; simulate the machine in slot one on n minus one." Notice that slot one is exactly the recursive-call site. We just haven't decided what goes there yet.
+
+Step two: the recursion theorem hands you back a single-argument machine R whose runtime behavior is T with R's own source code already plugged into slot one. So R-of-n's behavior unfolds as: "if n equals zero, halt; print n; simulate R on n minus one." That last line is R literally simulating itself on a smaller input. That IS the recursive call.
+
+Putting it all together: T is the BODY of the recursive function. Slot one is the recursive-call site. The recursion theorem provides the mechanism that binds slot one to R's own description, the same way Python's interpreter binds the function name to its body. Different mechanism — same idea. THAT is why this theorem deserves the name recursion.

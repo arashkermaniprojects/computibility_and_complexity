@@ -993,7 +993,7 @@
   </figure>
 
   <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Diagram</span><audio controls preload="none" src="audio/components/m3-s5-c2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><figure class="diagram">
-  <svg viewBox="0 0 760 620" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;max-height:none !important;width:100%;height:auto;display:block;">
+  <svg viewBox="0 0 760 632" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;max-height:none !important;width:100%;height:auto;display:block;">
     <defs>
       <marker id="arr-rec2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
         <polygon points="0 0, 8 3, 0 6" fill="#444"/>
@@ -1049,19 +1049,20 @@
       <rect x="255" y="428" width="200" height="36" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.5"/>
       <text x="355" y="452" text-anchor="middle" font-weight="700">⟨B⟩</text>
     </g>
-    <text x="55" y="492" font-family="var(--sans), system-ui" font-size="14" fill="#1a1a1a">… which concatenated is <tspan font-family="var(--mono)" font-weight="700">⟨A⟩⟨B⟩ = ⟨A·B⟩ = ⟨T⟩</tspan>.  Now B has T's own description on its tape.</text>
+    <text x="55" y="481" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="var(--warn-strong, #b95825)">⚠ Why not jump straight to ⟨T⟩? The recipe builds "TM that prints s" from s — so from ⟨B⟩ it can build ⟨A⟩, not ⟨T⟩. ⟨T⟩ falls out from concatenation in the next line.</text>
+    <text x="55" y="504" font-family="var(--sans), system-ui" font-size="14" fill="#1a1a1a">… which concatenated is <tspan font-family="var(--mono)" font-weight="700">⟨A⟩⟨B⟩ = ⟨A·B⟩ = ⟨T⟩</tspan>.  Now B has T's own description on its tape.</text>
 
     <!-- ============ Phase 3: T uses ⟨T⟩ ============ -->
-    <line x1="40" y1="512" x2="720" y2="512" stroke="#ddd" stroke-width="1"/>
-    <text x="380" y="540" text-anchor="middle" font-family="var(--sans), system-ui" font-size="16" font-weight="700" fill="#1a1a1a">
+    <line x1="40" y1="524" x2="720" y2="524" stroke="#ddd" stroke-width="1"/>
+    <text x="380" y="552" text-anchor="middle" font-family="var(--sans), system-ui" font-size="16" font-weight="700" fill="#1a1a1a">
       That's the punchline: B can finish by using ⟨T⟩ as data.
     </text>
-    <text x="380" y="563" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" fill="#1a1a1a">
+    <text x="380" y="575" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" fill="#1a1a1a">
       Print ⟨T⟩ verbatim ⇒ quine.   Feed ⟨T⟩ into a hypothetical decider D ⇒ slick A<tspan baseline-shift="sub" font-size="0.75em">TM</tspan>-undecidability.
     </text>
 
-    <rect x="20" y="578" width="720" height="34" rx="6" fill="#eef9f3" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.5"/>
-    <text x="380" y="601" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="14" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
+    <rect x="20" y="590" width="720" height="34" rx="6" fill="#eef9f3" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.5"/>
+    <text x="380" y="613" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="14" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
       Recursion theorem (Sipser 6.3): every TM can construct ⟨itself⟩ at runtime.
     </text>
   </svg>

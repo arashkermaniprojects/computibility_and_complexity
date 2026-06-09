@@ -703,36 +703,36 @@
 
     <!-- Three branches -->
     <g>
-      <!-- Branch 1: bad start -->
-      <rect x="55" y="266" width="220" height="226" rx="8" fill="#fff4ee" stroke="var(--warn-strong, #b95825)" stroke-width="1.5"/>
-      <text x="165" y="290" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="var(--warn-strong, #b95825)">Branch 1 · bad start</text>
-      <text x="165" y="312" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" fill="#1a1a1a">First config C₁ ≠ q₀w</text>
-      <text x="65"  y="342" font-family="var(--mono), ui-monospace, monospace" font-size="12">S<tspan baseline-shift="sub" font-size="0.75em">badStart</tspan> →</text>
-      <text x="65"  y="362" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#666">   (anything not starting</text>
-      <text x="65"  y="380" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#666">    with q₀w) · # · tail</text>
-      <text x="165" y="430" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">CFG checks first chunk against</text>
-      <text x="165" y="446" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">hardwired q₀w (finite memory)</text>
+      <!-- Branch 1: bad start (width 210; positions all shifted to fit inside the container x=40..720) -->
+      <rect x="50" y="266" width="210" height="226" rx="8" fill="#fff4ee" stroke="var(--warn-strong, #b95825)" stroke-width="1.5"/>
+      <text x="155" y="290" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="var(--warn-strong, #b95825)">Branch 1 · bad start</text>
+      <text x="155" y="312" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" fill="#1a1a1a">First config C₁ ≠ q₀w</text>
+      <text x="60"  y="342" font-family="var(--mono), ui-monospace, monospace" font-size="12">S<tspan baseline-shift="sub" font-size="0.75em">badStart</tspan> →</text>
+      <text x="60"  y="362" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#666">   (anything not starting</text>
+      <text x="60"  y="380" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#666">    with q₀w) · # · tail</text>
+      <text x="155" y="430" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">CFG checks first chunk against</text>
+      <text x="155" y="446" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">hardwired q₀w (finite memory)</text>
 
-      <!-- Branch 2: bad transition (TRICK!) -->
-      <rect x="285" y="266" width="220" height="226" rx="8" fill="#fff4ee" stroke="var(--warn-strong, #b95825)" stroke-width="1.5"/>
-      <text x="395" y="290" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="var(--warn-strong, #b95825)">Branch 2 · bad transition  ★</text>
-      <text x="395" y="312" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" fill="#1a1a1a">Some (Cᵢ, Cᵢ₊₁) violates δ</text>
-      <text x="295" y="342" font-family="var(--mono), ui-monospace, monospace" font-size="12">S<tspan baseline-shift="sub" font-size="0.75em">badTrans</tspan> →</text>
-      <text x="295" y="362" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#666">   prefix · Cᵢ # C′ᵢ₊₁ · suffix</text>
-      <text x="295" y="380" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#666">   where C′ᵢ₊₁ ≠ δ-successor</text>
-      <text x="395" y="416" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">writing Cᵢ₊₁ in REVERSE</text>
-      <text x="395" y="432" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">lets a CFG match it cell-by-cell</text>
-      <text x="395" y="448" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">against Cᵢ — the technical trick</text>
+      <!-- Branch 2: bad transition (TRICK!) — width 210, shifted left to x=270 -->
+      <rect x="270" y="266" width="210" height="226" rx="8" fill="#fff4ee" stroke="var(--warn-strong, #b95825)" stroke-width="1.5"/>
+      <text x="375" y="290" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--warn-strong, #b95825)">Branch 2 · bad transition ★</text>
+      <text x="375" y="312" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" fill="#1a1a1a">Some (Cᵢ, Cᵢ₊₁) violates δ</text>
+      <text x="280" y="342" font-family="var(--mono), ui-monospace, monospace" font-size="12">S<tspan baseline-shift="sub" font-size="0.75em">badTrans</tspan> →</text>
+      <text x="280" y="362" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#666">   prefix · Cᵢ # C′ᵢ₊₁ · suffix</text>
+      <text x="280" y="380" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#666">   where C′ᵢ₊₁ ≠ δ-successor</text>
+      <text x="375" y="416" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">writing Cᵢ₊₁ in REVERSE</text>
+      <text x="375" y="432" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">lets a CFG match it cell-by-cell</text>
+      <text x="375" y="448" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">against Cᵢ — the technical trick</text>
 
-      <!-- Branch 3: bad end -->
-      <rect x="515" y="266" width="220" height="226" rx="8" fill="#fff4ee" stroke="var(--warn-strong, #b95825)" stroke-width="1.5"/>
-      <text x="625" y="290" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="var(--warn-strong, #b95825)">Branch 3 · bad end</text>
-      <text x="625" y="312" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" fill="#1a1a1a">Last config C_ℓ lacks q_accept</text>
-      <text x="525" y="342" font-family="var(--mono), ui-monospace, monospace" font-size="12">S<tspan baseline-shift="sub" font-size="0.75em">badEnd</tspan> →</text>
-      <text x="525" y="362" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#666">   arbitrary prefix · #</text>
-      <text x="525" y="380" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#666">   · (config w/o q_accept)</text>
-      <text x="625" y="430" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">CFG scans the last chunk for any</text>
-      <text x="625" y="446" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">accept-state symbol; finds none ⇒ bad</text>
+      <!-- Branch 3: bad end — width 210, shifted left to x=490 so ends at x=700, inside container x=720 -->
+      <rect x="490" y="266" width="210" height="226" rx="8" fill="#fff4ee" stroke="var(--warn-strong, #b95825)" stroke-width="1.5"/>
+      <text x="595" y="290" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="var(--warn-strong, #b95825)">Branch 3 · bad end</text>
+      <text x="595" y="312" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" fill="#1a1a1a">Last config C_ℓ lacks q_accept</text>
+      <text x="500" y="342" font-family="var(--mono), ui-monospace, monospace" font-size="12">S<tspan baseline-shift="sub" font-size="0.75em">badEnd</tspan> →</text>
+      <text x="500" y="362" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#666">   arbitrary prefix · #</text>
+      <text x="500" y="380" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#666">   · (config w/o q_accept)</text>
+      <text x="595" y="430" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">CFG scans the last chunk for any</text>
+      <text x="595" y="446" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">accept-state symbol; finds none ⇒ bad</text>
     </g>
 
     <!-- Punchline -->
@@ -993,7 +993,7 @@
   </figure>
 
   <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Diagram</span><audio controls preload="none" src="audio/components/m3-s5-c2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><figure class="diagram">
-  <svg viewBox="0 0 760 632" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;max-height:none !important;width:100%;height:auto;display:block;">
+  <svg viewBox="0 0 760 644" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;max-height:none !important;width:100%;height:auto;display:block;">
     <defs>
       <marker id="arr-rec2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
         <polygon points="0 0, 8 3, 0 6" fill="#444"/>
@@ -1049,20 +1049,21 @@
       <rect x="255" y="428" width="200" height="36" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.5"/>
       <text x="355" y="452" text-anchor="middle" font-weight="700">⟨B⟩</text>
     </g>
-    <text x="55" y="481" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="var(--warn-strong, #b95825)">⚠ Why not jump straight to ⟨T⟩? The recipe builds "TM that prints s" from s — so from ⟨B⟩ it can build ⟨A⟩, not ⟨T⟩. ⟨T⟩ falls out from concatenation in the next line.</text>
-    <text x="55" y="504" font-family="var(--sans), system-ui" font-size="14" fill="#1a1a1a">… which concatenated is <tspan font-family="var(--mono)" font-weight="700">⟨A⟩⟨B⟩ = ⟨A·B⟩ = ⟨T⟩</tspan>.  Now B has T's own description on its tape.</text>
+    <text x="55" y="478" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="var(--warn-strong, #b95825)">⚠ Why not jump straight to ⟨T⟩? The recipe builds "TM that prints s" from s,</text>
+    <text x="55" y="494" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="var(--warn-strong, #b95825)">so from ⟨B⟩ it can build ⟨A⟩, not ⟨T⟩. ⟨T⟩ falls out from concatenation below.</text>
+    <text x="55" y="516" font-family="var(--sans), system-ui" font-size="14" fill="#1a1a1a">… which concatenated is <tspan font-family="var(--mono)" font-weight="700">⟨A⟩⟨B⟩ = ⟨A·B⟩ = ⟨T⟩</tspan>.  Now B has T's own description on its tape.</text>
 
     <!-- ============ Phase 3: T uses ⟨T⟩ ============ -->
-    <line x1="40" y1="524" x2="720" y2="524" stroke="#ddd" stroke-width="1"/>
-    <text x="380" y="552" text-anchor="middle" font-family="var(--sans), system-ui" font-size="16" font-weight="700" fill="#1a1a1a">
+    <line x1="40" y1="536" x2="720" y2="536" stroke="#ddd" stroke-width="1"/>
+    <text x="380" y="564" text-anchor="middle" font-family="var(--sans), system-ui" font-size="16" font-weight="700" fill="#1a1a1a">
       That's the punchline: B can finish by using ⟨T⟩ as data.
     </text>
-    <text x="380" y="575" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" fill="#1a1a1a">
+    <text x="380" y="587" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" fill="#1a1a1a">
       Print ⟨T⟩ verbatim ⇒ quine.   Feed ⟨T⟩ into a hypothetical decider D ⇒ slick A<tspan baseline-shift="sub" font-size="0.75em">TM</tspan>-undecidability.
     </text>
 
-    <rect x="20" y="590" width="720" height="34" rx="6" fill="#eef9f3" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.5"/>
-    <text x="380" y="613" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="14" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
+    <rect x="20" y="602" width="720" height="34" rx="6" fill="#eef9f3" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.5"/>
+    <text x="380" y="625" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="14" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
       Recursion theorem (Sipser 6.3): every TM can construct ⟨itself⟩ at runtime.
     </text>
   </svg>
@@ -1318,7 +1319,7 @@
   </p>
 
 <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Diagram</span><audio controls preload="none" src="audio/components/m3-s6-c1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><figure class="diagram">
-  <svg viewBox="0 0 920 720" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;max-height:none !important;width:100%;height:auto;display:block;">
+  <svg viewBox="0 0 920 748" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;max-height:none !important;width:100%;height:auto;display:block;">
     <defs>
       <marker id="arr-rice" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
         <polygon points="0 0, 8 3, 0 6" fill="#444"/>
@@ -1370,100 +1371,96 @@
     </text>
 
     <!-- M_{M,w} as flow diagram -->
-    <rect x="60" y="290" width="820" height="190" rx="10" fill="white" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2"/>
+    <rect x="60" y="290" width="820" height="220" rx="10" fill="white" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2"/>
     <text x="80" y="312" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700" fill="var(--accent-strong, #1c4a3f)">M<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>(x):</text>
 
     <!-- Input x at left -->
-    <rect x="80" y="335" width="80" height="32" rx="6" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.5"/>
-    <text x="120" y="356" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700">input x</text>
+    <rect x="80" y="368" width="80" height="32" rx="6" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.5"/>
+    <text x="120" y="389" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700">input x</text>
 
     <!-- arrow into gate -->
-    <path d="M 165,351 L 200,351" stroke="#444" stroke-width="1.6" marker-end="url(#arr-rice)"/>
+    <path d="M 165,384 L 200,384" stroke="#444" stroke-width="1.6" marker-end="url(#arr-rice)"/>
 
     <!-- The gate: "run M on w" -->
-    <rect x="205" y="335" width="180" height="32" rx="6" fill="var(--gold-soft)" stroke="var(--gold-strong, #a68526)" stroke-width="1.6"/>
-    <text x="295" y="356" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--gold-strong, #a68526)">Step 1: run M on w</text>
-    <text x="295" y="376" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="#666">(ignore x for now)</text>
+    <rect x="205" y="368" width="180" height="32" rx="6" fill="var(--gold-soft)" stroke="var(--gold-strong, #a68526)" stroke-width="1.6"/>
+    <text x="295" y="389" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--gold-strong, #a68526)">Step 1: run M on w</text>
+    <text x="295" y="409" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="#666">(ignore x for now)</text>
 
-    <!-- Branch out -->
-    <path d="M 390,345 L 430,345 L 430,315 L 490,315" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.8" fill="none" marker-end="url(#arr-rice-acc)"/>
-    <text x="440" y="308" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--accent-strong, #1c4a3f)">if M accepts w:</text>
+    <!-- Branch out: YES branch (up) -->
+    <path d="M 390,378 L 430,378 L 430,348 L 490,348" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.8" fill="none" marker-end="url(#arr-rice-acc)"/>
+    <text x="395" y="338" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--accent-strong, #1c4a3f)">if M accepts w:</text>
 
-    <path d="M 390,357 L 430,357 L 430,395 L 490,395" stroke="var(--warn-strong, #b95825)" stroke-width="1.8" fill="none" marker-end="url(#arr-rice-warn)"/>
-    <text x="440" y="412" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--warn-strong, #b95825)">if M doesn't accept w:</text>
+    <!-- Branch out: NO branch (down) -->
+    <path d="M 390,390 L 430,390 L 430,440 L 490,440" stroke="var(--warn-strong, #b95825)" stroke-width="1.8" fill="none" marker-end="url(#arr-rice-warn)"/>
+    <text x="395" y="461" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--warn-strong, #b95825)">if M doesn't accept w:</text>
 
-    <!-- YES branch: simulate T_yes -->
-    <rect x="495" y="296" width="285" height="40" rx="8" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2"/>
-    <text x="637" y="315" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--accent-strong, #1c4a3f)">Step 2a: simulate T<tspan baseline-shift="sub" font-size="0.75em">yes</tspan>(x), copy its answer</text>
-    <text x="637" y="330" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="#444">M<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan> behaves like T<tspan baseline-shift="sub" font-size="0.75em">yes</tspan> on input x</text>
+    <!-- YES branch: simulate T_yes — now 3 lines, conclusion inside -->
+    <rect x="495" y="316" width="375" height="68" rx="8" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2"/>
+    <text x="682" y="336" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--accent-strong, #1c4a3f)">Step 2a: simulate T<tspan baseline-shift="sub" font-size="0.75em">yes</tspan>(x), copy its answer</text>
+    <text x="682" y="354" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10.5" font-style="italic" fill="#444">M<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan> behaves like T<tspan baseline-shift="sub" font-size="0.75em">yes</tspan> on input x</text>
+    <text x="682" y="374" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="12" font-weight="700" fill="var(--accent-strong, #1c4a3f)">⇒ L(M<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>) = L(T<tspan baseline-shift="sub" font-size="0.75em">yes</tspan>)</text>
 
-    <!-- arrow to outcome -->
-    <path d="M 783,316 L 815,316" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.8" marker-end="url(#arr-rice-acc)"/>
-    <text x="848" y="319" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11.5" font-weight="700" fill="var(--accent-strong, #1c4a3f)">L = L(T<tspan baseline-shift="sub" font-size="0.75em">yes</tspan>)</text>
-
-    <!-- NO branch: reject -->
-    <rect x="495" y="376" width="285" height="40" rx="8" fill="#fff4ee" stroke="var(--warn-strong, #b95825)" stroke-width="2"/>
-    <text x="637" y="395" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--warn-strong, #b95825)">Step 2b: reject x</text>
-    <text x="637" y="410" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="#444">M<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan> behaves like T<tspan baseline-shift="sub" font-size="0.75em">no</tspan> (reject everything)</text>
-
-    <path d="M 783,396 L 815,396" stroke="var(--warn-strong, #b95825)" stroke-width="1.8" marker-end="url(#arr-rice-warn)"/>
-    <text x="848" y="399" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11.5" font-weight="700" fill="var(--warn-strong, #b95825)">L = ∅ = L(T<tspan baseline-shift="sub" font-size="0.75em">no</tspan>)</text>
+    <!-- NO branch: reject — now 3 lines, conclusion inside -->
+    <rect x="495" y="408" width="375" height="68" rx="8" fill="#fff4ee" stroke="var(--warn-strong, #b95825)" stroke-width="2"/>
+    <text x="682" y="428" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--warn-strong, #b95825)">Step 2b: reject x</text>
+    <text x="682" y="446" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10.5" font-style="italic" fill="#444">M<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan> behaves like T<tspan baseline-shift="sub" font-size="0.75em">no</tspan> (reject everything)</text>
+    <text x="682" y="466" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="12" font-weight="700" fill="var(--warn-strong, #b95825)">⇒ L(M<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>) = ∅ = L(T<tspan baseline-shift="sub" font-size="0.75em">no</tspan>)</text>
 
     <!-- Summary inside the M_{M,w} box -->
-    <rect x="80" y="438" width="780" height="32" rx="6" fill="#f7fcfa" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1" stroke-dasharray="4 2"/>
-    <text x="470" y="459" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="#1a1a1a">
-      The whole point: <tspan font-family="var(--mono)">L(M<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>)</tspan> equals <tspan fill="var(--accent-strong, #1c4a3f)">L(T<tspan baseline-shift="sub" font-size="0.75em">yes</tspan>)</tspan> if M accepts w, else <tspan fill="var(--warn-strong, #b95825)">∅ = L(T<tspan baseline-shift="sub" font-size="0.75em">no</tspan>)</tspan>. The yes/no answer of P is now controlled by "does M accept w?".
+    <rect x="80" y="488" width="780" height="14" rx="0" fill="none" stroke="none"/>
+    <text x="470" y="500" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11.5" font-weight="700" fill="#1a1a1a">
+      Punchline: the yes/no answer of property P about <tspan font-family="var(--mono)">L(M<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>)</tspan> is now controlled by "does M accept w?".
     </text>
 
-    <line x1="40" y1="500" x2="880" y2="500" stroke="#ddd" stroke-width="1" stroke-dasharray="5 3"/>
+    <line x1="40" y1="528" x2="880" y2="528" stroke="#ddd" stroke-width="1" stroke-dasharray="5 3"/>
 
     <!-- ============ ③ The contradiction ============ -->
-    <text x="40" y="526" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
+    <text x="40" y="554" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
       ③ Build a decider for A<tspan baseline-shift="sub" font-size="0.75em">TM</tspan> using R (assumed P-decider):
     </text>
 
     <!-- ⟨M, w⟩ -->
-    <rect x="40" y="546" width="100" height="40" rx="8" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.6"/>
-    <text x="90" y="570" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700" fill="var(--accent-strong, #1c4a3f)">⟨M, w⟩</text>
+    <rect x="40" y="574" width="100" height="40" rx="8" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.6"/>
+    <text x="90" y="598" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700" fill="var(--accent-strong, #1c4a3f)">⟨M, w⟩</text>
 
-    <path d="M 142,566 L 180,566" stroke="#444" stroke-width="1.6" marker-end="url(#arr-rice)"/>
+    <path d="M 142,594 L 180,594" stroke="#444" stroke-width="1.6" marker-end="url(#arr-rice)"/>
 
     <!-- construct M_{M,w} -->
-    <rect x="185" y="546" width="180" height="40" rx="8" fill="var(--gold-soft)" stroke="var(--gold-strong, #a68526)" stroke-width="1.6"/>
-    <text x="275" y="565" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--gold-strong, #a68526)">construct ⟨M<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>⟩</text>
-    <text x="275" y="580" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="#666">finite, computable from ⟨M, w⟩</text>
+    <rect x="185" y="574" width="180" height="40" rx="8" fill="var(--gold-soft)" stroke="var(--gold-strong, #a68526)" stroke-width="1.6"/>
+    <text x="275" y="593" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--gold-strong, #a68526)">construct ⟨M<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>⟩</text>
+    <text x="275" y="608" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="#666">finite, computable from ⟨M, w⟩</text>
 
-    <path d="M 367,566 L 405,566" stroke="#444" stroke-width="1.6" marker-end="url(#arr-rice)"/>
+    <path d="M 367,594 L 405,594" stroke="#444" stroke-width="1.6" marker-end="url(#arr-rice)"/>
 
     <!-- run R on it -->
-    <rect x="410" y="546" width="220" height="40" rx="8" fill="#fff4ee" stroke="var(--warn-strong, #b95825)" stroke-width="1.6"/>
-    <text x="520" y="565" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--warn-strong, #b95825)">run R on ⟨M<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>⟩</text>
-    <text x="520" y="580" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="#666">R decides "does L have P?"</text>
+    <rect x="410" y="574" width="220" height="40" rx="8" fill="#fff4ee" stroke="var(--warn-strong, #b95825)" stroke-width="1.6"/>
+    <text x="520" y="593" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--warn-strong, #b95825)">run R on ⟨M<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>⟩</text>
+    <text x="520" y="608" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="#666">R decides "does L have P?"</text>
 
-    <path d="M 632,566 L 670,566" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.8" marker-end="url(#arr-rice-acc)"/>
+    <path d="M 632,594 L 670,594" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.8" marker-end="url(#arr-rice-acc)"/>
 
     <!-- output -->
-    <rect x="675" y="546" width="205" height="40" rx="8" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.6"/>
-    <text x="777" y="565" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="12" font-weight="700" fill="var(--accent-strong, #1c4a3f)">copy R's answer = A<tspan baseline-shift="sub" font-size="0.75em">TM</tspan>?</text>
-    <text x="777" y="580" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" fill="#666" font-style="italic">because R(⟨M<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>⟩) = "does M accept w?"</text>
+    <rect x="675" y="574" width="205" height="40" rx="8" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.6"/>
+    <text x="777" y="593" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="12" font-weight="700" fill="var(--accent-strong, #1c4a3f)">copy R's answer = A<tspan baseline-shift="sub" font-size="0.75em">TM</tspan>?</text>
+    <text x="777" y="608" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" fill="#666" font-style="italic">because R(⟨M<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>⟩) = "does M accept w?"</text>
 
     <!-- Case verification -->
-    <text x="40" y="612" font-family="var(--sans), system-ui" font-size="11.5" font-weight="700" fill="#1a1a1a">Why this works (case analysis):</text>
+    <text x="40" y="640" font-family="var(--sans), system-ui" font-size="11.5" font-weight="700" fill="#1a1a1a">Why this works (case analysis):</text>
     <g font-family="var(--sans), system-ui" font-size="11">
-      <text x="55" y="630" fill="#1a1a1a">
+      <text x="55" y="658" fill="#1a1a1a">
         <tspan fill="var(--accent-strong, #1c4a3f)" font-weight="700">• M accepts w:</tspan>  L(M<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>) = L(T<tspan baseline-shift="sub" font-size="0.75em">yes</tspan>) HAS property P  ⇒  R accepts  ⇒  we output ACCEPT  ✓
       </text>
-      <text x="55" y="648" fill="#1a1a1a">
+      <text x="55" y="676" fill="#1a1a1a">
         <tspan fill="var(--warn-strong, #b95825)" font-weight="700">• M does NOT accept w:</tspan>  L(M<tspan baseline-shift="sub" font-size="0.75em">M,w</tspan>) = ∅ = L(T<tspan baseline-shift="sub" font-size="0.75em">no</tspan>) does NOT have P  ⇒  R rejects  ⇒  we output REJECT  ✓
       </text>
     </g>
 
     <!-- Conclusion -->
-    <rect x="60" y="666" width="800" height="44" rx="10" fill="#fff4ee" stroke="var(--warn-strong, #b95825)" stroke-width="2"/>
-    <text x="460" y="684" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--warn-strong, #b95825)">
+    <rect x="60" y="694" width="800" height="44" rx="10" fill="#fff4ee" stroke="var(--warn-strong, #b95825)" stroke-width="2"/>
+    <text x="460" y="712" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--warn-strong, #b95825)">
       So R + the reduction would decide A<tspan baseline-shift="sub" font-size="0.75em">TM</tspan>.  But A<tspan baseline-shift="sub" font-size="0.75em">TM</tspan> is undecidable (Module 2).
     </text>
-    <text x="460" y="702" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700" fill="var(--warn-strong, #b95825)">
+    <text x="460" y="730" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700" fill="var(--warn-strong, #b95825)">
       Contradiction.  R cannot exist.  ⇒  property P is undecidable.
     </text>
   </svg>

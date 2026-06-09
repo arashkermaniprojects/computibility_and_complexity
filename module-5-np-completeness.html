@@ -125,9 +125,9 @@
     <text x="437" y="69" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" fill="var(--gold)">c&#8322;</text>
     <text x="492" y="69" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" fill="var(--gold)">c&#8323;</text>
     <text x="547" y="69" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" fill="#aaa">…</text>
-    <!-- highlight 2x3 window -->
-    <rect x="162" y="98" width="167" height="62" fill="none" stroke="var(--warn-strong, #b95825)" stroke-width="2" stroke-dasharray="4 3"/>
-    <text x="340" y="135" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--warn-strong, #b95825)">2×3 window → SAT clause</text>
+    <!-- highlight 2x3 window — exactly 2 rows (t=1, t=2) × 3 columns (cells 1, 2, 3) -->
+    <rect x="135" y="80" width="165" height="60" fill="none" stroke="var(--warn-strong, #b95825)" stroke-width="2" stroke-dasharray="4 3"/>
+    <text x="310" y="115" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--warn-strong, #b95825)">2×3 window → SAT clause</text>
     <!-- accept marker -->
     <rect x="270" y="208" width="55" height="30" fill="var(--accent-soft)" stroke="var(--accent-strong)" stroke-width="2"/>
     <text x="297" y="227" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" font-weight="700" fill="var(--accent-strong)">q&#8336;</text>
@@ -246,6 +246,7 @@
           <option value="sat3">(x∨y∨z) ∧ (¬x∨¬y) ∧ (¬x∨¬z) ∧ (¬y∨¬z) — SAT</option>
         </select>
       </label>
+      <button class="btn" id="sat-step">Step (next assignment)</button>
       <button class="btn play-btn" id="sat-auto">▶ Auto-solve (brute)</button>
       <button class="btn ghost" id="sat-reset">Reset to false</button>
     </div>
@@ -397,6 +398,7 @@
         <button data-r="vc">CLIQUE → VC</button>
         <button data-r="ss">3SAT → SUBSET-SUM</button>
       </div>
+      <button class="btn" id="chain-step">Step (next stage)</button>
       <button class="btn play-btn" id="chain-play">▶ Animate</button>
       <button class="btn ghost" id="chain-reset">Reset</button>
     </div>
@@ -881,6 +883,47 @@
          '<p style="margin:4px 0;"><strong>Try strategy:</strong> look at a red clause, find a variable that appears positively in it and is currently F, flip it to T. Then re-check the others.</p>'}`;
   }
 
+  // Apply a specific assignment index (0..2^n-1) and render. Returns true if SAT, false otherwise.
+  function applyIdx(idx) {
+    const p = presets[cur];
+    const assn = [];
+    for (let i = 0; i < p.vars.length; i++) assn.push(!!(idx & (1 << i)));
+    assignment = assn;
+    render();
+    return eval_(assn);
+  }
+
+  // Advance ONE step in the brute-force enumeration (without animation timer).
+  function stepNext() {
+    if (raf) { clearTimeout(raf); raf = null; }
+    const p = presets[cur];
+    const total = 1 << p.vars.length;
+    const idx = autoIdx;
+    const sat = applyIdx(idx);
+    const assn = assignment;
+    const assnStr = p.vars.map((v, i) => v + '=' + (assn[i]?'T':'F')).join(', ');
+    if (sat) {
+      document.getElementById('sat-explain').innerHTML =
+        `<div class="step-num">✓ Step ${idx+1}/${total} — SAT! Found a satisfying assignment.</div>
+         <p style="margin:4px 0;"><b>Witness:</b> ${assnStr}. Every clause is green ✓ — the formula is satisfiable.</p>
+         <p style="margin:4px 0;"><b>Click Step again</b> to keep enumerating past this witness, or click Reset to start fresh from F-F-F.</p>`;
+    } else {
+      const failingCount = p.clauses.length - p.clauses.filter((cl) => {
+        for (const lit of cl) {
+          const i2 = Math.abs(lit) - 1;
+          if (lit > 0 ? assn[i2] : !assn[i2]) return true;
+        }
+        return false;
+      }).length;
+      const isLast = idx + 1 >= total;
+      document.getElementById('sat-explain').innerHTML =
+        `<div class="step-num">Step ${idx+1}/${total} — ${assnStr}</div>
+         <p style="margin:4px 0;">${failingCount} clause(s) still RED. Click <b>Step</b> again to try the next assignment in binary order, or click a variable to flip it manually.</p>
+         ${isLast ? '<p style="margin:4px 0;"><b>That was the last assignment.</b> All ' + total + ' tried, none satisfies — formula is UNSAT. (For SAT instances you would have hit ✓ earlier.)</p>' : ''}`;
+    }
+    autoIdx = (idx + 1) % total;
+  }
+
   function autoSolve() {
     if (raf) clearTimeout(raf);
     const p = presets[cur];
@@ -919,7 +962,8 @@
 
   document.getElementById('sat-preset').onchange = e => { cur = e.target.value; init(); };
   document.getElementById('sat-auto').onclick = autoSolve;
-  document.getElementById('sat-reset').onclick = init;
+  document.getElementById('sat-step').onclick = stepNext;
+  document.getElementById('sat-reset').onclick = () => { autoIdx = 0; init(); };
   init();
 })();
 
@@ -1047,6 +1091,8 @@
 (function(){
   let cur = '3sat';
   let raf = null;
+  let manualMode = false;     // when true, step() does NOT auto-advance via setTimeout
+  let chainAdvance = null;    // closure that triggers one step in the current reduction
 
   function show3sat() {
     // SAT (x ∨ y ∨ z ∨ w) → 3SAT: (x ∨ y ∨ a₁) ∧ (¬a₁ ∨ z ∨ w)
@@ -1070,9 +1116,15 @@
       document.getElementById('chain-explain').innerHTML =
         `<div class="step-num">Stage ${stage+1}/${stages.length} · SAT → 3SAT</div>${stages[stage].note}`;
       stage++;
-      if (stage < stages.length) raf = setTimeout(step, 3500);
+      if (!manualMode && stage < stages.length) raf = setTimeout(step, 3500);
     }
+    chainAdvance = () => {
+      if (raf) { clearTimeout(raf); raf = null; }
+      if (stage >= stages.length) stage = 0;
+      manualMode = true; step(); manualMode = false;
+    };
     if (raf) clearTimeout(raf);
+    stage = 0;
     step();
   }
 
@@ -1146,8 +1198,13 @@
       document.getElementById('chain-explain').innerHTML =
         `<div class="step-num">Stage ${stage+1}/${totalStages} · 3SAT → CLIQUE</div>${notes[stage]}`;
       stage++;
-      if (stage < totalStages) raf = setTimeout(step, 3500);
+      if (!manualMode && stage < totalStages) raf = setTimeout(step, 3500);
     }
+    chainAdvance = () => {
+      if (raf) { clearTimeout(raf); raf = null; }
+      if (stage >= totalStages) stage = 0;
+      manualMode = true; step(); manualMode = false;
+    };
     if (raf) clearTimeout(raf);
     stage = 0;
     step();
@@ -1205,8 +1262,13 @@
       document.getElementById('chain-explain').innerHTML =
         `<div class="step-num">Stage ${stage+1}/${stages.length} · CLIQUE → VERTEX-COVER</div>${st.label}`;
       stage++;
-      if (stage < stages.length) raf = setTimeout(step, 4000);
+      if (!manualMode && stage < stages.length) raf = setTimeout(step, 4000);
     }
+    chainAdvance = () => {
+      if (raf) { clearTimeout(raf); raf = null; }
+      if (stage >= stages.length) stage = 0;
+      manualMode = true; step(); manualMode = false;
+    };
     if (raf) clearTimeout(raf);
     stage = 0;
     step();
@@ -1250,9 +1312,15 @@
       document.getElementById('chain-explain').innerHTML =
         `<div class="step-num">Stage ${stage+1}/${stages.length} · 3SAT → SUBSET-SUM</div>${stages[stage].note}`;
       stage++;
-      if (stage < stages.length) raf = setTimeout(step, 5000);
+      if (!manualMode && stage < stages.length) raf = setTimeout(step, 5000);
     }
+    chainAdvance = () => {
+      if (raf) { clearTimeout(raf); raf = null; }
+      if (stage >= stages.length) stage = 0;
+      manualMode = true; step(); manualMode = false;
+    };
     if (raf) clearTimeout(raf);
+    stage = 0;
     step();
   }
 
@@ -1272,8 +1340,13 @@
     };
   });
   document.getElementById('chain-play').onclick = play;
+  document.getElementById('chain-step').onclick = () => {
+    if (chainAdvance) chainAdvance();
+    else play();   // not initialised yet — start by rendering stage 1
+  };
   document.getElementById('chain-reset').onclick = () => {
     if (raf) clearTimeout(raf);
+    chainAdvance = null;
     document.getElementById('chain-display').innerHTML = '';
     document.getElementById('chain-explain').innerHTML = '';
   };

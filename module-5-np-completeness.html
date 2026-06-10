@@ -108,10 +108,10 @@
     <line x1="80" y1="36" x2="572" y2="36" stroke="#bbb" stroke-width="0.7" stroke-dasharray="3 2"/>
     <polygon points="572 33, 580 36, 572 39" fill="#bbb"/>
     <text x="328" y="33" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9.5" font-style="italic" fill="#888">tape position  p  ──►</text>
-    <!-- Vertical axis: time t ↓ (left of the row labels) -->
+    <!-- Vertical axis: time t flows DOWN (arrowhead drawn at the BOTTOM of the line, label is plain text — no arrow char that would flip on rotation) -->
     <line x1="32" y1="50" x2="32" y2="258" stroke="#bbb" stroke-width="0.7" stroke-dasharray="3 2"/>
-    <polygon points="29 258, 32 266, 35 258" fill="#bbb"/>
-    <text x="20" y="155" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9.5" font-style="italic" fill="#888" transform="rotate(-90, 20, 155)">time  t  ──►</text>
+    <polygon points="28 256, 32 266, 36 256" fill="#bbb"/>
+    <text x="20" y="155" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9.5" font-style="italic" fill="#888" transform="rotate(-90, 20, 155)">time  t  (down)</text>
 
     <!-- row labels (t = time) -->
     <g font-family="var(--mono), ui-monospace" font-size="11" fill="#888">
@@ -151,6 +151,170 @@
     </text>
   </svg>
   <figcaption>The verifier V running on input x with certificate c sweeps a tape over polynomial time. Each row is a configuration; each 2×3 window must follow δ. Converting each window into a SAT clause produces a formula φ<sub>x</sub> that is satisfiable iff some certificate makes V accept. Every NP problem reduces this way.</figcaption>
+</figure>
+
+<div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Pipeline</span><audio controls preload="none" src="audio/components/m5-s1-c1b.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><figure class="diagram">
+  <svg viewBox="0 0 900 540" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;max-height:none !important;width:100%;height:auto;display:block;">
+    <defs>
+      <marker id="m5p-arr" markerWidth="10" markerHeight="10" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#444"/>
+      </marker>
+    </defs>
+
+    <!-- Title -->
+    <text x="450" y="28" text-anchor="middle" font-family="var(--sans), system-ui" font-size="18" font-weight="700" fill="#1a1a1a">
+      Cook–Levin pipeline · how every NP language becomes a SAT formula
+    </text>
+    <text x="450" y="50" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-style="italic" fill="#666">
+      Read left to right — each panel makes one of the narrator's abstract terms concrete.
+    </text>
+
+    <!-- ============ Panel 1: NP problem with verifier ============ -->
+    <rect x="20" y="78" width="200" height="220" rx="10" fill="#fff" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2"/>
+    <text x="120" y="100" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="var(--accent-strong, #1c4a3f)">① NP language L</text>
+    <text x="120" y="120" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">"Is x ∈ L?"</text>
+
+    <!-- input x -->
+    <rect x="40" y="138" width="74" height="34" rx="6" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.4"/>
+    <text x="77" y="158" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700">input x</text>
+    <text x="77" y="184" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="#666">the problem</text>
+    <text x="77" y="196" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="#666">instance</text>
+
+    <!-- certificate c -->
+    <rect x="124" y="138" width="74" height="34" rx="6" fill="var(--gold-soft)" stroke="var(--gold-strong, #a68526)" stroke-width="1.4"/>
+    <text x="161" y="158" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700" fill="var(--gold-strong, #a68526)">cert. c</text>
+    <text x="161" y="184" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="#666">a GUESS —</text>
+    <text x="161" y="196" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="#666">"the witness"</text>
+
+    <text x="120" y="226" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">L is in NP ⇔ ∃ poly-time TM V</text>
+    <text x="120" y="240" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">such that</text>
+    <text x="120" y="256" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--accent-strong, #1c4a3f)">x ∈ L  ⇔  ∃c · V(x, c) accepts.</text>
+    <text x="120" y="282" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="#666">V is the "verifier".</text>
+
+    <!-- arrow 1→2 -->
+    <path d="M 222,188 L 245,188" stroke="#444" stroke-width="1.8" marker-end="url(#m5p-arr)"/>
+    <text x="234" y="180" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="#444">run V</text>
+
+    <!-- ============ Panel 2: V running — tape over time = tableau ============ -->
+    <rect x="248" y="78" width="200" height="220" rx="10" fill="#fff" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2"/>
+    <text x="348" y="100" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="var(--accent-strong, #1c4a3f)">② V's tape over time</text>
+    <text x="348" y="120" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">a 2-D grid (the tableau)</text>
+
+    <!-- mini-tableau 4 rows x 6 cols -->
+    <g font-family="var(--mono), ui-monospace, monospace" font-size="10">
+      <rect x="265" y="138" width="26" height="22" fill="var(--accent-soft)" stroke="#999" stroke-width="0.6"/><text x="278" y="153" text-anchor="middle" fill="var(--info)">q₀</text>
+      <rect x="291" y="138" width="26" height="22" fill="#fff" stroke="#999" stroke-width="0.6"/><text x="304" y="153" text-anchor="middle">x₁</text>
+      <rect x="317" y="138" width="26" height="22" fill="#fff" stroke="#999" stroke-width="0.6"/><text x="330" y="153" text-anchor="middle">x₂</text>
+      <rect x="343" y="138" width="26" height="22" fill="var(--gold-soft)" stroke="#999" stroke-width="0.6"/><text x="356" y="153" text-anchor="middle" fill="var(--gold-strong, #a68526)">c₁</text>
+      <rect x="369" y="138" width="26" height="22" fill="var(--gold-soft)" stroke="#999" stroke-width="0.6"/><text x="382" y="153" text-anchor="middle" fill="var(--gold-strong, #a68526)">c₂</text>
+      <rect x="395" y="138" width="26" height="22" fill="#fff" stroke="#999" stroke-width="0.6"/><text x="408" y="153" text-anchor="middle" fill="#aaa">…</text>
+
+      <rect x="265" y="160" width="26" height="22" fill="#fff" stroke="#999" stroke-width="0.6"/>
+      <rect x="291" y="160" width="26" height="22" fill="#fff" stroke="#999" stroke-width="0.6"/>
+      <rect x="317" y="160" width="26" height="22" fill="#fff" stroke="#999" stroke-width="0.6"/>
+      <rect x="343" y="160" width="26" height="22" fill="#fff" stroke="#999" stroke-width="0.6"/>
+      <rect x="369" y="160" width="26" height="22" fill="#fff" stroke="#999" stroke-width="0.6"/>
+      <rect x="395" y="160" width="26" height="22" fill="#fff" stroke="#999" stroke-width="0.6"/>
+
+      <rect x="265" y="182" width="26" height="22" fill="#fff" stroke="#999" stroke-width="0.6"/>
+      <rect x="291" y="182" width="26" height="22" fill="#fff" stroke="#999" stroke-width="0.6"/>
+      <rect x="317" y="182" width="26" height="22" fill="#fff" stroke="#999" stroke-width="0.6"/>
+      <rect x="343" y="182" width="26" height="22" fill="#fff" stroke="#999" stroke-width="0.6"/>
+      <rect x="369" y="182" width="26" height="22" fill="#fff" stroke="#999" stroke-width="0.6"/>
+      <rect x="395" y="182" width="26" height="22" fill="#fff" stroke="#999" stroke-width="0.6"/>
+
+      <rect x="265" y="204" width="26" height="22" fill="#fff" stroke="#999" stroke-width="0.6"/>
+      <rect x="291" y="204" width="26" height="22" fill="#fff" stroke="#999" stroke-width="0.6"/>
+      <rect x="317" y="204" width="26" height="22" fill="#fff" stroke="#999" stroke-width="0.6"/>
+      <rect x="343" y="204" width="26" height="22" fill="var(--accent-soft)" stroke="var(--accent-strong)" stroke-width="1"/><text x="356" y="219" text-anchor="middle" font-weight="700" fill="var(--accent-strong)">q_a</text>
+      <rect x="369" y="204" width="26" height="22" fill="#fff" stroke="#999" stroke-width="0.6"/>
+      <rect x="395" y="204" width="26" height="22" fill="#fff" stroke="#999" stroke-width="0.6"/>
+    </g>
+    <text x="259" y="153" text-anchor="end" font-family="var(--mono), ui-monospace" font-size="9" fill="#888">t=0</text>
+    <text x="259" y="175" text-anchor="end" font-family="var(--mono), ui-monospace" font-size="9" fill="#888">t=1</text>
+    <text x="259" y="197" text-anchor="end" font-family="var(--mono), ui-monospace" font-size="9" fill="#888">t=2</text>
+    <text x="259" y="219" text-anchor="end" font-family="var(--mono), ui-monospace" font-size="9" fill="#888">t=k</text>
+
+    <text x="348" y="248" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">Row 0 = start config:</text>
+    <text x="348" y="262" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10.5" fill="#1a1a1a">state, input <tspan fill="#1a1a1a">x</tspan>, certificate <tspan fill="var(--gold-strong, #a68526)" font-weight="700">c</tspan>.</text>
+    <text x="348" y="282" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10.5" fill="#1a1a1a">Each later row follows by one δ-step.</text>
+
+    <!-- arrow 2→3 -->
+    <path d="M 450,188 L 473,188" stroke="#444" stroke-width="1.8" marker-end="url(#m5p-arr)"/>
+    <text x="461" y="180" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="#444">encode</text>
+
+    <!-- ============ Panel 3: Variables x_{t,p,s} ============ -->
+    <rect x="476" y="78" width="200" height="220" rx="10" fill="#fff" stroke="var(--gold-strong, #a68526)" stroke-width="2"/>
+    <text x="576" y="100" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="var(--gold-strong, #a68526)">③ Boolean variables</text>
+    <text x="576" y="120" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">one var per (cell, possible symbol)</text>
+
+    <!-- a single cell with arrow to variable -->
+    <rect x="496" y="138" width="40" height="34" rx="4" fill="#fff" stroke="#999" stroke-width="1"/>
+    <text x="516" y="159" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="14" font-weight="700">x₁</text>
+    <text x="516" y="186" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9.5" font-style="italic" fill="#666">cell (t=0, p=1)</text>
+
+    <path d="M 538,155 L 558,155" stroke="#444" stroke-width="1.5" marker-end="url(#m5p-arr)"/>
+
+    <rect x="562" y="138" width="105" height="34" rx="6" fill="var(--gold-soft)" stroke="var(--gold-strong, #a68526)" stroke-width="1.4"/>
+    <text x="614" y="159" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" font-weight="700" fill="var(--gold-strong, #a68526)">x<tspan baseline-shift="sub" font-size="0.75em">0,1,a</tspan>, x<tspan baseline-shift="sub" font-size="0.75em">0,1,b</tspan>, …</text>
+
+    <text x="576" y="208" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">For each (t, p) and each tape symbol s,</text>
+    <text x="576" y="222" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a">we make one Boolean variable:</text>
+    <text x="576" y="240" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" font-weight="700" fill="var(--gold-strong, #a68526)">x<tspan baseline-shift="sub" font-size="0.75em">t,p,s</tspan> = TRUE ⇔ cell (t,p) holds s.</text>
+    <text x="576" y="268" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10.5" fill="#1a1a1a">≈ |w|<tspan baseline-shift="super" font-size="0.75em">2k</tspan> · |Γ| variables</text>
+    <text x="576" y="284" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="#666">= polynomial in |w|</text>
+
+    <!-- arrow 3→4 -->
+    <path d="M 678,188 L 701,188" stroke="#444" stroke-width="1.8" marker-end="url(#m5p-arr)"/>
+    <text x="690" y="180" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="#444">constrain</text>
+
+    <!-- ============ Panel 4: Clauses + φ_x ============ -->
+    <rect x="704" y="78" width="180" height="220" rx="10" fill="#fff" stroke="var(--warn-strong, #b95825)" stroke-width="2"/>
+    <text x="794" y="100" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="var(--warn-strong, #b95825)">④ SAT clauses</text>
+    <text x="794" y="120" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">three families</text>
+
+    <!-- 3 small badges for the 3 clause families -->
+    <rect x="715" y="138" width="158" height="24" rx="5" fill="#fff4ee" stroke="var(--warn-strong, #b95825)" stroke-width="1"/>
+    <text x="794" y="155" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a"><tspan font-weight="700" fill="var(--warn-strong, #b95825)">START:</tspan> row 0 is correct</text>
+
+    <rect x="715" y="166" width="158" height="24" rx="5" fill="#fff4ee" stroke="var(--warn-strong, #b95825)" stroke-width="1"/>
+    <text x="794" y="183" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a"><tspan font-weight="700" fill="var(--warn-strong, #b95825)">MOVE:</tspan> every 2×3 window is δ-OK</text>
+
+    <rect x="715" y="194" width="158" height="24" rx="5" fill="#fff4ee" stroke="var(--warn-strong, #b95825)" stroke-width="1"/>
+    <text x="794" y="211" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#1a1a1a"><tspan font-weight="700" fill="var(--warn-strong, #b95825)">ACCEPT:</tspan> q_a appears somewhere</text>
+
+    <text x="794" y="240" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700" fill="var(--warn-strong, #b95825)">φ<tspan baseline-shift="sub" font-size="0.75em">x</tspan>  =  AND of all 3</text>
+    <text x="794" y="262" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10.5" fill="#1a1a1a">polynomial # of clauses</text>
+    <text x="794" y="284" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="#666">over the x<tspan baseline-shift="sub" font-size="0.75em">t,p,s</tspan> variables</text>
+
+    <!-- ============ Bottom band: the bridge ============ -->
+    <line x1="20" y1="320" x2="884" y2="320" stroke="#ddd" stroke-width="1" stroke-dasharray="4 3"/>
+
+    <text x="450" y="350" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">The key equivalence — read the chain right-to-left:</text>
+
+    <rect x="60" y="368" width="780" height="62" rx="8" fill="#eef9f3" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.8"/>
+    <text x="450" y="390" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="14" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
+      φ<tspan baseline-shift="sub" font-size="0.75em">x</tspan> ∈ SAT  ⇔  ∃ truth assignment of all x<tspan baseline-shift="sub" font-size="0.75em">t,p,s</tspan>
+    </text>
+    <text x="450" y="410" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="14" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
+      ⇔  ∃ valid tableau for V on (x, c)  ⇔  ∃ certificate c s.t. V(x, c) accepts  ⇔  x ∈ L.
+    </text>
+
+    <!-- Certificate translation note -->
+    <text x="450" y="450" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-style="italic" fill="#444">
+      <tspan font-weight="700">Finding the certificate c</tspan> = <tspan font-weight="700">finding a satisfying truth assignment of φ<tspan baseline-shift="sub" font-size="0.75em">x</tspan></tspan>.
+    </text>
+    <text x="450" y="468" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" fill="#444">
+      So <tspan font-weight="700">solving SAT</tspan> = <tspan font-weight="700">solving every NP language</tspan> — that's why SAT is NP-hard.
+    </text>
+
+    <!-- final conclusion banner -->
+    <rect x="240" y="490" width="420" height="36" rx="8" fill="var(--warn-soft)" stroke="var(--warn-strong, #b95825)" stroke-width="2"/>
+    <text x="450" y="514" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="14" font-weight="700" fill="var(--warn-strong, #b95825)">
+      NP  ≤<tspan baseline-shift="sub" font-size="0.75em">p</tspan>  SAT     ⇒     SAT is NP-complete (Cook–Levin).
+    </text>
+  </svg>
+  <figcaption>The same diagram that the narration calls out. ① An NP language is one where every yes-instance has a short, polynomial-time-verifiable <strong>certificate</strong> c — that's the "guess" the narrator refers to. ② Imagine V running on (x, c): its tape over time is a 2-D grid (the big tableau above). ③ Each (cell, possible tape symbol) pair becomes a separate Boolean variable x<sub>t,p,s</sub>. ④ Three clause families — START, MOVE (one per 2×3 window), ACCEPT — pin those variables down to <em>exactly</em> the assignments that correspond to valid runs of V. The big SAT formula φ<sub>x</sub> is satisfiable iff there is a certificate c making V accept (x, c), iff x ∈ L. Finding the certificate ≡ finding a satisfying truth assignment. Hence NP ≤<sub>p</sub> SAT and SAT is NP-complete.</figcaption>
 </figure>
 
 <div class="callout" style="border-left-color: var(--warn-strong, #b95825); background: #fdf4ed; margin: 10px 0 18px;">
@@ -232,6 +396,167 @@
       The two definitions are equivalent: given a verifier <span class="math">V</span> and certificate <span class="math">c</span>, a nondeterministic TM can <em>guess</em> <span class="math">c</span> (one symbol per nondeterministic step) and then run <span class="math">V</span>; conversely, an NTM's accepting computation path is itself a polynomial-size certificate. Sipser proves this equivalence in L14 and uses both viewpoints interchangeably.
     </p>
   </div>
+
+  <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Definitions diagram</span><audio controls preload="none" src="audio/components/m5-s1-c3b.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><figure class="diagram">
+    <svg viewBox="0 0 920 540" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;max-height:none !important;width:100%;height:auto;display:block;">
+      <defs>
+        <marker id="m5-def-arr" markerWidth="10" markerHeight="10" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#444"/>
+        </marker>
+        <marker id="m5-def-arr-acc" markerWidth="10" markerHeight="10" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="var(--accent-strong, #1c4a3f)"/>
+        </marker>
+        <marker id="m5-def-arr-warn" markerWidth="10" markerHeight="10" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="var(--warn-strong, #b95825)"/>
+        </marker>
+      </defs>
+
+      <!-- Title -->
+      <text x="460" y="30" text-anchor="middle" font-family="var(--sans), system-ui" font-size="18" font-weight="700" fill="#1a1a1a">
+        Two equivalent definitions of NP — and how they translate into each other
+      </text>
+      <text x="460" y="52" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-style="italic" fill="#666">
+        Left: a deterministic verifier given a witness.    Right: a nondeterministic machine that branches.    Middle: why they compute the same thing.
+      </text>
+
+      <!-- ============ LEFT PANEL · Verifier view ============ -->
+      <rect x="20" y="80" width="290" height="370" rx="12" fill="#fff" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2.5"/>
+      <text x="165" y="106" text-anchor="middle" font-family="var(--sans), system-ui" font-size="15" font-weight="700" fill="var(--accent-strong, #1c4a3f)">View 1 · Verifier + Certificate</text>
+      <text x="165" y="124" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">deterministic — given x AND a guess c</text>
+
+      <!-- input x and certificate c -->
+      <rect x="40" y="142" width="100" height="40" rx="6" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.5"/>
+      <text x="90" y="167" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700">input x</text>
+
+      <rect x="190" y="142" width="100" height="40" rx="6" fill="var(--gold-soft)" stroke="var(--gold-strong, #a68526)" stroke-width="1.5"/>
+      <text x="240" y="161" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700" fill="var(--gold-strong, #a68526)">certificate c</text>
+      <text x="240" y="178" text-anchor="middle" font-family="var(--sans), system-ui" font-size="9" font-style="italic" fill="#666">(a hint we get to use)</text>
+
+      <!-- arrows down into V -->
+      <path d="M 90,184 L 90,210 L 145,228" stroke="#444" stroke-width="1.6" fill="none" marker-end="url(#m5-def-arr)"/>
+      <path d="M 240,184 L 240,210 L 185,228" stroke="#444" stroke-width="1.6" fill="none" marker-end="url(#m5-def-arr)"/>
+
+      <!-- Verifier V box -->
+      <rect x="80" y="232" width="170" height="68" rx="10" fill="white" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2"/>
+      <text x="165" y="256" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="20" font-weight="700" fill="var(--accent-strong, #1c4a3f)">V</text>
+      <text x="165" y="276" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="#1a1a1a">poly-time deterministic TM</text>
+      <text x="165" y="291" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="#666">"check if c is a valid witness"</text>
+
+      <!-- output -->
+      <path d="M 165,302 L 165,326" stroke="#444" stroke-width="1.6" marker-end="url(#m5-def-arr)"/>
+      <rect x="80" y="330" width="170" height="34" rx="6" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.6"/>
+      <text x="165" y="351" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--accent-strong, #1c4a3f)">accept  /  reject</text>
+
+      <!-- Formal statement -->
+      <rect x="40" y="380" width="250" height="56" rx="6" fill="#f4faf7" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1" stroke-dasharray="4 2"/>
+      <text x="165" y="400" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="#1a1a1a">x ∈ L  ⇔  ∃ c such that V(x, c) accepts</text>
+      <text x="165" y="416" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="#666">|c| ≤ polynomial in |x|</text>
+      <text x="165" y="430" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="#666">V runs in time |x|<tspan baseline-shift="super" font-size="0.75em">k</tspan></text>
+
+      <!-- ============ CENTER PANEL · Bridge ============ -->
+      <rect x="324" y="80" width="272" height="370" rx="12" fill="#fbf6ef" stroke="var(--gold-strong, #a68526)" stroke-width="2.5" stroke-dasharray="6 3"/>
+      <text x="460" y="106" text-anchor="middle" font-family="var(--sans), system-ui" font-size="15" font-weight="700" fill="var(--gold-strong, #a68526)">Why the two views agree</text>
+      <text x="460" y="124" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">each view simulates the other</text>
+
+      <!-- Direction 1: V → N -->
+      <text x="460" y="156" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--accent-strong, #1c4a3f)">① Verifier → NTM (left to right)</text>
+      <text x="338" y="176" font-family="var(--sans), system-ui" font-size="10.5" fill="#1a1a1a">Given V, build N: on input x,</text>
+      <text x="338" y="192" font-family="var(--sans), system-ui" font-size="10.5" fill="#1a1a1a">  ① N nondeterministically</text>
+      <text x="338" y="206" font-family="var(--sans), system-ui" font-size="10.5" fill="#1a1a1a">     GUESSES c, one symbol</text>
+      <text x="338" y="220" font-family="var(--sans), system-ui" font-size="10.5" fill="#1a1a1a">     per nondeterministic step.</text>
+      <text x="338" y="236" font-family="var(--sans), system-ui" font-size="10.5" fill="#1a1a1a">  ② N deterministically runs</text>
+      <text x="338" y="250" font-family="var(--sans), system-ui" font-size="10.5" fill="#1a1a1a">     V(x, c) on the guessed c.</text>
+      <text x="338" y="264" font-family="var(--sans), system-ui" font-size="10.5" fill="#1a1a1a">  ③ N accepts iff V accepts.</text>
+
+      <!-- divider -->
+      <line x1="338" y1="278" x2="582" y2="278" stroke="#ddd" stroke-width="1"/>
+
+      <!-- Direction 2: N → V -->
+      <text x="460" y="300" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--warn-strong, #b95825)">② NTM → Verifier (right to left)</text>
+      <text x="338" y="320" font-family="var(--sans), system-ui" font-size="10.5" fill="#1a1a1a">Given N, build V: V's input</text>
+      <text x="338" y="334" font-family="var(--sans), system-ui" font-size="10.5" fill="#1a1a1a">is (x, c). Read c as the list</text>
+      <text x="338" y="348" font-family="var(--sans), system-ui" font-size="10.5" fill="#1a1a1a">of nondeterministic choices.</text>
+      <text x="338" y="364" font-family="var(--sans), system-ui" font-size="10.5" fill="#1a1a1a">V simulates N(x) along that</text>
+      <text x="338" y="378" font-family="var(--sans), system-ui" font-size="10.5" fill="#1a1a1a">one path; accepts iff that path</text>
+      <text x="338" y="392" font-family="var(--sans), system-ui" font-size="10.5" fill="#1a1a1a">accepts. |c| = path length =</text>
+      <text x="338" y="406" font-family="var(--sans), system-ui" font-size="10.5" fill="#1a1a1a">poly(|x|) — short enough.</text>
+
+      <!-- Conclusion box -->
+      <rect x="340" y="418" width="240" height="22" rx="4" fill="#f4faf7" stroke="var(--gold-strong, #a68526)" stroke-width="1"/>
+      <text x="460" y="434" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" font-weight="700" fill="var(--gold-strong, #a68526)">L ∈ NTIME(n<tspan baseline-shift="super" font-size="0.75em">k</tspan>)  ⇔  L has poly verifier</text>
+
+      <!-- ============ RIGHT PANEL · NTM view ============ -->
+      <rect x="610" y="80" width="290" height="370" rx="12" fill="#fff" stroke="var(--warn-strong, #b95825)" stroke-width="2.5"/>
+      <text x="755" y="106" text-anchor="middle" font-family="var(--sans), system-ui" font-size="15" font-weight="700" fill="var(--warn-strong, #b95825)">View 2 · Nondeterministic TM</text>
+      <text x="755" y="124" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">guesses at every step — a branching tree</text>
+
+      <!-- input -->
+      <rect x="705" y="142" width="100" height="34" rx="6" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.5"/>
+      <text x="755" y="163" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700">input x</text>
+      <path d="M 755,180 L 755,200" stroke="#444" stroke-width="1.6" marker-end="url(#m5-def-arr)"/>
+
+      <!-- NTM N as a tree of computations -->
+      <!-- Root -->
+      <circle cx="755" cy="216" r="11" fill="var(--warn-soft)" stroke="var(--warn-strong, #b95825)" stroke-width="2"/>
+      <text x="755" y="220" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" font-weight="700" fill="var(--warn-strong, #b95825)">q₀</text>
+
+      <!-- Level 1: 2 branches -->
+      <line x1="745" y1="225" x2="700" y2="252" stroke="#888" stroke-width="1.2"/>
+      <line x1="765" y1="225" x2="810" y2="252" stroke="#888" stroke-width="1.2"/>
+      <circle cx="695" cy="260" r="10" fill="white" stroke="#888" stroke-width="1.4"/>
+      <circle cx="815" cy="260" r="10" fill="white" stroke="#888" stroke-width="1.4"/>
+
+      <!-- Level 2: 4 branches -->
+      <line x1="687" y1="268" x2="660" y2="292" stroke="#bbb" stroke-width="1"/>
+      <line x1="703" y1="268" x2="730" y2="292" stroke="#bbb" stroke-width="1"/>
+      <line x1="807" y1="268" x2="780" y2="292" stroke="#bbb" stroke-width="1"/>
+      <line x1="823" y1="268" x2="850" y2="292" stroke="#bbb" stroke-width="1"/>
+      <circle cx="660" cy="298" r="8" fill="white" stroke="#bbb" stroke-width="1.2"/>
+      <circle cx="730" cy="298" r="8" fill="white" stroke="#bbb" stroke-width="1.2"/>
+      <circle cx="780" cy="298" r="8" fill="white" stroke="#bbb" stroke-width="1.2"/>
+      <circle cx="850" cy="298" r="8" fill="white" stroke="#bbb" stroke-width="1.2"/>
+
+      <!-- Level 3 leaves: 8 leaves, only one is accepting -->
+      <line x1="657" y1="304" x2="645" y2="326" stroke="#ddd" stroke-width="0.9"/>
+      <line x1="663" y1="304" x2="675" y2="326" stroke="#ddd" stroke-width="0.9"/>
+      <line x1="727" y1="304" x2="715" y2="326" stroke="#ddd" stroke-width="0.9"/>
+      <line x1="733" y1="304" x2="745" y2="326" stroke="#ddd" stroke-width="0.9"/>
+      <line x1="777" y1="304" x2="765" y2="326" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2"/>
+      <line x1="783" y1="304" x2="795" y2="326" stroke="#ddd" stroke-width="0.9"/>
+      <line x1="847" y1="304" x2="835" y2="326" stroke="#ddd" stroke-width="0.9"/>
+      <line x1="853" y1="304" x2="865" y2="326" stroke="#ddd" stroke-width="0.9"/>
+
+      <circle cx="645" cy="332" r="6" fill="#fbe9e7" stroke="#c62828" stroke-width="1"/>
+      <circle cx="675" cy="332" r="6" fill="#fbe9e7" stroke="#c62828" stroke-width="1"/>
+      <circle cx="715" cy="332" r="6" fill="#fbe9e7" stroke="#c62828" stroke-width="1"/>
+      <circle cx="745" cy="332" r="6" fill="#fbe9e7" stroke="#c62828" stroke-width="1"/>
+      <circle cx="765" cy="332" r="8" fill="var(--accent-soft)" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2"/>
+      <text x="765" y="336" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="9" font-weight="700" fill="var(--accent-strong, #1c4a3f)">qₐ</text>
+      <circle cx="795" cy="332" r="6" fill="#fbe9e7" stroke="#c62828" stroke-width="1"/>
+      <circle cx="835" cy="332" r="6" fill="#fbe9e7" stroke="#c62828" stroke-width="1"/>
+      <circle cx="865" cy="332" r="6" fill="#fbe9e7" stroke="#c62828" stroke-width="1"/>
+
+      <!-- "the accepting path = certificate c" hint -->
+      <text x="690" y="357" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="var(--accent-strong, #1c4a3f)" font-weight="700">↑ this accepting path</text>
+      <text x="690" y="370" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="var(--accent-strong, #1c4a3f)" font-weight="700">  IS a certificate c</text>
+
+      <!-- Formal statement -->
+      <rect x="635" y="380" width="240" height="56" rx="6" fill="#fff4ee" stroke="var(--warn-strong, #b95825)" stroke-width="1" stroke-dasharray="4 2"/>
+      <text x="755" y="400" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="#1a1a1a">x ∈ L  ⇔  N(x) has some accepting path</text>
+      <text x="755" y="416" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="#666">N runs in time |x|<tspan baseline-shift="super" font-size="0.75em">k</tspan> on every path</text>
+      <text x="755" y="430" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" font-style="italic" fill="#666">(tree depth = polynomial)</text>
+
+      <!-- ============ Bottom band: Sipser Theorem 7.20 ============ -->
+      <rect x="120" y="476" width="680" height="48" rx="10" fill="#eef9f3" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2"/>
+      <text x="460" y="498" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
+        Sipser Theorem 7.20:
+      </text>
+      <text x="460" y="516" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="14" font-weight="700" fill="var(--accent-strong, #1c4a3f)">
+        NP  =  ⋃<tspan baseline-shift="sub" font-size="0.75em">k</tspan> NTIME(n<tspan baseline-shift="super" font-size="0.75em">k</tspan>)  =  { L : L has a polynomial-time verifier }
+      </text>
+    </svg>
+    <figcaption>Two equivalent definitions of NP. <strong>Left (verifier view):</strong> a deterministic poly-time TM V is given both the input x AND a "certificate" c — a hint at most polynomial in |x|. x ∈ L iff some c convinces V to accept. <strong>Right (nondeterministic view):</strong> an NTM N starts on input x and at every step nondeterministically branches into a tree of possible computations. x ∈ L iff at least one path in that tree ends in q_accept. <strong>Middle (bridge):</strong> the two views simulate each other — N can simulate V by first GUESSING c (one symbol per nondeterministic branch) then running V; V can simulate N by reading c as the list of nondeterministic choices along the accepting path. So "the certificate c" and "the sequence of nondeterministic choices on an accepting path" are the same thing in two different notations. Sipser uses both viewpoints interchangeably throughout chapter 7.</figcaption>
+  </figure>
 </section>
 
 <!-- ============================================================ -->

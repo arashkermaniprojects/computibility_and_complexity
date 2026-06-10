@@ -1029,9 +1029,9 @@
     <div class="explain-panel" id="cyk-explain">
       <div class="step-num">How to read the table</div>
       Cell <span class="math">T[i, j]</span> contains the set of variables that derive the substring
-      <span class="math">w_i…w_j</span>. The bottom row is filled from the rules
+      <span class="math">w<sub>i</sub>…w<sub>j</sub></span>. The bottom row is filled from the rules
       <span class="math">A → a</span>. Higher rows are filled by looking at all splits
-      <span class="math">w_i…w_k · w<sub>k+1</sub>…w_j</span> and combining via rules
+      <span class="math">w<sub>i</sub>…w<sub>k</sub> · w<sub>k+1</sub>…w<sub>j</sub></span> and combining via rules
       <span class="math">A → BC</span>. The verdict is "in L(G)" iff <span class="math">S</span>
       is in the top cell.
     </div>
@@ -1369,9 +1369,9 @@ D -> d</textarea>
     <details><summary>Show solution outline</summary>
       <div class="solution">
         Construct DFA <span class="math">C</span> for L(A) △ L(B) with state set
-        <span class="math">Q_A × Q_B</span>; accept states are pairs where exactly one component
+        <span class="math">Q<sub>A</sub> × Q<sub>B</sub></span>; accept states are pairs where exactly one component
         is accepting. Run <span class="math">E<sub>DFA</sub></span> on <span class="math">C</span>: do BFS
-        from the start pair. Time is <span class="math">O(|Q_A| · |Q_B| · |Σ|)</span> to build the
+        from the start pair. Time is <span class="math">O(|Q<sub>A</sub>| · |Q<sub>B</sub>| · |Σ|)</span> to build the
         construction, plus the same to do reachability. So total
         <span class="math">O(|A| · |B| · |Σ|)</span>.
       </div>

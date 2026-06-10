@@ -418,7 +418,7 @@
 
   <div class="key-idea">
     <strong>The diagonal lemma.</strong> If you list any countable family of functions
-    <span class="math">f_1, f_2, …</span> from ℕ to {0,1}, you can construct a new function
+    <span class="math">f<sub>1</sub>, f<sub>2</sub>, …</span> from ℕ to {0,1}, you can construct a new function
     <span class="math">g(n) = 1 - f<sub>n</sub>(n)</span> that disagrees with each <span class="math">f<sub>i</sub></span>
     at position <span class="math">i</span>. So <span class="math">g</span> is not in the list.
     Conclusion: no countable list can contain every function ℕ → {0,1}.
@@ -782,8 +782,8 @@
       <span class="math">D</span> only disagrees with every <span class="math">M<sub>i</sub></span>
       <em>at the diagonal position</em>. That is enough — if a TM <span class="math">D</span> in the
       list has index <span class="math">k</span>, then <span class="math">D</span> disagrees with
-      <span class="math">M_k</span> at column <span class="math">k</span>, but
-      <span class="math">D = M_k</span>, so it disagrees with itself, which is impossible. The
+      <span class="math">M<sub>k</sub></span> at column <span class="math">k</span>, but
+      <span class="math">D = M<sub>k</sub></span>, so it disagrees with itself, which is impossible. The
       diagonal is not decoration; it is exactly where the self-reference creates the contradiction.
     </p>
   </div>
@@ -1103,7 +1103,7 @@
     </details>
     <details><summary>Show solution outline</summary>
       <div class="solution">
-        Mapping reductions transfer recognizability along their direction: if <span class="math">L_1 ≤_m L_2</span> and <span class="math">L_2</span> is recognizable, so is <span class="math">L_1</span>. Same for complements. So <span class="math">A<sub>TM</sub> ≤_m E<sub>TM</sub></span> would imply <span class="math"><span class="overline">A<sub>TM</sub></span> ≤_m <span class="overline">E<sub>TM</sub></span></span> (just complement both sides), and since <span class="math"><span class="overline">E<sub>TM</sub></span></span> is recognizable (loop over inputs <span class="math">w</span>, simulate <span class="math">M</span> in parallel; accept as soon as one accepts), <span class="math"><span class="overline">A<sub>TM</sub></span></span> would be recognizable. But it isn't (Module 5 of Sipser).
+        Mapping reductions transfer recognizability along their direction: if <span class="math">L<sub>1</sub> ≤<sub>m</sub> L<sub>2</sub></span> and <span class="math">L<sub>2</sub></span> is recognizable, so is <span class="math">L<sub>1</sub></span>. Same for complements. So <span class="math">A<sub>TM</sub> ≤<sub>m</sub> E<sub>TM</sub></span> would imply <span class="math"><span class="overline">A<sub>TM</sub></span> ≤<sub>m</sub> <span class="overline">E<sub>TM</sub></span></span> (just complement both sides), and since <span class="math"><span class="overline">E<sub>TM</sub></span></span> is recognizable (loop over inputs <span class="math">w</span>, simulate <span class="math">M</span> in parallel; accept as soon as one accepts), <span class="math"><span class="overline">A<sub>TM</sub></span></span> would be recognizable. But it isn't (Module 5 of Sipser).
       </div>
     </details>
   </div>

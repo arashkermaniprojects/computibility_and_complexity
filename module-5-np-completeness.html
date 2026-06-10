@@ -1420,15 +1420,34 @@
     document.getElementById('tab-svg').innerHTML = s;
   }
 
-  function play() {
-    if (raf) clearTimeout(raf);
-    stage = 0;
+  // Speed multiplier — the Speed slider scales the base delay (lower delay = faster)
+  let speedMult = 1;
+
+  function setPlayBtnState(isPlaying) {
+    const btn = document.getElementById('tab-play');
+    if (!btn) return;
+    if (isPlaying) {
+      btn.textContent = '⏸ Pause';
+      btn.classList.add('play-btn');
+      btn.classList.remove('btn');  // keep play-btn styling
+      btn.classList.add('btn');
+    } else {
+      btn.textContent = '▶ Resume';
+    }
+  }
+
+  function play(restart) {
+    if (raf) { clearTimeout(raf); raf = null; }
+    if (restart || stage > rows * cols) {
+      stage = 0;
+      document.getElementById('tab-explain').innerHTML =
+        `<div class="step-num">What this grid means</div>
+         <p style="margin:4px 0;">Each <strong>row</strong> is a snapshot of the verifier's TM at one moment in time. Row 0 is the starting configuration: the tape holds the input <code>00000 1111 ___</code> and the TM is in state <code>q₀</code> at the leftmost cell. Row 1 is what the tape looks like one transition later. Row <em>i</em> is the configuration at time <em>i</em>.</p>
+         <p style="margin:4px 0;">Each <strong>column</strong> is one cell of the tape. So cell (row, col) records "what symbol is in tape cell <em>col</em> at time <em>row</em>" — possibly with a state-label inserted when the head is there.</p>
+         <p style="margin:4px 0;">The Cook–Levin construction turns this grid into SAT variables: one Boolean variable per (row, col, symbol) triple. The clauses say "this grid is a valid computation of the verifier accepting (x, c)." Watch the rows fill in.</p>`;
+    }
     render();
-    document.getElementById('tab-explain').innerHTML =
-      `<div class="step-num">What this grid means</div>
-       <p style="margin:4px 0;">Each <strong>row</strong> is a snapshot of the verifier's TM at one moment in time. Row 0 is the starting configuration: the tape holds the input <code>00000 1111 ___</code> and the TM is in state <code>q₀</code> at the leftmost cell. Row 1 is what the tape looks like one transition later. Row <em>i</em> is the configuration at time <em>i</em>.</p>
-       <p style="margin:4px 0;">Each <strong>column</strong> is one cell of the tape. So cell (row, col) records "what symbol is in tape cell <em>col</em> at time <em>row</em>" — possibly with a state-label inserted when the head is there.</p>
-       <p style="margin:4px 0;">The Cook–Levin construction turns this grid into SAT variables: one Boolean variable per (row, col, symbol) triple. The clauses say "this grid is a valid computation of the verifier accepting (x, c)." Watch the rows fill in.</p>`;
+    setPlayBtnState(true);
 
     const phaseNarration = (s) => {
       const row = Math.floor((s-1)/cols);
@@ -1451,8 +1470,9 @@
       render();
       if (stage <= rows * cols) {
         document.getElementById('tab-explain').innerHTML = phaseNarration(stage);
-        raf = setTimeout(loop, 220);
+        raf = setTimeout(loop, 220 / speedMult);
       } else {
+        setPlayBtnState(false);
         document.getElementById('tab-explain').innerHTML =
           `<div class="step-num" style="text-transform: none; letter-spacing: 0;">Tableau complete — the SAT formula <span style="font-family: var(--mono); font-weight: 700;">φ<sub>x</sub></span></div>
            <p style="margin:4px 0;">The full formula <span style="font-family: var(--mono); font-weight: 700;">φ<sub>x</sub></span> is the conjunction of <strong>four clause families</strong> — each visualised on the tableau above with a matching coloured badge:</p>
@@ -1468,10 +1488,50 @@
     };
     loop();
   }
-  document.getElementById('tab-play').onclick = play;
-  document.getElementById('tab-reset').onclick = () => { if (raf) clearTimeout(raf); stage = 0; render(); };
+  // Proper Pause/Resume toggle: if a timer is currently running, pause it (keep stage).
+  // If we're paused mid-animation, resume from where we are.
+  // If we've completed (or never started), restart from the beginning.
+  document.getElementById('tab-play').onclick = () => {
+    const isComplete = stage > rows * cols;
+    if (raf) {
+      // Currently animating → pause (keep stage frozen)
+      clearTimeout(raf); raf = null;
+      setPlayBtnState(false);
+    } else if (isComplete) {
+      // Already finished → restart from scratch
+      play(true);
+    } else if (stage === 0) {
+      // Hasn't started → fresh start
+      play(true);
+    } else {
+      // Paused mid-animation → resume from current stage
+      play(false);
+    }
+  };
+
+  document.getElementById('tab-reset').onclick = () => {
+    if (raf) { clearTimeout(raf); raf = null; }
+    stage = 0;
+    render();
+    setPlayBtnState(false);
+    document.getElementById('tab-play').textContent = '▶ Play';
+    document.getElementById('tab-explain').innerHTML =
+      `<div class="step-num">What you'll see</div>
+       <p style="margin:4px 0;">A grid where row <em>i</em> is the configuration of the verifier V at time <em>i</em>. Press <strong>▶ Play</strong> to watch the tableau fill in row by row, with each cell narrated as it appears. Press it again at any time to pause; press <strong>Reset</strong> to start over. The Speed slider controls how fast the rows fill in.</p>`;
+  };
+
+  // Speed slider → speedMult ∈ [0.25, 3]
+  const speedSlider = document.getElementById('tab-speed');
+  const speedLabel  = document.getElementById('tab-speed-label');
+  if (speedSlider) {
+    speedSlider.oninput = () => {
+      speedMult = parseFloat(speedSlider.value);
+      if (speedLabel) speedLabel.textContent = speedMult + '×';
+    };
+  }
+
   render();
-  setTimeout(play, 800);
+  setTimeout(() => play(true), 800);
 })();
 
 // ----- Reduction chain (Widget 4) -----

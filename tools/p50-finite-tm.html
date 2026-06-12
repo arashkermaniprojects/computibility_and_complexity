@@ -35,12 +35,25 @@
 <div class="explain-panel" id="ft-explain"></div>
 </div></section>
 
-<section><div class="section-label">3 · Q&amp;A defence notes</div>
+<section><div class="section-label">3 · Pitfalls</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>Don't conflate "finite" with "small."</strong> Finite means there's a bound, no matter how huge. Even 10<sup>100</sup> elements is finite.</li>
+  <li><strong>The reduction is to ¬FINITE<sub>TM</sub>.</strong> ⟨M, w⟩ ∈ A<sub>TM</sub> ⇔ L(M') is infinite ⇔ ⟨M'⟩ ∉ FINITE<sub>TM</sub>.</li>
+  <li><strong>The "finite chunk" trick keeps L(M') non-empty in both cases.</strong> Without it, "M doesn't accept w" would make L(M') empty, but FINITE includes ∅, so we'd still be fine — the chunk just makes the semantic boundary cleaner.</li>
+</ul>
+</section>
+
+<section><div class="section-label">4 · Q&amp;A defence notes</div>
 <ul class="qa-list">
-<li><div class="q">Q1. Why use a fixed finite chunk like {|x| ≤ 10}?</div><div class="a">It ensures L(M') is non-empty in both cases, but finite or infinite depending on M(w). The "10" is arbitrary.</div></li>
-<li><div class="q">Q2. Could we use any finite set?</div><div class="a">Yes — {ε}, {0, 1}, anything explicitly enumerable.</div></li>
-<li><div class="q">Q3. Apply Rice directly.</div><div class="a">"L(M) is finite" depends only on L(M) (semantic) and is nontrivial (some TMs have finite languages, some don't). Rice ⇒ undecidable. The explicit construction is what Rice's proof builds anyway.</div></li>
+<li><div class="q">Q1. Why use a fixed finite chunk like {|x| ≤ 10}?</div><div class="a">It ensures L(M') is non-empty in both cases, but finite or infinite depending on M(w). The "10" is arbitrary — any explicit finite set works.</div></li>
+<li><div class="q">Q2. Could we use any finite set?</div><div class="a">Yes — {ε}, {0, 1}, anything explicitly enumerable. The point is the set's finiteness is decidable independently of M.</div></li>
+<li><div class="q">Q3. Apply Rice directly.</div><div class="a">"L(M) is finite" depends only on L(M) (semantic — it doesn't care about M's syntax) and is nontrivial (some TMs have finite languages, some don't). Rice's theorem says any semantic, nontrivial property is undecidable. So FINITE<sub>TM</sub> is undecidable, no construction needed beyond Rice itself.</div></li>
+<li><div class="q">Q4. What's the analog for REGULAR<sub>TM</sub>?</div><div class="a">REGULAR<sub>TM</sub> = {⟨M⟩ : L(M) is regular} is also undecidable by Rice's theorem (regularity is semantic and nontrivial). Construction is similar — make L(M') a specific non-regular language iff M accepts w.</div></li>
 </ul></section>
+
+<section><div class="section-label">5 · Where to read more</div>
+<p><strong>Sipser:</strong> §5.2 (Rice's theorem). <strong>Lecture notes:</strong> Module 3 slide 6. <strong>Companion problems:</strong> P14 (Rice's theorem).</p>
+</section>
 
 </div>
 <footer class="foot">Problem 50 · BCS 402 · Dr. Arash Kermani · CUD</footer>

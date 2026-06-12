@@ -5,20 +5,50 @@
 <h1>PSPACE = NPSPACE · the proof walker</h1><p class="sub">Apply Savitch step-by-step on a small NSPACE machine.</p>
 <div class="tags"><span class="tag-pill">CLO-5</span><span class="tag-pill warn">R3·40 pts</span><span class="tag-pill info">L13</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · Theory</div>
-<div class="theorem-box"><div class="theorem-label">Theorem (Savitch)</div><p style="margin:4px 0;">For f(n) ≥ log n: NSPACE(f) ⊆ SPACE(f²). Hence <strong>PSPACE = NPSPACE</strong>.</p></div>
-<p>Strategy: nondeterministic acceptance ⇔ reachability in the configuration graph. CANYIELD recursively halves the time budget.</p></section>
+<section><div class="section-label">1 · Savitch's theorem · the canonical NSPACE collapse</div>
+<p>Savitch's theorem (Sipser §8.2): for f(n) ≥ log n, NSPACE(f(n)) ⊆ SPACE(f²(n)). The polynomial blowup is only quadratic, so <strong>PSPACE = NPSPACE</strong> — nondeterminism gives no extra power in polynomial space. (Contrast with P vs NP, which is open.)</p>
+
+<div class="theorem-box"><div class="theorem-label">The CANYIELD reduction</div>
+<p style="margin:4px 0;">For an NSPACE(f) machine on input w, "does it accept?" is equivalent to "is there a path in the configuration graph from C<sub>start</sub> to some C<sub>accept</sub> in ≤ 2<sup>O(f)</sup> steps?"</p>
+<p style="margin:4px 0;">Define <code>CANYIELD(c, d, t)</code> = true iff c reaches d in ≤ t steps. Recursive structure:</p>
+<pre style="font-size:12px;margin:4px 0;">CANYIELD(c, d, t):
+  if t = 1: check (c, d) is an edge
+  else: for each midpoint m:
+    if CANYIELD(c, m, t/2) and CANYIELD(m, d, t/2): return true
+  return false</pre>
+</div>
+
+<p>The recursion has log<sub>2</sub>(t) = O(f) levels. Each level stores one configuration (size O(f)) on the stack. Total space: O(f) levels × O(f) per frame = <strong>O(f²)</strong>. Quadratic, not exponential — that's the magic.</p>
+
+<div class="theorem-box"><div class="theorem-label">Crucial: space can be reused</div>
+<p style="margin:4px 0;">Each recursive call reuses the same f² cells when the previous call returns. Time can't be reused this way, which is why no analogous "NTIME(f) ⊆ TIME(f²)" result exists.</p>
+</div>
+</section>
+
 <section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Apply Savitch's CANYIELD to a config graph <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="p-run">⏸ Pause</button><button class="btn ghost" id="p-step">Step</button><button class="btn ghost" id="p-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="p-speed" min="0.25" max="3" step="0.25" value="1"><span id="p-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="p-svg" viewBox="0 0 760 320" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="p-explain"></div></div></section>
-<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
-<li><div class="q">Q1. Why f² and not just f?</div><div class="a">Recursion depth = log t = O(f) levels. Each frame stores O(f) bits. Total = f · f = f².</div></li>
-<li><div class="q">Q2. Why doesn't this work in TIME?</div><div class="a">Time can't be reused. In space we reuse cells; in time we'd have to actually execute both halves of CANYIELD, summing time.</div></li>
-<li><div class="q">Q3. So NTIME(f) ⊆ TIME(f²)?</div><div class="a">No — that's an open question (related to P vs NP). The proof technique fundamentally relies on space reusability.</div></li>
-</ul></section></div><footer class="foot">P35 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<section><div class="section-label">3 · Pitfalls</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>f² is the upper bound, not the lower.</strong> Whether NSPACE(f) ⊊ SPACE(f) is open. The quadratic blowup is what we can prove; it might be unnecessary.</li>
+  <li><strong>Recursion depth is log(t), not log(f).</strong> Time budget t = 2<sup>O(f)</sup>, so log(t) = O(f). That's the depth count.</li>
+  <li><strong>"CANYIELD" exists in the proof, not in the algorithm.</strong> It's a thought-experiment routine. The actual implementation reconstructs configs by their O(f)-bit encodings.</li>
+</ul>
+</section>
+
+<section><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why f² and not just f?</div><div class="a">Recursion depth = log(t) = O(f) levels. Each frame stores one configuration (size O(f)). Total stack size = O(f) levels × O(f) per frame = O(f²).</div></li>
+<li><div class="q">Q2. Why doesn't this trick work in TIME?</div><div class="a">Time can't be reused. In space, when a recursive call returns, the cells are free for the next call. In time, even if you computed something earlier, you still spent the time on it. CANYIELD's two recursive calls would take t/2 + t/2 = t time — no savings.</div></li>
+<li><div class="q">Q3. So is NTIME(f) ⊆ TIME(f²) similarly?</div><div class="a">No — that's exactly the P vs NP question (or close to it). NTIME(n^k) ⊆ TIME(n^poly) would imply P = NP. Savitch's technique fundamentally relies on space reusability.</div></li>
+<li><div class="q">Q4. Does Savitch give an efficient algorithm?</div><div class="a">In theory yes; in practice no. The constant-factor overhead is brutal and CANYIELD's recursion explores all possible midpoints. The theorem is conceptually crucial but not practically used.</div></li>
+</ul></section>
+
+<section><div class="section-label">5 · Where to read more</div>
+<p><strong>Sipser:</strong> Theorem 8.5 (Savitch). <strong>Lecture notes:</strong> Module 6 slide 1. <strong>Companion problems:</strong> P34 (Savitch tree), P33 (space-time chart).</p>
+</section></div><footer class="foot">P35 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){
 let stage=0;
 const stages=[

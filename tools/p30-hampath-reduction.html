@@ -5,19 +5,40 @@
 <h1>3SAT → HAMPATH · gadget reduction</h1><p class="sub">Variable diamonds + clause spreaders. Path = assignment.</p>
 <div class="tags"><span class="tag-pill">CLO-4</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L12</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · Theory</div><p>For each variable, build a "diamond" gadget that the Hamiltonian path must traverse left-to-right (= true) or right-to-left (= false). For each clause, a spreader node forces the path to visit one of its literals' diamonds.</p>
-<div class="theorem-box"><div class="theorem-label">Result</div><p style="margin:4px 0;">HAMPATH exists ⇔ 3SAT formula is satisfiable. Reduction is polynomial. HAMPATH is NP-complete.</p></div></section>
+<section><div class="section-label">1 · The gadget reduction · diamonds + spreaders</div>
+<p>3SAT ≤<sub>p</sub> HAMPATH (Sipser §7.5). The reduction builds a graph whose Hamiltonian paths correspond to satisfying assignments. Two pieces:</p>
+<div class="theorem-box"><div class="theorem-label">Variable gadget · the diamond</div>
+<p style="margin:4px 0;">For each variable x<sub>i</sub>, build a "diamond" — a long row of nodes connected so that a Hamiltonian path must traverse the diamond either left-to-right (encoding x<sub>i</sub> = true) or right-to-left (encoding x<sub>i</sub> = false). No mixed traversal possible.</p>
+</div>
+<div class="theorem-box"><div class="theorem-label">Clause gadget · the spreader</div>
+<p style="margin:4px 0;">For each clause C, add a single "clause node" c<sub>j</sub>. Connect c<sub>j</sub> to specific diamond positions corresponding to literals appearing in C: if x<sub>i</sub> appears positively, c<sub>j</sub> connects to a left-to-right edge in x<sub>i</sub>'s diamond; if ¬x<sub>i</sub> appears, c<sub>j</sub> connects to a right-to-left edge.</p>
+</div>
+<p>The Hamiltonian path must visit each c<sub>j</sub>. The only way to do so without breaking the diamond's required traversal is to use an edge that the assigned literal makes "available" — i.e., an edge in a diamond being traversed in the direction matching the clause's literal. So a Hamiltonian path exists iff every clause has at least one true literal.</p>
+</section>
+
 <section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Build the gadget for n=2, m=2 <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="hm-run">⏸ Pause</button><button class="btn ghost" id="hm-step">Step</button><button class="btn ghost" id="hm-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="hm-speed" min="0.25" max="3" step="0.25" value="1"><span id="hm-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="hm-svg" viewBox="0 0 760 320" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="hm-explain"></div></div></section>
-<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
-<li><div class="q">Q1. What does "traversal direction = assignment" mean?</div><div class="a">Each variable diamond can be traversed left→right (variable = true) or right→left (variable = false). The whole path picks one direction per diamond.</div></li>
-<li><div class="q">Q2. How does the clause spreader work?</div><div class="a">For each clause C, a spreader node connects to the diamonds of variables appearing in C. The path must dip into the spreader and exit via one literal-true diamond — equivalent to "at least one literal satisfied".</div></li>
-<li><div class="q">Q3. Size of the gadget?</div><div class="a">O((n+m)²) nodes, O((n+m)²) edges. Polynomial.</div></li>
-</ul></section></div><footer class="foot">P30 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<section><div class="section-label">3 · Pitfalls</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>The diamond is more than a chain.</strong> It has internal structure that <em>forces</em> directional traversal — you can't half-traverse. Sipser's Figure 7.49 shows the precise wiring.</li>
+  <li><strong>Each clause node must be visited exactly once.</strong> Hamiltonian = every vertex used once. The spreaders are visited via "side trips" from the diamonds.</li>
+  <li><strong>Gadget reductions look ad hoc but aren't.</strong> Every move in the diamond/spreader design serves a precise logical role. Don't be intimidated by the complexity — each piece encodes one logical constraint.</li>
+</ul>
+</section>
+
+<section><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. What does "traversal direction = assignment" mean?</div><div class="a">Each variable diamond has two valid Hamiltonian traversals: left-to-right (encoding x<sub>i</sub> = true) or right-to-left (encoding x<sub>i</sub> = false). The Hamiltonian path picks one direction per diamond, and the collection of choices defines a Boolean assignment.</div></li>
+<li><div class="q">Q2. How does the clause spreader work?</div><div class="a">For each clause C, the clause node c<sub>j</sub> connects to specific edges inside the diamonds. Crucially: an edge inside x<sub>i</sub>'s diamond is "available for c<sub>j</sub>'s visit" only when that diamond is being traversed in the direction matching the literal in C. So visiting c<sub>j</sub> requires that at least one of its literals is true.</div></li>
+<li><div class="q">Q3. Size of the gadget?</div><div class="a">The diamond for each variable has O(m) nodes (to accommodate connections to all clauses), so the whole graph has O(n·m) nodes and O(n·m) edges. Polynomial in formula size.</div></li>
+</ul></section>
+
+<section><div class="section-label">5 · Where to read more</div>
+<p><strong>Sipser:</strong> Theorem 7.46, Figures 7.49–7.51. <strong>Lecture notes:</strong> Module 5 slide 5. <strong>Companion problems:</strong> P23 (HAMPATH verifier), P29 (SUBSET-SUM).</p>
+</section></div><footer class="foot">P30 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){
 let stage=0; const T=4;
 function render(){

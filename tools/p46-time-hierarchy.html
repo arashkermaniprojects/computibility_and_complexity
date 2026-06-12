@@ -5,20 +5,46 @@
 <h1>Time hierarchy theorem · TIME(f) ⊊ TIME(f log f)</h1><p class="sub">Diagonalize against time-bounded TMs.</p>
 <div class="tags"><span class="tag-pill">CLO-1</span><span class="tag-pill">CLO-5</span><span class="tag-pill warn">R3·40 pts</span><span class="tag-pill info">L16</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · Theory</div>
-<div class="theorem-box"><div class="theorem-label">Theorem (Hartmanis &amp; Stearns, 1965)</div><p style="margin:4px 0;">If f(n) ≥ n log n is time-constructible, then <strong>TIME(f) ⊊ TIME(f · log f)</strong>. The log overhead is the cost of simulation.</p></div>
-<p>Implication: TIME(n) ⊊ TIME(n log² n), so P contains strictly more languages than linear-time. Direct consequence: <strong>P ⊊ EXPTIME</strong>.</p></section>
+<section><div class="section-label">1 · Time Hierarchy Theorem · more time = more languages</div>
+<p>The Time Hierarchy Theorem (Hartmanis &amp; Stearns 1965) is one of the few unconditional separation results in complexity theory. It says that giving a TM strictly more time strictly enlarges what it can decide.</p>
+
+<div class="theorem-box"><div class="theorem-label">Theorem (Sipser 9.10)</div>
+<p style="margin:4px 0;">If f(n) ≥ n log n is time-constructible, then TIME(f(n)) ⊊ TIME(f(n) · log f(n)).</p>
+</div>
+
+<p>The proof is by diagonalisation. Build a TM D that on input ⟨M⟩ simulates M for f(|⟨M⟩|) steps and outputs the opposite of M's answer. D's language is not in TIME(f) (any TIME(f) machine M would disagree with D on input ⟨M⟩) but D runs in time f · log f (the extra log factor accounts for universal-simulation overhead).</p>
+
+<div class="theorem-box"><div class="theorem-label">Major consequences</div>
+<p style="margin:4px 0;"><strong>P ⊊ EXPTIME.</strong> TIME(n<sup>k</sup>) ⊊ TIME(2<sup>n</sup>) for every k. EXPTIME strictly contains polynomial time.</p>
+<p style="margin:4px 0;"><strong>TIME(n) ⊊ TIME(n²).</strong> Linear time is strictly less than quadratic time.</p>
+<p style="margin:4px 0;"><strong>NL ⊊ PSPACE.</strong> Via Space Hierarchy (analogous theorem for space).</p>
+</div>
+</section>
+
 <section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Diagonalizer D times out at f(n)·log f(n) <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="th-run">⏸ Pause</button><button class="btn ghost" id="th-step">Step</button><button class="btn ghost" id="th-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="th-speed" min="0.25" max="3" step="0.25" value="1"><span id="th-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="th-svg" viewBox="0 0 760 280" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="th-explain"></div></div></section>
-<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
-<li><div class="q">Q1. Why log f overhead?</div><div class="a">A universal TM simulating a TIME(f) machine needs log f extra time for bookkeeping (tape head moves, state tracking).</div></li>
-<li><div class="q">Q2. Why "time-constructible"?</div><div class="a">D must compute f(n) on its own clock to know when to stop. Time-constructibility says f(n) can be computed in O(f(n)) time.</div></li>
-<li><div class="q">Q3. Does this prove P ⊊ NP?</div><div class="a">No — P and NP differ in determinism, not in resource amount. Time hierarchy compares time bounds, not (deterministic vs nondeterministic).</div></li>
-</ul></section></div><footer class="foot">P46 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<section><div class="section-label">3 · Pitfalls</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>The log factor is real but small.</strong> TIME(n) ⊊ TIME(n²) is provable via this theorem; TIME(n) vs TIME(n log² n) is also separable but tightly. Removing the log factor would be a major theorem.</li>
+  <li><strong>The theorem doesn't apply to NP vs P.</strong> Determinism vs nondeterminism is orthogonal to the time-resource axis. P ⊊ NP could be true even though P ⊊ EXPTIME is proven.</li>
+  <li><strong>"Time-constructible" matters.</strong> The diagonalizer needs to know when to stop. If f isn't computable in O(f) time, the proof fails.</li>
+</ul>
+</section>
+
+<section><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why log f overhead in the simulation?</div><div class="a">A universal TM simulating a TIME(f) machine needs log f extra time per step for bookkeeping — looking up the simulated transition table, tracking the simulated head position, scaling the simulated tape. The factor log f is the cost of indirection.</div></li>
+<li><div class="q">Q2. Why "time-constructible"?</div><div class="a">D must compute f(n) on its own clock to know when to halt simulation and output the opposite. Time-constructibility says f(n) can be computed in O(f(n)) time — fast enough to not blow the budget.</div></li>
+<li><div class="q">Q3. Does this prove P ⊊ NP?</div><div class="a">No. P and NP differ in determinism (yes-instances need certificates vs require deterministic search). The Time Hierarchy compares time bounds within the same model. P ⊊ EXPTIME is unconditionally proven; P ⊊ NP is open.</div></li>
+<li><div class="q">Q4. Is there a Space Hierarchy theorem?</div><div class="a">Yes. SPACE(f) ⊊ SPACE(f · g) for any space-constructible f and unbounded g. Tighter than the time version because space simulation has no log overhead. Gives L ⊊ PSPACE and NL ⊊ PSPACE.</div></li>
+</ul></section>
+
+<section><div class="section-label">5 · Where to read more</div>
+<p><strong>Sipser:</strong> Theorem 9.10 (Time Hierarchy). <strong>Lecture notes:</strong> Module 7 slide 5. <strong>Companion problems:</strong> P45 (hierarchy diagonal), P48 (P ⊊ EXPTIME).</p>
+</section></div><footer class="foot">P46 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){
 let stage=0; const T=5;
 function render(){

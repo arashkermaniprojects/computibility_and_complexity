@@ -31,12 +31,25 @@
 <div class="explain-panel" id="pp-explain"></div>
 </div></section>
 
-<section><div class="section-label">3 · Q&amp;A defence notes</div>
+<section><div class="section-label">3 · Pitfalls</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>Dominoes can be reused.</strong> A match sequence may use the same domino multiple times. This is what makes PCP unbounded — the search has no a-priori length cap.</li>
+  <li><strong>Top equals bottom over a finite alphabet.</strong> Not just same length; the actual strings must match. The reduction encodes TM transitions so that "tops match bottoms" means "transitions are valid."</li>
+  <li><strong>MPCP and PCP are equivalent.</strong> The "modified PCP" fixes the first domino. Reductions to it are easier; reduce MPCP to PCP with padding to handle the unrestricted-start version.</li>
+</ul>
+</section>
+
+<section><div class="section-label">4 · Q&amp;A defence notes</div>
 <ul class="qa-list">
-<li><div class="q">Q1. Why is PCP undecidable but small instances solvable by hand?</div><div class="a">Searching for a match is unbounded — there's no polynomial-size witness in general. For small instances BFS terminates; in general it doesn't.</div></li>
-<li><div class="q">Q2. How does the reduction work?</div><div class="a">For each TM transition δ, create a domino: top has C<sub>i</sub> portion, bottom has C<sub>i+1</sub> portion. Matches reproduce valid computation histories. Add starter/finisher dominoes to align.</div></li>
-<li><div class="q">Q3. What about the modified PCP that fixes the first domino?</div><div class="a">MPCP is also undecidable; it's the natural target of the TM-history reduction. Standard PCP reduces from MPCP via padding.</div></li>
+<li><div class="q">Q1. Why is PCP undecidable but small instances solvable by hand?</div><div class="a">Searching for a match is unbounded — there's no polynomial-size witness in general. For small instances breadth-first search terminates; in general, the search depth can be enormous.</div></li>
+<li><div class="q">Q2. How does the TM-to-PCP reduction work?</div><div class="a">For each TM transition δ, create a domino: top has C<sub>i</sub> portion, bottom has C<sub>i+1</sub> portion. Each match-step picks a domino, concatenating both rows. A complete match corresponds to a valid computation history. Add starter dominoes for q<sub>0</sub>w on top and finisher dominoes for q<sub>accept</sub> to align.</div></li>
+<li><div class="q">Q3. What about MPCP (modified PCP)?</div><div class="a">MPCP fixes the first domino in the sequence. It's also undecidable. The TM-to-PCP reduction naturally targets MPCP (the starter domino is "first"). Standard PCP is then reduced from MPCP via a padding gadget that simulates the start-domino constraint.</div></li>
+<li><div class="q">Q4. Is PCP a useful tool for other undecidability proofs?</div><div class="a">Yes — many natural problems reduce from PCP. The "two strings must match by combinatorial choices" pattern shows up in CFL ambiguity, post canonical systems, and various tiling problems.</div></li>
 </ul></section>
+
+<section><div class="section-label">5 · Where to read more</div>
+<p><strong>Sipser:</strong> §5.2, Theorem 5.15 (PCP undecidable). <strong>Lecture notes:</strong> Module 3 slide 4. <strong>Companion problems:</strong> P9 (computation histories), P10 (E<sub>LBA</sub>).</p>
+</section>
 
 </div>
 <footer class="foot">Problem 51 · BCS 402 · Dr. Arash Kermani · CUD</footer>

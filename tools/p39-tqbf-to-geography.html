@@ -5,20 +5,43 @@
 <h1>TQBF ≤<sub>p</sub> Generalized Geography</h1><p class="sub">Encode a QBF as a game graph. ∃-moves and ∀-moves alternate.</p>
 <div class="tags"><span class="tag-pill">CLO-4</span><span class="tag-pill warn">R3·40 pts</span><span class="tag-pill info">L14</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · Theory</div>
-<div class="theorem-box"><div class="theorem-label">Reduction</div><p style="margin:4px 0;">For each variable in the QBF, add a "choice" gadget. ∃-variables: Player 1 chooses truth value. ∀-variables: Player 2 chooses. The final propositional matrix is encoded as a path-of-no-return; Player 2 wins iff some clause is unsatisfied.</p></div>
-<p>So Player 1 wins the game ⇔ ∃-player can satisfy the QBF ⇔ QBF is true.</p></section>
+<section><div class="section-label">1 · TQBF → Generalised Geography · the reduction</div>
+<p>Sipser §8.3, Theorem 8.11: TQBF ≤<sub>p</sub> GG. Given a TQBF₃ instance, build a graph G whose Geography game has Player 1 winning iff the QBF is true.</p>
+
+<div class="theorem-box"><div class="theorem-label">Three gadget types</div>
+<p style="margin:6px 0 0 0;"><strong>Variable gadgets (one per x<sub>i</sub>):</strong> a small diamond with two outgoing branches labeled "x<sub>i</sub> = T" and "x<sub>i</sub> = F." For ∃-quantified x<sub>i</sub>, the token arrives at a player-1-controlled node; for ∀-quantified x<sub>i</sub>, at a player-2-controlled node. The current mover picks the branch — encoding that player's choice of truth value.</p>
+<p style="margin:6px 0 0 0;"><strong>Sequencing:</strong> after the x<sub>n</sub> variable gadget, the path leads to the clause-selection node.</p>
+<p style="margin:6px 0 0 0;"><strong>Clause selection (player 2's last move):</strong> player 2 chooses a clause C and forces the token there. Inside C's sub-gadget, player 1 chooses a literal; the literal connects to the previously-chosen-true side of its variable gadget. If that literal is false under the chosen assignment, the connection leads to an already-visited vertex — player 1 has no move and loses. If true, player 1 escapes and the game continues to player 1's win.</p>
+</div>
+
+<p>So Player 1 wins ⇔ for every clause player 2 could pick, there's a true literal player 1 can use ⇔ every clause has a true literal under the QBF assignment ⇔ the QBF is true.</p>
+
+<p>Graph size: O(n) for variable gadgets, O(m) for clauses, O(nm) for literal-to-variable connections. Polynomial.</p>
+</section>
+
 <section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Build the graph for ∃x ∀y. (x ∨ y) <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="tg-run">⏸ Pause</button><button class="btn ghost" id="tg-step">Step</button><button class="btn ghost" id="tg-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="tg-speed" min="0.25" max="3" step="0.25" value="1"><span id="tg-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="tg-svg" viewBox="0 0 760 280" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="tg-explain"></div></div></section>
-<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
-<li><div class="q">Q1. Why is the move-direction tied to the quantifier?</div><div class="a">At ∃-gadgets, Player 1 (∃) makes a binary choice. At ∀-gadgets, Player 2 (∀) makes the choice. The "current mover" alternates with the quantifier alternation.</div></li>
-<li><div class="q">Q2. How does the propositional matrix get encoded?</div><div class="a">After all variables are chosen, the game reaches a "clause selection" gadget. Player 2 picks a clause; if all literals in it are false, Player 1 has no move ⇒ loses.</div></li>
-<li><div class="q">Q3. Size?</div><div class="a">O(n + m) nodes per variable/clause. Polynomial in formula size.</div></li>
-</ul></section></div><footer class="foot">P39 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<section><div class="section-label">3 · Pitfalls</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>The QBF must be in alternating prenex form (TQBF₃).</strong> Strict ∃∀∃∀ alternation aligns with the game's turn structure. Use Problem 37's normalisation first.</li>
+  <li><strong>"No vertex repeats" is what makes the literal-to-variable connection trap player 1.</strong> If the literal is false, the connection target was already visited at the variable gadget — player 1 can't reuse it.</li>
+  <li><strong>The reduction is poly-time, not the game itself.</strong> Building the graph is poly. Playing the game optimally is still PSPACE-hard.</li>
+</ul>
+</section>
+
+<section><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why is the move-direction tied to the quantifier?</div><div class="a">At ∃-quantified variable gadgets, player 1 is to move — encoding "∃-player picks the value." At ∀-quantified gadgets, player 2 moves — encoding "∀-player picks." The strict ∃∀∃∀ alternation in TQBF₃ ensures players alternate moves naturally.</div></li>
+<li><div class="q">Q2. How does the propositional matrix get encoded?</div><div class="a">After all variable choices, player 2 picks a clause. Inside the clause gadget, player 1 picks a literal. The literal's outgoing edge connects to the variable's earlier-chosen-true vertex. If the literal is false (the variable's other value was chosen), that vertex is already visited — player 1 has no move and loses. So player 1 needs every player-2-chosen clause to contain a true literal.</div></li>
+<li><div class="q">Q3. Size of the reduction?</div><div class="a">O(n) nodes for variable gadgets, O(m) for clause selection, O(nm) for literal-to-variable edges. Total O(nm) — polynomial in formula size.</div></li>
+</ul></section>
+
+<section><div class="section-label">5 · Where to read more</div>
+<p><strong>Sipser:</strong> Theorem 8.11, Figure 8.13. <strong>Lecture notes:</strong> Module 6 slide 3. <strong>Companion problems:</strong> P36 (TQBF), P38 (geography), P40 (chess hardness).</p>
+</section></div><footer class="foot">P39 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){
 let stage=0; const T=4;
 function render(){

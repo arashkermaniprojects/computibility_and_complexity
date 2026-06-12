@@ -13,11 +13,24 @@
 <label class="speed-control">Speed <input type="range" id="sc-speed" min="0.25" max="3" step="0.25" value="1"><span id="sc-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="sc-svg" viewBox="0 0 760 320" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="sc-explain"></div></div></section>
-<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
-<li><div class="q">Q1. Why is the correspondence one-to-one?</div><div class="a">Each vertex maps to a set; each edge maps to an element. Covering all edges in G = covering all elements of U. Same k.</div></li>
-<li><div class="q">Q2. Why is SET-COVER even more general?</div><div class="a">Not every set system comes from a graph. SET-COVER captures arbitrary covering problems; VERTEX-COVER is the graph special case.</div></li>
-<li><div class="q">Q3. Greedy approximation?</div><div class="a">Picking the set that covers the most uncovered elements gives an O(log n) approximation to SET-COVER — and that's optimal under standard assumptions.</div></li>
-</ul></section></div><footer class="foot">P56 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<section><div class="section-label">3 · Pitfalls</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>SET-COVER generalises VERTEX-COVER; the reverse isn't true.</strong> Vertex-cover sets correspond to edges incident to a single vertex — a very restricted structure. SET-COVER allows arbitrary sets.</li>
+  <li><strong>The reduction is "natural": U = E, S<sub>v</sub> = edges-of-v.</strong> A vertex cover of size k becomes a set cover of size k. The same k is preserved.</li>
+  <li><strong>Greedy gives O(log n) approximation.</strong> No constant-factor approximation is possible (assuming P ≠ NP). SET-COVER is the canonical hard-to-approximate problem.</li>
+</ul>
+</section>
+
+<section><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why is the correspondence one-to-one?</div><div class="a">Each vertex of G maps to a set in the system; each edge maps to an element of the universe. Covering all edges in G = covering all elements of U. The size k is preserved exactly.</div></li>
+<li><div class="q">Q2. Why is SET-COVER even more general?</div><div class="a">Not every set system comes from a graph (sets can overlap arbitrarily, not just by sharing a vertex). SET-COVER captures arbitrary covering problems; VERTEX-COVER is the special case where sets correspond to vertex-incidence relations.</div></li>
+<li><div class="q">Q3. Greedy approximation?</div><div class="a">Picking the set that covers the most uncovered elements gives an O(log n) approximation to SET-COVER. This is tight — no better approximation exists (Feige 1998, under P ≠ NP).</div></li>
+<li><div class="q">Q4. What about WEIGHTED SET-COVER?</div><div class="a">Each set has a cost; minimise total cost. Still NP-hard, still O(log n)-approximable by weighted greedy. Many real-world facility-location problems are weighted set-cover.</div></li>
+</ul></section>
+
+<section><div class="section-label">5 · Where to read more</div>
+<p><strong>Sipser:</strong> §7.5 (NP-completeness extensions). <strong>Lecture notes:</strong> Module 5 slide 5. <strong>Companion problems:</strong> P28 (CLIQUE → VC).</p>
+</section></div><footer class="foot">P56 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){
 const nodes=[{x:130,y:100,l:'A'},{x:130,y:240,l:'B'},{x:280,y:170,l:'C'}];
 const edges=[[0,2,'e₁'],[1,2,'e₂']];

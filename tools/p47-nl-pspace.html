@@ -5,19 +5,45 @@
 <h1>NL ⊊ PSPACE · proven strict</h1><p class="sub">Via the space hierarchy theorem.</p>
 <div class="tags"><span class="tag-pill">CLO-5</span><span class="tag-pill warn">R3·40 pts</span><span class="tag-pill info">L16</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · Theory</div>
-<div class="theorem-box"><div class="theorem-label">Proof</div><p style="margin:4px 0;">Savitch: NL ⊆ SPACE(log²n). Space hierarchy: SPACE(log²n) ⊊ SPACE(log² n · log log²n) ⊊ … ⊊ SPACE(n) ⊊ … ⊊ PSPACE. So strict containment NL ⊊ PSPACE.</p></div></section>
+<section><div class="section-label">1 · NL ⊊ PSPACE · strict containment via Savitch + hierarchy</div>
+<p>One of the few <em>unconditional</em> strict separations between named complexity classes: NL is properly contained in PSPACE. The proof chains two theorems.</p>
+<div class="theorem-box"><div class="theorem-label">Savitch's theorem</div>
+<p style="margin:4px 0;">NL = NSPACE(log n) ⊆ SPACE(log² n). (Problem 35.) This puts NL inside polynomial space.</p>
+</div>
+<div class="theorem-box"><div class="theorem-label">Space Hierarchy theorem</div>
+<p style="margin:4px 0;">For space-constructible f and unbounded g: SPACE(f) ⊊ SPACE(f · g). So SPACE(log² n) ⊊ SPACE(log² n · log log n) ⊊ … ⊊ SPACE(n) ⊊ SPACE(n²) ⊊ … ⊊ PSPACE.</p>
+</div>
+<p>Combining: NL ⊆ SPACE(log² n) ⊊ PSPACE. So NL ⊊ PSPACE strictly.</p>
+
+<div class="theorem-box"><div class="theorem-label">Where the gap sits</div>
+<p style="margin:4px 0;">The exact extent of NL inside PSPACE is unknown. We know NL ⊊ PSPACE; we conjecture NL ⊊ P ⊊ PSPACE. But P-NL and P-PSPACE could both be equal — neither is ruled out without further separation results.</p>
+</div>
+</section>
+
 <section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Strict separation through the chain <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="np-run">⏸ Pause</button><button class="btn ghost" id="np-step">Step</button><button class="btn ghost" id="np-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="np-speed" min="0.25" max="3" step="0.25" value="1"><span id="np-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="np-svg" viewBox="0 0 760 280" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="np-explain"></div></div></section>
-<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
-<li><div class="q">Q1. Why Savitch?</div><div class="a">NL = NSPACE(log n) ⊆ SPACE(log² n) by Savitch. Without it, we'd need a different bound to get inside PSPACE.</div></li>
-<li><div class="q">Q2. Why is the chain "strict everywhere"?</div><div class="a">Each step is a space-hierarchy inclusion: a slightly larger space bound strictly contains the smaller one.</div></li>
-<li><div class="q">Q3. Why don't we know if NL ⊊ P or P ⊊ NP?</div><div class="a">Those compare differently-resourced classes (nondet space vs det time vs nondet time). Hierarchy theorems compare same-resource bounds.</div></li>
-</ul></section></div><footer class="foot">P47 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<section><div class="section-label">3 · Pitfalls</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>Hierarchy theorems separate same-resource classes.</strong> SPACE(f) ⊊ SPACE(f · log) — same resource, more of it. Hierarchy doesn't compare time vs space, or det vs nondet.</li>
+  <li><strong>NL ⊊ PSPACE is the cleanest separation we have around the polynomial-space scale.</strong> NL ⊊ P, P ⊊ NP, NL ⊊ P ⊊ NP ⊊ PSPACE — all but NL ⊊ PSPACE are open.</li>
+  <li><strong>The quadratic gap matters.</strong> Savitch's log²n bound is the tightest known for general NSPACE → SPACE conversion. Tightening this is a major open problem.</li>
+</ul>
+</section>
+
+<section><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why Savitch?</div><div class="a">NL = NSPACE(log n) ⊆ SPACE(log² n) by Savitch. This is what gets nondeterministic log space inside deterministic poly space. Without Savitch, we'd have no easy comparison between NSPACE(log n) and any DSPACE class.</div></li>
+<li><div class="q">Q2. Why is the chain "strict everywhere"?</div><div class="a">Each inclusion in SPACE(log² n) ⊊ SPACE(log² n · log) ⊊ … is by the Space Hierarchy Theorem. Each step uses the same diagonalisation technique to find a language one level can't decide but the next level can.</div></li>
+<li><div class="q">Q3. Why don't we know NL ⊊ P or P ⊊ NP?</div><div class="a">Those comparisons span different resource types — nondeterministic space vs deterministic time, or deterministic time vs nondeterministic time. Hierarchy theorems only separate same-resource bounds. Cross-resource separations require new techniques.</div></li>
+<li><div class="q">Q4. What's known about NL vs P?</div><div class="a">NL ⊆ P (trivially). Whether NL ⊊ P is open. Many believe yes; no proof exists.</div></li>
+</ul></section>
+
+<section><div class="section-label">5 · Where to read more</div>
+<p><strong>Sipser:</strong> Theorem 9.10 (Time Hierarchy), §9.1 (Space Hierarchy), Theorem 8.5 (Savitch). <strong>Lecture notes:</strong> Module 7 slide 5. <strong>Companion problems:</strong> P35 (PSPACE = NPSPACE), P46 (time hierarchy).</p>
+</section></div><footer class="foot">P47 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){
 const classes=[{name:'NL',time:'NSPACE(log n)'},{name:'SPACE(log²n)',time:'Savitch'},{name:'SPACE(log³n)',time:'hierarchy'},{name:'SPACE(n)',time:'L = NSPACE(n) ⊆ SPACE(n²) etc.'},{name:'PSPACE',time:'⋃ SPACE(n^k)'}];
 let i=0;

@@ -5,20 +5,45 @@
 <h1>Immerman–Szelepcsényi · NL = coNL</h1><p class="sub">Count reachable vertices inductively; conclude ¬PATH ∈ NL.</p>
 <div class="tags"><span class="tag-pill">CLO-5</span><span class="tag-pill warn">R3·40 pts</span><span class="tag-pill info">L15</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · Theory</div>
-<div class="theorem-box"><div class="theorem-label">Theorem · NL = coNL</div><p style="margin:4px 0;">For each i, let c<sub>i</sub> = |{v : reachable from s in ≤ i steps}|. Compute c<sub>0</sub>, c<sub>1</sub>, …, c<sub>n</sub> inductively. Using c<sub>n</sub> as a witness count, we can certify "t is unreachable" by witnessing all c<sub>n</sub> reachable vertices and showing t isn't one of them.</p></div>
-<p>Surprising result: nondeterministic space is closed under complement (unlike nondeterministic time, where NP = coNP is open).</p></section>
+<section><div class="section-label">1 · The Immerman–Szelepcsényi theorem · NL = coNL</div>
+<p>Immerman 1988 and Szelepcsényi 1987 independently proved: NL = coNL. Equivalently, ¬PATH (UNREACHABILITY) is in NL. This is a surprising and deep result — nondeterministic log space is closed under complement, while nondeterministic polynomial time (NP vs coNP) is open.</p>
+
+<div class="theorem-box"><div class="theorem-label">Inductive counting · the technique</div>
+<p style="margin:4px 0;">For each i, let c<sub>i</sub> = |{v : v is reachable from s in ≤ i steps}|. Compute c<sub>0</sub>, c<sub>1</sub>, …, c<sub>n</sub> inductively in nondeterministic log space.</p>
+<p style="margin:4px 0;">Key recurrence: c<sub>i+1</sub> = (number of vertices v such that either v is in the reach-set at step i, or v has a predecessor in the reach-set at step i). Both checks use the value c<sub>i</sub> as a witness count — the nondeterministic machine guesses which c<sub>i</sub> vertices are in the reach-set, verifies each, and counts those satisfying the property.</p>
+</div>
+
+<div class="theorem-box"><div class="theorem-label">Using c<sub>n</sub> to decide UNREACHABILITY</div>
+<p style="margin:4px 0;">Given c<sub>n</sub> = number of vertices reachable from s. To certify that t is unreachable: nondeterministically guess c<sub>n</sub> reachable vertices v<sub>1</sub>, …, v<sub>c<sub>n</sub></sub>, each different from t, and verify each is reachable (using the PATH algorithm). If all c<sub>n</sub> are accounted for and t isn't among them, t must be unreachable.</p>
+</div>
+
+<p>Space used at each step: counters of size O(log n), one current vertex of size O(log n). All operations fit in log space. The whole construction takes nondeterministic log space.</p>
+</section>
+
 <section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Compute c<sub>i</sub> one step at a time <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="ic-run">⏸ Pause</button><button class="btn ghost" id="ic-step">Step</button><button class="btn ghost" id="ic-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="ic-speed" min="0.25" max="3" step="0.25" value="1"><span id="ic-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="ic-svg" viewBox="0 0 760 320" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="ic-explain"></div></div></section>
-<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
-<li><div class="q">Q1. Why does counting help?</div><div class="a">Once we know c<sub>n</sub>, we can verify "v is unreachable" by witnessing all c<sub>n</sub> reachable vertices ≠ v. The witness is implicit (guesses) but counted explicitly.</div></li>
-<li><div class="q">Q2. Why does this work for NL but not for NP?</div><div class="a">In NL, configurations are polynomial; counting them and re-verifying fits in log space. In NP, the time budget is polynomial but witnesses are exponentially many.</div></li>
-<li><div class="q">Q3. What does NL = coNL really mean?</div><div class="a">PATH and ¬PATH are both in NL. So "is there a path?" and "is there no path?" have the same nondeterministic space complexity. This makes NL "self-dual" — unlike NP, presumably.</div></li>
-</ul></section></div><footer class="foot">P44 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<section><div class="section-label">3 · Pitfalls</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>The counts c<sub>i</sub> are exact, not bounded.</strong> The whole technique depends on c<sub>i</sub> being precisely the number of reachable-by-i-steps vertices. Approximation breaks the witness logic.</li>
+  <li><strong>"Inductive counting" doesn't mean we store the reach-set.</strong> We only store c<sub>i</sub>. The actual reach-set has too many vertices to enumerate explicitly. Nondeterminism lets us re-verify on the fly.</li>
+  <li><strong>NL = coNL is for log space, not polynomial time.</strong> The proof technique relies on configurations being log-size. It doesn't extend to NP — there's no analogous inductive counting for NP-witnesses.</li>
+</ul>
+</section>
+
+<section><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why does counting help?</div><div class="a">Once we know c<sub>n</sub>, we can verify "v is unreachable" by nondeterministically witnessing all c<sub>n</sub> reachable vertices (each different from v) and verifying each is reachable. If we account for all c<sub>n</sub> and v isn't among them, v must be unreachable.</div></li>
+<li><div class="q">Q2. Why does this work for NL but not for NP?</div><div class="a">In NL, configurations are polynomial in number (poly(n)) and log-size, so counting them and re-verifying each fits in log space. In NP, the witness space is exponential and the time budget is poly — there's no way to count witnesses inductively in poly time.</div></li>
+<li><div class="q">Q3. What does NL = coNL really mean?</div><div class="a">PATH ∈ NL means "is there a path?" can be verified by a nondeterministic log-space machine. NL = coNL means UNREACHABILITY ∈ NL — "is there NO path?" can also be verified that way. NL is "self-dual" under complement, unlike NP (where NP = coNP is conjectured false).</div></li>
+<li><div class="q">Q4. What other classes are closed under complement?</div><div class="a">P (deterministic class). NSPACE(f) for any f ≥ log n. coNL itself. But NP and coNP appear distinct, although unproven. The difference seems related to the time/space asymmetry — space is reusable, time isn't.</div></li>
+</ul></section>
+
+<section><div class="section-label">5 · Where to read more</div>
+<p><strong>Sipser:</strong> Theorem 8.27 (Immerman–Szelepcsényi). <strong>Lecture notes:</strong> Module 7 slide 4. <strong>Companion problems:</strong> P42 (PATH ∈ NL), P43 (PATH NL-complete).</p>
+</section></div><footer class="foot">P44 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){
 const nodes={S:{x:80,y:180},A:{x:220,y:100},B:{x:220,y:260},C:{x:360,y:180},D:{x:500,y:100},E:{x:500,y:260},T:{x:640,y:180}};
 const edges=[['S','A'],['S','B'],['A','C'],['B','C'],['C','D'],['C','E'],['D','T'],['E','T']];

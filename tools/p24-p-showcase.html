@@ -5,18 +5,82 @@
 <h1>Classic P problems · PATH, RELPRIME, A<sub>CFG</sub></h1><p class="sub">Three poly-time algorithms with explicit running times.</p>
 <div class="tags"><span class="tag-pill">CLO-3</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L10</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · Theory</div><p>P = ⋃<sub>k</sub> TIME(n<sup>k</sup>). Showcase three flagship problems and their polynomial algorithms.</p></section>
-<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<section><div class="section-label">1 · What P contains · the three classic showcases</div>
+<p>P = ⋃<sub>k</sub> TIME(n<sup>k</sup>) — the union over all k of "decidable in O(n<sup>k</sup>) time." Sipser's three flagship examples (§7.2) cover the three flavors of "polynomial":</p>
+<div class="theorem-box"><div class="theorem-label">PATH = {⟨G, s, t⟩ : G has a directed path from s to t}</div>
+<p style="margin:4px 0;">Algorithm: <strong>BFS</strong> from s; mark every reachable vertex. Accept iff t is marked.</p>
+<p style="margin:4px 0;">Time: <strong>O(V + E)</strong>. Linear in the graph size — about as fast as polynomial gets.</p>
+</div>
+<div class="theorem-box"><div class="theorem-label">RELPRIME = {⟨a, b⟩ : gcd(a, b) = 1}</div>
+<p style="margin:4px 0;">Algorithm: <strong>Euclid's algorithm</strong> — repeatedly replace (a, b) with (b, a mod b) until b = 0; gcd is the final a.</p>
+<p style="margin:4px 0;">Time: <strong>O(log min(a, b))</strong> iterations. Polynomial in <em>bit length</em>, which is what matters.</p>
+</div>
+<div class="theorem-box"><div class="theorem-label">A<sub>CFG</sub> = {⟨G, w⟩ : CFG G generates w}</div>
+<p style="margin:4px 0;">Algorithm: convert G to CNF; run <strong>CYK</strong> dynamic programming.</p>
+<p style="margin:4px 0;">Time: <strong>O(n³ · |G|)</strong>. Cubic — slower than the others but still polynomial.</p>
+</div>
+</section>
+
+<section><div class="section-label">2 · Why these are in P · the contrast with NP-hard cousins</div>
+<div class="diagram" style="margin:14px 0;">
+<svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+  <text x="380" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">In P (left) vs apparently-not-in-P (right) · a structural change shifts everything</text>
+
+  <!-- In P -->
+  <rect x="40" y="50" width="340" height="200" rx="10" fill="#f3faf6" stroke="var(--accent, #1c4a3f)" stroke-width="1.6"/>
+  <text x="210" y="74" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--accent, #1c4a3f)">In P</text>
+  <g font-family="var(--mono), ui-monospace, monospace" font-size="11">
+  <text x="60" y="100" fill="#444">PATH (any s-t path)</text>
+  <text x="60" y="120" fill="#444">RELPRIME (gcd = 1)</text>
+  <text x="60" y="140" fill="#444">A<tspan baseline-shift="sub" font-size="0.75em">DFA</tspan> (DFA accepts w)</text>
+  <text x="60" y="160" fill="#444">A<tspan baseline-shift="sub" font-size="0.75em">CFG</tspan> (CFG generates w)</text>
+  <text x="60" y="180" fill="#444">E<tspan baseline-shift="sub" font-size="0.75em">DFA</tspan> (DFA empty?)</text>
+  <text x="60" y="200" fill="#444">EQ<tspan baseline-shift="sub" font-size="0.75em">DFA</tspan> (DFAs equivalent?)</text>
+  </g>
+  <text x="210" y="230" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="var(--accent, #1c4a3f)" font-weight="700">All have explicit polynomial algorithms.</text>
+
+  <!-- Probably not in P -->
+  <rect x="400" y="50" width="340" height="200" rx="10" fill="#fdf4ed" stroke="var(--warn, #b95825)" stroke-width="1.6"/>
+  <text x="570" y="74" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--warn, #b95825)">Probably not in P</text>
+  <g font-family="var(--mono), ui-monospace, monospace" font-size="11">
+  <text x="420" y="100" fill="#444">HAMPATH (visit ALL vertices)</text>
+  <text x="420" y="120" fill="#444">SUBSET-SUM (cardinality choice)</text>
+  <text x="420" y="140" fill="#444">SAT (boolean satisfiability)</text>
+  <text x="420" y="160" fill="#444">CLIQUE (size-k clique exists?)</text>
+  <text x="420" y="180" fill="#444">3-COLOR (graph 3-colorable?)</text>
+  <text x="420" y="200" fill="#444">EQ<tspan baseline-shift="sub" font-size="0.75em">CFG</tspan> (CFGs equivalent?)</text>
+  </g>
+  <text x="570" y="230" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="var(--warn, #b95825)" font-weight="700">All NP-complete or worse.</text>
+</svg>
+</div>
+<p>The shift is often a single quantifier or a "for all/exists every" change. PATH asks <em>any</em> s-t path — easy. HAMPATH asks <em>a path visiting every vertex</em> — combinatorially hard. A<sub>DFA</sub> simulates one machine — easy. SAT asks for an assignment that satisfies <em>every</em> clause — hard.</p>
+</section>
+
+<section><div class="section-label">3 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Cycle through three classic P problems <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="p-run">⏸ Pause</button><button class="btn ghost" id="p-step">Step</button><button class="btn ghost" id="p-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="p-speed" min="0.25" max="3" step="0.25" value="1"><span id="p-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <div id="p-display" style="min-height:240px;"></div>
 <div class="explain-panel" id="p-explain"></div></div></section>
-<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
-<li><div class="q">Q1. Why is PATH in P but HAMPATH probably not?</div><div class="a">PATH = "does ANY path exist" = simple reachability = BFS. HAMPATH = "does a path through ALL vertices exist" = combinatorial search.</div></li>
-<li><div class="q">Q2. Why is Euclid's gcd algorithm fast?</div><div class="a">Each step at least halves the smaller number (proven). So O(log min(a,b)) iterations — polynomial in bit length.</div></li>
-<li><div class="q">Q3. Why O(n³) for CYK?</div><div class="a">O(n²) table cells × O(n) split points each. Constant grammar.</div></li>
-</ul></section></div><footer class="foot">P24 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<section><div class="section-label">4 · Pitfalls</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>"Polynomial" is polynomial in <em>input size</em>, not the value being computed.</strong> RELPRIME runs in O(log min(a, b)) iterations — polynomial in the bit length of a and b, exponential in their value. Always polynomial in n = |input|.</li>
+  <li><strong>O(n³) is polynomial, period.</strong> Sometimes seen as "slow polynomial." Still in P. The hierarchy P ⊆ TIME(n³) ⊆ … is internal to P; all of it is P.</li>
+  <li><strong>Adjacency-list vs adjacency-matrix matters for big-O constants.</strong> PATH's O(V + E) assumes adjacency-list representation; matrix gives O(V²). Both are polynomial.</li>
+  <li><strong>Membership in P doesn't mean tractable in practice.</strong> A polynomial with degree 100 and large constants might be infeasible. The mathematical class P is the right abstraction; engineering needs constants.</li>
+</ul>
+</section>
+
+<section><div class="section-label">5 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why is PATH in P but HAMPATH probably not?</div><div class="a">PATH asks "does ANY directed path from s to t exist" — solvable by BFS in O(V + E). HAMPATH asks "does a path through ALL vertices, ending at t, exist" — combinatorial search through n! permutations. The existential quantifier in PATH is satisfied locally; in HAMPATH it requires global coordination.</div></li>
+<li><div class="q">Q2. Why is Euclid's gcd algorithm fast?</div><div class="a">Each step at least halves the smaller number (provable: a mod b &lt; b/2 when a ≥ b). So O(log min(a, b)) iterations are needed. With O(n²) per multiplication, total is O(n³) in bit length n.</div></li>
+<li><div class="q">Q3. Why O(n³) for CYK?</div><div class="a">CYK's DP table has O(n²) cells (start position × length). Computing each cell tries O(n) split points. Total cells × splits = O(n³). Plus the constant grammar factor.</div></li>
+<li><div class="q">Q4. What's the biggest open problem about P?</div><div class="a">P vs NP — whether NP-complete problems like SAT, HAMPATH have polynomial-time algorithms. Most computer scientists believe P ≠ NP, but no proof is known. One of the Clay Millennium Problems with a $1M prize.</div></li>
+</ul></section>
+
+<section><div class="section-label">6 · Where to read more</div>
+<p><strong>Sipser:</strong> §7.2 (the three classic examples), Theorem 7.14, 7.15, 7.16. <strong>Lecture notes:</strong> Module 4 slide 5. <strong>Companion problems:</strong> P12 (decidable trio), P17 (growth race), P48 (P vs EXPTIME).</p>
+</section></div><footer class="foot">P24 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){
 const items=[
   {name:'PATH',algo:'BFS on graph',time:'O(V + E)',det:'visit each vertex once; each edge twice'},

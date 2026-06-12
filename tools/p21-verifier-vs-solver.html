@@ -47,7 +47,51 @@
 </section>
 
 <section>
-  <div class="section-label">2 · Animated demo · auto-plays · loops</div>
+  <div class="section-label">2 · The verifier picture · check vs find</div>
+  <div class="diagram" style="margin:14px 0;">
+  <svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+    <text x="380" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">Two pictures of NP · brute-force solver vs. polynomial-time verifier</text>
+
+    <!-- Brute-force solver (left) -->
+    <rect x="40" y="50" width="340" height="240" rx="10" fill="#fdf4ed" stroke="var(--warn, #b95825)" stroke-width="1.6"/>
+    <text x="210" y="74" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--warn, #b95825)">Brute-force solver · 2ⁿ time</text>
+    <text x="210" y="100" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">on input φ (a CNF formula):</text>
+    <text x="60" y="124" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">  for each assignment τ ∈ {0,1}ⁿ:</text>
+    <text x="60" y="144" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">    if φ(τ) = true:</text>
+    <text x="60" y="164" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">      accept</text>
+    <text x="60" y="184" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">  reject</text>
+    <text x="210" y="216" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#444">Loops over <strong>2ⁿ</strong> assignments.</text>
+    <text x="210" y="234" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#444">n = 30 → 10⁹ assignments. n = 60 → 10¹⁸.</text>
+    <text x="210" y="266" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--warn, #b95825)">"How do I find a witness?"</text>
+
+    <!-- Verifier (right) -->
+    <rect x="400" y="50" width="340" height="240" rx="10" fill="#f3faf6" stroke="var(--accent, #1c4a3f)" stroke-width="1.6"/>
+    <text x="570" y="74" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--accent, #1c4a3f)">Verifier V · O(m) time</text>
+    <text x="570" y="100" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">on input (φ, certificate τ):</text>
+    <text x="420" y="124" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">  for each clause C in φ:</text>
+    <text x="420" y="144" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">    if C(τ) = false:</text>
+    <text x="420" y="164" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">      reject</text>
+    <text x="420" y="184" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">  accept</text>
+    <text x="570" y="216" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#444">Reads φ and τ once: <strong>O(m)</strong> work.</text>
+    <text x="570" y="234" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#444">m clauses + n variables. Linear scan.</text>
+    <text x="570" y="266" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--accent, #1c4a3f)">"Is τ a valid witness?"</text>
+  </svg>
+  </div>
+  <p>The verifier doesn't have to find τ — it just checks whether someone's claim that τ works is correct. The "someone" is the existential quantifier in NP's definition. P = NP would mean there's a way to <em>always</em> find τ in polynomial time. P ≠ NP means there are problems where finding is fundamentally harder than checking.</p>
+</section>
+
+<section>
+  <div class="section-label">3 · Worked example · 3SAT with n = 4</div>
+  <p>Consider φ = (x<sub>1</sub> ∨ ¬x<sub>2</sub> ∨ x<sub>3</sub>) ∧ (¬x<sub>1</sub> ∨ x<sub>2</sub> ∨ x<sub>4</sub>) ∧ (x<sub>2</sub> ∨ ¬x<sub>3</sub> ∨ ¬x<sub>4</sub>).</p>
+  <ul style="margin:8px 0 0 20px;">
+    <li><strong>Brute force:</strong> tries 2⁴ = 16 assignments. For each, checks all 3 clauses → 48 clause-evaluations total. With n = 30 this would be ~10⁹ clause-checks.</li>
+    <li><strong>Verifier given τ = (1, 0, 1, 0):</strong> clause 1: x<sub>1</sub>=1 ✓ accept clause. clause 2: x<sub>2</sub>=0, x<sub>4</sub>=0, ¬x<sub>1</sub>=0 — all false → reject. The verifier rejects this τ in 9 work units. If asked again with τ = (0, 1, 0, 0), it accepts in 9 work units.</li>
+  </ul>
+  <p>Asymmetry: the verifier always halts fast, regardless of n. The brute-force solver does too — but its running time is 2ⁿ, which becomes astronomical fast.</p>
+</section>
+
+<section>
+  <div class="section-label">4 · Animated demo · auto-plays · loops</div>
 
   <div class="widget">
     <div class="widget-title">Same 3SAT instance · two algorithms race <span class="pill">Auto-plays</span></div>
@@ -103,6 +147,19 @@
       <div class="a">PRIMES was thought to be only in NP for decades. In 2002 (AKS) it was shown PRIMES ∈ P. So "in NP" doesn't mean "no polynomial algorithm exists" — only that one isn't <em>obviously</em> there.</div>
     </li>
   </ul>
+</section>
+
+<section><div class="section-label">6 · Pitfalls students stumble on</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>The certificate must be short.</strong> Polynomially short in |x|. If the certificate could be exponentially long, every language would trivially have a verifier — just hand it the answer table. The polynomial bound forces the witness to be structured.</li>
+  <li><strong>Verifier ≠ decider.</strong> A verifier takes (input, certificate). A decider takes just (input). NP is defined via verifiers; P is defined via deciders. The certificate is the existential quantifier made explicit.</li>
+  <li><strong>NP is a class of decision problems, not search problems.</strong> "Yes" instances are the ones with a witness. The verifier just confirms; it doesn't construct the witness or hand it back.</li>
+  <li><strong>"NP" does not stand for "not polynomial."</strong> It stands for <em>nondeterministic polynomial time</em>. Every problem in P is also in NP — just ignore the certificate.</li>
+</ul>
+</section>
+
+<section><div class="section-label">7 · Where to read more</div>
+<p><strong>Sipser:</strong> §7.3 (definition of NP), §7.4 (NP-completeness). <strong>Lecture notes:</strong> Module 5 slide 1 (verifier ↔ NTM equivalence diagram). <strong>Companion problems:</strong> P22 (SAT interactive), P23 (HAMPATH verifier), P24 (P showcase).</p>
 </section>
 
 </div>

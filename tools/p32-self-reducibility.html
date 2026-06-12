@@ -5,13 +5,26 @@
 <h1>SAT search ≤<sub>p</sub> SAT decision · self-reducibility</h1><p class="sub">A SAT decider lets you actually find a satisfying assignment in poly time.</p>
 <div class="tags"><span class="tag-pill">CLO-3</span><span class="tag-pill">CLO-4</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L12</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · Theory</div>
-<div class="theorem-box"><div class="theorem-label">Search-to-decision</div><p style="margin:4px 0;">Given a SAT decider D, find a satisfying assignment with n+1 calls to D:</p>
-<pre style="font-size:13px;">while variables remain:
-  pick variable x; set x = TRUE in φ
-  if D(φ) accepts: x is TRUE; recurse on φ
-  else: x = FALSE; recurse on φ|_{x=F}</pre></div>
-<p>So <strong>if P = NP, finding is as easy as deciding.</strong> The "search" question is no harder than the "decision" question.</p></section>
+<section><div class="section-label">1 · Search-to-decision · the surprising self-reducibility</div>
+<p>Suppose someone gave you a SAT <em>decider</em> — a procedure that on input φ returns yes/no without telling you the satisfying assignment. Can you use it to <em>find</em> a satisfying assignment? Surprisingly, yes — in only n + 1 calls to D.</p>
+
+<div class="theorem-box"><div class="theorem-label">Self-reducibility algorithm</div>
+<pre style="font-size:13px;margin:4px 0;">on input φ with variables x₁, ..., xₙ:
+  if not D(φ): output "UNSAT" and halt
+  for i = 1 to n:
+    let φ' = φ with xᵢ = TRUE substituted
+    if D(φ'):  set xᵢ = TRUE,  φ := φ'
+    else:      set xᵢ = FALSE, φ := φ|{xᵢ = FALSE}
+  output (x₁, ..., xₙ)</pre>
+</div>
+
+<p>Key insight: substituting x<sub>i</sub> = TRUE shrinks the formula by one variable. If the result is still satisfiable, we've found a witness with x<sub>i</sub> = TRUE somewhere; if not, x<sub>i</sub> = FALSE must work. Either way, the residual formula has one fewer variable. After n iterations all variables are fixed, and the output is a satisfying assignment.</p>
+
+<div class="theorem-box"><div class="theorem-label">Why it matters</div>
+<p style="margin:4px 0;">If P = NP, then SAT decision is in P. By self-reducibility, SAT <em>search</em> is also in P — we can actually find satisfying assignments fast, not just say whether they exist. This argument <strong>collapses search-to-decision</strong> for SAT (and more generally for all NP-complete problems with self-reduction structure).</p>
+</div>
+</section>
+
 <section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Decide each variable in turn <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="sr-run">⏸ Pause</button><button class="btn ghost" id="sr-step">Step</button><button class="btn ghost" id="sr-reset">Reset</button>
@@ -21,8 +34,22 @@
 <section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
 <li><div class="q">Q1. Why does the decider on φ|<sub>x=T</sub> tell us x's value?</div><div class="a">If D says φ|<sub>x=T</sub> is SAT, there's a satisfying assignment with x=T; set x=T. Otherwise the original must have a satisfying assignment with x=F.</div></li>
 <li><div class="q">Q2. How many calls to D?</div><div class="a">n + 1 (one initial check, then n per-variable fixings). Polynomial in the original formula size.</div></li>
-<li><div class="q">Q3. Does this work for other NP-complete problems?</div><div class="a">Yes — SAT's self-reducibility is the canonical pattern; analogous tricks work for HAMPATH, CLIQUE, etc.</div></li>
-</ul></section></div><footer class="foot">P32 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<li><div class="q">Q3. Does this work for other NP-complete problems?</div><div class="a">Yes — SAT's self-reducibility is the canonical pattern. Analogous tricks work for HAMPATH (peel one vertex at a time), CLIQUE (test "is there a clique containing this vertex?"), and most natural NP-complete problems. There are pathological NP-complete problems that aren't self-reducible, but they're contrived.</div></li>
+<li><div class="q">Q4. Why is this called "self-reducibility"?</div><div class="a">Because the algorithm reduces the SAT search problem to multiple instances of SAT decision — a problem reducing to itself (or to a smaller instance of itself). The "self" emphasises that we use the same problem to solve a richer version of it.</div></li>
+<li><div class="q">Q5. What's the punchline for P vs NP?</div><div class="a">If P = NP, then for every NP-complete problem, we can not only decide but also <em>find</em> witnesses in polynomial time. So a P = NP world would be radically different — cryptography, optimisation, theorem-proving all transformed.</div></li>
+</ul></section>
+
+<section><div class="section-label">4 · Pitfalls</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>Self-reducibility uses the decider as an oracle, not as code.</strong> We make black-box calls D(φ'). We don't peek inside.</li>
+  <li><strong>The residual formulas shrink, not the variable list of the original.</strong> Each call passes a smaller formula. n + 1 calls means at most n + 1 oracle invocations, each on poly-size input.</li>
+  <li><strong>This is a Turing reduction, not a many-one reduction.</strong> We make multiple oracle queries with results that affect later queries.</li>
+</ul>
+</section>
+
+<section><div class="section-label">5 · Where to read more</div>
+<p><strong>Sipser:</strong> §7.4 (NP, discussion of search vs decision). <strong>Lecture notes:</strong> Module 5 slide 6. <strong>Companion problems:</strong> P22 (SAT interactive), P14 (Rice — for the contrast).</p>
+</section></div><footer class="foot">P32 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){
 const formula='(x ∨ y ∨ z) ∧ (¬x ∨ y) ∧ (¬y ∨ z)';
 const target={x:'T',y:'T',z:'T'};

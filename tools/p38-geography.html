@@ -5,20 +5,44 @@
 <h1>Generalized Geography · play against the computer</h1><p class="sub">Two players move a token along a directed graph. No vertex repeats. Last mover wins.</p>
 <div class="tags"><span class="tag-pill">CLO-4</span><span class="tag-pill warn">R3·40 pts</span><span class="tag-pill info">L14</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · Theory</div>
-<div class="theorem-box"><div class="theorem-label">PSPACE-complete</div><p style="margin:4px 0;">Generalized Geography (GG) = {⟨G, s⟩ : Player 1 has a winning strategy on G starting at s}. Reduction from TQBF.</p></div>
-<p>Why PSPACE: minimax tree has depth ≤ n. Stack ≤ n. O(n) space.</p></section>
+<section><div class="section-label">1 · Generalised Geography · the canonical PSPACE-complete game</div>
+<p>Generalised Geography (GG) abstracts the children's word game "Geography" (each next word starts with the previous word's last letter) into a graph game:</p>
+<div class="theorem-box"><div class="theorem-label">Rules</div>
+<p style="margin:4px 0;">Given a directed graph G and starting vertex s. A token is placed at s. Players alternate turns. On your turn, you move the token to an unvisited successor of its current position. If you can't move (the token's successors are all already visited), you lose.</p>
+</div>
+<div class="theorem-box"><div class="theorem-label">The decision problem</div>
+<p style="margin:4px 0;">GG = {⟨G, s⟩ : Player 1 has a winning strategy on G starting at s}.</p>
+</div>
+<div class="theorem-box"><div class="theorem-label">PSPACE-complete (Sipser Theorem 8.11)</div>
+<p style="margin:4px 0;"><strong>In PSPACE:</strong> recursive minimax evaluation uses O(n) stack depth and stores only the current path's visited set. <strong>PSPACE-hard:</strong> TQBF reduces to GG via gadget construction (Problem 39).</p>
+</div>
+<p>The "no vertex repeats" rule is what makes the game terminate. Without it, players could move in cycles forever, and the question "does player 1 win?" would have no well-defined answer.</p>
+</section>
+
 <section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Watch optimal play from a fixed graph <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="gg-run">⏸ Pause</button><button class="btn ghost" id="gg-step">Step</button><button class="btn ghost" id="gg-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="gg-speed" min="0.25" max="3" step="0.25" value="1"><span id="gg-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="gg-svg" viewBox="0 0 760 280" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="gg-explain"></div></div></section>
-<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
-<li><div class="q">Q1. Why does no vertex repeat?</div><div class="a">Without that rule, players could loop forever. With it, the game terminates after at most |V| moves.</div></li>
-<li><div class="q">Q2. PSPACE-completeness proof?</div><div class="a">Reduce TQBF: build a graph where ∃-player picks variable values and ∀-player tries to falsify. Game corresponds exactly to the QBF evaluation.</div></li>
-<li><div class="q">Q3. Time vs space for the minimax algorithm?</div><div class="a">Exponential time (visit every reachable game state) but polynomial space (just the current path).</div></li>
-</ul></section></div><footer class="foot">P38 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<section><div class="section-label">3 · Pitfalls</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>"Player 1 wins" means optimal play.</strong> The question is whether a winning strategy exists, not whether player 1 actually wins under random play.</li>
+  <li><strong>The "no repeat" rule is essential.</strong> Without termination, the game state space is infinite. With termination, the game tree has ≤ |V|! distinct branches but only |V| depth.</li>
+  <li><strong>Generalised geography ≠ the word game.</strong> The word version restricts moves by letters; the generalised version uses arbitrary graphs. This generalisation makes it PSPACE-complete.</li>
+</ul>
+</section>
+
+<section><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why does the no-vertex-repeat rule matter?</div><div class="a">Without that rule, players could move in cycles forever and the game would never terminate. With it, the game ends in at most |V| moves (each vertex visited at most once), so winning strategies are well-defined and computable.</div></li>
+<li><div class="q">Q2. How does the PSPACE-completeness proof work?</div><div class="a">Reduce TQBF₃ to GG. Build a graph with gadgets: a "diamond" for each variable that lets the responsible player choose true/false; a "clause chain" that ∀-player traverses to falsify; the connection makes the game tree mirror the QBF evaluation tree. Sipser Theorem 8.11.</div></li>
+<li><div class="q">Q3. Time vs space for the minimax algorithm?</div><div class="a">Exponential time (the game tree has 2<sup>O(n)</sup> nodes in the worst case), but polynomial space (depth-first with reuse stores only the current path, O(n) cells). This is why GG is in PSPACE but not known to be in P.</div></li>
+<li><div class="q">Q4. Are real-world games PSPACE-complete?</div><div class="a">Generalised chess on n×n boards is PSPACE-complete (assuming polynomial moves). Generalised Go is at least PSPACE-hard. Most natural board games end up at least PSPACE-hard under generalisation.</div></li>
+</ul></section>
+
+<section><div class="section-label">5 · Where to read more</div>
+<p><strong>Sipser:</strong> §8.3, Theorem 8.11. <strong>Lecture notes:</strong> Module 6 slide 3. <strong>Companion problems:</strong> P36 (TQBF), P39 (TQBF → geography), P40 (chess hardness).</p>
+</section></div><footer class="foot">P38 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){
 const nodes={S:{x:120,y:140},A:{x:280,y:80},B:{x:280,y:200},C:{x:440,y:140},D:{x:600,y:80},E:{x:600,y:200}};
 const edges=[['S','A'],['S','B'],['A','C'],['B','C'],['C','D'],['C','E'],['D','E'],['E','D']];

@@ -33,12 +33,25 @@
 <div class="explain-panel" id="kz-explain"></div>
 </div></section>
 
-<section><div class="section-label">3 · Q&amp;A defence notes</div>
+<section><div class="section-label">3 · Pitfalls</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>"Erasure" isn't real.</strong> TMs don't delete their own code; the kamikaze just halts with a marker after printing itself. The drama is pedagogical.</li>
+  <li><strong>δ is fixed at construction time.</strong> No TM can modify its own transition function at runtime. Self-modification is simulated by interpreting a description on the tape.</li>
+  <li><strong>The recursion theorem makes this routine.</strong> Once you have the theorem, building "M prints ⟨M⟩ and does X" is mechanical for any X. The kamikaze is one such X.</li>
+</ul>
+</section>
+
+<section><div class="section-label">4 · Q&amp;A defence notes</div>
 <ul class="qa-list">
-<li><div class="q">Q1. Is "erasing" really meaningful in a TM?</div><div class="a">TMs don't have file-system erasure. The kamikaze just enters a halt state with a marker. The "erasure" is conceptual — used to make a pedagogical point.</div></li>
-<li><div class="q">Q2. Could a TM modify its own transition function during execution?</div><div class="a">No — δ is fixed. But the TM can <em>simulate</em> a different machine using its tape, effectively running a modified version of itself.</div></li>
-<li><div class="q">Q3. How does the recursion theorem guarantee step 1?</div><div class="a">Apply the s-m-n theorem to construct a function q such that q(⟨P⟩) is a TM that writes ⟨q(⟨P⟩)⟩ on tape, then runs P. With P = "append text and halt", we get our kamikaze.</div></li>
+<li><div class="q">Q1. Is "erasing" really meaningful in a TM?</div><div class="a">TMs don't have file-system erasure. The kamikaze enters a halt state with a marker. The "erasure" is conceptual — used to dramatise the self-destructive aspect of self-printing TMs.</div></li>
+<li><div class="q">Q2. Could a TM modify its own transition function during execution?</div><div class="a">No — δ is fixed at construction time. But the TM can <em>simulate</em> a different machine by interpreting a description on its tape, effectively running a modified version of itself.</div></li>
+<li><div class="q">Q3. How does the recursion theorem guarantee step 1?</div><div class="a">Apply the s-m-n theorem to construct a function q : ⟨P⟩ ↦ ⟨P'⟩ where P' first writes ⟨P'⟩ to its tape then runs P. With P = "append text 'I have shown my source' and halt," we get the kamikaze TM.</div></li>
+<li><div class="q">Q4. What's the pedagogical point?</div><div class="a">"Self-aware" TMs aren't theoretical artefacts. The recursion theorem provides a constructive recipe for building TMs that perform any computable operation involving their own description. The kamikaze is the most dramatic such example.</div></li>
 </ul></section>
+
+<section><div class="section-label">5 · Where to read more</div>
+<p><strong>Sipser:</strong> §6.1 (recursion theorem). <strong>Lecture notes:</strong> Module 3 slide 5. <strong>Companion problems:</strong> P13 (quine), P15 (fixed point), P16 (self-aware TM).</p>
+</section>
 
 </div>
 <footer class="foot">Problem 52 · BCS 402 · Dr. Arash Kermani · CUD</footer>

@@ -5,8 +5,19 @@
 <h1>Log-space machine · palindromes ∈ L</h1><p class="sub">Two pointers into the input, that's all the memory needed.</p>
 <div class="tags"><span class="tag-pill">CLO-3</span><span class="tag-pill">CLO-5</span><span class="tag-pill warn">R3·40 pts</span><span class="tag-pill info">L15</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · Theory</div><p>L = class of problems decidable by a deterministic TM using O(log n) work-tape space. The input is on a read-only tape (doesn't count).</p>
-<div class="theorem-box"><div class="theorem-label">Palindrome ∈ L</div><p style="margin:4px 0;">Two pointers i (left) and j (right). Compare input[i] with input[j]. Advance toward middle. Each pointer takes ⌈log₂ n⌉ bits. Total: 2 log n + O(1) = O(log n).</p></div></section>
+<section><div class="section-label">1 · L · the smallest interesting space class</div>
+<p>L (sometimes LOGSPACE) is the class of decision problems solvable by a deterministic TM using O(log n) work-tape space. By convention, the input tape is read-only and doesn't count toward the space bound — otherwise L would equal P trivially via length-n input storage.</p>
+<div class="theorem-box"><div class="theorem-label">Why log n is the right scale</div>
+<p style="margin:4px 0;">log n bits is exactly enough to store an index into the input — a pointer to a tape cell. So L-algorithms are roughly "those that work with a constant number of pointers into the input plus a constant amount of additional state."</p>
+</div>
+<div class="theorem-box"><div class="theorem-label">PALINDROME ∈ L</div>
+<p style="margin:4px 0;">On input w of length n: maintain two pointers i = 0 and j = n − 1. While i &lt; j: read w[i] and w[j], reject if they differ, else i++ and j--. Accept if loop completes.</p>
+<p style="margin:4px 0;">Space used: two pointers (⌈log<sub>2</sub> n⌉ bits each) plus O(1) auxiliary state. Total: O(log n).</p>
+</div>
+
+<p>Other classic L problems: REACHABILITY in undirected graphs (Reingold 2008, a deep result), parity, comparison of two unary numbers, recognising regular languages.</p>
+</section>
+
 <section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Watch the two pointers converge <span class="pill">Auto-plays</span></div>
 <div class="controls"><label>Input: <input type="text" id="l-input" value="abcba" maxlength="12" style="width:120px;"></label>
@@ -15,11 +26,24 @@
 <svg id="l-svg" viewBox="0 0 760 240" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="status"><div class="stat">i,j <b id="l-ij">0,0</b></div><div class="stat">Cells <b id="l-cells">0</b></div><div class="stat">Verdict <b id="l-verdict">—</b></div></div>
 <div class="explain-panel" id="l-explain"></div></div></section>
-<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
-<li><div class="q">Q1. Why is the input tape "free"?</div><div class="a">L is defined with two tapes: read-only input + work tape. Only the work tape counts toward the space bound. This matches the intuition of "pointers into the input."</div></li>
-<li><div class="q">Q2. Why 2 pointers fit in log n bits?</div><div class="a">Each pointer is an integer in [0, n-1], so ⌈log₂ n⌉ bits. Total for two pointers: 2 log n.</div></li>
-<li><div class="q">Q3. What's the time complexity?</div><div class="a">O(n) — each pair compared once. Polynomial in input size.</div></li>
-</ul></section></div><footer class="foot">P41 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<section><div class="section-label">3 · Pitfalls</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>Input tape free, work tape counted.</strong> A common confusion. If both counted, L = P trivially. The distinction makes L a meaningful subclass of P.</li>
+  <li><strong>L ⊆ P.</strong> A LOGSPACE machine has at most |Q| · log n · |Γ|<sup>log n</sup> = poly(n) configurations, so it can be simulated in polynomial time. So L is at most P.</li>
+  <li><strong>Whether L = P is open.</strong> Whether L is properly contained in P is one of the famous open problems. Most believe L ⊊ P.</li>
+</ul>
+</section>
+
+<section><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why is the input tape "free"?</div><div class="a">L is defined on a two-tape model: a read-only input tape and a work tape. Only the work tape counts toward the space bound. Otherwise L would equal P automatically (since reading length-n input requires Ω(n) "space" in the wrong sense).</div></li>
+<li><div class="q">Q2. Why do 2 pointers fit in O(log n) bits?</div><div class="a">Each pointer is an integer in [0, n−1], encodable in ⌈log<sub>2</sub> n⌉ bits. Two pointers fit in 2 log n bits. Adding O(1) auxiliary state keeps us in O(log n).</div></li>
+<li><div class="q">Q3. What's the time complexity of the palindrome check?</div><div class="a">O(n) — each character pair compared once. So PALINDROME is in L ⊆ P with linear time. The space class L is a refinement of polynomial time, not a separate sphere.</div></li>
+<li><div class="q">Q4. What's the relationship to NL?</div><div class="a">L ⊆ NL — deterministic LOGSPACE is contained in nondeterministic LOGSPACE. Whether L = NL is open.</div></li>
+</ul></section>
+
+<section><div class="section-label">5 · Where to read more</div>
+<p><strong>Sipser:</strong> §8.4 (definitions of L and NL), examples. <strong>Lecture notes:</strong> Module 7 slide 1. <strong>Companion problems:</strong> P42 (NL-PATH), P43 (PATH is NL-complete), P44 (inductive counting).</p>
+</section></div><footer class="foot">P41 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){
 let input='abcba', i=0, j=4, halted=false, ok=null;
 function reset(){ input=document.getElementById('l-input').value; i=0; j=input.length-1; halted=false; ok=null; render(); }

@@ -14,11 +14,24 @@
 <label class="speed-control">Speed <input type="range" id="e-speed" min="0.25" max="3" step="0.25" value="1"><span id="e-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="e-svg" viewBox="0 0 760 320" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="e-explain"></div></div></section>
-<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
-<li><div class="q">Q1. Why does time hierarchy prove P ⊊ EXPTIME but not PSPACE ⊊ EXPTIME?</div><div class="a">Time hierarchy compares time-bounded classes. P uses poly time; EXPTIME uses exp time. The hierarchy theorem applies. PSPACE uses polynomial SPACE — a different resource. Can't directly compare.</div></li>
-<li><div class="q">Q2. Is PSPACE = EXPTIME possible?</div><div class="a">Currently can't be ruled out. Most experts believe PSPACE ⊊ EXPTIME but no proof exists.</div></li>
-<li><div class="q">Q3. What's the relationship to P vs NP?</div><div class="a">P ⊆ NP ⊆ PSPACE ⊆ EXPTIME. P ⊊ EXPTIME is the longest known separation in this chain. Every other strict containment is open.</div></li>
-</ul></section></div><footer class="foot">P57 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<section><div class="section-label">3 · Pitfalls</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>Hierarchy theorems compare same-resource bounds.</strong> Time vs time, space vs space. Cross-resource (space vs time) comparisons aren't given by hierarchy directly.</li>
+  <li><strong>PSPACE = EXPTIME is consistent with what we know.</strong> No technique rules it out. Most believe they're distinct, but lack of proof is striking.</li>
+  <li><strong>P ⊊ EXPTIME is one of the few proven strict separations.</strong> Almost every other "obvious" containment (P vs NP, NP vs PSPACE, PSPACE vs EXPTIME) is open.</li>
+</ul>
+</section>
+
+<section><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why does Time Hierarchy prove P ⊊ EXPTIME but not PSPACE ⊊ EXPTIME?</div><div class="a">Time Hierarchy compares time-bounded classes within the same model. P uses polynomial time; EXPTIME uses exponential time; the hierarchy theorem gives the strict separation. PSPACE uses polynomial space — a different resource. Comparing PSPACE to EXPTIME requires bridging time and space, which the hierarchy theorem doesn't do.</div></li>
+<li><div class="q">Q2. Is PSPACE = EXPTIME possible?</div><div class="a">Currently can't be ruled out. Most experts believe PSPACE ⊊ EXPTIME (exponential time should be much larger than polynomial space), but no proof exists. Relativised oracle separations exist but don't transfer.</div></li>
+<li><div class="q">Q3. What's the relationship to P vs NP?</div><div class="a">The chain is P ⊆ NP ⊆ PSPACE ⊆ EXPTIME, with P ⊊ EXPTIME being the only proven strict containment. So at least one of the three middle inclusions must be strict, but we don't know which.</div></li>
+<li><div class="q">Q4. What does the sandwich theorem tell us?</div><div class="a">SPACE(f) ⊆ TIME(2<sup>O(f)</sup>) gives PSPACE ⊆ EXPTIME. The reverse inclusion (EXPTIME ⊆ PSPACE?) isn't known and is widely conjectured false.</div></li>
+</ul></section>
+
+<section><div class="section-label">5 · Where to read more</div>
+<p><strong>Sipser:</strong> §9.1, Corollary 9.16. <strong>Lecture notes:</strong> Module 7 slide 5. <strong>Companion problems:</strong> P46 (Time Hierarchy), P48 (P ⊊ EXPTIME).</p>
+</section></div><footer class="foot">P57 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){
 const inclusions=[
   {a:'P',b:'NP',rel:'⊆',proven:false},

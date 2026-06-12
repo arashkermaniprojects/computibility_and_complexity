@@ -5,20 +5,46 @@
 <h1>TQBF → TQBF₃ · normal form</h1><p class="sub">Every QBF can be put in prenex form with alternating quantifiers and 3-CNF matrix.</p>
 <div class="tags"><span class="tag-pill">CLO-4</span><span class="tag-pill warn">R3·40 pts</span><span class="tag-pill info">L14</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · Theory</div>
-<div class="theorem-box"><div class="theorem-label">TQBF₃ normal form</div><p style="margin:4px 0;">Every QBF is equivalent to one of the form ∃x₁ ∀x₂ ∃x₃ ∀x₄ … Q x<sub>n</sub>. φ(x₁,…,x<sub>n</sub>) where φ is 3-CNF and quantifiers strictly alternate.</p></div>
-<p>Useful because: (1) standardised form for reductions; (2) PSPACE-completeness proofs target this restricted form.</p></section>
+<section><div class="section-label">1 · TQBF₃ · the standardised PSPACE-complete form</div>
+<p>TQBF₃ is the restriction of TQBF to QBFs in <em>prenex form with alternating quantifiers and a 3-CNF matrix</em>:</p>
+<div class="theorem-box"><div class="theorem-label">Normal form</div>
+<p style="margin:4px 0;text-align:center;">∃x<sub>1</sub> ∀x<sub>2</sub> ∃x<sub>3</sub> ∀x<sub>4</sub> … Q x<sub>n</sub>. φ(x<sub>1</sub>, …, x<sub>n</sub>)</p>
+<p style="margin:4px 0;">where φ is 3-CNF and quantifiers strictly alternate ∃∀∃∀….</p>
+</div>
+<p>The normalisation has two steps, each polynomial.</p>
+<div class="theorem-box"><div class="theorem-label">Step 1 · Enforce alternation by padding</div>
+<p style="margin:4px 0;">If two same-flavor quantifiers appear consecutively, e.g. ∃x ∃y, insert a dummy: ∃x ∀d ∃y, where d doesn't appear in the matrix. Since the matrix doesn't mention d, the value of d is irrelevant — the dummy quantifier is a no-op semantically but creates the alternation pattern.</p>
+</div>
+<div class="theorem-box"><div class="theorem-label">Step 2 · Convert matrix to 3-CNF</div>
+<p style="margin:4px 0;">Apply the SAT → 3SAT splitting rule (Problem 26) to the propositional kernel. The auxiliary variables introduced by splitting are existentially quantified at the innermost layer (or handled with dummy padding to maintain alternation).</p>
+</div>
+<p>TQBF₃ remains PSPACE-complete. The restriction matters for reductions: many PSPACE-completeness proofs target this specific form, including the famous reduction to generalised geography (Problem 39).</p>
+</section>
+
 <section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Normalize a sample QBF <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="t3-run">⏸ Pause</button><button class="btn ghost" id="t3-step">Step</button><button class="btn ghost" id="t3-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="t3-speed" min="0.25" max="3" step="0.25" value="1"><span id="t3-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <div id="t3-display" style="min-height:200px;padding:20px;font-family:ui-monospace,monospace;text-align:center;"></div>
 <div class="explain-panel" id="t3-explain"></div></div></section>
-<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
-<li><div class="q">Q1. How to enforce alternation?</div><div class="a">Add dummy variables: ∃x ∃y. ψ becomes ∃x ∀dummy ∃y. ψ. The dummy variable is forced to one specific value by adding it conjunctively, so the formula is unchanged but quantifiers alternate.</div></li>
-<li><div class="q">Q2. How to convert matrix to 3-CNF?</div><div class="a">Apply the same SAT → 3SAT trick (Problem 26) to the propositional kernel.</div></li>
-<li><div class="q">Q3. Total size?</div><div class="a">Polynomial. Adding alternation doubles variables; 3-CNF conversion linear blowup.</div></li>
-</ul></section></div><footer class="foot">P37 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<section><div class="section-label">3 · Pitfalls</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>Prenex form means all quantifiers at the front.</strong> ∃x. (P(x) ∧ ∀y. Q(x,y)) is not prenex. To move ∀y outside, use scope rules: ∃x ∀y. (P(x) ∧ Q(x,y)).</li>
+  <li><strong>Dummy quantifiers don't change the formula's truth.</strong> They're padding for alternation, not part of the semantic content.</li>
+  <li><strong>3-CNF means the matrix only.</strong> The quantifier prefix is independent of the matrix's CNF structure.</li>
+</ul>
+</section>
+
+<section><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. How to enforce strict alternation?</div><div class="a">Insert dummy variables that don't appear in the matrix. Two consecutive ∃ become ∃x ∀d ∃y, where d is fresh. Since d doesn't constrain anything, the dummy quantifier has no semantic effect.</div></li>
+<li><div class="q">Q2. How to convert matrix to 3-CNF?</div><div class="a">Apply the SAT → 3SAT splitting rule from Problem 26. Wide clauses split with auxiliary variables; those auxiliaries become innermost existential. Linear blowup in matrix size.</div></li>
+<li><div class="q">Q3. What's the total size blowup?</div><div class="a">Polynomial. Quantifier alternation adds at most n dummies. 3-CNF conversion adds at most O(|matrix|) auxiliary variables and clauses. Both linear.</div></li>
+<li><div class="q">Q4. Is the normal form used in proofs?</div><div class="a">Yes — the famous TQBF → GEOGRAPHY reduction (Sipser §8.3) starts from a TQBF₃ instance. The strict alternation enables the game-tree-to-graph encoding.</div></li>
+</ul></section>
+
+<section><div class="section-label">5 · Where to read more</div>
+<p><strong>Sipser:</strong> §8.3 (TQBF reductions). <strong>Lecture notes:</strong> Module 6 slide 3. <strong>Companion problems:</strong> P26 (SAT → 3SAT), P36 (TQBF game tree), P39 (TQBF → geography).</p>
+</section></div><footer class="foot">P37 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){
 const stages=['∀x ∃y ∃z. (x ∨ y ∨ ¬z) ∧ (¬x ∨ y ∨ z)','∀x ∃y ∀d ∃z. (x ∨ y ∨ ¬z) ∧ (¬x ∨ y ∨ z) ∧ d', '<div style="padding:16px 20px;background:var(--accent-soft);border-radius:6px;display:inline-block;">∀x ∃y ∀d ∃z. (x∨y∨¬z) ∧ (¬x∨y∨z) ∧ (d∨d∨d)</div><div style="font-family:var(--sans),sans-serif;font-size:13px;color:var(--muted);margin-top:14px;">Alternating + 3-CNF</div>'];
 let i=0;

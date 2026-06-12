@@ -15,13 +15,19 @@
 
 <div class="wrap">
 
-<section><div class="section-label">1 · Theory</div>
-<div class="theorem-box"><div class="theorem-label">Decidable closures</div>
-<p style="margin:4px 0;">Decidable is closed under ∪, ∩, complement, concatenation, star. Easy: build a decider that runs the constituent deciders and combines results.</p></div>
-<div class="theorem-box"><div class="theorem-label">Recognizable closures</div>
-<p style="margin:4px 0;">Recognizable is closed under ∪, ∩, concatenation, star — but NOT complement. A<sub>TM</sub> is recognizable; ¬A<sub>TM</sub> is not.</p></div>
-<div class="theorem-box"><div class="theorem-label">Bridge theorem</div>
-<p style="margin:4px 0;">L is decidable ⇔ both L and L̅ are recognizable.</p></div>
+<section><div class="section-label">1 · Closure properties · what each class is stable under</div>
+<p>"Closed under operation ⊙" means: if L<sub>1</sub>, L<sub>2</sub> are in the class, then L<sub>1</sub> ⊙ L<sub>2</sub> is also in the class. Closure properties define what the class lets us do with its members.</p>
+<div class="theorem-box"><div class="theorem-label">Decidable languages · closed under everything</div>
+<p style="margin:4px 0;">Decidable is closed under union (∪), intersection (∩), complement (¬), concatenation (·), and Kleene star (*). Easy: build a decider that runs the constituent deciders and combines their always-halting outputs.</p>
+</div>
+<div class="theorem-box"><div class="theorem-label">Recognizable languages · closed under almost everything except complement</div>
+<p style="margin:4px 0;">Recognizable is closed under ∪ (parallel simulation), ∩ (sequential or parallel simulation), concatenation, and star. But <strong>NOT closed under complement</strong>. A<sub>TM</sub> is recognizable; its complement co-A<sub>TM</sub> is not — that's the heart of the asymmetry.</p>
+</div>
+<div class="theorem-box"><div class="theorem-label">The bridge theorem</div>
+<p style="margin:4px 0;">L is decidable ⇔ both L and L̅ are recognizable.</p>
+</div>
+
+<p>The bridge theorem ties the two classes together. To decide L: run recognisers for L and L̅ in parallel; exactly one halts on any input. The non-closure of recognisable under complement is exactly what makes some recognisable languages undecidable.</p>
 </section>
 
 <section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
@@ -34,12 +40,25 @@
 <div class="explain-panel" id="cp-explain"></div>
 </div></section>
 
-<section><div class="section-label">3 · Q&amp;A defence notes</div>
+<section><div class="section-label">3 · Pitfalls</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>"Recognizable" allows looping; "decidable" doesn't.</strong> The distinction is exactly halting behaviour on non-members. A decider always halts; a recogniser may loop on x ∉ L.</li>
+  <li><strong>Parallel simulation isn't sequential.</strong> To recognise L<sub>1</sub> ∪ L<sub>2</sub>, you can't run M<sub>1</sub> to completion then M<sub>2</sub> — M<sub>1</sub> might loop. Run them in interleaved steps so each makes progress.</li>
+  <li><strong>The complement closure failure is the whole story.</strong> Almost every undecidability proof exploits "L is recognizable but L̅ is not." The bridge theorem makes this explicit.</li>
+</ul>
+</section>
+
+<section><div class="section-label">4 · Q&amp;A defence notes</div>
 <ul class="qa-list">
-<li><div class="q">Q1. Why is recognizable not closed under complement?</div><div class="a">A recognizer for L may loop on x ∉ L. To recognize ¬L, we'd want to accept x ∉ L, which means detecting that the original recognizer loops — equivalent to halting problem.</div></li>
-<li><div class="q">Q2. Why is recognizable closed under union but the recognizer doesn't just "run both"?</div><div class="a">It does: simulate both in parallel (interleaved), accept if either accepts. Parallel simulation is the standard trick.</div></li>
-<li><div class="q">Q3. Prove the bridge theorem.</div><div class="a">(⇒) Decidable ⇒ recognizable; ¬L also decidable ⇒ recognizable. (⇐) Both L and ¬L recognizable. Simulate both in parallel on any input x; exactly one accepts (it's in L or ¬L). Halt.</div></li>
+<li><div class="q">Q1. Why is recognisable not closed under complement?</div><div class="a">A recogniser for L may loop on x ∉ L. To recognise ¬L, we'd want to accept x ∉ L, which means detecting "the original recogniser loops on x" — equivalent to the halting problem, which is undecidable. So no general construction exists.</div></li>
+<li><div class="q">Q2. Why is recognisable closed under union (the recogniser doesn't just "run both" sequentially)?</div><div class="a">It does — but in parallel, not in sequence. Simulate M<sub>1</sub> and M<sub>2</sub> with interleaved steps; accept the moment either accepts. Sequential simulation fails because M<sub>1</sub> might loop forever, leaving M<sub>2</sub> never reached.</div></li>
+<li><div class="q">Q3. Prove the bridge theorem.</div><div class="a">(⇒) Decidable ⇒ recogniser (just the decider itself); decidable is closed under complement, so L̅ is also decidable, hence recognisable. (⇐) Both L and L̅ have recognisers M<sub>1</sub>, M<sub>2</sub>. Simulate both in parallel on any input x. Exactly one accepts (x is in L or in L̅, not both). Halt with the answer.</div></li>
+<li><div class="q">Q4. Are regular and context-free languages closed under different operations?</div><div class="a">Regular: closed under everything (∪, ∩, ¬, ·, *, intersection with regular). CFL: closed under ∪, ·, *, intersection with regular — but not complement, not intersection with CFL.</div></li>
 </ul></section>
+
+<section><div class="section-label">5 · Where to read more</div>
+<p><strong>Sipser:</strong> §4.2, Theorem 4.22 (the bridge theorem). <strong>Lecture notes:</strong> Module 2 slide 5 (the decidable/recognisable/neither map). <strong>Companion problems:</strong> P4 (Venn classifier), P5 (HALT reduction).</p>
+</section>
 
 </div>
 <footer class="foot">Problem 49 · BCS 402 · Dr. Arash Kermani · CUD</footer>

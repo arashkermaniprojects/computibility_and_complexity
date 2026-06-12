@@ -13,11 +13,24 @@
 <label class="speed-control">Speed <input type="range" id="hx-speed" min="0.25" max="3" step="0.25" value="1"><span id="hx-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="hx-svg" viewBox="0 0 760 320" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="hx-explain"></div></div></section>
-<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
-<li><div class="q">Q1. Why is Hex always determined?</div><div class="a">Strategy-stealing argument: if Blue had a winning strategy, Red could "steal" it (the extra stone never hurts in Hex). So Red wins; never a draw.</div></li>
-<li><div class="q">Q2. Why PSPACE and not EXPTIME?</div><div class="a">Each move places one stone; total moves ≤ n². Polynomial-depth game tree. Game tree may be exponential in size, polynomial in depth ⇒ PSPACE.</div></li>
-<li><div class="q">Q3. Can you find Red's optimal move efficiently?</div><div class="a">Not in polynomial time (under standard assumptions). PSPACE-completeness is the formal "no fast algorithm" statement.</div></li>
-</ul></section></div><footer class="foot">P58 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<section><div class="section-label">3 · Pitfalls</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>Hex is determined but the winning move is hard to find.</strong> Strategy-stealing proves Red wins; finding the move is PSPACE-complete.</li>
+  <li><strong>The game tree is exponential in size but polynomial in depth.</strong> n² total moves → polynomial-depth tree. PSPACE rather than EXPTIME.</li>
+  <li><strong>Generalised vs 11×11 Hex.</strong> 11×11 Hex (the standard size) is technically finite-decidable in O(1). PSPACE-completeness only applies to n×n generalisation.</li>
+</ul>
+</section>
+
+<section><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why is Hex always determined?</div><div class="a">Strategy-stealing argument: if Blue (second player) had a winning strategy, Red (first player) could "steal" it — play an arbitrary first move, then follow Blue's strategy pretending the extra stone doesn't exist. The extra stone never hurts in Hex, so this gives Red a winning strategy. Contradiction. So Red wins; never a draw.</div></li>
+<li><div class="q">Q2. Why PSPACE and not EXPTIME?</div><div class="a">Each move places one stone; total moves ≤ n². Polynomial-depth game tree. The tree may have exponentially many nodes, but minimax evaluation only needs polynomial space (depth-first traversal stores only the current path). PSPACE.</div></li>
+<li><div class="q">Q3. Can you find Red's optimal move efficiently?</div><div class="a">Not in polynomial time (under standard assumptions). PSPACE-completeness is the formal "no fast algorithm" statement. Even though we know Red has a winning strategy by strategy-stealing, finding it is hard.</div></li>
+<li><div class="q">Q4. What other board games are PSPACE-complete?</div><div class="a">Generalised Geography, generalised checkers, generalised chess (with bounded moves), generalised Reversi, Amazons. EXPTIME without move bounds: chess, Go (without ko), Shogi.</div></li>
+</ul></section>
+
+<section><div class="section-label">5 · Where to read more</div>
+<p><strong>Sipser:</strong> §8.3 (PSPACE-complete games). Even–Tarjan 1976 for the Hex proof. <strong>Lecture notes:</strong> Module 6 slide 3. <strong>Companion problems:</strong> P38 (geography), P40 (chess).</p>
+</section></div><footer class="foot">P58 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){
 let stage=0; const T=5;
 // 5x5 hex board, schematic

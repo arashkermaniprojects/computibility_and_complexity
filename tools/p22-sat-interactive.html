@@ -5,20 +5,78 @@
 <h1>SAT · click variables, watch clauses turn green</h1><p class="sub">Flip variables and visually verify or break clauses.</p>
 <div class="tags"><span class="tag-pill">CLO-3</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L10</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · Theory</div><p>SAT = {⟨φ⟩ : Boolean formula φ is satisfiable}. A clause is green (satisfied) iff at least one literal is true under the current assignment.</p>
-<div class="theorem-box"><div class="theorem-label">NP definition for SAT</div><p style="margin:4px 0;">Certificate = satisfying assignment; verifier checks each clause in O(m) time.</p></div></section>
-<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<section><div class="section-label">1 · SAT, formally</div>
+<p>SAT = {⟨φ⟩ : φ is a satisfiable Boolean formula in conjunctive normal form (CNF)}. A CNF formula is a conjunction of clauses; each clause is a disjunction of literals; a literal is either a variable x<sub>i</sub> or its negation ¬x<sub>i</sub>. The formula is satisfiable if there exists an assignment of true/false to the variables that makes every clause true.</p>
+<div class="theorem-box"><div class="theorem-label">SAT ∈ NP (the easy direction)</div>
+<p style="margin:4px 0;"><strong>Certificate:</strong> a satisfying assignment τ ∈ {0,1}<sup>n</sup>. <strong>Verifier:</strong> for each clause, check whether at least one literal evaluates to true under τ. Total time: O(m) where m is the number of literal-occurrences. Polynomial in |φ|.</p>
+</div>
+<div class="theorem-box"><div class="theorem-label">Cook–Levin (Sipser 7.37)</div>
+<p style="margin:4px 0;">SAT is <strong>NP-complete</strong>. Every problem in NP reduces to SAT in polynomial time. So SAT is "as hard as anything in NP" and is the canonical starting point for the NP-complete chain.</p>
+</div>
+</section>
+
+<section><div class="section-label">2 · How a clause becomes green</div>
+<div class="diagram" style="margin:14px 0;">
+<svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+  <text x="380" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">A clause is satisfied iff at least one of its literals is true</text>
+
+  <!-- Clause C₁ = (x ∨ y ∨ z) under τ = (1, 0, 0) -->
+  <text x="40" y="70" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="#1c4a3f">C₁ = (x ∨ y ∨ z) under τ = (1, 0, 0):</text>
+  <g font-family="var(--mono), ui-monospace, monospace" font-size="13">
+  <rect x="380" y="56" width="40" height="28" fill="#d4f0d4" stroke="var(--accent, #1c4a3f)" stroke-width="2"/><text x="400" y="76" text-anchor="middle" font-weight="700" fill="#1c4a3f">x=1</text>
+  <text x="430" y="76" fill="#666">∨</text>
+  <rect x="445" y="56" width="40" height="28" fill="#f3d4d4" stroke="var(--warn, #b95825)"/><text x="465" y="76" text-anchor="middle" fill="#7a3a18">y=0</text>
+  <text x="495" y="76" fill="#666">∨</text>
+  <rect x="510" y="56" width="40" height="28" fill="#f3d4d4" stroke="var(--warn, #b95825)"/><text x="530" y="76" text-anchor="middle" fill="#7a3a18">z=0</text>
+  </g>
+  <text x="610" y="76" font-family="var(--mono), ui-monospace, monospace" font-size="13" fill="var(--accent, #1c4a3f)" font-weight="700">→ TRUE (green)</text>
+
+  <!-- Clause C₂ = (¬x ∨ y) under τ = (1, 0) -->
+  <text x="40" y="130" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--warn, #b95825)">C₂ = (¬x ∨ y) under τ = (1, 0):</text>
+  <g font-family="var(--mono), ui-monospace, monospace" font-size="13">
+  <rect x="380" y="116" width="50" height="28" fill="#f3d4d4" stroke="var(--warn, #b95825)" stroke-width="2"/><text x="405" y="136" text-anchor="middle" fill="#7a3a18">¬x=0</text>
+  <text x="440" y="136" fill="#666">∨</text>
+  <rect x="455" y="116" width="40" height="28" fill="#f3d4d4" stroke="var(--warn, #b95825)" stroke-width="2"/><text x="475" y="136" text-anchor="middle" fill="#7a3a18">y=0</text>
+  </g>
+  <text x="600" y="136" font-family="var(--mono), ui-monospace, monospace" font-size="13" fill="var(--warn, #b95825)" font-weight="700">→ FALSE (red)</text>
+
+  <!-- φ = C₁ ∧ C₂ -->
+  <text x="40" y="190" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="#1a1a1a">φ = C₁ ∧ C₂:</text>
+  <text x="380" y="190" font-family="var(--mono), ui-monospace, monospace" font-size="13">TRUE ∧ FALSE = FALSE</text>
+  <text x="610" y="190" font-family="var(--mono), ui-monospace, monospace" font-size="13" fill="var(--warn, #b95825)" font-weight="700">→ φ unsatisfied</text>
+
+  <text x="380" y="240" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#666">For φ to be true, EVERY clause must be green. One red clause is enough to fail.</text>
+  <text x="380" y="258" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#1c4a3f">The widget below lets you click x, y, z to flip them and watch which clauses go green.</text>
+</svg>
+</div>
+</section>
+
+<section><div class="section-label">3 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Auto-solver tries assignments in order <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="s-run">⏸ Pause</button><button class="btn ghost" id="s-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="s-speed" min="0.25" max="3" step="0.25" value="1"><span id="s-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <div id="s-vars" style="display:flex;gap:12px;flex-wrap:wrap;margin:14px 0;"></div>
 <div id="s-clauses" style="display:flex;gap:10px;flex-wrap:wrap;"></div>
 <div class="explain-panel" id="s-explain"></div></div></section>
-<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
-<li><div class="q">Q1. What's the worst case?</div><div class="a">2<sup>n</sup> trials. For n=20, that's a million; for n=30, a billion.</div></li>
-<li><div class="q">Q2. Is there a smart algorithm?</div><div class="a">DPLL, CDCL — practically fast but worst-case still exponential.</div></li>
-<li><div class="q">Q3. How does a verifier differ from a solver?</div><div class="a">Verifier gets the assignment; just checks. Solver searches.</div></li>
-</ul></section></div><footer class="foot">P22 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<section><div class="section-label">4 · Pitfalls</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>Negation flips the literal, not the variable.</strong> ¬x is a literal — true when x is false. The variable x itself doesn't change; the literal's truth value does.</li>
+  <li><strong>A clause needs only one true literal.</strong> Don't accidentally require all literals to be true — that's an AND, not an OR. Clauses are ORs.</li>
+  <li><strong>An empty clause is unsatisfiable.</strong> A clause with zero literals is false by convention. Some encodings produce empty clauses; recognise them as immediate "no."</li>
+  <li><strong>Practical SAT solvers ≠ worst-case SAT.</strong> DPLL and CDCL solve most natural SAT instances in seconds. The worst case (2ⁿ) is real and engineered by adversarial inputs, but it isn't the typical case.</li>
+</ul>
+</section>
+
+<section><div class="section-label">5 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. What's the worst-case running time of brute-force SAT?</div><div class="a">2<sup>n</sup> assignments to try, each checked in O(m). Total O(m · 2<sup>n</sup>). For n=20 that's ≈ 10⁶, for n=30 ≈ 10⁹, for n=60 ≈ 10¹⁸.</div></li>
+<li><div class="q">Q2. Are there smarter SAT algorithms?</div><div class="a">Yes — DPLL (1962) uses unit propagation and backtracking; CDCL (modern) adds conflict-driven clause learning. Practically fast, but worst-case still exponential. No polynomial-time algorithm is known.</div></li>
+<li><div class="q">Q3. How does a verifier differ from a solver?</div><div class="a">A verifier receives both the formula <em>and</em> a candidate assignment. It just plugs in and checks. A solver receives only the formula and must search for an assignment. The verifier runs in O(m); the solver currently needs exponential time in the worst case.</div></li>
+<li><div class="q">Q4. Is 2SAT also NP-complete?</div><div class="a">No — 2SAT (clauses with ≤ 2 literals) is in P. It reduces to strongly-connected components in an implication graph. The 2-vs-3 boundary is the precise place where SAT becomes hard.</div></li>
+</ul></section>
+
+<section><div class="section-label">6 · Where to read more</div>
+<p><strong>Sipser:</strong> Theorem 7.37 (Cook–Levin). <strong>Lecture notes:</strong> Module 5 slides 3 (Cook–Levin tableau) and 4 (NP-complete chain). <strong>Companion problems:</strong> P21 (verifier vs solver), P26 (SAT → 3SAT), P55 (Cook–Levin specific).</p>
+</section></div><footer class="foot">P22 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){
 const vars=['x','y','z']; const clauses=[[1,2,3],[-1,2],[-2,3]];
 let assn=[false,false,false],idx=0;

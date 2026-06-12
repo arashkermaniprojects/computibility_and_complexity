@@ -5,20 +5,94 @@
 <h1>Big-O · identify the dominant term</h1><p class="sub">Polynomials decompose into bands; the highest power wins.</p>
 <div class="tags"><span class="tag-pill">CLO-3</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L9</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · Theory</div>
-<div class="theorem-box"><div class="theorem-label">Big-O</div><p style="margin:4px 0;">f(n) = O(g(n)) iff ∃ c > 0, n₀ such that for all n ≥ n₀, f(n) ≤ c · g(n). Constants and lower-order terms are absorbed.</p></div>
-<p>So 3n² + 5n + 7 = O(n²). The dominant term <em>swallows</em> the rest as n grows.</p></section>
-<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<section><div class="section-label">1 · Big-O, formally</div>
+<div class="theorem-box"><div class="theorem-label">Definition (Sipser §7.1)</div>
+<p style="margin:4px 0;">f(n) = O(g(n)) iff there exist constants c &gt; 0 and n<sub>0</sub> ≥ 0 such that for all n ≥ n<sub>0</sub>, f(n) ≤ c · g(n). Read it as "f is eventually upper-bounded by a constant multiple of g."</p>
+</div>
+<p>Two things to internalize. First, the constant <em>c</em> is allowed to be anything — so 1000n² and n² are both O(n²); the multiplicative factor doesn't change the class. Second, the bound only has to hold for <em>large</em> n. Tiny-n weirdness doesn't matter.</p>
+
+<div class="theorem-box"><div class="theorem-label">Related notation</div>
+<p style="margin:4px 0;"><strong>Ω(g)</strong> = lower bound. f = Ω(g) iff ∃ c, n<sub>0</sub> : f(n) ≥ c · g(n) for n ≥ n<sub>0</sub>.</p>
+<p style="margin:4px 0;"><strong>Θ(g)</strong> = tight bound. f = Θ(g) iff f = O(g) and f = Ω(g) simultaneously.</p>
+<p style="margin:4px 0;"><strong>o(g)</strong> = strict upper bound. f = o(g) iff f / g → 0.</p>
+</div>
+</section>
+
+<section><div class="section-label">2 · The classification recipe</div>
+<div class="diagram" style="margin:14px 0;">
+<svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+  <text x="380" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">Recipe · find the dominant term, drop constants, that's your O</text>
+
+  <!-- Step 1 -->
+  <rect x="40" y="50" width="220" height="100" rx="10" fill="#f3faf6" stroke="var(--accent, #1c4a3f)" stroke-width="1.6"/>
+  <text x="150" y="74" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--accent, #1c4a3f)">Step 1 · Identify terms</text>
+  <text x="150" y="100" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="12" fill="#444">3n² + 5n + 7</text>
+  <text x="150" y="124" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#666">three terms · powers 2, 1, 0</text>
+
+  <!-- Step 2 -->
+  <rect x="280" y="50" width="220" height="100" rx="10" fill="#fff7e8" stroke="var(--gold, #c89933)" stroke-width="1.6"/>
+  <text x="390" y="74" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--gold, #c89933)">Step 2 · Find max exponent</text>
+  <text x="390" y="100" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="12" fill="#444">max(2, 1, 0) = 2</text>
+  <text x="390" y="124" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#666">that term is dominant</text>
+
+  <!-- Step 3 -->
+  <rect x="520" y="50" width="220" height="100" rx="10" fill="#fdf4ed" stroke="var(--warn, #b95825)" stroke-width="1.6"/>
+  <text x="630" y="74" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--warn, #b95825)">Step 3 · Drop constants</text>
+  <text x="630" y="100" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="14" font-weight="700" fill="var(--warn, #b95825)">= O(n²)</text>
+  <text x="630" y="124" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#666">drop the 3, drop the lower terms</text>
+
+  <!-- Arrows -->
+  <path d="M 260 100 L 280 100" stroke="#666" stroke-width="1.5" fill="none" marker-end="url(#bgarr1)"/>
+  <defs><marker id="bgarr1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#666"/></marker></defs>
+  <path d="M 500 100 L 520 100" stroke="#666" stroke-width="1.5" fill="none" marker-end="url(#bgarr2)"/>
+  <defs><marker id="bgarr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#666"/></marker></defs>
+
+  <!-- Examples row -->
+  <text x="380" y="180" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="#1a1a1a">Practice rounds</text>
+  <g font-family="var(--mono), ui-monospace, monospace" font-size="12">
+  <text x="100" y="208" font-weight="700">7n³ + 2n² + n</text>
+  <text x="100" y="226" fill="var(--accent, #1c4a3f)">→ O(n³)</text>
+
+  <text x="280" y="208" font-weight="700">100n + log n</text>
+  <text x="280" y="226" fill="var(--accent, #1c4a3f)">→ O(n)</text>
+
+  <text x="460" y="208" font-weight="700">2ⁿ + n¹⁰⁰</text>
+  <text x="460" y="226" fill="var(--accent, #1c4a3f)">→ O(2ⁿ)</text>
+
+  <text x="640" y="208" font-weight="700">n log n + n</text>
+  <text x="640" y="226" fill="var(--accent, #1c4a3f)">→ O(n log n)</text>
+  </g>
+
+  <text x="380" y="270" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" fill="#444">Dominance order: log n &lt; n &lt; n log n &lt; n² &lt; n³ &lt; n^k &lt; 2ⁿ &lt; n! &lt; n^n</text>
+</svg>
+</div>
+</section>
+
+<section><div class="section-label">3 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Cycle through example polynomials <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="b-run">⏸ Pause</button><button class="btn ghost" id="b-step">Step</button><button class="btn ghost" id="b-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="b-speed" min="0.25" max="3" step="0.25" value="1"><span id="b-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="b-svg" viewBox="0 0 760 320" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="b-explain"></div></div></section>
-<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
-<li><div class="q">Q1. Why drop the constants?</div><div class="a">Big-O is about <em>asymptotic</em> behaviour. 3n² and n² differ by a factor that doesn't depend on n. The shape of growth is what we care about.</div></li>
-<li><div class="q">Q2. Big-O vs Theta?</div><div class="a">O is an upper bound; Θ is tight (both upper and lower). 3n² = O(n³) is true; 3n² = Θ(n³) is false.</div></li>
-<li><div class="q">Q3. What's "dominated by"?</div><div class="a">For n ≥ some n₀, the smaller-power terms become arbitrarily small relative to the leading term. So removing them changes the value by at most a fixed multiplicative factor.</div></li>
-</ul></section></div><footer class="foot">P20 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<section><div class="section-label">4 · Pitfalls</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>O is one-sided.</strong> 3n² = O(n³) is true (n³ is also a valid upper bound), just not tight. If you want tight, use Θ.</li>
+  <li><strong>The constant <em>c</em> matters for the proof, not the answer.</strong> When proving f = O(g), pick any constants that work. They don't have to be tight or small.</li>
+  <li><strong>Log bases vanish.</strong> log<sub>2</sub> n and log<sub>10</sub> n differ by a constant, so both are O(log n) — no base specification needed in Big-O.</li>
+  <li><strong>Multiplicative vs additive.</strong> O(n) + O(n²) = O(n²) — the larger wins. O(n) × O(n²) = O(n³) — multiplication adds exponents.</li>
+</ul>
+</section>
+
+<section><div class="section-label">5 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why drop the constants?</div><div class="a">Big-O is about <em>asymptotic</em> behaviour. 3n² and n² differ by a constant that doesn't change as n grows. For complexity theory, the shape of growth is what matters; multiplicative constants depend on machine details and aren't intrinsic to the algorithm.</div></li>
+<li><div class="q">Q2. Big-O vs Theta vs little-o?</div><div class="a">O is an upper bound (could be loose). Θ is tight (matching upper and lower). o is strict — f = o(g) means f/g → 0, so f grows strictly slower than g. Example: 3n² = O(n³) is true; 3n² = Θ(n³) is false; 3n² = o(n³) is true.</div></li>
+<li><div class="q">Q3. What does "dominated by" mean rigorously?</div><div class="a">For sufficiently large n (n ≥ n<sub>0</sub>), the lower-order terms become arbitrarily small relative to the leading term. Removing them changes the value by at most a fixed multiplicative factor, which Big-O ignores anyway.</div></li>
+<li><div class="q">Q4. Why does Big-O use ≤ instead of strict &lt;?</div><div class="a">Because f = O(f) — every function is its own Big-O. With strict &lt;, that would fail. The ≤ version is the right notion for "no worse than."</div></li>
+</ul></section>
+
+<section><div class="section-label">6 · Where to read more</div>
+<p><strong>Sipser:</strong> §7.1 (Big-O), §7.1 Examples 7.4–7.7. <strong>Lecture notes:</strong> Module 4 slide 2. <strong>Companion problem:</strong> P17 (growth-rate race, visual contrast).</p>
+</section></div><footer class="foot">P20 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){
 const examples=[
   {f:'3n² + 5n + 7', terms:[{c:3,e:2},{c:5,e:1},{c:7,e:0}], O:'O(n²)'},

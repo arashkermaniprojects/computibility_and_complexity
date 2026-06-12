@@ -5,20 +5,51 @@
 <h1>3SAT → SUBSET-SUM · the digit-position trick</h1><p class="sub">Build numbers whose digits encode variables and clauses; a subset sums to target iff formula is satisfiable.</p>
 <div class="tags"><span class="tag-pill">CLO-4</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L12</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · Theory</div>
-<div class="theorem-box"><div class="theorem-label">Construction</div><p style="margin:4px 0;">For n variables, m clauses, build 2n + 2m numbers in base 10: n digits for variables (one bit each) + m digits for clauses (clause-satisfaction count).</p></div>
-<p>Target has 1s in variable positions (exactly one chosen per variable) and 3s in clause positions (clause covered, padded by slack).</p></section>
+<section><div class="section-label">1 · The reduction's central trick · digit positions</div>
+<p>SUBSET-SUM = {⟨S, t⟩ : S has a subset summing to t}. We prove SUBSET-SUM NP-complete by reducing 3SAT to it (Sipser §7.5). The trick is one of the most beautiful in the chain: <strong>each digit position in a base-10 number encodes a separate constraint</strong>, so summing numbers digit-by-digit checks all constraints simultaneously.</p>
+
+<div class="theorem-box"><div class="theorem-label">Construction · f(⟨φ⟩) = ⟨S, t⟩</div>
+<p style="margin:4px 0;">For a 3CNF φ with n variables and m clauses:</p>
+<ol style="margin:6px 0 0 20px;">
+  <li><strong>Layout:</strong> each number has n + m digits — n variable positions, m clause positions.</li>
+  <li><strong>For each variable x<sub>i</sub>:</strong> two numbers, one for x<sub>i</sub> = true, one for x<sub>i</sub> = false. The variable position i has digit 1; clause positions get a 1 in each clause this literal satisfies.</li>
+  <li><strong>Slack numbers:</strong> for each clause, two slacks of value 1 and 2 in its position (or four slacks of value 1, depending on the variant). They absorb the difference between "clause has 1 true literal" and "clause has 3."</li>
+  <li><strong>Target t:</strong> digit 1 in each variable position (exactly one of the two variable-numbers chosen), digit 3 in each clause position (clause covered, plus slack).</li>
+</ol>
+</div>
+
+<p>Two key invariants make this work:</p>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>Variable positions force a choice.</strong> Both variable-numbers for x<sub>i</sub> have digit 1 in position i. To reach target 1, the subset must include exactly one. That's the assignment.</li>
+  <li><strong>Clause positions count satisfaction.</strong> A clause position's digit equals the number of chosen literals satisfying it. With slacks padding up to 3, the target of 3 is reachable iff the clause has ≥ 1 true literal — iff the clause is satisfied.</li>
+</ul>
+</section>
+
 <section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Tiny instance · 2 vars, 2 clauses <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="ss-run">⏸ Pause</button><button class="btn ghost" id="ss-step">Step</button><button class="btn ghost" id="ss-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="ss-speed" min="0.25" max="3" step="0.25" value="1"><span id="ss-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <div id="ss-display" style="min-height:280px;padding:14px;"></div>
 <div class="explain-panel" id="ss-explain"></div></div></section>
-<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
-<li><div class="q">Q1. Why base 10 (not binary)?</div><div class="a">Base ≥ 4 avoids carries when columns sum to ≤ 3. Base 10 is convenient for humans.</div></li>
-<li><div class="q">Q2. Why slack numbers?</div><div class="a">A clause may have 1, 2, or 3 true literals. Slacks pad each clause sum to exactly 3 regardless.</div></li>
-<li><div class="q">Q3. Size of the reduction?</div><div class="a">2n + 2m numbers, each n + m digits ⇒ O((n+m)²) total. Polynomial in formula size.</div></li>
-</ul></section></div><footer class="foot">P29 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<section><div class="section-label">4 · Pitfalls</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>Base matters · use base ≥ 4.</strong> Each clause column can sum to up to 3 (three literals + slack). In base 10 this never overflows the digit, so no carry. In binary, you'd get carries that corrupt other positions.</li>
+  <li><strong>Slacks are per-clause, not global.</strong> Each clause gets its own slack numbers (typically two of value 1 each). They're padding to make any clause-sum reachable.</li>
+  <li><strong>The values are exponential in n+m.</strong> Numbers in S are written in O(n+m) digits, so their values are up to 10<sup>n+m</sup>. The size of the input (number of digits) is polynomial; the <em>numeric value</em> isn't.</li>
+  <li><strong>Pseudo-polynomial dynamic programming doesn't break P = NP.</strong> SUBSET-SUM has an O(n·t) DP. But t can be exponential in input size, so the DP runs in pseudo-polynomial time, not polynomial.</li>
+</ul>
+</section>
+
+<section><div class="section-label">5 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why base 10 (not binary)?</div><div class="a">Each clause column can sum to up to 3 (three literals + slack). Base ≥ 4 avoids carries that would propagate between positions and corrupt the encoding. Base 10 is convenient for humans; any base ≥ 4 works.</div></li>
+<li><div class="q">Q2. Why slack numbers?</div><div class="a">A satisfying assignment may satisfy a clause with 1, 2, or 3 true literals. The clause-column sum could be anywhere from 1 to 3. Slacks padd it up to exactly 3 — without slacks, only fully-saturated clauses would hit the target.</div></li>
+<li><div class="q">Q3. Size of the reduction?</div><div class="a">2n + 2m numbers, each n + m digits ⇒ O((n+m)²) total bits. Polynomial in formula size.</div></li>
+<li><div class="q">Q4. Is the SUBSET-SUM DP polynomial?</div><div class="a">It's O(n · t) where n is set size and t is target — pseudo-polynomial. Not polynomial in input size because t is encoded in O(log t) bits. The DP is fast in practice when t is small.</div></li>
+</ul></section>
+
+<section><div class="section-label">6 · Where to read more</div>
+<p><strong>Sipser:</strong> Theorem 7.56 (3SAT ≤<sub>p</sub> SUBSET-SUM). <strong>Lecture notes:</strong> Module 5 slide 5. <strong>Companion problems:</strong> P27 (3SAT → CLIQUE), P28 (CLIQUE → VC), P30 (HAMPATH reduction).</p>
+</section></div><footer class="foot">P29 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){
 const stages=[
   {html:`<div style="font-family:ui-monospace,monospace;font-size:15px;text-align:center;">Formula: (x ∨ y) ∧ (¬x ∨ y)</div><div style="font-family:var(--sans),sans-serif;font-size:13px;color:var(--muted);text-align:center;margin-top:6px;">2 vars + 2 clauses = 4 digit positions</div>`,note:'Start: tiny 3SAT instance.'},

@@ -13,11 +13,24 @@
 <label class="speed-control">Speed <input type="range" id="c-speed" min="0.25" max="3" step="0.25" value="1"><span id="c-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="c-svg" viewBox="0 0 760 280" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="c-explain"></div></div></section>
-<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
-<li><div class="q">Q1. Why is the certificate "small"?</div><div class="a">A divisor d satisfies d ≤ √n, so it has at most (log n)/2 bits. Polynomial in input size (which is log n).</div></li>
-<li><div class="q">Q2. Is the verifier polynomial?</div><div class="a">Yes: dividing n by d uses school long division in O((log n)²) bit operations.</div></li>
-<li><div class="q">Q3. How does AKS achieve P?</div><div class="a">A clever polynomial identity test mod p^k — not a divisor at all. Different witness structure.</div></li>
-</ul></section></div><footer class="foot">P54 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<section><div class="section-label">3 · Pitfalls</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>"Polynomial" is polynomial in the bit length of n, not in n itself.</strong> Input size is |n| ≈ log n. A divisor's bit length is (log n)/2 — polynomial.</li>
+  <li><strong>1 and n are trivial divisors and don't count.</strong> The certificate is a divisor strictly between 1 and n. Without this restriction, every number would have a "divisor" and the problem would collapse.</li>
+  <li><strong>PRIMES vs COMPOSITES.</strong> PRIMES is the complement of COMPOSITES (modulo 0, 1). Both are in NP. Both are in P (AKS 2002). For decades only NP membership was known.</li>
+</ul>
+</section>
+
+<section><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why is the certificate "small"?</div><div class="a">A non-trivial divisor d satisfies d ≤ √n, so its bit length is at most (log n)/2 — half the bit length of n. Polynomial in input size.</div></li>
+<li><div class="q">Q2. Is the verifier polynomial?</div><div class="a">Yes — dividing n by d using school long division takes O((log n)²) bit operations. Verifying n mod d = 0 fits easily in P.</div></li>
+<li><div class="q">Q3. How does AKS achieve P?</div><div class="a">AKS (Agrawal–Kayal–Saxena 2002) uses a polynomial identity test over (Z/nZ)[x] — checks whether (x − a)<sup>n</sup> ≡ x<sup>n</sup> − a (mod x<sup>r</sup> − 1, n) for many a. Not a divisor at all — entirely different witness structure. The algorithm runs in O((log n)<sup>6</sup>) bit operations.</div></li>
+<li><div class="q">Q4. What's the historical lesson?</div><div class="a">"NP but maybe not P" doesn't mean "actually outside P." PRIMES sat in NP for 25+ years before AKS placed it in P. The same could happen to other natural NP problems — although for NP-complete problems, that would require P = NP.</div></li>
+</ul></section>
+
+<section><div class="section-label">5 · Where to read more</div>
+<p><strong>Sipser:</strong> §7.3 (NP examples). AKS paper. <strong>Lecture notes:</strong> Module 5 slide 2. <strong>Companion problems:</strong> P21 (verifier vs solver), P22 (SAT).</p>
+</section></div><footer class="foot">P54 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){
 const examples=[{n:91,d:7,q:13},{n:143,d:11,q:13},{n:1001,d:7,q:143}];
 let stage=0;

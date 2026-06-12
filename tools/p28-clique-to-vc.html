@@ -5,20 +5,43 @@
 <h1>CLIQUE → VERTEX-COVER via complement</h1><p class="sub">A k-clique in G ⇔ a (n−k)-vertex-cover in G̅.</p>
 <div class="tags"><span class="tag-pill">CLO-4</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L11</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · Theory</div>
-<div class="theorem-box"><div class="theorem-label">Lemma</div><p style="margin:4px 0;">Let G be a graph on n vertices. S is a clique of size k in G ⇔ V \ S is a vertex cover of size n − k in G̅ (the complement graph).</p></div>
-<p>Reduction (G, k) ↦ (G̅, n − k) is polynomial and preserves the answer. Hence VERTEX-COVER is NP-hard.</p></section>
+<section><div class="section-label">1 · The complement-graph duality</div>
+<p>VERTEX-COVER = {⟨G, k⟩ : G has a vertex cover of size ≤ k}, where a <strong>vertex cover</strong> is a set S of vertices that touches every edge — for each edge (u, v), at least one of u, v is in S.</p>
+<div class="theorem-box"><div class="theorem-label">The duality lemma · Sipser Theorem 7.44</div>
+<p style="margin:4px 0;">Let G be a graph on n vertices, and let G̅ be its <strong>complement</strong> (same vertices, edges flipped: uv is an edge of G̅ iff uv is <em>not</em> an edge of G). Then S is a clique of size k in G if and only if V \ S is a vertex cover of size n − k in G̅.</p>
+</div>
+<p>The reduction: f(⟨G, k⟩) = ⟨G̅, n − k⟩. Computing G̅ takes O(n²) time. Polynomial, so this is a many-one reduction. Since CLIQUE is NP-complete and CLIQUE ≤<sub>p</sub> VERTEX-COVER, VERTEX-COVER inherits NP-hardness. VERTEX-COVER ∈ NP (the cover is a polynomial-size witness), so it is NP-complete.</p>
+
+<div class="theorem-box"><div class="theorem-label">Why the duality works</div>
+<p style="margin:4px 0;">A clique S in G means every pair in S is connected in G — equivalently, no pair in S is connected in G̅. So no edge of G̅ has both endpoints in S, which means every edge of G̅ has at least one endpoint outside S, which means V \ S is a vertex cover of G̅. The argument is symmetric in both directions.</p>
+</div>
+</section>
+
 <section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Same vertices, complement edges, complement set <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="v-run">⏸ Pause</button><button class="btn ghost" id="v-step">Step</button><button class="btn ghost" id="v-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="v-speed" min="0.25" max="3" step="0.25" value="1"><span id="v-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="v-svg" viewBox="0 0 760 300" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="v-explain"></div></div></section>
-<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
-<li><div class="q">Q1. Why does the complement work?</div><div class="a">Edges of G connect clique-members (forming the clique). Edges of G̅ are everything else — and a vertex cover of those is precisely the complement of the clique.</div></li>
-<li><div class="q">Q2. How long does the reduction take?</div><div class="a">Computing G̅ is O(n²). Computing n − k is O(1). Polynomial.</div></li>
-<li><div class="q">Q3. Is this also a reduction from VC to CLIQUE?</div><div class="a">Yes, by symmetry: VC(G, m) ⇔ CLIQUE(G̅, n − m). The two problems are equivalent up to complement.</div></li>
-</ul></section></div><footer class="foot">P28 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<section><div class="section-label">4 · Pitfalls</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>The complement is the edge complement, not the vertex complement.</strong> G̅ has the same vertex set as G; only edges flip. Easy to confuse with "remove vertices from G."</li>
+  <li><strong>The size flips: k becomes n − k.</strong> Pay attention. A clique of size 3 in a 7-vertex graph becomes a vertex cover of size 4. Off-by-one with n vs n−1 is a common bug.</li>
+  <li><strong>This is a many-one reduction in <em>both</em> directions.</strong> CLIQUE ≡<sub>p</sub> VERTEX-COVER. The two problems are essentially the same up to complement. So they share NP-completeness or P-membership together.</li>
+  <li><strong>Vertex cover ≠ vertex set covering edges in some other sense.</strong> Specifically: every edge needs at least one endpoint in the cover. Not "every vertex is covered" or "the cover covers something else."</li>
+</ul>
+</section>
+
+<section><div class="section-label">5 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why does the complement work?</div><div class="a">Edges of G connect clique-members (every pair in S has an edge). Edges of G̅ are exactly the non-edges of G — so they have no both-endpoints-in-S edges, which means every edge of G̅ has at least one endpoint outside S. That outside set V\S is a vertex cover of G̅.</div></li>
+<li><div class="q">Q2. How long does the reduction take?</div><div class="a">Computing G̅ by iterating all pairs takes O(n²) time. Computing n − k is O(1). Total O(n²) — polynomial.</div></li>
+<li><div class="q">Q3. Is this also a reduction from VERTEX-COVER to CLIQUE?</div><div class="a">Yes, by symmetry of the lemma. f(⟨G, m⟩) = ⟨G̅, n − m⟩ reduces VERTEX-COVER to CLIQUE. The two problems are <em>polynomial-time equivalent</em>.</div></li>
+<li><div class="q">Q4. What's the chain so far?</div><div class="a">3SAT ≤<sub>p</sub> CLIQUE (P27) ≤<sub>p</sub> VERTEX-COVER (this problem). All three NP-complete. The chain continues: VERTEX-COVER ≤<sub>p</sub> HAMPATH ≤<sub>p</sub> SUBSET-SUM ≤<sub>p</sub> ...</div></li>
+</ul></section>
+
+<section><div class="section-label">6 · Where to read more</div>
+<p><strong>Sipser:</strong> Theorem 7.44 (CLIQUE ≤<sub>p</sub> VERTEX-COVER). <strong>Lecture notes:</strong> Module 5 slide 5. <strong>Companion problems:</strong> P27 (3SAT → CLIQUE), P31 (3-COLOR — another graph-theoretic NP-complete).</p>
+</section></div><footer class="foot">P28 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){
 const nodes=[{x:200,y:80,l:'A'},{x:350,y:80,l:'B'},{x:500,y:80,l:'C'},{x:200,y:220,l:'D'},{x:350,y:220,l:'E'},{x:500,y:220,l:'F'}];
 const edgesG=[[0,1],[1,2],[0,3],[1,4],[2,5],[3,4],[4,5]];

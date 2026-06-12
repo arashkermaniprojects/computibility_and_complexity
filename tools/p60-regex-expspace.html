@@ -14,11 +14,24 @@
 <label class="speed-control">Speed <input type="range" id="re-speed" min="0.25" max="3" step="0.25" value="1"><span id="re-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="re-svg" viewBox="0 0 760 280" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="re-explain"></div></div></section>
-<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
-<li><div class="q">Q1. Why is plain regex equivalence in PSPACE?</div><div class="a">Convert to NFAs (polynomial). Equivalence ⇔ symmetric difference is empty. Subset construction may blow up but PSPACE suffices.</div></li>
-<li><div class="q">Q2. What does squaring add?</div><div class="a">R² doubles the language length. Iterated squaring (R^(2^k)) creates exponentially long languages from polynomial-size regex.</div></li>
-<li><div class="q">Q3. Practical implication?</div><div class="a">Real-world regex engines avoid squaring/back-references for this reason. Java/Python regex with backrefs is NP-hard for matching.</div></li>
-</ul></section></div><footer class="foot">P60 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<section><div class="section-label">3 · Pitfalls</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>Plain regex equivalence is PSPACE-complete; with squaring it's EXPSPACE-complete.</strong> One extra operator pushes the class up by an exponential.</li>
+  <li><strong>"Squaring" R² ≡ RR is shorthand.</strong> Iterated squaring R^(2^k) writes a regex of polynomial size but describes exponentially long strings.</li>
+  <li><strong>Real regex engines with backreferences are even worse.</strong> Backrefs add Turing-power; matching becomes NP-hard. Pathological backtracking can run for years.</li>
+</ul>
+</section>
+
+<section><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why is plain regex equivalence in PSPACE?</div><div class="a">Convert each regex to an NFA (polynomial blow-up via Thompson's construction). Equivalence ⇔ symmetric difference is empty. Determinise via the subset construction (exponential states in worst case, but only PSPACE workspace needed). Check emptiness in space proportional to states.</div></li>
+<li><div class="q">Q2. What does squaring add?</div><div class="a">R² doubles the language length. Iterated squaring R^(2^k) creates exponentially long languages from polynomial-size regex. This forces the equivalence test into exponential space — EXPSPACE-complete (Stockmeyer–Meyer 1973).</div></li>
+<li><div class="q">Q3. Practical implication?</div><div class="a">Real-world regex engines avoid squaring/back-references for this reason. POSIX regex stays in P; Perl/Java/Python regex with backrefs is NP-hard for matching, and pathological cases (catastrophic backtracking) can run for years on simple-looking inputs.</div></li>
+<li><div class="q">Q4. Where does EXPSPACE sit?</div><div class="a">EXPSPACE = ⋃<sub>k</sub> SPACE(2<sup>n<sup>k</sup></sup>). Above PSPACE, above EXPTIME, below 2-EXPTIME. PSPACE ⊊ EXPSPACE by Space Hierarchy.</div></li>
+</ul></section>
+
+<section><div class="section-label">5 · Where to read more</div>
+<p><strong>Sipser:</strong> §9.3. Stockmeyer–Meyer 1973 paper. <strong>Lecture notes:</strong> Module 7 slide 6. <strong>Companion problems:</strong> P12 (decidable trio), P57 (EXPTIME vs PSPACE).</p>
+</section></div><footer class="foot">P60 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){
 let i=0;
 const steps=['Take regex R of size n.','R² describes R·R · same language, doubled.','((R)²)² describes R⁴.','Iterating k times: R^(2^k) — exponential length described in regex of size O(k·n).','Deciding equivalence between such regex requires EXPSPACE in general.'];

@@ -5,19 +5,88 @@
 <h1>HAMPATH ∈ NP · verifying a Hamiltonian path</h1><p class="sub">Certificate = a vertex sequence; verifier checks length, distinctness, edges.</p>
 <div class="tags"><span class="tag-pill">CLO-3</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L10</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · Theory</div><p>HAMPATH = {⟨G, s, t⟩ : G has a Hamiltonian path from s to t}. NP-complete. Verifier is easy; finding the path seems hard.</p>
-<div class="theorem-box"><div class="theorem-label">Verifier in poly time</div><p style="margin:4px 0;">Given (G, s, t, π = v₁ v₂ … v_n): check |π| = n, all distinct, v₁ = s, v_n = t, every (v_i, v_{i+1}) is an edge. O(n²).</p></div></section>
-<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<section><div class="section-label">1 · HAMPATH, formally</div>
+<p>HAMPATH = {⟨G, s, t⟩ : G is a directed graph containing a Hamiltonian path from s to t}. A <strong>Hamiltonian path</strong> visits every vertex exactly once. Finding one in general graphs is famously hard — but <em>verifying</em> one is easy. This asymmetry is the textbook NP example.</p>
+
+<div class="theorem-box"><div class="theorem-label">The verifier · what to check, in what order</div>
+<p style="margin:4px 0;">Given input (G, s, t) plus certificate π = v<sub>1</sub> v<sub>2</sub> … v<sub>n</sub>:</p>
+<ol style="margin:6px 0 0 20px;">
+  <li><strong>Length check:</strong> |π| = n (every vertex appears exactly once).</li>
+  <li><strong>Distinctness check:</strong> v<sub>i</sub> ≠ v<sub>j</sub> for all i ≠ j (no repeats).</li>
+  <li><strong>Endpoint check:</strong> v<sub>1</sub> = s and v<sub>n</sub> = t.</li>
+  <li><strong>Edge check:</strong> for each adjacent pair (v<sub>i</sub>, v<sub>i+1</sub>), there is an edge in G.</li>
+</ol>
+<p style="margin:6px 0 0;">Time: O(n²) (or O(n) with a hash set). HAMPATH ∈ NP.</p>
+</div>
+
+<p>HAMPATH is NP-complete (Karp 1972). 3SAT reduces to HAMPATH via a clever gadget construction — see Sipser §7.5.</p>
+</section>
+
+<section><div class="section-label">2 · The four checks visualised</div>
+<div class="diagram" style="margin:14px 0;">
+<svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+  <text x="380" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">Four local checks · all must pass for π to be a Hamiltonian path</text>
+
+  <!-- Check 1: length -->
+  <rect x="40" y="50" width="160" height="100" rx="8" fill="#f3faf6" stroke="var(--accent, #1c4a3f)" stroke-width="1.4"/>
+  <text x="120" y="74" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--accent, #1c4a3f)">1 · Length</text>
+  <text x="120" y="94" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">|π| == n?</text>
+  <text x="120" y="114" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">π visits every vertex</text>
+  <text x="120" y="130" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">exactly once</text>
+
+  <!-- Check 2: distinctness -->
+  <rect x="220" y="50" width="160" height="100" rx="8" fill="#f3faf6" stroke="var(--accent, #1c4a3f)" stroke-width="1.4"/>
+  <text x="300" y="74" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--accent, #1c4a3f)">2 · Distinctness</text>
+  <text x="300" y="94" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">all vᵢ different?</text>
+  <text x="300" y="114" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">no vertex repeats</text>
+
+  <!-- Check 3: endpoints -->
+  <rect x="400" y="50" width="160" height="100" rx="8" fill="#f3faf6" stroke="var(--accent, #1c4a3f)" stroke-width="1.4"/>
+  <text x="480" y="74" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--accent, #1c4a3f)">3 · Endpoints</text>
+  <text x="480" y="94" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">v₁ = s, vₙ = t?</text>
+  <text x="480" y="114" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">starts at s, ends at t</text>
+
+  <!-- Check 4: edges -->
+  <rect x="580" y="50" width="160" height="100" rx="8" fill="#f3faf6" stroke="var(--accent, #1c4a3f)" stroke-width="1.4"/>
+  <text x="660" y="74" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--accent, #1c4a3f)">4 · Edges exist</text>
+  <text x="660" y="94" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">(vᵢ, vᵢ₊₁) ∈ E?</text>
+  <text x="660" y="114" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">consecutive vertices</text>
+  <text x="660" y="130" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">are actually edges</text>
+
+  <!-- Combined picture -->
+  <text x="380" y="200" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="#1a1a1a">All four must pass · failure of any one → reject</text>
+  <rect x="200" y="220" width="360" height="60" rx="8" fill="#fff7e8" stroke="var(--gold, #c89933)"/>
+  <text x="380" y="244" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" fill="#444">Each check is local — reads constant amount of data per step.</text>
+  <text x="380" y="264" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" fill="var(--accent, #1c4a3f)" font-weight="700">Total: O(n²) time. Polynomial in input size.</text>
+</svg>
+</div>
+</section>
+
+<section><div class="section-label">3 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Step through verification of a candidate path <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="h-run">⏸ Pause</button><button class="btn ghost" id="h-step">Step</button><button class="btn ghost" id="h-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="h-speed" min="0.25" max="3" step="0.25" value="1"><span id="h-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="h-svg" viewBox="0 0 760 280" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="h-explain"></div></div></section>
-<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
-<li><div class="q">Q1. Why O(n²)?</div><div class="a">For n vertices: n length checks, n² distinctness checks (or n with a hash), n−1 edge lookups.</div></li>
-<li><div class="q">Q2. Why is finding hard?</div><div class="a">Brute force tries n! paths. No poly-time algorithm known. HAMPATH is NP-complete (3SAT reduces to it).</div></li>
-<li><div class="q">Q3. What's the certificate size?</div><div class="a">n vertex labels, each O(log n) bits. Total O(n log n) — polynomial in input size.</div></li>
-</ul></section></div><footer class="foot">P23 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<section><div class="section-label">4 · Pitfalls</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>"Visits every vertex" is the strong constraint.</strong> Don't confuse with "PATH" (just s-to-t reachability, in P). HAMPATH requires the path to be Hamiltonian — every vertex used exactly once.</li>
+  <li><strong>Directed vs undirected matters.</strong> Sipser's HAMPATH is directed. The undirected version is equally NP-complete but the reduction proofs differ.</li>
+  <li><strong>The certificate is the path, not the existence claim.</strong> Hand the verifier the explicit vertex sequence; it then checks. Don't conflate "there exists a path" (the question) with "here is a path" (the certificate).</li>
+  <li><strong>Brute force is n!, not 2ⁿ.</strong> Try every permutation of vertices. For n = 20: 2.4 × 10¹⁸ permutations. Worse than 2ⁿ for small n.</li>
+</ul>
+</section>
+
+<section><div class="section-label">5 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why O(n²)?</div><div class="a">For n vertices: length check O(n), distinctness check O(n²) with naive comparison (or O(n) with a hash set), endpoint check O(1), edge checks O(n) lookups in adjacency matrix. Total: O(n²).</div></li>
+<li><div class="q">Q2. Why is finding a Hamiltonian path hard?</div><div class="a">Brute force tries up to n! orderings. No polynomial-time algorithm is known; HAMPATH is NP-complete (3SAT reduces to it via gadgets). Even approximation is hard.</div></li>
+<li><div class="q">Q3. What's the certificate size?</div><div class="a">n vertex labels, each O(log n) bits → total O(n log n) bits. Polynomial in input size, satisfying NP's certificate-length requirement.</div></li>
+<li><div class="q">Q4. How does HAMPATH compare to TSP?</div><div class="a">TSP (traveling salesman) is HAMPATH plus weights — find a Hamiltonian cycle of minimum total weight. TSP-decision (cost ≤ k?) is also NP-complete. HAMPATH is the unweighted special case.</div></li>
+</ul></section>
+
+<section><div class="section-label">6 · Where to read more</div>
+<p><strong>Sipser:</strong> §7.3 (HAMPATH as NP example), §7.5 (NP-complete chain). <strong>Lecture notes:</strong> Module 5 slide 5. <strong>Companion problems:</strong> P21 (verifier vs solver), P30 (HAMPATH reduction).</p>
+</section></div><footer class="foot">P23 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){
 const nodes={S:{x:90,y:140},A:{x:230,y:80},B:{x:230,y:200},C:{x:380,y:140},D:{x:520,y:80},T:{x:660,y:140}};
 const edges=[['S','A'],['S','B'],['A','C'],['B','C'],['C','D'],['D','T'],['C','T'],['A','D']];

@@ -5,24 +5,49 @@
 <h1>PATH ∈ NL · nondeterministic guess-the-path</h1><p class="sub">Guess a neighbour each step; log n bits suffice per branch.</p>
 <div class="tags"><span class="tag-pill">CLO-5</span><span class="tag-pill warn">R3·40 pts</span><span class="tag-pill info">L15</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · Theory</div>
-<div class="theorem-box"><div class="theorem-label">NL algorithm for PATH</div><pre style="font-size:13px;margin:4px 0;">v ← s; counter ← 0
+<section><div class="section-label">1 · PATH ∈ NL · the canonical nondeterministic log-space algorithm</div>
+<p>PATH = {⟨G, s, t⟩ : directed graph G has a path from s to t}. PATH is the canonical NL problem and arguably the defining example of nondeterministic log-space — it's NL-complete (Problem 43) and one of the cleanest "nondeterminism actually helps" demonstrations.</p>
+<div class="theorem-box"><div class="theorem-label">The nondeterministic algorithm</div>
+<pre style="font-size:13px;margin:4px 0;">v ← s; counter ← 0
 while counter ≤ |V|:
-   if v = t accept
+   if v = t: accept
    v ← nondet. choice from neighbours of v
-   counter += 1
-reject</pre><p style="margin:4px 0;">Memory: v (log n bits) + counter (log n bits) = O(log n). Hence PATH ∈ NL.</p></div></section>
+   counter ← counter + 1
+reject</pre>
+<p style="margin:4px 0;">Memory: v fits in ⌈log<sub>2</sub> n⌉ bits, counter fits in ⌈log<sub>2</sub>(n+1)⌉ bits, plus O(1) state. Total: O(log n) work-tape space.</p>
+</div>
+<p>The algorithm wins because nondeterminism lets it guess the right next vertex at each step. Acceptance is existential: PATH accepts if <em>any</em> guessing sequence reaches t.</p>
+<div class="theorem-box"><div class="theorem-label">Why deterministic LOGSPACE can't do PATH (probably)</div>
+<p style="margin:4px 0;">A deterministic algorithm would need to remember which neighbours it has tried. With only O(log n) bits, it can't store a non-trivial set of visited vertices. PATH ∈ L is open (whether L = NL). DFS uses too much stack for log space.</p>
+</div>
+
+<p>NL is closed under reductions; therefore the existence of a log-space reduction to PATH proves a problem is in NL.</p>
+</section>
+
 <section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Multiple branches explored in parallel · each log-n memory <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="n-run">⏸ Pause</button><button class="btn ghost" id="n-step">Step</button><button class="btn ghost" id="n-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="n-speed" min="0.25" max="3" step="0.25" value="1"><span id="n-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="n-svg" viewBox="0 0 760 280" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="n-explain"></div></div></section>
-<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
-<li><div class="q">Q1. Why nondeterministic and not deterministic?</div><div class="a">A deterministic log-space machine doesn't have enough memory to remember which neighbours have been tried. Nondeterminism lets us "magically" guess the right neighbour.</div></li>
-<li><div class="q">Q2. Why must counter ≤ |V|?</div><div class="a">If a path exists, it has length ≤ |V|−1 (no repeats needed). So we cap to avoid infinite loops.</div></li>
-<li><div class="q">Q3. Is PATH in L?</div><div class="a">Open! Showing PATH ∈ L is equivalent to L = NL, one of the major open questions.</div></li>
-</ul></section></div><footer class="foot">P42 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<section><div class="section-label">3 · Pitfalls</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>NL acceptance is existential.</strong> Accept iff <em>some</em> branch finds t. The other branches' failures don't matter.</li>
+  <li><strong>The counter prevents infinite loops.</strong> Without it, the nondeterministic walk could move randomly forever. With ≤ |V| steps, we trip the cap if no t is found.</li>
+  <li><strong>NL ⊆ P.</strong> Any nondeterministic log-space machine has at most poly(n) configurations; reachability among them is in P (BFS). So NL ⊆ P. Whether NL = P is open.</li>
+</ul>
+</section>
+
+<section><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why nondeterministic and not deterministic?</div><div class="a">A deterministic log-space machine doesn't have enough memory to remember which neighbours have been tried (would need Ω(|V|) bits to store the visited set). Nondeterminism lets us "magically" guess the right neighbour at each step.</div></li>
+<li><div class="q">Q2. Why must counter ≤ |V|?</div><div class="a">If a path exists, it has length ≤ |V| − 1 (no need to repeat vertices). Capping at |V| ensures termination — without the cap, a nondeterministic walk could revisit vertices and loop forever.</div></li>
+<li><div class="q">Q3. Is PATH in L?</div><div class="a">Open. Showing PATH ∈ L is equivalent to L = NL — a major open question. Reingold (2008) showed UNDIRECTED-PATH ∈ L, but the directed version remains open.</div></li>
+<li><div class="q">Q4. What's coNL?</div><div class="a">coNL = complements of NL languages = "for every nondeterministic branch, the answer is no." Immerman–Szelepcsényi (1987): coNL = NL. So nondeterministic space classes are closed under complement, unlike NP (which is open).</div></li>
+</ul></section>
+
+<section><div class="section-label">5 · Where to read more</div>
+<p><strong>Sipser:</strong> §8.4, Example 8.21 (PATH algorithm). <strong>Lecture notes:</strong> Module 7 slide 2. <strong>Companion problems:</strong> P41 (log space), P43 (PATH NL-complete), P44 (inductive counting / coNL = NL).</p>
+</section></div><footer class="foot">P42 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){
 const nodes={S:{x:80,y:140},A:{x:200,y:80},B:{x:200,y:200},C:{x:340,y:140},D:{x:480,y:140},T:{x:620,y:140}};
 const edges=[['S','A'],['S','B'],['A','C'],['B','C'],['C','D'],['D','T']];

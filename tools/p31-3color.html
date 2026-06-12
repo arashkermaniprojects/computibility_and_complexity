@@ -5,20 +5,44 @@
 <h1>3COLOR is NP-complete · 3SAT → 3COLOR</h1><p class="sub">Variable gadgets + OR-gadgets. Graph is 3-colorable iff formula is satisfiable.</p>
 <div class="tags"><span class="tag-pill">CLO-4</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L12</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · Theory</div>
-<div class="theorem-box"><div class="theorem-label">Gadget pieces</div><p style="margin:4px 0;">3 base colors: T (true), F (false), B (base reference). Variable gadget: triangle (x, ¬x, B) — forces x and ¬x to take T and F. OR-gadget for clause (a ∨ b ∨ c): a specific 5-node graph forcing at least one of a, b, c to be T.</p></div>
-<p>Polynomial-size graph; 3-colorable iff formula satisfiable.</p></section>
+<section><div class="section-label">1 · 3-COLOR and the gadget reduction</div>
+<p>3COLOR = {⟨G⟩ : G is 3-colorable} — assign one of 3 colors to each vertex so no edge has same-colored endpoints. This is NP-complete via a gadget reduction from 3SAT.</p>
+<div class="theorem-box"><div class="theorem-label">Three colors with logical meaning</div>
+<p style="margin:4px 0;">Label the three colors T (true), F (false), B (base). The construction includes a fixed "palette triangle" so the three colors are globally distinguishable.</p>
+</div>
+<div class="theorem-box"><div class="theorem-label">Variable gadget</div>
+<p style="margin:4px 0;">For each variable x<sub>i</sub>: a triangle on three nodes (x<sub>i</sub>, ¬x<sub>i</sub>, B). Three mutually-connected nodes need three different colors; with B fixed to base, x<sub>i</sub> and ¬x<sub>i</sub> are forced to take T and F (one each). That's the Boolean encoding — colorings ↔ assignments.</p>
+</div>
+<div class="theorem-box"><div class="theorem-label">OR gadget for clause (a ∨ b ∨ c)</div>
+<p style="margin:4px 0;">A specific 5-node sub-graph wired so that the gadget is 3-colorable iff at least one of a, b, c is colored T. The wiring forces "if all three inputs are F, no valid coloring exists; otherwise some valid coloring exists."</p>
+</div>
+<p>Combine n variable triangles with m OR gadgets: total O(n + m) nodes, O(n + m) edges. The graph is 3-colorable iff every clause has ≥ 1 true literal iff φ is satisfiable.</p>
+</section>
+
 <section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Build the gadget piece by piece <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="c3-run">⏸ Pause</button><button class="btn ghost" id="c3-step">Step</button><button class="btn ghost" id="c3-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="c3-speed" min="0.25" max="3" step="0.25" value="1"><span id="c3-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="c3-svg" viewBox="0 0 760 320" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="c3-explain"></div></div></section>
-<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
-<li><div class="q">Q1. Why a triangle for variable gadget?</div><div class="a">Three mutually-connected nodes need three different colors. With one fixed to B (base), the other two are forced to be {T, F} — encoding x and ¬x.</div></li>
-<li><div class="q">Q2. What's the OR-gadget structure?</div><div class="a">A small 5-node graph with inputs a, b, c connected such that the graph is 3-colorable iff at least one of a, b, c is colored T.</div></li>
-<li><div class="q">Q3. Polynomial?</div><div class="a">n variable gadgets (constant size) + m OR-gadgets (constant size each) = O(n+m) nodes. Edges: O(n+m). Polynomial.</div></li>
-</ul></section></div><footer class="foot">P31 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<section><div class="section-label">3 · Pitfalls</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>2-COLOR is in P; 3-COLOR is NP-complete.</strong> The gap is at exactly 3 — same as SAT vs 2SAT. 2-COLOR = bipartiteness, checkable by BFS.</li>
+  <li><strong>The OR gadget's structure matters precisely.</strong> Off-by-one in the wiring breaks correctness. Sipser gives the exact 6-node gadget; copy it carefully.</li>
+  <li><strong>Variable triangles share the B vertex.</strong> All variable gadgets connect to the same global B (base) node. Failing to share B gives a bad reduction.</li>
+</ul>
+</section>
+
+<section><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why a triangle for the variable gadget?</div><div class="a">Three mutually-adjacent nodes force three different colors. With B fixed to base color, x<sub>i</sub> and ¬x<sub>i</sub> take T and F in some order — a binary Boolean choice.</div></li>
+<li><div class="q">Q2. What's the OR-gadget structure?</div><div class="a">A 6-node sub-graph (Sipser Figure 7.42) wired so the gadget admits a 3-coloring iff at least one of its three input nodes is colored T. The non-trivial property: if all three inputs are F, the gadget's "output" node must be both T and F simultaneously — impossible.</div></li>
+<li><div class="q">Q3. Polynomial?</div><div class="a">n variable gadgets (3 nodes each, constant) + m OR gadgets (6 nodes each, constant) = O(n + m) nodes. Edges: O(n + m). Linear-size reduction.</div></li>
+<li><div class="q">Q4. Why does 3-COLOR matter beyond toy graphs?</div><div class="a">Real applications: register allocation in compilers (each variable is a vertex, edges between simultaneously-live variables, k registers means k-COLOR). NP-completeness explains why register allocation uses heuristics.</div></li>
+</ul></section>
+
+<section><div class="section-label">5 · Where to read more</div>
+<p><strong>Sipser:</strong> §7.5, Exercise 7.27 / Karp's original. <strong>Lecture notes:</strong> Module 5 slide 5. <strong>Companion problems:</strong> P27 (3SAT → CLIQUE), P28 (CLIQUE → VC).</p>
+</section></div><footer class="foot">P31 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){
 let stage=0; const T=4;
 function render(){

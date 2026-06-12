@@ -13,11 +13,24 @@
 <label class="speed-control">Speed <input type="range" id="p-speed" min="0.25" max="3" step="0.25" value="1"><span id="p-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="p-svg" viewBox="0 0 760 320" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="p-explain"></div></div></section>
-<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
-<li><div class="q">Q1. How does empirical data confirm an O(n²) bound?</div><div class="a">Doubling n should ≈ quadruple steps. Plotting steps/n² should give a roughly flat line.</div></li>
-<li><div class="q">Q2. Could there be a constant factor we miss?</div><div class="a">Yes — Big-O ignores constants. But the SHAPE (linear in n² when plotted against n) is the asymptotic claim.</div></li>
-<li><div class="q">Q3. What would fail this empirical check?</div><div class="a">If the algorithm secretly took O(n²·log n) — extra log factor — you'd see slight upward curvature in steps/n² as n grows.</div></li>
-</ul></section></div><footer class="foot">P53 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<section><div class="section-label">3 · Pitfalls</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>Empirical data only suggests, never proves.</strong> A clean quadratic fit through a dozen data points is consistent with O(n²) but doesn't prove it — a hidden log factor or constant could be invisible at small n.</li>
+  <li><strong>Look at steps/n², not just steps.</strong> If steps/n² approaches a constant as n grows, you have Θ(n²). If it grows, the actual complexity is higher.</li>
+  <li><strong>Watch for outliers and pessimistic-vs-best-case inputs.</strong> The same TM may take wildly different time on different inputs of the same length. Profile worst-case examples, not average.</li>
+</ul>
+</section>
+
+<section><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. How does empirical data confirm an O(n²) bound?</div><div class="a">Doubling n should approximately quadruple the step count. Plotting steps / n² against n should give a roughly flat line. If the ratio drifts upward, hidden log factors are present.</div></li>
+<li><div class="q">Q2. Could there be a constant factor we miss?</div><div class="a">Yes — Big-O ignores constants. Empirical timing can't reveal asymptotic equivalence vs huge multiplicative constants. But the <em>shape</em> (linearity of steps/n²) is the asymptotic claim and is what we test.</div></li>
+<li><div class="q">Q3. What would fail this empirical check?</div><div class="a">If the algorithm secretly took O(n²·log n), you'd see slight upward curvature in steps/n² as n grows. If it were O(n³), steps/n² would grow linearly. If it were O(n log n), steps/n² would decrease.</div></li>
+<li><div class="q">Q4. What's the relationship between this and the actual proof?</div><div class="a">Empirical profiling is sanity-checking, not proof. A formal Θ(n²) proof requires both an upper bound (here, n/2 pairs × O(n) per pair) and a lower bound (the crossing-sequence argument). Empirics validate the upper bound; the lower bound requires combinatorial analysis.</div></li>
+</ul></section>
+
+<section><div class="section-label">5 · Where to read more</div>
+<p><strong>Sipser:</strong> Example 7.2. <strong>Lecture notes:</strong> Module 4 slide 3. <strong>Companion problems:</strong> P17 (growth race), P18 (single-tape 0ⁿ1ⁿ), P19 (two-tape race).</p>
+</section></div><footer class="foot">P53 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){
 // simulate {0^n1^n} single-tape pair-off
 function simulate(n){ let tape='0'.repeat(n)+'1'.repeat(n); let arr=tape.split(''); let head=0,steps=0,phase='find0';

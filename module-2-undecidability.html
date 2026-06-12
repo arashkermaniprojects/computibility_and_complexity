@@ -381,6 +381,7 @@
 
   <h3>Drive the proof yourself</h3>
 
+  <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Widget map</span><audio controls preload="none" src="audio/components/m2-s1-c1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div>
   <div class="callout">
     <h5>How the widget mirrors the proof</h5>
     <ul style="margin: 4px 0 0 0; padding-left: 22px;">
@@ -416,6 +417,7 @@
     </div>
   </div>
 
+  <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Diagonal lemma</span><audio controls preload="none" src="audio/components/m2-s1-c2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div>
   <div class="key-idea">
     <strong>The diagonal lemma.</strong> If you list any countable family of functions
     <span class="math">f<sub>1</sub>, f<sub>2</sub>, …</span> from ℕ to {0,1}, you can construct a new function
@@ -454,6 +456,7 @@
     <span class="math">U</span> runs forever too.
   </p>
 
+  <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Reminder</span><audio controls preload="none" src="audio/components/m2-s2-c1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div>
   <div class="callout">
     <h5>Reminder — recognizable vs decidable</h5>
     <ul style="margin: 0;">
@@ -564,6 +567,7 @@
   <figcaption>The universal TM U lays out three regions on its single tape: M's transition table (loaded from ⟨M⟩), M's simulated tape (initially w), and a small work area tracking M's current state and head position. The 4-step cycle below is U's main loop — read state, read symbol, look up δ in the program region, apply the transition. U is one fixed machine that runs every other machine.</figcaption>
 </figure>
 
+  <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Widget walkthrough</span><audio controls preload="none" src="audio/components/m2-s2-c2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div>
   <div class="callout">
     <p style="margin:4px 0;"><strong>What the widget does:</strong> a <em>universal Turing machine</em> simulates any other TM you give it as a program. The transitions you write below ARE the TM <span class="math">M</span>; the universal TM <span class="math">U</span> interprets them step by step, just like an interpreter for a programming language.</p>
     <p style="margin:4px 0;"><strong>How A<sub>TM</sub> gets its "recognizable" stamp:</strong> on input <span class="math">⟨M, w⟩</span>, <span class="math">U</span> just simulates <span class="math">M</span> on <span class="math">w</span>. If <span class="math">M</span> accepts, <span class="math">U</span> accepts. If <span class="math">M</span> rejects, <span class="math">U</span> rejects. If <span class="math">M</span> loops, <span class="math">U</span> also loops. So <span class="math">U</span> is a recognizer for <span class="math">A<sub>TM</sub></span> (accepts iff the input is in <span class="math">A<sub>TM</sub></span>) — but it cannot guarantee halting, so it's not a decider.</p>
@@ -776,6 +780,7 @@
     </div>
   </div>
 
+  <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Why diagonal</span><audio controls preload="none" src="audio/components/m2-s3-c1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div>
   <div class="callout warn">
     <h5>Why the diagonal cell matters</h5>
     <p style="margin: 0;">
@@ -803,6 +808,7 @@
     just proved we can't.
   </p>
 
+  <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Reduction</span><audio controls preload="none" src="audio/components/m2-s4-c1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div>
   <div class="callout">
     <h5>Reduction from A<sub>TM</sub> to HALT<sub>TM</sub></h5>
     <p style="margin: 0 0 6px;">Suppose <span class="math">R</span> decides <span class="math">HALT<sub>TM</sub></span>. Build a decider <span class="math">S</span> for <span class="math">A<sub>TM</sub></span>:</p>
@@ -966,6 +972,7 @@
     </tbody>
   </table>
 
+  <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Bridge theorem</span><audio controls preload="none" src="audio/components/m2-s5-c1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div>
   <div class="key-idea">
     <strong>The bridge theorem.</strong> A language <span class="math">L</span> is decidable iff
     <em>both</em> <span class="math">L</span> and its complement <span class="math"><span class="overline">L</span></span>
@@ -1139,6 +1146,7 @@
   <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m2-s7.mp3"></audio></div>
   
   <h2>One-sentence summary</h2>
+  <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Summary</span><audio controls preload="none" src="audio/components/m2-s7-c1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div>
   <div class="key-idea">
     A diagonal argument (or a reduction from one) shows that <span class="math">A<sub>TM</sub></span>,
     <span class="math">HALT<sub>TM</sub></span>, <span class="math">E<sub>TM</sub></span>, and many other natural TM

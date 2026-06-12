@@ -1,0 +1,15 @@
+This problem proves N P is a subset of exponential time. Every N P language can be decided by a deterministic Turing machine running in time two to the order of n-to-the-k, for some constant k. Equivalently, every nondeterministic Turing machine that halts on every branch in time n-to-the-k can be deterministically simulated in time two to the order of n-to-the-k.
+
+This containment matters because it gives the first proven part of the chain P inside N P inside exponential time. Combined with the time hierarchy theorem which proves P is strictly inside exponential time, at least one of two inclusions must be strict: either P is strictly inside N P, or N P is strictly inside exponential time. We just do not know which.
+
+The construction simulates the N T M's computation tree. An N T M branches at every step. Call b the maximum branching factor — a constant determined by the machine, not by the input. The tree has depth at most T equals n-to-the-k. Total leaves are at most b-to-the-T, which is two to the order of n-to-the-k.
+
+The deterministic simulator does breadth-first traversal of this tree, level by level, up to depth T. At each leaf, check if it is an accept configuration. If yes, output accept. If no leaf accepts after visiting all of them, output reject.
+
+Time analysis: the tree has at most b-to-the-T leaves. Visiting each takes polynomial time. Total time is two to the order of n-to-the-k. That is exponential time.
+
+A worked example with three-S A T. The N T M for three-S A T guesses each variable's assignment using a nondeterministic branch, then deterministically evaluates the formula. With n variables, the tree has depth n and branching factor two, giving exactly two-to-the-n leaves. The deterministic simulator explores all assignments — pure brute force, exponential in n.
+
+We could not do better than exponential time in general without resolving P versus N P. That is exactly the open question. If we ever found a polynomial deterministic simulation of arbitrary N T Ms, P would equal N P.
+
+A space side benefit: by using depth-first traversal instead of breadth-first, the same simulation uses only polynomial space. That proves N P is a subset of P space as a free corollary.

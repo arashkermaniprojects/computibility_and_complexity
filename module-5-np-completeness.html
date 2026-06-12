@@ -317,7 +317,7 @@
   <figcaption>The same diagram that the narration calls out. ① An NP language is one where every yes-instance has a short, polynomial-time-verifiable <strong>certificate</strong> c — that's the "guess" the narrator refers to. ② Imagine V running on (x, c): its tape over time is a 2-D grid (the big tableau above). ③ Each (cell, possible tape symbol) pair becomes a separate Boolean variable x<sub>t,p,s</sub>. ④ Three clause families — START, MOVE (one per 2×3 window), ACCEPT — pin those variables down to <em>exactly</em> the assignments that correspond to valid runs of V. The big SAT formula φ<sub>x</sub> is satisfiable iff there is a certificate c making V accept (x, c), iff x ∈ L. Finding the certificate ≡ finding a satisfying truth assignment. Hence NP ≤<sub>p</sub> SAT and SAT is NP-complete.</figcaption>
 </figure>
 
-<div class="callout" style="border-left-color: var(--warn-strong, #b95825); background: #fdf4ed; margin: 10px 0 18px;">
+<div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 How to read</span><audio controls preload="none" src="audio/components/m5-s1-howread.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="callout" style="border-left-color: var(--warn-strong, #b95825); background: #fdf4ed; margin: 10px 0 18px;">
   <h5 style="margin-top: 0; color: var(--warn-strong, #b95825);">How to read this picture</h5>
   <p style="margin: 0 0 8px;">
     The grid is the verifier's <strong>computation tableau</strong>. Time flows <strong>downward</strong> and tape position runs <strong>across</strong>. Cell <span class="math">(t, p)</span> records what symbol sits on tape position <span class="math">p</span> at time step <span class="math">t</span> — and whether the TM head and state are there. <strong>Each row is a complete configuration</strong> (tape snapshot + head + state) of the verifier <span class="math">V</span> at one instant.
@@ -743,7 +743,7 @@
     <div class="explain-panel" id="chain-explain"></div>
   </div>
 
-  <div class="key-idea">
+  <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Key idea</span><audio controls preload="none" src="audio/components/m5-s4-c3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="key-idea">
     Every problem in the chain is NP-complete. If you find a polynomial-time algorithm for any one
     of them, you've collapsed P = NP, and won a million dollars.
   </div>
@@ -900,6 +900,7 @@
   <div class="section-audio"><span class="audio-label">🎧 Narration</span><audio controls preload="metadata" src="audio/m5-s7.mp3"></audio></div>
   
   <h2>One-sentence summary</h2>
+  <div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Summary</span><audio controls preload="none" src="audio/components/m5-s7-c1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div>
   <div class="key-idea">
     NP is the class of decision problems whose "yes" instances admit polynomial-time-verifiable
     certificates; SAT is NP-complete (Cook–Levin) and from SAT a chain of polynomial-time

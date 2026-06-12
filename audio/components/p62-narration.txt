@@ -1,0 +1,11 @@
+This problem compares two questions about linear bounded automata, or L-B-As. Same machine model, but one acceptance question is decidable, the other is undecidable. A-sub-L-B-A asks: does this L-B-A accept this specific input w? Sipser proves this decidable in theorem 5.9. E-sub-L-B-A asks: is this L-B-A's language empty? Sipser proves this undecidable in theorem 5.10.
+
+A-sub-L-B-A is decidable because of a counting argument. An L-B-A's tape size is fixed at n cells, the length of the input. Each cell can hold one of gamma symbols, giving gamma-to-the-n possible tape contents. Multiplying by the state count and the head position gives a total of size-of-Q times n times gamma-to-the-n distinct configurations. That number is exponential in n, but crucially it is FINITE. Simulate M on w for that many steps. If M accepts within the bound, accept. If M exceeds the bound without accepting, reject — because any longer run must repeat a configuration, meaning M is looping forever.
+
+Why doesn't the same trick work for E-sub-L-B-A? Because A-sub-L-B-A asks about one specific w, while E-sub-L-B-A asks about ALL possible inputs. To prove the language is empty, you would have to check every string. That's infinite.
+
+To prove E-sub-L-B-A undecidable, we reduce A-sub-T-M to co-E-sub-L-B-A. Given a Turing machine M and a string w, construct an L-B-A called B-sub-M-w whose language is the set of accepting computation histories of M on w. A computation history is a string listing all configurations of M's run. B-sub-M-w verifies a candidate history using three local checks: the start configuration is q-zero w, every adjacent pair of configurations is delta-consistent, and the last configuration contains q-accept. Each check uses constant tape per cell, so B-sub-M-w is genuinely an L-B-A.
+
+If M accepts w, then an accepting history exists and B-sub-M-w's language is non-empty. If M does not accept w, no accepting history exists and the language is empty. So a decider for E-sub-L-B-A would decide whether M does NOT accept w — that is co-A-sub-T-M. Since A-sub-T-M is undecidable, so is its complement, hence E-sub-L-B-A is undecidable.
+
+The contrast in one sentence: same machine model, different scope of question. Bounded configurations save the day for A-sub-L-B-A but not for E-sub-L-B-A.

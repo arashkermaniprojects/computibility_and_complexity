@@ -1,0 +1,1 @@
+Key takeaway about the reduction chain. Every problem in the chain is N P complete. If you find a polynomial-time algorithm for any one of them, you have collapsed P equals N P, and won a million dollars. That single algorithm would automatically give polynomial-time solutions for every other N P-complete problem, because they all reduce to one another.

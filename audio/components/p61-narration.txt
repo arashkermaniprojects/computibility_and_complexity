@@ -1,0 +1,11 @@
+The bridge theorem says a language L is decidable if and only if both L and its complement, L-bar, are Turing-recognizable. The theorem deserves its name because it bridges the gap between decidable and recognizable: decidability equals "doubly recognizable." Either recognizer alone is not enough — A-sub-T-M has a recognizer but its complement does not, so A-sub-T-M is undecidable.
+
+The forward direction is easy. If L is decidable, let D be a decider. D always halts and outputs accept or reject, so D works directly as a recognizer for L. For L-bar, build D-prime which on input x runs D on x and outputs the opposite answer. D-prime is a decider for L-bar, hence a recognizer.
+
+The reverse direction is the interesting construction. Given a recognizer R-L for L, and a recognizer R-not-L for L-bar, we build a decider D for L. D on input x simulates BOTH recognizers in parallel using interleaved steps — one step of R-L, then one step of R-not-L, then back. If R-L accepts, D accepts; if R-not-L accepts, D rejects.
+
+Why does D always halt? For every x, exactly one of "x belongs to L" or "x does not belong to L" is true. The corresponding recognizer is guaranteed to halt on accept. The interleaved simulation reaches that decision in finite time.
+
+Why does interleaving matter? Running R-L first would fail. If x is not in L, R-L might loop forever, and we would never get to R-not-L. Interleaving guarantees progress on both simulations simultaneously.
+
+This theorem is the engine behind several undecidability proofs. A-sub-T-M is recognizable. If A-sub-T-M were decidable, the bridge theorem would make co-A-sub-T-M recognizable too. But co-A-sub-T-M is not recognizable. Contradiction, so A-sub-T-M is undecidable. The bridge theorem turns "not recognizable" into "not decidable" in one step.

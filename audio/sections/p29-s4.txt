@@ -1,0 +1,9 @@
+Let’s dive into some key questions about using the digit-position trick in the 3SAT to Subset-Sum reduction. 
+
+First, why do we choose base 10 instead of binary? Well, each clause can have a maximum sum of 3, since we can have three literals plus some slack. If we used a base lower than 4, we might run into issues with carries that would mess up our encoding. Base 10 is also just easier for us humans to work with, but any base that’s 4 or higher would do just fine.
+
+Next, let’s talk about slack numbers. When we look at a clause, it might be satisfied by just one, two, or all three literals being true. This means the column sum could vary from 1 to 3. To ensure every clause sums up to exactly 3, we introduce slack numbers. Without these, only clauses where all literals are true would meet the target.
+
+Now, regarding the size of the reduction. We generate about 2n plus 2m numbers, and each of those has n plus m digits. This leads to a total size of O((n+m)²) bits, which is polynomial in relation to the size of the formula.
+
+Lastly, is the Subset-Sum dynamic programming approach polynomial? It’s O(n times t), where n is the size of the set and t is the target. While it’s pseudo-polynomial and not strictly polynomial in the input size because t is represented in O(log t) bits, it’s usually quite fast in practice when t is small.

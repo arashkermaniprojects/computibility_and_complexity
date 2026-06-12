@@ -1,0 +1,5 @@
+Let’s dive into the animated demo that illustrates the fixed-point theorem in action. Imagine a program, which we’ll call P, that behaves in a particular way based on its input. Now, the magic happens when we apply a transformation, q, to P. This transformation essentially creates a new program, P prime, which has a very special property: it can auto-play its own behavior.
+
+As you watch the animation, notice how P prime begins to execute. It’s like watching a loop unfold in real-time. You’ll see it take steps, pause, and even reset. When it auto-plays, P prime is essentially running the logic of P while reflecting back on its own structure. This self-reference is crucial, as it shows how a program can operate based on its own description.
+
+If you speed it up, you’ll see the looping pattern become more pronounced. Each cycle reinforces the idea that any computable function can find a fixed point that describes itself. The interplay between P and P prime beautifully illustrates how programs can reason about their own behavior, embodying the essence of the recursion theorem.

@@ -1,0 +1,5 @@
+Let’s dive into the animated demo that illustrates how we can transform a 3SAT problem into a subset-sum problem. Imagine we have a tiny instance with just two variables and two clauses. In this animation, you’ll see the numbers being constructed, where each digit represents a variable or a clause from the formula. 
+
+As the demo plays, watch how these numbers get built; each digit encodes information about the variable’s state—whether it’s true or false. The key here is that if you can find a subset of these numbers that adds up to a specific target, it means the original formula is satisfiable. 
+
+The animation auto-plays, looping through the steps, so you can see how the sums are calculated and how they relate to the truth assignments of the variables. You can pause it whenever you want to take a closer look at the details or reset it to start over. Adjusting the speed allows you to digest each part at your own pace. This really brings the concept to life, making it easier to grasp how these two problems connect.

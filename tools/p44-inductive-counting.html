@@ -5,7 +5,7 @@
 <h1>Immerman–Szelepcsényi · NL = coNL</h1><p class="sub">Count reachable vertices inductively; conclude ¬PATH ∈ NL.</p>
 <div class="tags"><span class="tag-pill">CLO-5</span><span class="tag-pill warn">R3·40 pts</span><span class="tag-pill info">L15</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · The Immerman–Szelepcsényi theorem · NL = coNL</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p44-s1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">1 · The Immerman–Szelepcsényi theorem · NL = coNL</div>
 <p>Immerman 1988 and Szelepcsényi 1987 independently proved: NL = coNL. Equivalently, ¬PATH (UNREACHABILITY) is in NL. This is a surprising and deep result — nondeterministic log space is closed under complement, while nondeterministic polynomial time (NP vs coNP) is open.</p>
 
 <div class="theorem-box"><div class="theorem-label">Inductive counting · the technique</div>
@@ -20,13 +20,13 @@
 <p>Space used at each step: counters of size O(log n), one current vertex of size O(log n). All operations fit in log space. The whole construction takes nondeterministic log space.</p>
 </section>
 
-<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p44-s2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">2 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Compute c<sub>i</sub> one step at a time <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="ic-run">⏸ Pause</button><button class="btn ghost" id="ic-step">Step</button><button class="btn ghost" id="ic-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="ic-speed" min="0.25" max="3" step="0.25" value="1"><span id="ic-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="ic-svg" viewBox="0 0 760 320" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="ic-explain"></div></div></section>
-<section><div class="section-label">3 · Pitfalls</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p44-s3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">3 · Pitfalls</div>
 <ul style="margin:6px 0 0 20px;">
   <li><strong>The counts c<sub>i</sub> are exact, not bounded.</strong> The whole technique depends on c<sub>i</sub> being precisely the number of reachable-by-i-steps vertices. Approximation breaks the witness logic.</li>
   <li><strong>"Inductive counting" doesn't mean we store the reach-set.</strong> We only store c<sub>i</sub>. The actual reach-set has too many vertices to enumerate explicitly. Nondeterminism lets us re-verify on the fly.</li>
@@ -34,14 +34,14 @@
 </ul>
 </section>
 
-<section><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p44-s4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
 <li><div class="q">Q1. Why does counting help?</div><div class="a">Once we know c<sub>n</sub>, we can verify "v is unreachable" by nondeterministically witnessing all c<sub>n</sub> reachable vertices (each different from v) and verifying each is reachable. If we account for all c<sub>n</sub> and v isn't among them, v must be unreachable.</div></li>
 <li><div class="q">Q2. Why does this work for NL but not for NP?</div><div class="a">In NL, configurations are polynomial in number (poly(n)) and log-size, so counting them and re-verifying each fits in log space. In NP, the witness space is exponential and the time budget is poly — there's no way to count witnesses inductively in poly time.</div></li>
 <li><div class="q">Q3. What does NL = coNL really mean?</div><div class="a">PATH ∈ NL means "is there a path?" can be verified by a nondeterministic log-space machine. NL = coNL means UNREACHABILITY ∈ NL — "is there NO path?" can also be verified that way. NL is "self-dual" under complement, unlike NP (where NP = coNP is conjectured false).</div></li>
 <li><div class="q">Q4. What other classes are closed under complement?</div><div class="a">P (deterministic class). NSPACE(f) for any f ≥ log n. coNL itself. But NP and coNP appear distinct, although unproven. The difference seems related to the time/space asymmetry — space is reusable, time isn't.</div></li>
 </ul></section>
 
-<section><div class="section-label">5 · Where to read more</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p44-s5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">5 · Where to read more</div>
 <p><strong>Sipser:</strong> Theorem 8.27 (Immerman–Szelepcsényi). <strong>Lecture notes:</strong> Module 7 slide 4. <strong>Companion problems:</strong> P42 (PATH ∈ NL), P43 (PATH NL-complete).</p>
 </section></div><footer class="foot">P44 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){

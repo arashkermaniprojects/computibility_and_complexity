@@ -1,0 +1,9 @@
+Let’s dive into some questions about the differences between decidable and undecidable problems with LBA. First, why isn’t A sub T M decidable? Well, A sub T M can use an unbounded tape. This means the number of possible configurations is infinite because you have the states multiplied by infinite tape and infinite symbols. Without a finite boundary, you can’t ensure termination or a solution.
+
+Now, what about LBA configurations? The exact bound for an LBA's configurations is |Q| times n times |Γ| raised to the n, where n is the length of the input. You consider the state, the head position across n cells, and the tape content, where each cell can hold one of the |Γ| symbols.
+
+Is this bound tight? Yes, an LBA can be programmed to enumerate every configuration before halting, which can lead to a running time of two raised to the power of O(n). 
+
+When sketching the LBA B sub M,w for R1.5, it does three checks on input x. It checks if the first configuration is q sub 0 w, verifies transitions for adjacent configurations match the machine’s rules, and confirms that the last configuration contains q accept. If all checks pass, it accepts x.
+
+Lastly, why target co-E LBA instead of E LBA? Well, L of B sub M,w is non-empty if M accepts w, leading to a reduction where A sub T M fits into co-E LBA. Since decidability is closed under complement, both co-E LBA and E LBA end up being undecidable.

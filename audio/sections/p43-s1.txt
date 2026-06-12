@@ -1,0 +1,9 @@
+Let’s dive into why the PATH problem is NL-complete, using the idea of configuration graphs. Imagine we have a non-deterministic log-space machine, M, that processes an input string, w. To understand how M works on w, we create a directed graph, called the configuration graph, denoted as G sub M, w. 
+
+In this graph, each vertex represents a configuration of M, which includes its current state, the position of the input head, the position of the work tape head, and the contents of the work tape. Now, an edge between two vertices, C to C prime, exists if C prime can be reached from C by applying one of M’s transition rules. 
+
+M accepts the input w if and only if there’s a path from the start configuration to an accepting configuration in this graph. This is exactly what the PATH problem asks: is there a directed path from one vertex to another? 
+
+Now, regarding the number of configurations, each configuration takes up a constant amount of space for the state and O(log n) for the positions and contents. This means we can have at most polynomially many configurations. 
+
+When we perform this reduction to create the graph, we don’t need to store it all at once. Instead, we generate vertices and edges on-the-fly, checking configurations in log space. So, every problem in NL can be reduced to PATH through this log-space method, establishing that PATH is indeed NL-complete.

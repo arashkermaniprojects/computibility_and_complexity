@@ -1,0 +1,7 @@
+When you’re working with the DFA, remember that you’re simulating the machine, not converting it. The decider runs the DFA in your mind, just following the transitions based on the input. You don’t need to build anything new; that’s the beauty of it. 
+
+For the equivalence of DFAs, you’ll be using graph reachability. You’re checking if any accept state is reachable from your starting state, q sub zero. Language minimization isn’t necessary, and you don’t need to explicitly compute the language of the DFA. 
+
+Now, when you tackle CYK, keep in mind that it requires the grammar to be in Chomsky Normal Form first. You can’t just throw any grammar at it; you have to convert it first. This conversion is pretty mechanical, so follow the steps carefully, even if it takes a few passes.
+
+Lastly, be cautious with CFG equivalence. Just because many questions about context-free grammars are decidable, don’t assume equivalence is one of them. In fact, CFG equivalence is undecidable, which can trip up a lot of students. Remember, equivalence is a special case that changes the rules.

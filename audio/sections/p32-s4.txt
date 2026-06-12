@@ -1,0 +1,5 @@
+When we talk about self-reducibility, it's important to remember that we’re treating the decider as a black box. This means that we’re not looking inside it or trying to understand how it works. Instead, we're making calls to it, like D of phi prime. Each time we call it, we provide a residual formula that’s smaller than the original. This is crucial because it lets us keep narrowing down our problem without changing the list of variables we started with.
+
+Now, if you think about how many times we might need to call the decider, it's at most n plus one times, where n is the number of variables. Each of these calls is working with a formula that’s still polynomial in size, which keeps our process efficient. 
+
+This is a Turing reduction, not a many-one reduction, which is a key point. With Turing reductions, we can ask multiple queries to the oracle, and the results from one query can influence the next. This flow of information helps us find a satisfying assignment effectively. Just keep in mind that each step builds on the previous one, leveraging the power of that decider.

@@ -1,0 +1,5 @@
+Let’s work through an example of solving 3-SAT using a nondeterministic Turing machine, or NTM, specifically with 4 variables. Imagine you have variables x1, x2, x3, and x4. The NTM starts by nondeterministically guessing values for each variable. For each variable, it can choose true or false, which gives us a branching factor of 2. Since there are 4 variables, the maximum depth of our guessing tree is 4.
+
+Now, when the NTM makes these guesses, it creates a branching tree where each level corresponds to a variable. At the end of this tree, we have 2 to the power of 4, which equals 16 leaves. Each leaf represents a different combination of true and false assignments for the variables. 
+
+After making a guess, the NTM then deterministically evaluates the formula based on that assignment. If the formula evaluates to true, the NTM accepts; if not, it moves on to the next branch. The deterministic simulator, or DSim, will check all 16 combinations, effectively performing a brute-force search. So, for 4 variables, the DSim explores all possible assignments, confirming that NP problems like 3-SAT can indeed be simulated by a deterministic machine in exponential time.

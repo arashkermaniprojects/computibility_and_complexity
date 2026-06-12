@@ -1,0 +1,7 @@
+Let’s dive into some important questions and answers about the single-tape Turing machine and its quadratic time complexity. First, why do we say it’s Θ(n²)? Think of matching pairs of zeros and ones. You have n/2 pairs, and for each pair, you need to spend O(n) time to match them. So, when you multiply those together, you get O(n²). The lower bound comes from how information crosses from one side of the tape to the other. Every bit of information transfer requires the head to cross the middle, and since there are n bits to transfer, you end up needing at least Ω(n) crossings. 
+
+Now, can a single-tape TM do better than Θ(n²)? The answer is no. That crossing-sequence lower bound is tight. If you introduce a second tape or random access, you can improve to O(n), but that’s the limitation of the single-tape design. 
+
+Why doesn’t this break the class P? O(n²) is still polynomial time. The class P remains robust across different models of computation. The constants and exponents might shift, but fundamentally, you’re still in P territory. 
+
+Lastly, is there a faster algorithm using clever marking? Sipser discusses a method that groups zeros together, achieving the same Θ(n²) but with improved constants. The fundamental asymptotic class remains unchanged, though.

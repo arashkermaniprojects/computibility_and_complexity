@@ -1,0 +1,5 @@
+If you want to dive deeper into the concepts we’ve discussed, a great place to start is the textbook by Sipser. In particular, check out section eight point four, which covers nondeterministic logarithmic space and provides a solid foundation for understanding 2-SAT and its implications. 
+
+You might also find it helpful to review some lecture notes that focus on the implication graph trick—this will reinforce how we analyze the satisfiability of 2-CNF formulas. Look for Module 7, specifically the second part, which discusses key concepts relevant to our topic.
+
+Additionally, I suggest working through some companion problems. Problem twenty-two deals with SAT, offering a practical application of what you’ve learned. Problem forty-two focuses on the PATH problem in nondeterministic logarithmic space, while problem forty-four discusses the relationship between NL and coNL. Tackling these problems will solidify your understanding and help you apply the concepts in various contexts. Happy studying!

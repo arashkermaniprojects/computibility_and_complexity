@@ -1,0 +1,5 @@
+Let’s dive into how a clause turns green. You might remember that a clause is basically a combination of variables that can either be true or false. When we’re flipping variables, we want to see how those changes affect the truth of each clause. 
+
+So, imagine you have a clause that consists of a few variables, like A, B, and C. The clause will turn green when at least one of those variables makes the entire clause true. For instance, if you set A to true, and B and C can be either true or false, as long as A is true, the clause is satisfied, and it turns green.
+
+Now, if you flip a variable, let’s say you change A to false, you need to check the other variables. If B is now true, the clause can still turn green because at least one variable satisfies it. But if all the variables are false, then the clause won’t turn green. So, it’s all about finding that one variable that can make the clause true! Keep experimenting with those variables and watch how the clauses react. It’s a great way to get a feel for how these logical connections work!

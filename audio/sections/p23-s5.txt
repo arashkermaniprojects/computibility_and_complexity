@@ -1,0 +1,7 @@
+Let’s dive into some key questions about Hamiltonian paths and their complexity. First, why do we say the verification of a Hamiltonian path is O(n²)? Well, you have n vertices. The length check takes O(n) since you just count the vertices. For distinctness, if you do a naive comparison, that’s O(n²) because you’re comparing every vertex with every other vertex. You can use a hash set to make that O(n), but let’s stick with the naive method for simplicity. The endpoint check is just O(1), and edge checks need O(n) lookups in an adjacency matrix. When you add that up, you get O(n²).
+
+Now, why is finding a Hamiltonian path hard? The brute-force method tries n factorial orderings, which explodes quickly. We know no polynomial-time algorithm exists for this problem, making HAMPATH NP-complete. Even approximating it is tough.
+
+About the certificate size, you have n vertex labels, and each label takes O(log n) bits. So, that totals to O(n log n) bits, which is polynomial in the input size, fitting the NP requirement.
+
+Lastly, how does HAMPATH compare to the traveling salesman problem? TSP is just like HAMPATH but with weights. You’re looking for a minimal weight Hamiltonian cycle in TSP, and the decision version of TSP is also NP-complete. HAMPATH is the unweighted special case of that.

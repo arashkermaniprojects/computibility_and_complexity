@@ -1,0 +1,5 @@
+Imagine you’re in a maze, and at each intersection, you have several paths to choose from. With nondeterministic log space, you can think of it like having a magical ability to guess which path to take at each step. You only need to remember a little bit of information—just log n bits—for each branch you explore. 
+
+Now, picture an animation where you see multiple branches of the maze being explored simultaneously. Each guess leads to a new path, and you can watch how these branches develop in real-time. The animation can auto-play, showing you how each path unfolds, or you can pause it to take a closer look at how decisions are made at each step. When you want to reset, it’s easy to start over and explore different paths again. 
+
+You can even adjust the speed, allowing you to slow down and absorb the details of each branch. This interactive approach really helps visualize how nondeterministic algorithms work, making it clearer how we can tackle problems like PATH in log space.

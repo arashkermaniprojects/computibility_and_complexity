@@ -1,0 +1,5 @@
+Let’s dive into the theory behind analyzing the running time of a Turing machine, specifically the single-tape decider for the language {0^n 1^n}. The theoretical analysis suggests that the time complexity is O(n²). So, what does that mean? Essentially, as the size of your input, n, increases, the number of steps the machine takes grows quadratically.
+
+Now, when we run the Turing machine on various input lengths, we’ll actually count the steps it takes for each input size and plot these results. What you should notice is that the data points you collect will lie on or below a parabolic curve. This visual representation is crucial because it shows that the machine is indeed following the expected theoretical behavior.
+
+When you double the input size, you can expect that the number of steps will quadruple. That’s a key characteristic of quadratic growth. So, as we analyze this data, we’re not just confirming the theory; we’re gaining insights into the practical performance of the Turing machine in action. The quadratic fit we observe should cleanly pass through our data points, reinforcing the connection between theory and empirical evidence.

@@ -1,0 +1,13 @@
+Let’s dive into how different languages fit into our framework of decidability and recognizability. 
+
+First, we have deterministic finite automata, or DFAs. Languages like A sub D F A, E sub D F A, and EQ sub D F A are all decidable. We can simulate their behavior or check graph reachability to determine membership. 
+
+Next, context-free grammars, or CFGs, also have decidable languages like A sub C F G and E sub C F G. We can use methods like the CYK algorithm for parsing or checking emptiness. 
+
+Now, when we move to Turing machines, things get a bit trickier. The languages A sub T M and HALT sub T M fall into the recognizable category but are not decidable. These are handled by the universal Turing machine, and diagonalization shows why we can’t decide them. 
+
+On the other hand, the complements ¬A sub T M and ¬HALT sub T M are co-recognizable, thanks to the bridging theorem. 
+
+For E sub T M, it’s co-recognizable too, while its complement, ¬E sub T M, is recognizable. 
+
+Lastly, EQ sub T M lands in neither category. It’s crucial to understand that all non-trivial properties fall under Rice’s theorem, which shows how complex these languages can be.

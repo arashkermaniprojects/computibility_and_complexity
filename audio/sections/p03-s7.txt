@@ -1,0 +1,7 @@
+Let’s talk about some common pitfalls that students encounter when grappling with the idea of undecidability, especially with the ATM problem. One thing that often comes up is the idea that D, our contradiction machine, might not exist as a Turing machine. But remember, D is actually just a simple construction: it runs H, the hypothetical decider, and flips the answer. Since H is a Turing machine, and flipping a bit is a trivial operation, we can confidently say that D is also a Turing machine.
+
+Another misconception is thinking that H might just be really slow. But the proof we’re discussing allows H to take an arbitrarily long time; it just needs to halt eventually. If H halts, it creates a contradiction for any decider we construct. 
+
+Some students also confuse the diagonal flip with simulation. D doesn’t simulate M sub i; it checks the diagonal cell M sub i with the input ⟨M sub i⟩ to determine yes or no, based on H’s decision. 
+
+And here’s a crucial point: even if you think a decider only fails for one input, that one contradiction is enough to prove undecidability. Mathematics doesn’t tolerate even a single inconsistency. Lastly, some might wonder about using a probabilistic H. But the same reasoning applies: if H always halts, randomness doesn’t save the situation; the diagonal flip still leads to a contradiction.

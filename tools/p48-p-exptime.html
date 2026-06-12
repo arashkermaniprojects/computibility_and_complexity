@@ -5,7 +5,7 @@
 <h1>P ⊊ EXPTIME · proved strict</h1><p class="sub">Time hierarchy theorem: there is a problem in EXPTIME outside P.</p>
 <div class="tags"><span class="tag-pill">CLO-5</span><span class="tag-pill warn">R3·40 pts</span><span class="tag-pill info">L16</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · P ⊊ EXPTIME · one of the few proven separations</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p48-s1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">1 · P ⊊ EXPTIME · one of the few proven separations</div>
 <p>Of all the famous class containments — P vs NP, NP vs PSPACE, PSPACE vs EXPTIME — only one is unconditionally proven strict: <strong>P ⊊ EXPTIME</strong>. Almost everything else around it is open.</p>
 <div class="theorem-box"><div class="theorem-label">Proof via Time Hierarchy</div>
 <p style="margin:4px 0;">The Time Hierarchy Theorem (Problem 46) says TIME(f) ⊊ TIME(f · log f) for time-constructible f. So TIME(n<sup>k</sup>) ⊊ TIME(n<sup>k</sup> · log n) for each k. Taking the union over all k gives P. Setting f = 2<sup>n</sup>: TIME(2<sup>n</sup>) ⊊ TIME(2<sup>n</sup> · n). In particular, TIME(2<sup>n</sup>) strictly contains some language not in TIME(n<sup>k</sup>) for any k, hence not in P.</p>
@@ -15,13 +15,13 @@
 </div>
 </section>
 
-<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p48-s2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">2 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Walk the proof <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="pe-run">⏸ Pause</button><button class="btn ghost" id="pe-step">Step</button><button class="btn ghost" id="pe-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="pe-speed" min="0.25" max="3" step="0.25" value="1"><span id="pe-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="pe-svg" viewBox="0 0 760 280" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="pe-explain"></div></div></section>
-<section><div class="section-label">3 · Pitfalls</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p48-s3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">3 · Pitfalls</div>
 <ul style="margin:6px 0 0 20px;">
   <li><strong>P ⊊ EXPTIME doesn't imply P ⊊ NP.</strong> Determinism and nondeterminism are different axes. P ⊊ EXPTIME compares deterministic-time bounds; P ⊊ NP would compare det vs nondet.</li>
   <li><strong>EXPTIME-complete problems aren't in P.</strong> If they were, P = EXPTIME, contradicting the separation. So generalised chess, succinct circuit problems, etc., really are outside P.</li>
@@ -29,14 +29,14 @@
 </ul>
 </section>
 
-<section><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p48-s4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
 <li><div class="q">Q1. What's an explicit language in EXPTIME \ P?</div><div class="a">The "halt within 2<sup>n</sup> steps" diagonaliser from the Time Hierarchy proof. Concrete natural examples: generalised chess (EXPTIME-complete), succinct PROBLEM-SUCCINCT (any P-complete or PSPACE-complete problem with succinct encoding moves up one level).</div></li>
 <li><div class="q">Q2. Why is P ⊊ EXPTIME provable but P ⊊ NP not?</div><div class="a">The Time Hierarchy compares time bounds within the same machine model (deterministic). NP uses nondeterminism — a different machine model. We don't have a hierarchy theorem connecting deterministic time to nondeterministic time of the same bound.</div></li>
 <li><div class="q">Q3. Are there separations between P and PSPACE?</div><div class="a">P ⊊ PSPACE is open. If we could prove P ⊊ PSPACE we'd also resolve P vs NP (since NP ⊆ PSPACE). Most believe P ⊊ PSPACE but no proof is known.</div></li>
 <li><div class="q">Q4. What can we conclude from P ⊊ EXPTIME and NP ⊆ PSPACE ⊆ EXPTIME?</div><div class="a">At least one of: NP ⊊ PSPACE, PSPACE ⊊ EXPTIME, or NP = EXPTIME is true (otherwise we'd contradict P ⊊ EXPTIME). But we don't know which.</div></li>
 </ul></section>
 
-<section><div class="section-label">5 · Where to read more</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p48-s5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">5 · Where to read more</div>
 <p><strong>Sipser:</strong> Corollary 9.16 (P ⊊ EXPTIME). <strong>Lecture notes:</strong> Module 7 slide 5. <strong>Companion problems:</strong> P46 (Time Hierarchy), P47 (NL ⊊ PSPACE), P63 (NP ⊆ EXPTIME).</p>
 </section></div><footer class="foot">P48 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){

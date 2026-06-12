@@ -5,7 +5,7 @@
 <h1>Space vs Time · TIME(f) ⊆ SPACE(f) ⊆ TIME(2<sup>O(f)</sup>)</h1><p class="sub">Visualise the time/space tradeoff for typical algorithms.</p>
 <div class="tags"><span class="tag-pill">CLO-5</span><span class="tag-pill warn">R3·40 pts</span><span class="tag-pill info">L13</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · The space–time sandwich</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p33-s1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">1 · The space–time sandwich</div>
 <p>Time and space measure two different resources of a Turing machine: how many <em>steps</em> it takes vs how many distinct <em>tape cells</em> it uses. The two are related but not identical, captured by Sipser's fundamental sandwich theorem.</p>
 
 <div class="theorem-box"><div class="theorem-label">Inclusion theorem (Sipser §8.1)</div>
@@ -24,14 +24,14 @@
 </div>
 </section>
 
-<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p33-s2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">2 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Bar chart for 5 algorithms <span class="pill">Auto-plays</span></div>
 <div class="controls"><label>n: <input type="range" id="x-n" min="4" max="20" value="10" style="width:130px;"><span id="x-nl">10</span></label>
 <button class="btn play-btn" id="x-run">⏸ Pause</button><button class="btn ghost" id="x-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="x-speed" min="0.25" max="3" step="0.25" value="1"><span id="x-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="x-svg" viewBox="0 0 760 240" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="x-explain"></div></div></section>
-<section><div class="section-label">3 · Pitfalls</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p33-s3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">3 · Pitfalls</div>
 <ul style="margin:6px 0 0 20px;">
   <li><strong>f(n) ≥ log n is a real requirement.</strong> Sublogarithmic space is too small to even index the input position — most theorems break below log n.</li>
   <li><strong>"Space" excludes the input tape.</strong> Standard convention (Sipser): space = work-tape cells used. The input tape is read-only and doesn't count. Otherwise PSPACE would equal P trivially via input length.</li>
@@ -39,14 +39,14 @@
 </ul>
 </section>
 
-<section><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p33-s4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
 <li><div class="q">Q1. Why isn't TIME = SPACE?</div><div class="a">Space can be reused; time can't. A SPACE(f)-bounded machine can revisit the same cells exponentially many times before either halting or entering a loop. Time can't be reused — once a step is taken, it's gone.</div></li>
 <li><div class="q">Q2. Real examples of "space-cheap, time-expensive"?</div><div class="a">Depth-first search with explicit stack: O(depth) space, but exponentially many leaves to explore in worst case. Branch-and-bound, alpha-beta pruning, recursive backtracking — all use polynomial space with exponential running time.</div></li>
 <li><div class="q">Q3. Is the SPACE ⊆ TIME(exp) bound tight?</div><div class="a">In the relativised world, yes — there are oracles separating PSPACE from EXPTIME. Whether PSPACE = EXPTIME or PSPACE ⊊ EXPTIME is open.</div></li>
 <li><div class="q">Q4. Where does NL fit?</div><div class="a">NL = NSPACE(log n). NL ⊆ P (Savitch's theorem plus deterministic simulation). NL ⊆ PSPACE trivially. NL = coNL (Immerman–Szelepcsényi).</div></li>
 </ul></section>
 
-<section><div class="section-label">5 · Where to read more</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p33-s5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">5 · Where to read more</div>
 <p><strong>Sipser:</strong> §8.1 (space complexity). <strong>Lecture notes:</strong> Module 6 slide 1. <strong>Companion problems:</strong> P34 (Savitch tree), P35 (PSPACE vs NPSPACE), P63 (NP ⊆ EXPTIME).</p>
 </section></div><footer class="foot">P33 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){

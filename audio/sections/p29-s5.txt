@@ -1,0 +1,5 @@
+If you want to dive deeper into the relationship between 3SAT and SUBSET-SUM, a great resource is Sipser's textbook. Check out Theorem 7.56, which clearly lays out the polynomial-time reduction from 3SAT to SUBSET-SUM. It’s a thorough explanation and really helps to solidify the concepts we’ve been discussing.
+
+You might also want to look at some lecture notes, specifically in Module 5. They provide a good overview of what we've covered and can help reinforce your understanding of the digit-position trick we talked about. 
+
+To really test your comprehension, tackle the companion problems. Problem 27 focuses on the reduction from 3SAT to CLIQUE, while Problem 28 takes you from CLIQUE to Vertex Cover. These are great exercises to see how these concepts interconnect. Finally, Problem 30 deals with the HAMPATH reduction, which is another important area in computational theory. Working through these will give you a solid grasp of the material and help you see how these problems relate to each other.

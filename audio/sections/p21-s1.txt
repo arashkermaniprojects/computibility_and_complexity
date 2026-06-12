@@ -1,0 +1,5 @@
+Let’s dive into the concept of NP, starting with what it means for a language to be in NP. Imagine you have a problem, and you can think of a solution as a certificate or a witness. A language is in NP if there’s a way to check those solutions quickly, specifically in polynomial time. 
+
+Take the SAT problem, which is about whether a logical formula can be satisfied. The certificate here is a specific assignment of true or false values to the variables. You can plug in this assignment into the formula and check if every clause is satisfied. This verification process can be done in linear time relative to the number of clauses, which is much faster than trying to find the assignment itself.
+
+Now, if you were to use a brute-force solver, you’d have to try every possible combination of assignments, which grows exponentially with the number of variables. This huge difference in complexity between checking a solution and finding one is at the heart of the P versus NP question. No one knows if there’s a way to find those witnesses quickly, and that’s why it’s considered one of the million-dollar problems in computer science.

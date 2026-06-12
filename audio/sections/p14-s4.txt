@@ -1,0 +1,5 @@
+Let’s dive into this animated demo that illustrates Rice's theorem in action. Imagine we have a Turing machine that processes some input. Now, what we want to explore is how we can determine properties of the language recognized by this Turing machine.
+
+As we watch this animation, you’ll see the Turing machine auto-play through its transitions. It reads the input and moves through its states. What's interesting here is that we can pause and step through the process if we want to analyze what’s happening at a specific moment. This is a great way to visualize how the machine interacts with the input.
+
+Now, as the machine runs, think about how it loops back on itself. The key takeaway is that even though we can observe the behavior of this machine, we can’t necessarily decide non-trivial properties about the language it recognizes. That’s the essence of Rice's theorem. It states that any non-trivial semantic property of the language recognized by a Turing machine is undecidable. So, while we can see the machine in action, figuring out certain characteristics of its language is beyond our reach.

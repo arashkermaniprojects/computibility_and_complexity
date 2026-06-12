@@ -1,0 +1,5 @@
+Let’s dive into the exciting world of complexity classes, particularly focusing on EXPTIME and PSPACE. Imagine we have two separate realms of computational problems: PSPACE, where problems can be solved using polynomial memory, and EXPTIME, where solutions can be found in exponential time. 
+
+Now, we know that every problem that can be solved in PSPACE can also be solved in EXPTIME, which is like saying every book in a library can also fit on a bigger shelf. But the big question is whether there are problems in EXPTIME that are not in PSPACE. That’s an open question in computer science.
+
+Picture this: if PSPACE is a cozy library, EXPTIME is a vast and sprawling one. We suspect there are books in that vast library that just can’t fit in the cozy one, but we haven’t been able to prove it yet. Why? Well, we don’t have a solid way to demonstrate that some problems require more than polynomial space to solve. It’s like trying to show that a certain book exists without being able to see it; we can’t find a specific example to prove it either way. So, the mystery continues!

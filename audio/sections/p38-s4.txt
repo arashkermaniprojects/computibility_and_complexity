@@ -1,0 +1,7 @@
+Let’s dive into some important questions about the game. First, why is the no-vertex-repeat rule so crucial? Imagine if players could move in cycles. The game would just go on forever without a winner. By enforcing this rule, the game can only last as long as there are vertices, meaning it will end in at most the number of vertices moves. This gives us defined winning strategies that we can actually compute.
+
+Now, how does the proof of PSPACE-completeness work? We can reduce TQBF₃ to generalized geography. You create a graph with special structures called gadgets. For instance, you’d build a diamond for each variable, allowing the player in charge to choose true or false. There’s also a clause chain that the universal player moves through to try to falsify conditions. This connection mirrors the evaluation tree of QBF, making the proof fit nicely together.
+
+Next, let’s talk about the minimax algorithm. It operates in exponential time because the game tree can have a huge number of nodes, specifically 2 to the power of O(n) in the worst-case scenario. However, it only needs polynomial space. By using a depth-first approach, it keeps track of the current path, so it only uses O(n) cells. This is why generalized geography is in PSPACE but we don’t know if it fits into P.
+
+Finally, are real-world games PSPACE-complete? Yes! Generalized chess on n by n boards is PSPACE-complete, assuming the moves are polynomial. Generalized Go is at least PSPACE-hard. In fact, many natural board games become at least PSPACE-hard when you generalize them.

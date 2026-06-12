@@ -1,0 +1,7 @@
+Let’s dive into some important points about Savitch’s theorem and the Q&A notes. First, when we talk about why we consider f squared instead of just f, think about recursion depth. It’s logarithmic in terms of time, which means if we have a function f, we’ll have about log(t) levels of recursion. Each stack frame holds one configuration, which takes up space proportional to f. So, if you multiply the number of levels, log(t), by the space each frame takes, you get O(f squared) in total.
+
+Now, why doesn’t this apply to time? Unlike space, time isn’t reusable. When a recursive call finishes, it frees up space, but you still burned time on those computations. For example, with CANYIELD, if it makes two recursive calls that each take t over two, you still end up using t total, so there aren’t any savings.
+
+And what about whether NTIME(f) is a subset of TIME(f squared)? That’s actually a big part of the P versus NP question. If it were true, it would imply P equals NP, which is a huge deal in computer science. 
+
+Lastly, while Savitch’s theorem suggests a theoretical efficient algorithm, in practice it’s not so efficient. The overhead in constant factors can be really heavy, and CANYIELD’s recursion explores a lot of midpoints, making it not very practical despite its conceptual importance.

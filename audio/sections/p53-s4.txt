@@ -1,0 +1,7 @@
+Let’s talk about how empirical data can support our understanding of algorithm running times, specifically when we suspect an O(n²) bound. When we double the input size, n, we should see the number of steps roughly quadruple. If we plot the number of steps divided by n squared against n, we’re looking for a flat line. If that ratio starts drifting upwards, it suggests there might be hidden logarithmic factors at play.
+
+Now, you might wonder if there’s a constant factor that we’re missing. That’s possible because Big-O notation ignores constant factors. So, while empirical timing can’t distinguish between different constants in asymptotic bounds, we’re really testing the shape of the function. If steps over n squared maintains a consistent shape, that supports our claim about the algorithm’s growth.
+
+If the algorithm was actually O(n²·log n), we’d see a slight upward curve in our plot. For O(n³), the steps over n squared would grow linearly, and for O(n log n), it would decrease. 
+
+Remember, this empirical profiling is more of a sanity check. For a formal proof of Θ(n²), we need to provide both an upper and a lower bound. The upper bound might come from counting pairs of inputs, while the lower bound would require deeper combinatorial analysis. Empirical testing helps validate our upper bound, but the lower bound is where the real proof work happens.

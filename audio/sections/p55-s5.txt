@@ -1,0 +1,5 @@
+If you want to dive deeper into the Cook–Levin theorem and understand it thoroughly, there are some great resources to check out. A key text is Sipser's book, where you can find Theorem 7.37 that covers the foundational aspects of the theorem and its implications for NP-completeness. It's a solid read that breaks down the concepts in a clear way.
+
+Additionally, if you're looking for a more hands-on approach, the lecture notes for this module offer a helpful overview, especially on the specific encoding of the HAMPATH verifier into a SAT formula. It’s a practical look at how these concepts play out in real scenarios.
+
+Don’t forget the companion problems too! Problem 25 focuses on the Cook-Levin tableau, which is a great exercise in applying what you’ve learned. And Problem 22 is all about SAT, which will reinforce your understanding of satisfiability and its connections to NP-completeness. Exploring these resources will give you a deeper insight into the topic and help solidify your grasp on it.

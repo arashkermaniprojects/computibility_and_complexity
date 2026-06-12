@@ -1,0 +1,9 @@
+Let’s tackle some questions that often come up when discussing the reduction from A sub T M to HALT sub T M. 
+
+First, what happens if M loops? When we reach step 3, we know R has confirmed that M halts. So in this case, the simulation is guaranteed to terminate because R absorbs the risk of M looping. Now, if we skipped R and directly simulated M, we’d run into trouble. If M loops on w, the simulation would never return. Without R, there's no way to differentiate between M not halting and simply being in a state of "not yet halted." R is crucial because it turns S into a decider instead of just a recognizer.
+
+Now, why do we call this a Turing reduction instead of a mapping reduction? The key is that S calls R as a subroutine, plus it does additional work in step 3. A mapping reduction would create a new pair ⟨M', w'⟩ from ⟨M, w⟩, where membership in HALT sub T M would directly lead to membership in A sub T M. Both types of reductions show undecidability, but mapping reductions are stricter.
+
+If you're asked how to construct a mapping reduction from A sub T M to HALT sub T M, you would take ⟨M, w⟩ and create ⟨M', w⟩ where M' simulates M on w. If M accepts, M' halts; if M rejects, M' loops. This way, M accepts w if and only if M' halts on w, meaning ⟨M', w⟩ is in HALT sub T M.
+
+Finally, is HALT sub T M at least recognizable? Absolutely. You can simulate M on w and accept as soon as it halts. If it never halts, the recognizer will loop, but that’s perfectly fine for recognizers.

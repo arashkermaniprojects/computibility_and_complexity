@@ -1,0 +1,5 @@
+If you're looking to dive deeper into the topic of SAT and 3SAT along with auxiliary-variable splitting, there are some great resources that can really help you solidify your understanding. One of the best places to start is Michael Sipser's textbook. Specifically, check out section 7.4, where he presents Theorem 7.32. This theorem is the canonical statement of the reduction from SAT to 3SAT, and it lays out the foundation of why this transformation is so crucial.
+
+Additionally, you can look at the lecture notes from your course, particularly Module 5. There's a part that outlines the NP-complete chain starting from SAT, which can help visualize how these concepts connect. 
+
+If you want even more insight, try exploring MIT's 18.404J course. Lecture 16 is particularly relevant, as it covers the same construction but presents it with a slightly different approach and diagram. These resources will give you a comprehensive view and deepen your grasp of the material.

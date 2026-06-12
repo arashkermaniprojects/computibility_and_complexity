@@ -1,0 +1,7 @@
+Let’s break down the construction of the universal Turing machine step by step. Imagine you have a Turing machine M that you want to simulate. First, U, the universal Turing machine, needs to read M’s current state, which we’ll call q, and the symbol that M’s head is currently on, let’s call it s. Both of these are stored on U’s tape.
+
+Now, U will scan a predefined area on its tape, looking for a line that matches the pair (q, s). This line tells U what to do next: it will have a new state q’, a new symbol s’, and a direction d for M’s head to move. If U can’t find a matching line, it means M is stuck, and U will halt, giving whatever verdict M would give, usually rejecting the input.
+
+If U finds that matching line, it writes s’ onto M’s tape, updates M’s state to q’, and moves M’s head one cell in the direction d. If q’ happens to equal q accept, then U accepts. If it equals q reject, then U rejects. If it’s neither, U loops back to the beginning to repeat the process.
+
+This construction leads us to the concept of Turing-recognizability. We can define a recognizer R that runs U on the input ⟨M, w⟩. If U accepts, R accepts; if U rejects, R rejects. If M loops, R loops too, but since R only needs to recognize, it can loop indefinitely on inputs that aren’t accepted or rejected. This is where we see the difference between recognizability and decidability. A recognizer can loop forever, while a decider cannot. We still don’t know if a clever decider for the acceptance problem exists, but later on, we’ll show it can’t.

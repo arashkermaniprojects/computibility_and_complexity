@@ -1,0 +1,5 @@
+Imagine you’re working with a tiny instance of the Hamiltonian Path problem, or HAMPATH for short. This involves finding a path in a graph that visits every vertex exactly once. Now, when we encode the verifier for this problem into a SAT formula, we break it down into clauses that represent possible connections between vertices.
+
+Think of each clause as a tiny piece of logic that tells us something about the path. For example, if we have three vertices, A, B, and C, a clause might express that if we are at A, we can go to B or C, but not both at the same time. As we progress, we can animate these clause families to show how they interact. 
+
+When the animation auto-plays, you can see each clause lighting up, representing different possibilities. You can pause to inspect how specific clauses enforce constraints on the path. You might even reset the demo to see the clauses build up from scratch. Adjusting the speed lets you grasp how these logical components weave together to form a complete solution. It’s a dynamic way to visualize how the HAMPATH verifier operates within a SAT framework!

@@ -1,0 +1,5 @@
+Let’s talk about the bridge theorem. This theorem essentially states that a language, which we’ll call L, is decidable if and only if both L and its complement, which we can denote as L bar, are Turing-recognizable. Now, why do we call it the bridge theorem? Well, it connects the concepts of decidability and Turing-recognizability in a meaningful way.
+
+Think of decidable languages as sitting inside the larger category of recognizable languages. The crux of the theorem is that for a language to be decidable, you need to have recognizers for both L and its complement. Just having one isn’t sufficient. For example, consider the language A sub T M. We know it has a recognizer, but its complement does not. This means A sub T M is undecidable.
+
+So, in essence, decidability requires that you can recognize both a language and what it’s not, making it “doubly recognizable.” This interplay is what makes the bridge theorem so powerful and essential in understanding the landscape of formal languages.

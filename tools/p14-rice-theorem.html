@@ -15,7 +15,7 @@
 
 <div class="wrap">
 
-<section><div class="section-label">1 · Why this matters · the BIG picture</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p14-s1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">1 · Why this matters · the BIG picture</div>
 <p>
 Rice's theorem is the <strong>master undecidability theorem</strong>. After proving a handful of specific languages
 undecidable (E<sub>TM</sub>, REGULAR<sub>TM</sub>, EQ<sub>TM</sub>, …), one starts to wonder: is there a unifying
@@ -33,7 +33,7 @@ The theorem is one line, but its consequences span every introductory undecidabi
 </p>
 </section>
 
-<section><div class="section-label">2 · Setup · semantic vs syntactic properties</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p14-s2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">2 · Setup · semantic vs syntactic properties</div>
 <p>The crucial dichotomy:</p>
 <table style="font-size:13.5px;width:100%;border-collapse:collapse;margin:10px 0;">
 <thead><tr style="background:var(--gold-soft);">
@@ -50,7 +50,7 @@ The theorem is one line, but its consequences span every introductory undecidabi
 <p>"Depends only on L(M)" means: if L(M<sub>1</sub>) = L(M<sub>2</sub>), then P(M<sub>1</sub>) = P(M<sub>2</sub>). This is the formal definition of semantic.</p>
 </section>
 
-<section><div class="section-label">3 · The proof · reduction from A<sub>TM</sub></div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p14-s3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">3 · The proof · reduction from A<sub>TM</sub></div>
 <p>Assume L<sub>P</sub> is decidable. Take a TM T<sub>∅</sub> with L(T<sub>∅</sub>) = ∅, and another TM T<sub>P</sub> with L(T<sub>P</sub>) having property P. (WLOG ∅ does not have P; otherwise apply to ¬P.) Build M' from ⟨M, w⟩:</p>
 <div class="theorem-box" style="background:#fffaf3;"><div class="theorem-label">Construction of M'</div>
 <p style="margin:4px 0;font-family:var(--mono);font-size:13.5px;">
@@ -63,7 +63,7 @@ M' = "on input x:<br>
 <p>If M accepts w: L(M') = L(T<sub>P</sub>) has P. If M does not accept w: L(M') = ∅ does not have P. So ⟨M, w⟩ ∈ A<sub>TM</sub> ⇔ ⟨M'⟩ ∈ L<sub>P</sub>. A decider for L<sub>P</sub> ⇒ decider for A<sub>TM</sub>. Contradiction. <span class="math">∎</span></p>
 </section>
 
-<section><div class="section-label">4 · Animated demo · auto-plays · loops</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p14-s4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">4 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Decide if Rice applies <span class="pill">Auto-plays</span></div>
 <div class="controls">
 <button class="btn play-btn" id="rc-run">⏸ Pause</button><button class="btn ghost" id="rc-step">Step</button><button class="btn ghost" id="rc-reset">Reset</button>
@@ -73,7 +73,7 @@ M' = "on input x:<br>
 <div class="explain-panel" id="rc-explain"></div>
 </div></section>
 
-<section><div class="section-label">5 · Worked example · "Does M accept any prime?"</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p14-s5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">5 · Worked example · "Does M accept any prime?"</div>
 <p>Apply Rice to the property P = "L(M) contains the binary encoding of some prime."</p>
 <ol style="font-size:14px;line-height:1.65;">
 <li>Nontrivial? Yes — TM<sub>1</sub> = "accept only 10" has P (10 = 2 is prime). TM<sub>2</sub> = "accept only 1" lacks P.</li>
@@ -82,7 +82,7 @@ M' = "on input x:<br>
 <p>So "does this program ever accept a prime?" is <strong>undecidable</strong>. By the same argument, every program-behavior question about output is undecidable in general. This is why pattern-matching and runtime testing replace formal verification in everyday practice.</p>
 </section>
 
-<section><div class="section-label">6 · Connections · Rice's many children</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p14-s6.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">6 · Connections · Rice's many children</div>
 <ul style="font-size:14px;line-height:1.7;">
 <li><strong>E<sub>TM</sub></strong> · P = "L(M) is empty" — special case.</li>
 <li><strong>REGULAR<sub>TM</sub></strong> · P = "L(M) is regular" — special case.</li>
@@ -92,7 +92,7 @@ M' = "on input x:<br>
 </ul>
 </section>
 
-<section><div class="section-label">7 · Common pitfalls · what students miss</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p14-s7.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">7 · Common pitfalls · what students miss</div>
 <ol style="font-size:14px;line-height:1.7;">
 <li><strong>"Rice says everything is undecidable."</strong> No — only nontrivial <em>semantic</em> properties. Syntactic and trivial ones can be decidable.</li>
 <li><strong>Confusing "M halts on w" with "L(M) ∋ w".</strong> Different! "M halts" includes rejecting halts; "w ∈ L(M)" means M accepts. The first is HALT<sub>TM</sub>, the second is A<sub>TM</sub> — both undecidable by reduction, but different statements.</li>
@@ -102,7 +102,7 @@ M' = "on input x:<br>
 </ol>
 </section>
 
-<section><div class="section-label">8 · Q&amp;A defence notes</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p14-s8.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">8 · Q&amp;A defence notes</div>
 <ul class="qa-list">
 <li><div class="q">Q1. Why must P be nontrivial?</div><div class="a">A trivial property (true for all TMs or for none) is trivially decidable. Rice's theorem only kicks in once there are both yes-TMs and no-TMs.</div></li>
 <li><div class="q">Q2. Why must P depend only on L(M)?</div><div class="a">If two TMs with the same language can differ on P (e.g., "M has 5 states"), then P isn't a property of the language at all — and Rice doesn't apply.</div></li>
@@ -111,7 +111,7 @@ M' = "on input x:<br>
 <li><div class="q">Q5 (bonus). Does Rice apply to NFA / DFA / CFG?</div><div class="a">No — these models have <em>decidable</em> language properties (emptiness, equivalence for DFA, etc.). Rice needs the full power of TMs, where simulating arbitrary computation makes everything semantic undecidable.</div></li>
 </ul></section>
 
-<section><div class="section-label">9 · How to present this in class</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p14-s9.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">9 · How to present this in class</div>
 <p style="font-size:13.5px;"><strong>Total time: 12 minutes.</strong></p>
 <ul style="font-size:13.5px;line-height:1.7;">
 <li><strong>(1 min)</strong> Motivation: "We've seen E<sub>TM</sub>, REGULAR<sub>TM</sub>, etc. all undecidable. Why?"</li>

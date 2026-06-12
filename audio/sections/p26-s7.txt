@@ -1,0 +1,5 @@
+When working with auxiliary variables in the context of transforming CNF clauses into 3-CNF, there are a few common pitfalls to watch out for. First, remember that each clause needs its own unique auxiliary variables. If you reuse a variable, like a₁, across different splits, you create dependencies that can mess up the satisfiability. Each clause should be treated as its own batch, so keep them fresh. 
+
+Also, don’t forget about unit clauses and 2-clauses. They don’t fit into the 3-CNF format right away, so you need to pad them out to ensure they fit the requirements. This ensures that your output is a proper 3-CNF formula. 
+
+When proving the reverse direction, it's crucial to use a chain argument — just saying "by symmetry" isn't enough. You need to show how a forced assignment propagates through each link until it reaches the last clause. If you gloss over this step, you risk losing marks. Lastly, pay attention to how different sources define 3SAT. Some might say "at most 3 literals," while others, like Sipser, insist on "exactly 3." Always check which definition your rubric follows to align your work accordingly.

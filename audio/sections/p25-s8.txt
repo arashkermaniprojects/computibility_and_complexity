@@ -1,0 +1,9 @@
+Let’s dive into some key questions about the Cook–Levin tableau and how it relates to SAT. First off, why do we use a 2 by 3 window? Well, when a Turing machine makes a transition, it only really affects the cell where the head is and maybe its immediate neighbors. That’s why two rows and three columns perfectly captures the essence of that transition. 
+
+Now, onto why we can maintain polynomial size in our tableau. The dimensions are n to the k by n to the k, which gives us a number of cells that's polynomial in size. Each cell corresponds to a combination of possible symbols and states, leading to a formula size that also remains polynomial relative to the input size. 
+
+Next, consider the SAT formula itself. The formula is satisfiable if and only if there’s a valid accepting tableau. In simpler terms, there’s a certificate that makes the Turing machine accept the input if the formula holds true.
+
+Now, let’s talk about why this trick doesn’t work for EXPTIME problems. An EXPTIME verifier runs for an exponential time, leading to an exponentially sized tableau and formula. It’s satisfiable if the input is in the language, but you can’t express that in polynomial time, which breaks the NP-style reduction to SAT.
+
+Finally, is there a chance SAT could have a sub-exponential algorithm? That’s still an open question. The Exponential Time Hypothesis conjectures that 3SAT can't be solved faster than exponential time, but we don’t have a definitive proof one way or the other.

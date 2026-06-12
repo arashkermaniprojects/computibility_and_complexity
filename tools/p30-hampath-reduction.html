@@ -5,7 +5,7 @@
 <h1>3SAT → HAMPATH · gadget reduction</h1><p class="sub">Variable diamonds + clause spreaders. Path = assignment.</p>
 <div class="tags"><span class="tag-pill">CLO-4</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L12</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · The gadget reduction · diamonds + spreaders</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p30-s1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">1 · The gadget reduction · diamonds + spreaders</div>
 <p>3SAT ≤<sub>p</sub> HAMPATH (Sipser §7.5). The reduction builds a graph whose Hamiltonian paths correspond to satisfying assignments. Two pieces:</p>
 <div class="theorem-box"><div class="theorem-label">Variable gadget · the diamond</div>
 <p style="margin:4px 0;">For each variable x<sub>i</sub>, build a "diamond" — a long row of nodes connected so that a Hamiltonian path must traverse the diamond either left-to-right (encoding x<sub>i</sub> = true) or right-to-left (encoding x<sub>i</sub> = false). No mixed traversal possible.</p>
@@ -16,13 +16,13 @@
 <p>The Hamiltonian path must visit each c<sub>j</sub>. The only way to do so without breaking the diamond's required traversal is to use an edge that the assigned literal makes "available" — i.e., an edge in a diamond being traversed in the direction matching the clause's literal. So a Hamiltonian path exists iff every clause has at least one true literal.</p>
 </section>
 
-<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p30-s2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">2 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Build the gadget for n=2, m=2 <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="hm-run">⏸ Pause</button><button class="btn ghost" id="hm-step">Step</button><button class="btn ghost" id="hm-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="hm-speed" min="0.25" max="3" step="0.25" value="1"><span id="hm-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="hm-svg" viewBox="0 0 760 320" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="hm-explain"></div></div></section>
-<section><div class="section-label">3 · Pitfalls</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p30-s3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">3 · Pitfalls</div>
 <ul style="margin:6px 0 0 20px;">
   <li><strong>The diamond is more than a chain.</strong> It has internal structure that <em>forces</em> directional traversal — you can't half-traverse. Sipser's Figure 7.49 shows the precise wiring.</li>
   <li><strong>Each clause node must be visited exactly once.</strong> Hamiltonian = every vertex used once. The spreaders are visited via "side trips" from the diamonds.</li>
@@ -30,13 +30,13 @@
 </ul>
 </section>
 
-<section><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p30-s4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
 <li><div class="q">Q1. What does "traversal direction = assignment" mean?</div><div class="a">Each variable diamond has two valid Hamiltonian traversals: left-to-right (encoding x<sub>i</sub> = true) or right-to-left (encoding x<sub>i</sub> = false). The Hamiltonian path picks one direction per diamond, and the collection of choices defines a Boolean assignment.</div></li>
 <li><div class="q">Q2. How does the clause spreader work?</div><div class="a">For each clause C, the clause node c<sub>j</sub> connects to specific edges inside the diamonds. Crucially: an edge inside x<sub>i</sub>'s diamond is "available for c<sub>j</sub>'s visit" only when that diamond is being traversed in the direction matching the literal in C. So visiting c<sub>j</sub> requires that at least one of its literals is true.</div></li>
 <li><div class="q">Q3. Size of the gadget?</div><div class="a">The diamond for each variable has O(m) nodes (to accommodate connections to all clauses), so the whole graph has O(n·m) nodes and O(n·m) edges. Polynomial in formula size.</div></li>
 </ul></section>
 
-<section><div class="section-label">5 · Where to read more</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p30-s5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">5 · Where to read more</div>
 <p><strong>Sipser:</strong> Theorem 7.46, Figures 7.49–7.51. <strong>Lecture notes:</strong> Module 5 slide 5. <strong>Companion problems:</strong> P23 (HAMPATH verifier), P29 (SUBSET-SUM).</p>
 </section></div><footer class="foot">P30 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){

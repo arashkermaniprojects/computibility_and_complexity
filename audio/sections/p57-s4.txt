@@ -1,0 +1,7 @@
+Let’s dive into some key questions about the relationship between PSPACE and EXPTIME. First, why does the Time Hierarchy theorem show that P is strictly contained in EXPTIME, but not PSPACE? Well, the hierarchy theorem is all about comparing time-bounded classes using the same resource model. P deals with polynomial time, while EXPTIME handles exponential time, allowing us to establish a strict separation. On the other hand, PSPACE is focused on polynomial space, which makes it tricky to directly compare to EXPTIME. Bridging time and space isn't something the hierarchy theorem covers.
+
+Now, is it possible that PSPACE equals EXPTIME? Currently, we can't rule that out. Most experts lean towards believing that PSPACE is indeed strictly contained in EXPTIME, suggesting exponential time is much larger than polynomial space. However, there’s no definitive proof yet. 
+
+When we think about P versus NP, we see a chain: P is contained in NP, which is contained in PSPACE, and then PSPACE is contained in EXPTIME. The only proven strict containment is between P and EXPTIME. One of the middle inclusions must be strict, but we don’t know which one. 
+
+Lastly, the sandwich theorem tells us that if a function f is bounded in space, it fits within the time constraints of 2 raised to the power of f, which gives us that PSPACE is contained in EXPTIME. However, we don't know if the reverse is true, and many believe it isn't.

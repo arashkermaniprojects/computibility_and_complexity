@@ -1,0 +1,7 @@
+Let’s trace the algorithm using the input "000111". We start with three pairs of zeros and ones. First, we mark the leftmost zero, changing it to X. Then we move to the right until we find the leftmost unmarked one, marking it as Y. So now our tape looks like X, 0, 0, Y, 1, 1. This took about six steps.
+
+Next, we rewind to the leftmost position again. We mark the next zero, changing it to X, and repeat the process. We walk right, find the next unmarked one, and mark it as Y. Our tape updates to X, X, 0, Y, Y, 1. This round costs us roughly twelve steps.
+
+For the third pair, we rewind yet again, mark the next zero, and walk right to find the next one to mark as Y. Now we have X, X, X, Y, Y, Y, and this step takes about eighteen steps.
+
+Finally, we rewind to check for any unmarked zeros. Since there are none left, we accept this input. For three pairs, we roughly used eighteen steps, and if we double the input to six pairs, we’d end up around seventy-two steps. This demonstrates how doubling the input quadruples the work, highlighting that quadratic growth in our algorithm.

@@ -1,0 +1,5 @@
+If you want to dive deeper into the topic of generalized Hex and its PSPACE-completeness, there are some great resources you can check out. A solid starting point is Michael Sipser's textbook, especially section 8.3, where he discusses PSPACE-complete games. It provides a clear overview and is very accessible.
+
+For a more historical perspective, you might want to explore the work by Even and Tarjan from 1976, which lays out the foundational proof for Hex being PSPACE-complete. It’s a bit more technical but definitely worth the read if you're interested in the underlying theory.
+
+Additionally, if you're looking for practical applications and exercises, check out the lecture notes related to this topic. There are some companion problems that can really enhance your understanding. For example, problem 38 focuses on geography, and problem 40 is centered around chess. These problems will help you see how the concepts you’ve learned apply in different contexts. So, whether you're looking for theory or practical exercises, these resources will definitely enrich your understanding of generalized Hex and its complexities!

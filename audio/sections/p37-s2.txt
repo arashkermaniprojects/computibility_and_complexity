@@ -1,0 +1,7 @@
+Let’s dive into how we can normalize a sample quantified Boolean formula, or QBF. Imagine you have a QBF that you want to transform into a specific format. The first step is to put it into prenex form, which organizes the quantifiers in a sequence, alternating between existential and universal. 
+
+As we work through this, picture an animated demo playing out in front of us. You can see the QBF adjusting, with the quantifiers shifting into their proper order. You might notice buttons for auto-play, pause, step, reset, and speed control. These features allow you to manipulate the demo at your own pace. 
+
+If you hit the auto-play, the animation auto-plays through the normalization process, showing each transformation clearly. If you need a moment to digest a part, just hit pause. Want to go step-by-step through a specific transformation? That’s what the step button is for. And if you ever feel lost, the reset button brings everything back to the start. You can also adjust the speed to make the changes easier to follow. 
+
+This interaction makes understanding how to convert a QBF into its 3-CNF matrix much more intuitive.

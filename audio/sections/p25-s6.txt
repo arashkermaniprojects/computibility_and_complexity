@@ -1,0 +1,5 @@
+Let’s dive into the NP-complete family tree, starting with Cook and Levin. Their work laid the groundwork for showing that every NP-complete problem can be reduced from SAT, or more specifically 3SAT. This reduction is a key concept; to prove that another problem is NP-complete, you essentially show how to convert a SAT instance into that problem.
+
+Take 3SAT for example. You can transform each clause of your formula into 3-literal clauses, sometimes using auxiliary variables to help out. Moving to CLIQUE, you represent the vertices as literal occurrences, and then you connect edges between compatible literals that are in different clauses. 
+
+Now if you look at VERTEX-COVER, it’s related to CLIQUE but on the complement graph—it’s like looking at the opposite relationships. Then there are other problems like SUBSET-SUM, HAMPATH, 3-COLOR, TSP, and SCHEDULING. They all use clever reductions from 3SAT. Karp’s 1972 paper was a game changer, adding 21 new problems to the NP-complete list. Later, Garey and Johnson cataloged hundreds more in their book, expanding our understanding of this fascinating family of problems.

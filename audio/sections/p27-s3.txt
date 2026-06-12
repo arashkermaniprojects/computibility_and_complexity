@@ -1,0 +1,7 @@
+Let’s walk through how we can visualize the transformation from a 3SAT problem to a graph for the CLIQUE problem. Imagine we have a Boolean formula in conjunctive normal form with clauses containing exactly three literals. Each clause corresponds to a triangle in our graph. 
+
+Now, think of each literal as a vertex. When we create our graph G for the formula, we connect vertices with edges based on the clauses. If a literal appears in a clause, it connects to its two companions in that clause, creating a triangle. 
+
+You can see how this works in the animated demo. It starts with a Boolean formula and builds the graph step by step. As the triangles form, it really highlights how the connections work. When the graph is complete, the goal is to find a 3-clique, which is a set of three vertices where each vertex connects to every other vertex. 
+
+So, if we can find a 3-clique in our graph, that tells us our original formula is satisfiable. If not, it means there’s no satisfying assignment. Watching the demo auto-play helps reinforce how the graph structure reflects the logic of the original formula. You can pause and reset to explore different examples, which is a great way to really grasp this transformation.

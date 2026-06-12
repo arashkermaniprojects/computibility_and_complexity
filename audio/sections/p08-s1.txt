@@ -1,0 +1,5 @@
+Let’s talk about the problem of deciding whether two Turing machines recognize the same language, which is known as the EQ TM problem. This problem asks if for two machines, M1 and M2, the languages they accept are exactly the same. Our goal is to show that this problem is undecidable by reducing another problem, A TM, to it.
+
+To do this, we’ll fix one machine, M1, that simply rejects every input. So, M1’s language is empty. Now, we need to construct a second machine, M2, that behaves differently based on whether another machine, M, accepts a specific input, w. M2 will ignore its input, x, and will simulate M on w. If M accepts w, then M2 accepts everything—meaning its language is all strings. If M does not accept w, then M2 also has an empty language.
+
+When we put this together, M1 and M2 will have the same language if and only if M does not accept w. In other words, if M2 has an empty language, it means M did not accept w, and thus we have successfully transformed our A TM question into an EQ TM question in a clever way.

@@ -1,0 +1,5 @@
+Let’s explore how two different perspectives on the same proof can give us deeper insights. Both views use the diagonal argument, but they present it in different ways. One view is the classic diagonalization approach, which is quite familiar and straightforward. The other view comes from the recursion theorem, which gives us a more generalized framework. 
+
+What’s interesting is that the recursion theorem allows us to package the argument in a way that makes it easier to apply to other problems. For example, when we look at Rice's theorem, we see a similar structure. Instead of saying “D decides A sub T M,” we simply shift our focus to “D decides any non-trivial property of L of M.” 
+
+This shift illustrates how powerful the diagonal argument can be—it’s not just about one specific problem, but rather a template that can adapt to various situations in computability theory. By understanding both views, we can appreciate the underlying principles and see how they connect across different areas of study.

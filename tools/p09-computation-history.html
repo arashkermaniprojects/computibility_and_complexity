@@ -15,7 +15,7 @@
 
 <div class="wrap">
 
-<section><div class="section-label">1 · What a computation history is</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p09-s1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">1 · What a computation history is</div>
 <p>A <strong>computation history</strong> of M on w is the full sequence of configurations the TM passes through, written as a single string with separators:</p>
 <div class="math-block">C<sub>1</sub> # C<sub>2</sub> # C<sub>3</sub> # … # C<sub>ℓ</sub></div>
 <p>Each configuration C<sub>i</sub> records the entire state of the computation at one moment: the tape contents, the head position, and the current control state. Convention (Sipser §5.1): write the state symbol inside the tape, immediately to the left of the head cell. So if M is in state q<sub>3</sub> with head at position 4 on tape "01100", we write C = <span class="math">0110 q<sub>3</sub> 0</span>. State + head + tape, all encoded in one string of constant local width.</p>
@@ -30,7 +30,7 @@
 <p>Why this matters: humble machine models (LBAs, CFGs, even some restricted NFAs) can perform local checks. They cannot simulate a full TM, but they <em>can</em> verify that someone's claimed computation history is genuine. This is the engine behind E<sub>LBA</sub> undecidability (Problem 10) and ALL<sub>CFG</sub> undecidability (Problem 11).</p>
 </section>
 
-<section><div class="section-label">2 · What's local? The 2×3 window</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p09-s2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">2 · What's local? The 2×3 window</div>
 <div class="diagram" style="margin:14px 0;">
 <svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
   <text x="380" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">Adjacent configurations C_i and C_{i+1} agree everywhere except in a 2×3 window around the head</text>
@@ -79,7 +79,7 @@
 <p>This is the "local checkability" claim made concrete. A change of configuration affects at most three cells (one head cell plus its two neighbours, since the head can move left or right). Verifying a step means reading those three cells in C<sub>i</sub>, checking that the corresponding three cells in C<sub>i+1</sub> match what δ prescribes. No global memory needed.</p>
 </section>
 
-<section><div class="section-label">3 · Animated demo · auto-plays · loops</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p09-s3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">3 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Render a TM's full execution as a history <span class="pill">Auto-plays</span></div>
 <div class="controls">
 <label>Preset: <select id="hh-preset"><option value="copy">copy 00 → 00X</option><option value="parity">parity check 0000</option></select></label>
@@ -90,7 +90,7 @@
 <div class="explain-panel" id="hh-explain"></div>
 </div></section>
 
-<section><div class="section-label">4 · Pitfalls students stumble on</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p09-s4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">4 · Pitfalls students stumble on</div>
 <ul style="margin:6px 0 0 20px;">
   <li><strong>The state inside the tape is part of the string.</strong> Encoding C<sub>i</sub> = 0110q<sub>3</sub>0 means the q<sub>3</sub> symbol literally appears in σ between the 4th and 5th tape symbols. The alphabet of σ is Γ ∪ Q (tape symbols + state symbols).</li>
   <li><strong>"Computation history" implies <em>halting</em>.</strong> If M loops on w, there's no accepting computation history — the string σ doesn't exist. Reductions exploit exactly this: M accepts w iff some valid σ exists.</li>
@@ -99,7 +99,7 @@
 </ul>
 </section>
 
-<section><div class="section-label">5 · Q&amp;A defence notes</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p09-s5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">5 · Q&amp;A defence notes</div>
 <ul class="qa-list">
 <li><div class="q">Q1. Why insert the state inside the tape?</div><div class="a">A configuration must capture tape contents, head position, and state in one string. Writing the state symbol immediately before the head cell encodes all three compactly and lets the 2×3 window detect head movement directly — the state symbol shifts left or right between C<sub>i</sub> and C<sub>i+1</sub>.</div></li>
 <li><div class="q">Q2. Why is local checkability so powerful?</div><div class="a">It bridges Turing power and humbler models. LBAs / CFGs can verify a 2×3 window but cannot count globally. Local checking is in their power; full TM simulation isn't. Computation histories let undecidable TM questions hide inside emptiness or universality questions about LBAs and CFGs.</div></li>
@@ -108,7 +108,7 @@
 <li><div class="q">Q5. Could we use a different separator instead of #?</div><div class="a">Yes — any symbol not in Γ ∪ Q works. # is convention because it's visually clean. The choice doesn't affect the construction.</div></li>
 </ul></section>
 
-<section><div class="section-label">6 · Where to read more</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p09-s6.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">6 · Where to read more</div>
 <p><strong>Sipser:</strong> §5.1 introduces computation histories formally; Theorem 5.10 (E<sub>LBA</sub>) and Theorem 5.13 (ALL<sub>CFG</sub>) apply them. <strong>Lecture notes:</strong> Module 3 slides 1–4 use the same picture. <strong>Companion problems:</strong> P10 (E<sub>LBA</sub>) and P11 (ALL<sub>CFG</sub>) are direct applications of this technique.</p>
 </section>
 

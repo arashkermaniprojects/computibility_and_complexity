@@ -1,0 +1,5 @@
+Let’s talk about why this mapping reduction is a many-one reduction and why that’s important. A many-one reduction is defined by a single computable function that transforms one problem into another. In our case, we take the encoding of a Turing machine and an input, denoted as ⟨M, w⟩, and we produce a new encoding ⟨M1, M2⟩. 
+
+What’s crucial here is that this transformation is purely syntactic. We’re not running any simulations or making calls to oracles during this process; we’re just writing down the descriptions of two new Turing machines. The real computation, the actual simulation, will only happen later when we run M2.
+
+Now, because this reduction is many-one, we can transfer the undecidability of one problem to another cleanly. If we could decide whether two Turing machines are equivalent, then by applying our function, we could decide whether a given machine accepts a certain input. But that leads us to a contradiction since we know that the acceptance problem is undecidable. This direct correspondence is what makes many-one reductions powerful and significant in the realm of computability theory.

@@ -1,0 +1,7 @@
+Let’s dive into Big-O notation. When we say that a function f(n) is O(g(n)), we're saying that f is eventually upper-bounded by a constant multiple of g. To break that down, we need a couple of constants: one is c, which can be any positive number, and the other is n zero, which is some starting point. So, for all n greater than or equal to n zero, f(n) will always be less than or equal to c times g(n).
+
+Now, it’s important to understand that this constant c doesn’t limit us. For instance, both 1000n squared and n squared fall under O(n squared). They’re in the same class because that multiplicative factor doesn’t change the essence of growth.
+
+Also, we only care about behavior for large n. Any quirky behavior for small n doesn’t affect our classification. 
+
+There are also related notations. If we talk about Ω(g), that gives us a lower bound, meaning f is greater than or equal to c times g for large n. And then there’s Θ(g), which means f is both O(g) and Ω(g) at the same time, giving us a tight bound. Lastly, there’s little o notation, where f is strictly upper-bounded by g, meaning f divided by g approaches zero as n grows. Understanding these relationships helps us analyze algorithms effectively.

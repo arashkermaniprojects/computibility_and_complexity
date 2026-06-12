@@ -1,0 +1,5 @@
+Let’s talk about some common pitfalls students encounter when dealing with the REGULARTM problem. One major mistake is forgetting about the first branch of our construction. If you don’t ensure that the language accepts 0 to the n followed by 1 to the n, you end up with a situation where L(M') is empty when M doesn’t accept w. And remember, an empty language is regular, which defeats the purpose of your construction.
+
+Another point of confusion is mixing up the concepts of "regular" and "decidable." While the language {0 to the n 1 to the n} is definitely decidable, it’s not regular. The gadget we’re using needs to combine both decidable and non-regular elements to work effectively.
+
+Also, don’t get caught up thinking that M' has to be deterministic. While the standard model of Turing machines is deterministic, M' can use a polynomial-time gadget on its input without being strictly deterministic. Lastly, be careful with the logic direction. When you say ⟨M, w⟩ is in A sub T M, you need to remember that this implies L(M') is regular. Don’t flip that relationship; it’s crucial for your understanding.

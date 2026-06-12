@@ -6,7 +6,7 @@
 <div class="tags"><span class="tag-pill">CLO-4</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L11</span></div></header>
 <div class="wrap">
 
-<section><div class="section-label">1 · What we are reducing, and why we care</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p26-s1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">1 · What we are reducing, and why we care</div>
 <p>SAT asks: given an arbitrary CNF formula, is there an assignment that satisfies it? 3SAT is the same question but restricted to formulas where <em>every</em> clause has exactly three literals. Cook–Levin proves SAT is NP-complete. Once we reduce SAT to 3SAT in polynomial time, 3SAT inherits the NP-completeness — and because 3SAT has a clean uniform shape, it becomes the starting point for almost every other NP-completeness proof in the chain (CLIQUE, VERTEX-COVER, HAM-PATH, SUBSET-SUM…).</p>
 
 <div class="theorem-box"><div class="theorem-label">Goal of the reduction</div>
@@ -15,7 +15,7 @@
 <p>The whole trick is one rule applied repeatedly. We replace each clause of width <em>k</em> with a chain of clauses of width 3, glued together by <em>fresh auxiliary variables</em>. The chain has the property that <em>any</em> satisfying assignment of the chain implies at least one of the original literals was true, and conversely if one of the original literals is true the chain can be satisfied by an appropriate choice of auxiliaries.</p>
 </section>
 
-<section><div class="section-label">2 · The splitting rule, by clause width</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p26-s2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">2 · The splitting rule, by clause width</div>
 
 <div class="diagram" style="margin:14px 0;">
 <svg viewBox="0 0 760 360" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
@@ -69,7 +69,7 @@
 <p>The two "pad" cases (k = 1 and k = 2) are the ones students forget. The auxiliary variables <em>p, q</em> there are fresh — each clause-pad gets its own. The four-clause padding for <em>k</em> = 1 forces ℓ<sub>1</sub> to be true in every satisfying assignment, which is exactly what the unit clause (ℓ<sub>1</sub>) demands. The two-clause padding for <em>k</em> = 2 forces ℓ<sub>1</sub> ∨ ℓ<sub>2</sub> for the same reason: no choice of <em>p</em> can satisfy both clauses unless ℓ<sub>1</sub> ∨ ℓ<sub>2</sub> already holds.</p>
 </section>
 
-<section><div class="section-label">3 · Why satisfiability is preserved · both directions</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p26-s3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">3 · Why satisfiability is preserved · both directions</div>
 
 <div class="theorem-box"><div class="theorem-label">Forward direction (⇒)</div>
 <p style="margin:4px 0;">Suppose φ is satisfiable under assignment τ. Take any clause C of width <em>k</em> ≥ 4. Some literal ℓ<sub>j</sub> in C is true under τ. Walk the chain left to right and set each auxiliary <em>a<sub>i</sub></em> to <strong>true</strong> while <em>i</em> &lt; <em>j</em> − 1, then to <strong>false</strong> from <em>i</em> = <em>j</em> − 1 onward. Every chain-clause becomes satisfied: the early ones because their <em>a<sub>i</sub></em> is true; the clause containing ℓ<sub>j</sub> because ℓ<sub>j</sub> is true; the later ones because their <em>¬a<sub>i</sub></em> is true.</p></div>
@@ -78,7 +78,7 @@
 <p style="margin:4px 0;">Suppose φ′ is satisfied under τ′. Project τ′ back to the original variables. Claim: at least one ℓ<sub>j</sub> of the original clause C is true. Suppose for contradiction that <em>all</em> ℓ<sub>1</sub>, …, ℓ<sub>k</sub> are false. Then the first chain-clause forces <em>a<sub>1</sub></em> = true (else nothing in it is satisfied). The second chain-clause now needs <em>a<sub>2</sub></em> = true (its <em>¬a<sub>1</sub></em> is false and both literals are false). Propagating, <em>every</em> <em>a<sub>i</sub></em> = true. But the final chain-clause is (¬a<sub>k−3</sub> ∨ ℓ<sub>k−1</sub> ∨ ℓ<sub>k</sub>) — ¬a<sub>k−3</sub> is false, ℓ<sub>k−1</sub> and ℓ<sub>k</sub> are false — contradiction. So some ℓ<sub>j</sub> must be true.</p></div>
 </section>
 
-<section><div class="section-label">4 · Worked example · one CNF formula start-to-finish</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p26-s4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">4 · Worked example · one CNF formula start-to-finish</div>
 <p>Take the formula</p>
 <div style="text-align:center;font-family:var(--mono),ui-monospace,monospace;font-size:14px;padding:10px;background:#f7f7f3;border-radius:6px;">φ = (x₁ ∨ x₂ ∨ ¬x₃ ∨ x₄ ∨ ¬x₅) ∧ (¬x₁ ∨ x₃) ∧ (x₂)</div>
 <p>Three clauses of widths 5, 2, 1. Apply the rules:</p>
@@ -90,14 +90,14 @@
 <p>Result: a 3CNF with 9 clauses and 5 new variables — same satisfiability as φ. Sanity check: original has 3 clauses summing to 5+2+1 = 8 literals, output has 9 clauses summing to 27 literals; the growth is linear in the size of φ.</p>
 </section>
 
-<section><div class="section-label">5 · Animated demo · auto-plays · loops</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p26-s5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">5 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Split a 4-literal clause <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="s-run">⏸ Pause</button><button class="btn ghost" id="s-step">Step</button><button class="btn ghost" id="s-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="s-speed" min="0.25" max="3" step="0.25" value="1"><span id="s-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <div id="s-display" style="min-height:200px;padding:30px;text-align:center;font-family:ui-monospace,monospace;font-size:18px;"></div>
 <div class="explain-panel" id="s-explain"></div></div></section>
 
-<section><div class="section-label">6 · Polynomial-time check · why the reduction is a ≤<sub>p</sub></div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p26-s6.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">6 · Polynomial-time check · why the reduction is a ≤<sub>p</sub></div>
 <p>For a clause of width <em>k</em>, the splitting produces:</p>
 <ul style="margin:8px 0 0 20px;">
   <li><em>k</em> − 2 new clauses</li>
@@ -106,7 +106,7 @@
 <p>So if φ has <em>m</em> clauses with total literal count <em>L</em>, the output 3CNF has at most <em>L</em> clauses and <em>L</em> auxiliary variables in the worst case. The reduction runs in <strong>O(L)</strong> time — clearly polynomial in |φ|. Padding for <em>k</em> = 1 or 2 adds at most 4 clauses each, again linear.</p>
 </section>
 
-<section><div class="section-label">7 · Pitfalls students stumble on</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p26-s7.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">7 · Pitfalls students stumble on</div>
 <ul style="margin:6px 0 0 20px;">
   <li><strong>Auxiliary variables must be fresh per clause.</strong> If you reuse <em>a₁</em> across two clause-splits, you create unwanted dependencies and break preservation. Every clause introduces its own batch.</li>
   <li><strong>Don't forget k = 1 and k = 2.</strong> Unit clauses and 2-clauses aren't already in 3CNF. You must pad them, otherwise the output isn't a 3CNF formula at all.</li>
@@ -115,7 +115,7 @@
 </ul>
 </section>
 
-<section><div class="section-label">8 · Q&amp;A defence notes</div><ul class="qa-list">
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p26-s8.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">8 · Q&amp;A defence notes</div><ul class="qa-list">
 <li><div class="q">Q1. Why a fresh auxiliary variable per clause?</div><div class="a">Reusing an auxiliary across multiple clause-splits creates correlations between unrelated clauses — if <em>a</em> is forced true to satisfy one chain, the other chain inherits that constraint and might become unsatisfiable when the original was satisfiable. Freshness keeps the chains independent.</div></li>
 <li><div class="q">Q2. Is the reduction many-one or Turing?</div><div class="a">Many-one (mapping reduction). The function takes the CNF formula as input and returns the 3CNF formula as output. No oracle calls.</div></li>
 <li><div class="q">Q3. What is the size blow-up?</div><div class="a">Linear. Total clause-literals stay within O(L). The constant is small — typically 3× for the worst case of all-unit clauses, which pad 1 literal into 12.</div></li>
@@ -123,7 +123,7 @@
 <li><div class="q">Q5. Why is 2SAT in P but 3SAT NP-complete?</div><div class="a">2SAT can be decided by implication graphs and strongly-connected components in linear time. The jump at 3 happens because once you allow three literals, you have enough room to encode arbitrary Boolean constraints — Cook–Levin's tableau clauses are all 3-literal for exactly this reason.</div></li>
 </ul></section>
 
-<section><div class="section-label">9 · Where to read more</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p26-s9.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">9 · Where to read more</div>
 <p><strong>Sipser:</strong> §7.4, Theorem 7.32 (the canonical statement of this reduction). <strong>Lecture notes:</strong> Module 5, slide 4 (the NP-complete chain starting from SAT). <strong>MIT 18.404J Lecture 16</strong> covers the same construction with a slightly different diagram.</p>
 </section>
 

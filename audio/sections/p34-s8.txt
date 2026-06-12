@@ -1,0 +1,9 @@
+Let's dive into some key questions about Savitch's theorem. First up, why doesn’t it prove that P equals NP? Well, Savitch's theorem applies specifically to space complexity. The clever part is the logarithmic recursion depth, which works beautifully for space since each level can reuse memory. But when we look at time complexity, we actually have to execute both branches of the recursion, leading to a total time of two to the log t, which is just t. So, there's no speedup there.
+
+Now, where does that f squared come from? Think about the recursion levels. The depth is logarithmic in terms of two to the O of f, so we have O of f levels. Each level needs to store one configuration, which takes O of f bits. When you multiply the number of levels by the bits stored at each level, you end up with f squared.
+
+Next, what about the midpoint M? This M represents all possible configurations, which is two to the O of f. We can test each candidate M in a deterministic loop, checking both halves recursively. If at least one M works, we accept; if none does, we reject. The beauty is that we reuse the memory slot for M throughout.
+
+Is Savitch's bound tight? That’s an open question in complexity theory. We don’t know if NSPACE of f is actually a subset of SPACE of f raised to the power of 1.99 or even just SPACE of f. 
+
+Finally, what problem in PSPACE drives this whole discussion? It’s the true quantified Boolean formulas, or TQBF. Solving TQBF directly would take exponential time. But with Savitch's approach, we can solve it in PSPACE by evaluating the quantifiers depth-first and reusing memory at each level.

@@ -1,0 +1,7 @@
+If you’re looking to dive deeper into log-space machines and palindromes, a great place to start is with Sipser’s textbook. In section 8.4, you’ll find clear definitions of L and NL, along with some insightful examples that really illustrate the concepts. It’s a foundational resource that many students find helpful.
+
+Also, check out the lecture notes from your course. Module 7 has some key information that can reinforce what you’re learning. It’s often useful to see concepts presented in different ways, so these notes can complement what you read in Sipser.
+
+Don’t forget about the companion problems, too. They’re a fantastic way to apply what you’ve learned. Problems 42 and 43 discuss NL-PATH and show that PATH is NL-complete, which is crucial for understanding the boundaries of log-space. And for a real challenge, problem 44 involves inductive counting, which can deepen your grasp of these concepts. 
+
+Engaging with these resources will give you a well-rounded understanding, so take your time with them!

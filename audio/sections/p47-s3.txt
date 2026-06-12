@@ -1,0 +1,5 @@
+Let’s dive into some common pitfalls when discussing hierarchy theorems, especially in the context of space and time complexity. First off, it’s crucial to remember that these theorems show how classes of problems separate when we’re talking about resources. For example, SPACE(f) is strictly contained in SPACE(f times log). This means that if you have a bit more space, you can solve strictly more problems, but this only applies when you’re using the same type of resource. 
+
+Also, don’t mix up different resources. The hierarchy doesn’t compare time to space or deterministic to nondeterministic. The cleanest separation we have at the polynomial-space scale is NL being strictly contained in PSPACE. But when it comes to the relationships like NL being contained in P, P being contained in NP, and so on, the gaps are still open questions except for NL and PSPACE. 
+
+The quadratic gap between these classes is significant, and it stems from Savitch’s theorem, which gives us a log-squared n bound for converting nondeterministic space to deterministic space. Tightening that bound is still a major open problem in complexity theory.

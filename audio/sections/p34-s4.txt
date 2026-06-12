@@ -1,0 +1,5 @@
+Imagine a tree structure where each branch represents a choice in a nondeterministic computation. This is how we visualize Savitch's theorem, which tells us that we can simulate a nondeterministic space machine using deterministic space, but with a twist. As we explore this tree, we notice that it expands exponentially, but the depth is much more manageable, specifically logarithmic. 
+
+Now, picture an animated demo where this tree auto-plays, illustrating how each level represents a different depth of computation. At each step, the branches represent the different possible configurations or paths we could take based on our nondeterministic choices. When you think of depth, remember it’s related to log base t, which keeps the process efficient despite the exponential growth of paths.
+
+As we watch the tree expand, notice how it pauses and resets at certain points, allowing us to digest the information. This demo runs at a steady speed, making it easier to follow the intricate details of how Savitch's theorem works. By the end, it becomes clear how we can utilize deterministic space to manage the complexity of nondeterministic computations effectively.

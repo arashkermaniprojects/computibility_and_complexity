@@ -1,0 +1,7 @@
+Let’s walk through an example where our function f(n) equals n, which means we’re working with linear space. Imagine we have a nondeterministic machine that uses n bits of tape. This gives us a certain number of configurations. Since each configuration can be any combination of those bits, we end up with 2 to the power of O(n) configurations.
+
+Now, if we think about how long this machine might run, we can see that the maximum time t it takes is also 2 to the power of O(n). The recursion depth, which tells us how many times we can branch out before hitting the base case, is logarithmic in t. So, we find that the recursion depth is log t, which simplifies to O(n).
+
+Each time we create a new stack frame in our simulation, it holds one configuration, which takes O(n) bits. If we multiply the number of configurations, 2 to the power of O(n), by the space per configuration, O(n), we get a total deterministic space requirement of O(n²). 
+
+For example, if n equals 100, our deterministic simulation would use about 10,000 bits of memory. While it might take an enormous number of steps—like 2 to the power of 10,000—what's crucial here is that while the time can blow up, the space is still manageable. This is the essence of Savitch's theorem: space is what really matters in this context.

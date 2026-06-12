@@ -1,0 +1,11 @@
+Let’s delve into the theory behind encoding the HAMPATH verifier as a SAT formula. We start with a specific NP language, HAMPATH, which is all about Hamiltonian paths in graphs. The idea is to construct a formula, denoted as φ sub x, using four key clause families.
+
+First, we have φ cell. This clause family ensures that each cell in our grid representation contains exactly one symbol or state. Think of it as making sure that every position on our path has a valid state, preventing any overlap.
+
+Next, we have φ start. This part focuses on the initial configuration of the graph and the path. Specifically, it ensures that the first row corresponds to the start configuration based on our graph G and the proposed path π. It basically sets the stage for where our journey begins.
+
+Then comes φ accept. This clause family is crucial because it guarantees that at least one row in our grid contains the accepting state, which we often denote as q accept. This is how we confirm that our path is valid and meets the acceptance criteria.
+
+Finally, we have φ move. This family checks that every 2 by 3 window in our grid reflects a valid move according to the transition function, denoted as δ. It ensures that our path follows the rules of movement within the graph.
+
+Together, these families combine to form a complete SAT formula that captures the essence of the HAMPATH problem, allowing us to verify Hamiltonian paths effectively.

@@ -1,0 +1,7 @@
+Let’s dive into the questions around counting and its implications in complexity classes. First, why does counting help? When we determine the count of reachable vertices, we can check if a vertex, say v, is unreachable. We do this by nondeterministically exploring all c sub n reachable vertices. If we can verify each one is reachable and v isn’t among them, we can confidently conclude that v is indeed unreachable.
+
+Now, why does this work for NL but not for NP? In NL, the configurations are polynomially bounded and log-sized. This means we can count and verify them efficiently within log space. In contrast, NP has an exponential witness space, which makes it impossible to count inductively in polynomial time given a polynomial time budget.
+
+Next, what does NL equals coNL mean? When we say PATH is in NL, it means we can verify the existence of a path using a nondeterministic log-space machine. The equality NL equals coNL indicates that we can also verify UNREACHABILITY, meaning confirming that there’s no path, in the same way. This property shows that NL is self-dual under complement, unlike NP, where the conjecture is that NP does not equal coNP.
+
+Finally, what about other classes closed under complement? We have P, NSPACE of functions greater than or equal to log n, and coNL. However, NP and coNP seem to be distinct, although that's still unproven. This difference likely ties back to the time and space asymmetry; remember, space is reusable while time is not.

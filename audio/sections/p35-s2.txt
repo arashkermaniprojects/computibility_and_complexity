@@ -1,0 +1,7 @@
+Let’s dive into how Savitch's theorem helps us understand the relationship between NPSPACE and PSPACE. Imagine we have a non-deterministic space-bounded machine that can explore many different paths through its computation. We can visualize this with a configuration graph, where each node represents a possible state of the machine and each edge indicates a transition based on the machine's rules.
+
+Now, to apply Savitch's technique, we can think about how we can simulate these non-deterministic choices using a deterministic approach. This is where the concept of "auto-playing" comes in. Picture the machine moving through the configuration graph, where it can explore paths without actually committing to them.
+
+As we watch the animation, notice how it pauses at critical points, allowing us to see each configuration clearly. If the machine reaches a dead end, we can step back and reset to a previous configuration, almost like rewinding a video. We can also adjust the speed, speeding through the exploration or slowing down to focus on specific transitions.
+
+This interactive approach helps us see how the space complexity grows, and by applying Savitch's method, we can prove that any non-deterministic space computation can be simulated using a deterministic one, but with a squared space overhead. This is a powerful insight into the nature of computation and the boundaries between deterministic and non-deterministic processes.

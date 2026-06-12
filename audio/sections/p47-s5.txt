@@ -1,0 +1,5 @@
+If you want to dive deeper into this topic, a great resource is the book by Michael Sipser. Specifically, take a look at Theorem 9.10, which covers the time hierarchy. It’s really important for understanding how complexity classes relate based on time constraints. You should also check out section 9.1, which discusses the space hierarchy. This will help you grasp how different classes of problems can fit into the larger picture of space complexity. 
+
+Another critical theorem in Sipser’s book is Theorem 8.5, which discusses Savitch's theorem. This theorem shows that nondeterministic space is not fundamentally more powerful than deterministic space, which ties closely into our topic of NL being a subset of PSPACE.
+
+If you’re looking for more practice, the companion problems can be really helpful. Problem 35 deals with the relationship between PSPACE and NPSPACE, while Problem 46 focuses on the time hierarchy. Working through these will solidify your understanding and give you hands-on experience with these concepts.

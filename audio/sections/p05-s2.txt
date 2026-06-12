@@ -1,0 +1,5 @@
+Let’s dive into what a reduction is, because it’s really at the heart of complexity theory. When we say that problem A reduces to problem B, we mean that if you can solve problem B, then you can also solve problem A. We use the notation A is less than or equal to B, written as A ≤ B. 
+
+Now, here’s where it gets interesting. If we can show that A is unsolvable, then we can conclude that B must also be unsolvable. Why? Because if solving B would solve A, and we already know A can’t be solved, then B can’t be solved either. This idea helps us understand the relationships between different problems.
+
+There are two main flavors of reductions. The first is a Turing reduction, where A’s decider can call B’s decider as a helper anytime it wants, plus do some extra work around those calls. The second type is a mapping reduction, which is a bit stricter. In this case, A’s decider produces a single input for B, and then the answer from B directly gives us the answer for A. Understanding these reductions helps us navigate through the complexities of problem-solving in computer science.

@@ -1,0 +1,7 @@
+When studying computation history, there are a few common pitfalls that can trip students up. First, remember that the state within the tape is part of the string itself. For example, if you have an encoding like C sub i equals 0110q sub 3 0, the symbol q sub 3 literally exists in the string between the fourth and fifth tape symbols. So, when you're working with these encodings, the tape's alphabet includes both the tape symbols and the state symbols.
+
+Another important point is that "computation history" suggests that the machine must halt. If your machine loops on an input, that means there's no valid computation history for that input, and therefore, the corresponding string doesn’t exist. This ties into reductions: a machine M accepts an input w if and only if there’s a valid string σ that represents an accepting computation history.
+
+Also, be cautious about local checks. They can consider the order of symbols in either direction. For instance, a two-by-three window can work left-to-right or right-to-left because the constraints are symmetric. This is why context-free grammars and linear bounded automata can verify certain properties—they can check a candidate history regardless of the order.
+
+Finally, don’t confuse verification with production. An LBA or a CFG can verify a candidate history, but it can't generate all possible histories without knowing how to simulate the machine. However, that’s not a problem, because just having any accepting history is sufficient for our purposes.

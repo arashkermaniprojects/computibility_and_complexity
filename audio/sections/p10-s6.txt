@@ -1,0 +1,5 @@
+If you're looking to dive deeper into the topic of undecidability, especially regarding the language E LBA, I recommend checking out Sipser’s book, specifically section 5.1. You'll find Theorem 5.10 particularly relevant as it outlines why E LBA is undecidable. It's a foundational piece that sets the stage for understanding more complex ideas in computability.
+
+Also, take a look at the lecture notes from Module 3. They cover the definition of a linear bounded automaton and walk you through the construction of the machine B sub M, w, which recognizes the accepting computation histories of a given machine M on an input w. This construction is vital for grasping how we prove undecidability.
+
+For practice, I suggest working on the companion problems as well. Problem 9 focuses on computation histories, which is a prerequisite for understanding other concepts. Problem 11 introduces a sibling technique using context-free grammars instead of LBAs, while Problem 62 compares A LBA with E LBA, helping you solidify those distinctions. Engaging with these resources will deepen your understanding and strengthen your grasp of these critical computational concepts.

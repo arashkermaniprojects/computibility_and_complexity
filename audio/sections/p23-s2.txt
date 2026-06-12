@@ -1,0 +1,7 @@
+Let’s break down the four checks we need to perform to verify a Hamiltonian path. First, we check the length of the sequence. We want to ensure that the number of vertices in the path matches the number of vertices in our graph. If there are too few or too many, we can immediately rule out that it’s a valid path.
+
+Next, we need to confirm distinctness. This means we have to make sure that every vertex in the path is unique. If any vertex repeats, it’s not a valid Hamiltonian path, since we can only visit each vertex once.
+
+The third check is about the edges. We have to verify that each consecutive pair of vertices in the path is connected by an edge in the graph. If any two vertices in the sequence don't have an edge between them, then that path cannot exist.
+
+Finally, we confirm that the path starts and ends at the correct vertices, which typically means it should start at the first vertex and finish at the last vertex of the sequence provided. These checks ensure that the path we have is indeed a Hamiltonian path.

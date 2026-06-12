@@ -1,0 +1,7 @@
+Let’s dive into the forward direction of the bridge theorem. If we say that a language L is decidable, that means we have a decider, let’s call it D, which can always determine whether any given input is in L or not. So, D will halt and either accept or reject any input.
+
+Now, when we think about L being recognizable, it’s pretty straightforward. Since D halts on every input and directly tells us whether it’s in L, we can use D as a recognizer for L without any problems. 
+
+But what about the complement of L, which we call L̅? This is where things get a bit interesting. We can create a new machine, D prime, to recognize L̅. D prime takes an input x, runs D on it, and then simply outputs the opposite of what D says. If D accepts x, D prime will reject it, and vice versa. 
+
+So, D prime will also halt for every input, making it a decider for L̅. Therefore, since we can recognize both L and L̅, we confirm that if L is decidable, both L and L̅ are Turing-recognizable.

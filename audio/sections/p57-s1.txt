@@ -1,0 +1,5 @@
+Let’s dive into the relationship between these complexity classes: P, PSPACE, and EXPTIME. We know that P is a subset of PSPACE, which basically means that any problem solvable in polynomial time can also be solved using polynomial space. Then we have PSPACE, which is contained within EXPTIME. This means that any problem that can be solved with a polynomial amount of space can also be solved in exponential time.
+
+Now, here's where it gets interesting. We’ve established that P is strictly smaller than EXPTIME, thanks to the time hierarchy theorem. But when it comes to PSPACE and EXPTIME, whether PSPACE is strictly smaller than EXPTIME remains an open question. 
+
+Why is that? Well, we have solid hierarchy theorems that help us understand the relationships within time and within space, but we lack similar theorems that compare these two resources against each other. So, we can’t easily prove that PSPACE is strictly smaller than EXPTIME. This gap is a key reason why the relationship between these classes is still an area of active research. It’s a fascinating part of complexity theory that illustrates just how intricate these concepts are!

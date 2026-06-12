@@ -1,0 +1,5 @@
+When we talk about hierarchy theorems, we're really focusing on how resources like time and space relate to each other within the same bounds. For example, we can compare time complexity to time complexity or space complexity to space complexity. But when we try to compare space to time, things get murky. That’s where the pitfalls come in. 
+
+Now, it’s consistent with our understanding that PSPACE could equal EXPTIME, and there’s no hard evidence to rule it out. Most computer scientists lean towards the belief that these two classes are distinct, but the lack of a proof is pretty striking. It’s one of those situations in theoretical computer science where intuition seems to clash with formal evidence.
+
+On the flip side, we do have some proven separations, like P being strictly contained in EXPTIME. That’s a clear distinction. But for many other pairs—like P versus NP, NP versus PSPACE, and PSPACE versus EXPTIME—the relationship remains open. It shows just how complex and subtle these relationships can be, making it an intriguing area of study.

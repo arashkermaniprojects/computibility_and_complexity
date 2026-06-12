@@ -1,0 +1,7 @@
+Let’s dive into a dynamic demonstration of the Hex game, where we’ll see how the gameplay unfolds between two players, Red and Blue. Picture a hexagonal board, and as the game progresses, you’ll notice pieces being placed strategically. 
+
+Now, imagine we have an automated version of this game. The auto-play feature allows us to watch the pieces get placed without any manual input. This can help us observe the strategies each player employs. You’ll see Red and Blue alternating turns, each trying to connect their sides of the board while blocking the opponent’s moves.
+
+If you want to slow things down or pause, you can do that too. Maybe you want to analyze a specific moment in the game or reflect on a strategic move. With a quick pause, you can consider what’s happening on the board. 
+
+You can also reset the game at any time if you want to start fresh or experiment with different strategies. Adjusting the speed lets you control how fast the game plays out, allowing for a more in-depth look at each move. This interactive experience not only makes the learning process engaging but also highlights the complexity and depth of strategy involved in Hex.

@@ -1,0 +1,5 @@
+Imagine we're working with a diagonalization argument to show that there are problems that time-bounded Turing machines can't solve efficiently. Think about a diagonalizer D that runs in time f of n times log f of n. This means that D can tackle problems that are more complex than what a time f of n Turing machine could handle. 
+
+Now, let’s visualize this with an animated demo. Picture the diagonalizer auto-playing through a series of steps. You can see it moving through its computations, each step representing a different problem being processed. If D hits a wall—maybe it’s taking too long on a specific input—it can pause, step back, or reset its progress, all while keeping the speed constant.
+
+This dynamic interaction helps illustrate how D manages to outpace the time constraints of simpler machines. The key takeaway is that there’s a clear hierarchy: for every time-bounded machine running at f of n, there are more complex problems that require at least time f of n times log f of n to solve. This creates an exciting landscape of computational limits!

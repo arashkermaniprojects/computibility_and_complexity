@@ -5,15 +5,15 @@
 <h1>Generalized Hex is PSPACE-complete</h1><p class="sub">A more elegant example than chess.</p>
 <div class="tags"><span class="tag-pill">CLO-4</span><span class="tag-pill warn">R3·40 pts</span><span class="tag-pill info">L14</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · Theory</div><p>Hex: two players (Red, Blue) place stones on a hex grid; Red tries to connect top to bottom, Blue connects left to right. Standard Hex is determined (first player wins) but finding the winning move is non-trivial.</p>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p58-s1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">1 · Theory</div><p>Hex: two players (Red, Blue) place stones on a hex grid; Red tries to connect top to bottom, Blue connects left to right. Standard Hex is determined (first player wins) but finding the winning move is non-trivial.</p>
 <div class="theorem-box"><div class="theorem-label">Theorem (Even &amp; Tarjan, 1976)</div><p style="margin:4px 0;">Generalized Hex on an n×n board is PSPACE-complete. Encoded TQBF instances become specific board positions.</p></div></section>
-<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p58-s2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">2 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Hex board · Red vs Blue <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="hx-run">⏸ Pause</button><button class="btn ghost" id="hx-step">Step</button><button class="btn ghost" id="hx-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="hx-speed" min="0.25" max="3" step="0.25" value="1"><span id="hx-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="hx-svg" viewBox="0 0 760 320" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="hx-explain"></div></div></section>
-<section><div class="section-label">3 · Pitfalls</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p58-s3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">3 · Pitfalls</div>
 <ul style="margin:6px 0 0 20px;">
   <li><strong>Hex is determined but the winning move is hard to find.</strong> Strategy-stealing proves Red wins; finding the move is PSPACE-complete.</li>
   <li><strong>The game tree is exponential in size but polynomial in depth.</strong> n² total moves → polynomial-depth tree. PSPACE rather than EXPTIME.</li>
@@ -21,14 +21,14 @@
 </ul>
 </section>
 
-<section><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p58-s4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
 <li><div class="q">Q1. Why is Hex always determined?</div><div class="a">Strategy-stealing argument: if Blue (second player) had a winning strategy, Red (first player) could "steal" it — play an arbitrary first move, then follow Blue's strategy pretending the extra stone doesn't exist. The extra stone never hurts in Hex, so this gives Red a winning strategy. Contradiction. So Red wins; never a draw.</div></li>
 <li><div class="q">Q2. Why PSPACE and not EXPTIME?</div><div class="a">Each move places one stone; total moves ≤ n². Polynomial-depth game tree. The tree may have exponentially many nodes, but minimax evaluation only needs polynomial space (depth-first traversal stores only the current path). PSPACE.</div></li>
 <li><div class="q">Q3. Can you find Red's optimal move efficiently?</div><div class="a">Not in polynomial time (under standard assumptions). PSPACE-completeness is the formal "no fast algorithm" statement. Even though we know Red has a winning strategy by strategy-stealing, finding it is hard.</div></li>
 <li><div class="q">Q4. What other board games are PSPACE-complete?</div><div class="a">Generalised Geography, generalised checkers, generalised chess (with bounded moves), generalised Reversi, Amazons. EXPTIME without move bounds: chess, Go (without ko), Shogi.</div></li>
 </ul></section>
 
-<section><div class="section-label">5 · Where to read more</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p58-s5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">5 · Where to read more</div>
 <p><strong>Sipser:</strong> §8.3 (PSPACE-complete games). Even–Tarjan 1976 for the Hex proof. <strong>Lecture notes:</strong> Module 6 slide 3. <strong>Companion problems:</strong> P38 (geography), P40 (chess).</p>
 </section></div><footer class="foot">P58 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){

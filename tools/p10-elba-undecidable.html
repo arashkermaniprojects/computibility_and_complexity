@@ -15,7 +15,7 @@
 
 <div class="wrap">
 
-<section><div class="section-label">1 · The asymmetry between A<sub>LBA</sub> and E<sub>LBA</sub></div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p10-s1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">1 · The asymmetry between A<sub>LBA</sub> and E<sub>LBA</sub></div>
 <p>An <strong>LBA</strong> (linear bounded automaton) is a TM restricted to use only the cells of its input — no scratch space outside the original |w| cells. Two surprising facts sit side by side:</p>
 <ul style="margin:6px 0 0 20px;">
   <li><strong>A<sub>LBA</sub> = {⟨B, w⟩ : LBA B accepts w} is decidable.</strong> Because B is space-bounded by |w|, only finitely many distinct configurations exist. Simulate B and if you see a config repeat, B is looping — reject. Otherwise B halts.</li>
@@ -36,7 +36,7 @@
 <p>Key claim: L(B<sub>M,w</sub>) ≠ ∅ iff M accepts w. The forward direction is direct — if M accepts w, write down its accepting computation history σ, and B<sub>M,w</sub>(σ) succeeds. The reverse direction uses determinism: any string x accepted by B<sub>M,w</sub> <em>is</em> the genuine accepting history of M on w, which witnesses ⟨M, w⟩ ∈ A<sub>TM</sub>.</p>
 </section>
 
-<section><div class="section-label">2 · Why an LBA has the budget to do this</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p10-s2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">2 · Why an LBA has the budget to do this</div>
 <div class="diagram" style="margin:14px 0;">
 <svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
   <text x="380" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">B_{M,w}'s tape — only the input cells, nothing more</text>
@@ -82,7 +82,7 @@
 <p>Each sweep is a finite-state walk across the input. The hard work — producing the history — is offloaded onto whoever provides x. B<sub>M,w</sub> only validates. That is exactly the LBA's job description.</p>
 </section>
 
-<section><div class="section-label">3 · Animated demo · auto-plays · loops</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p10-s3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">3 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Inside B<sub>M,w</sub>: what is checked, what is not <span class="pill">Auto-plays</span></div>
 <div class="controls">
 <button class="btn play-btn" id="lb-run">⏸ Pause</button><button class="btn ghost" id="lb-step">Step</button><button class="btn ghost" id="lb-reset">Reset</button>
@@ -92,7 +92,7 @@
 <div class="explain-panel" id="lb-explain"></div>
 </div></section>
 
-<section><div class="section-label">4 · Pitfalls students stumble on</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p10-s4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">4 · Pitfalls students stumble on</div>
 <ul style="margin:6px 0 0 20px;">
   <li><strong>The construction is f, not the LBA's execution.</strong> The reduction is a syntactic transformation: given ⟨M, w⟩, write down the description of B<sub>M,w</sub>. We're not running anything during the reduction. The actual LBA run only happens later if an E<sub>LBA</sub>-oracle is invoked.</li>
   <li><strong>L(B<sub>M,w</sub>) ≠ ∅ is the answer.</strong> The reduction goes to <em>¬E<sub>LBA</sub></em>. ⟨M, w⟩ ∈ A<sub>TM</sub> ⇔ ⟨B<sub>M,w</sub>⟩ ∉ E<sub>LBA</sub>. Don't lose the negation.</li>
@@ -101,7 +101,7 @@
 </ul>
 </section>
 
-<section><div class="section-label">5 · Q&amp;A defence notes</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p10-s5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">5 · Q&amp;A defence notes</div>
 <ul class="qa-list">
 <li><div class="q">Q1. Why CAN an LBA check accepting computation histories?</div><div class="a">Each of the four checks is <em>local</em>: parsing the # separators, matching the start config (a constant-size pattern at the beginning), validating each (C<sub>i</sub>, C<sub>i+1</sub>) δ-step in a 2×3 window, and checking the accept state at the end. Local checks fit in finite-state control plus a few sweeps over the original tape — that is exactly the LBA budget.</div></li>
 <li><div class="q">Q2. Why is A<sub>LBA</sub> decidable but E<sub>LBA</sub> isn't?</div><div class="a">A<sub>LBA</sub> takes a specific input w and asks whether B accepts that specific w. Because B is space-bounded by |w|, only finitely many distinct configurations exist on that input — at most |Q| · |w| · |Γ|<sup>|w|</sup>. Simulate and detect cycles. E<sub>LBA</sub> asks whether B accepts <em>any</em> input — a quantifier over infinitely many strings, with no a-priori space bound to fall back on.</div></li>
@@ -110,7 +110,7 @@
 <li><div class="q">Q5. Why does the reduction use B<sub>M,w</sub> instead of just simulating M?</div><div class="a">An LBA <em>cannot</em> simulate an arbitrary TM — that would require unbounded scratch space. The LBA verifies a candidate history, which lives entirely within the input length. The crucial separation: <em>compute</em> vs <em>verify</em>.</div></li>
 </ul></section>
 
-<section><div class="section-label">6 · Where to read more</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p10-s6.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">6 · Where to read more</div>
 <p><strong>Sipser:</strong> §5.1, Theorem 5.10 (E<sub>LBA</sub> is undecidable). <strong>Lecture notes:</strong> Module 3 slides 2–3 (LBA definition, B<sub>M,w</sub> construction). <strong>Companion problems:</strong> P9 (computation histories — prerequisite), P11 (ALL<sub>CFG</sub> — sibling technique using CFGs instead of LBAs), P62 (A<sub>LBA</sub> vs E<sub>LBA</sub>).</p>
 </section>
 

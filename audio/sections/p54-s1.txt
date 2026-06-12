@@ -1,0 +1,5 @@
+Let’s dive into the concept of composites and how we understand them in the realm of computational complexity. So, when we talk about composites, we are referring to numbers that have divisors other than one and themselves. For a number \( n \) to be classified as composite, it must have a non-trivial divisor \( d \) such that \( 1 < d < n \). 
+
+Now, if you want to verify that a number is composite, you can use this divisor as a certificate. The verification process is pretty straightforward. You just need to check if \( n \) divided by \( d \) leaves no remainder; that is, you check if \( n \) mod \( d \) equals zero. This verification runs in polynomial time relative to the logarithm of \( n \).
+
+Both the set of composite numbers and prime numbers fall into the NP category. Meanwhile, they’ve also been shown to be in P, thanks to a breakthrough algorithm developed by Agarwal, Kayal, and Saxena in 2002, known as the AKS primality test. For a long time, we only understood their membership in NP, but this work clarified that we can actually determine whether a number is prime or composite efficiently.

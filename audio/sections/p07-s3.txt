@@ -1,0 +1,5 @@
+Let’s break down the proof using case analysis. First, consider the scenario where the machine M does not accept the input w. In this case, the second branch never accepts any strings, which means the language L of our modified machine M prime, L(M'), is just the set {0^n 1^n}. Now, we know from the pumping lemma that this set is not regular. So, when M doesn’t accept w, L(M') is not regular.
+
+Now, let’s look at the other possibility: if M does accept w. Here, the second branch of our construction accepts every possible string, meaning L(M') becomes Σ*, which is the set of all strings over the alphabet. This is definitely a regular language. 
+
+So, we have two cases: if M accepts w, L(M') is regular, and if it doesn’t, L(M') is not regular. This leads us to conclude that the acceptance of ⟨M, w⟩ in A sub T M is equivalent to ⟨M'⟩ being in REGULAR T M. If we could decide REGULAR T M, we could decide A sub T M, which is a contradiction. Therefore, REGULAR T M is undecidable.

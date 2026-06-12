@@ -1,0 +1,7 @@
+Let’s walk through two specific inputs to understand how we can determine whether a machine halts or not. First, consider the input where M is a machine that always loops, and w is the empty string, ε. Since M loops forever, our reduction R tells us right away that it will never halt, so we can directly reject this input. This step is important because it saves time; we don’t need to simulate M at all.
+
+Now, let’s look at a second example where M checks the parity of a string and w is "0000". Here, M halts and accepts because the input has an even length. In this case, both R and S will agree and accept the input.
+
+For a third example, let’s use the same machine M checking parity, but this time with w being "000". Here, M halts but rejects since the length is odd. R will accept this input, but S will reject it since it matches the machine’s behavior.
+
+Notice that at the end of each row, we arrive at a clear yes or no answer. The key takeaway is that in the first example, we didn’t need to simulate M at all because R gave us crucial information upfront. That’s what makes S a decider instead of just a recognizer.

@@ -1,0 +1,7 @@
+Let’s talk about some common pitfalls when working with Big-O notation. First off, remember that Big-O is one-sided. For example, when we say 3n² is O(n³), it’s true because n³ is an upper bound, but it's not the tightest bound we could use. If you want that tightness, you’d want to use Θ instead.
+
+Now, when you're proving that a function f is O(g), you can choose any constants that work for your proof. They don’t have to be tight or small. It’s more about demonstrating that f grows at a rate that doesn’t exceed g, so focus on making your proof valid.
+
+Also, keep in mind that when it comes to logarithms, the bases don’t matter. Whether it’s log base 2 of n or log base 10 of n, both are O(log n) because they differ only by a constant factor. 
+
+Finally, let’s clear up the difference between additive and multiplicative relationships. If you add two Big-O terms like O(n) and O(n²), the larger term, O(n²), dominates, so the result is O(n²). But if you multiply them, like O(n) times O(n²), you add the exponents, giving you O(n³). Understanding these nuances will help you avoid some common mistakes!

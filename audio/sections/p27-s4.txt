@@ -1,0 +1,9 @@
+Let’s dive into some important questions about the reduction from 3SAT to CLIQUE. First, think about why there are no edges within a clause’s cluster. Each clause has three literals, and a satisfying assignment makes exactly one of these literals true. If we had edges connecting literals from the same clause, it would allow for the possibility of picking more than one literal, which we can’t do. So, removing those edges ensures that the clique can only choose one literal from each clause.
+
+Now, consider the question about negations between clusters. If we have two nodes, say x and not x, there’s no possible assignment that can satisfy both. By not connecting these nodes, we prevent the clique from selecting incompatible literals.
+
+What about clauses with fewer than three literals? The reduction works for clauses with two or even one literal, just resulting in smaller clusters. But for 3SAT, we typically deal with three literals.
+
+Now, how does this all prove CLIQUE is NP-complete? First, CLIQUE is in NP because the clique itself can serve as a polynomial-size witness. Second, since we can reduce 3SAT to CLIQUE in polynomial time, and 3SAT is NP-complete, this means CLIQUE is also NP-complete.
+
+Lastly, regarding the polynomial bound on the reduction size: we create 3m nodes, and the number of edges is roughly O(m²). The construction process itself takes polynomial time in relation to the formula size. All of this shows that our reduction is efficient and fits within polynomial bounds.

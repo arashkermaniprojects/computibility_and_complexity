@@ -1,0 +1,5 @@
+Let’s dive into the reverse-write trick and how it helps context-free grammars, or CFGs, deal with matching pairs of symbols. Imagine you have a grammar that’s designed to recognize sequences of symbols like C sub i and C sub i plus one. What makes CFGs interesting is their ability to guess where things might go wrong while processing these pairs.
+
+Here’s how it works: the grammar will nondeterministically choose a point in the sequence where it thinks a violation could happen. Then, it checks that part of the sequence locally to see if there’s an issue. If it finds a violation, the grammar accepts that path. This is crucial because it means the grammar is designed to identify failures in the sequence.
+
+Now, if you have a correctly-formed sequence, it will pass through the grammar without any detectable violations. In other words, all the pairs match perfectly, and the grammar won’t generate it. So, through this clever guessing and checking, CFGs can effectively handle the complexities of matching these sequences, allowing them to distinguish between valid and invalid histories.

@@ -1,0 +1,7 @@
+Let’s dive into how we can reduce TQBF to Generalized Geography. The idea is to create a graph that reflects the structure of a given TQBF instance, specifically a quantified boolean formula. 
+
+We start by designing variable gadgets for each variable in our formula. Each gadget looks like a small diamond, branching out into two paths: one labeled with "x sub i = T" and the other with "x sub i = F." If the variable is existentially quantified, the token moves to a node controlled by Player 1. If it’s universally quantified, it goes to a node controlled by Player 2. The player whose turn it is will choose which path to take based on their assigned truth value.
+
+Next, after all the variable gadgets, we have a clause-selection node where Player 2 chooses a clause from the formula. Then, inside the sub-gadget for that clause, Player 1 selects a literal. If the chosen literal matches its truth value from the variable gadget, Player 1 can continue; if not, they hit a dead end and lose the game.
+
+So, Player 1 wins the game if and only if for every clause Player 2 can select, there’s a true literal that Player 1 can use. This means that every clause must have a true literal for the QBF to be true. The graph we create is polynomial in size, making this reduction efficient.

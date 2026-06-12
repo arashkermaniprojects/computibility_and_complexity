@@ -1,0 +1,5 @@
+One common pitfall students run into is mistaking the tableau for the SAT formula itself. Remember, the tableau is more like a thought picture of the computation, while the SAT formula encodes the constraints using Boolean variables. It's crucial to keep track of how you’re representing time and position. In this context, rows correspond to time and columns to positions. Pick one and be consistent throughout your work.
+
+Another thing to watch out for is when encoding wide Turing machines. If your machine uses a large alphabet, say 100 symbols, each cell in your tableau will need to represent all those symbols with variables. That’s still polynomial, but be careful with the constants involved.
+
+Also, don't forget about the φ cell. If you skip the "exactly one symbol per cell" clauses, you might end up with a satisfying assignment that places two symbols in one cell. That breaks the construction. Lastly, proving that SAT is in NP requires a separate argument: you need to show how to guess the assignment and verify it. Cook–Levin focuses on proving the hardness direction, so keep that distinction clear in your mind.

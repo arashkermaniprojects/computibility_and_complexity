@@ -1,0 +1,7 @@
+Let’s dive into how we can visualize the game on a directed graph. Picture this: we have a graph where two players take turns moving a token from vertex to vertex, and they can't revisit any vertex. The goal is to be the last one to make a valid move. 
+
+Now, imagine an animated demo that shows this game in action. It plays automatically, allowing you to watch optimal strategies unfold. You’ll see both players making their moves based on the current state of the graph. It’s fascinating to see how they navigate the paths and try to outsmart each other.
+
+You also have controls at your disposal. If you want to slow things down to really analyze the moves, you can adjust the speed. Or if you feel like you missed something, you can pause and step through the game move by move. You can even reset the game to start over and explore different strategies.
+
+Sometimes, the graph might contain loops, where players can move in cycles. Watching how the players handle those situations adds another layer of strategy. The key is to think ahead and anticipate your opponent's moves while making your own.

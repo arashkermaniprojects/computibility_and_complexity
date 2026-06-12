@@ -1,0 +1,5 @@
+Let’s talk about some pitfalls when we discuss space and time in algorithms. First, if you’re working with space that’s less than logarithmic, you’re going to hit a wall. Why? Because sublogarithmic space is just too small to even keep track of where you are in the input. You can’t index your input position, and that makes many important theorems break down. 
+
+Remember, when we talk about space, we’re only considering the work tape cells used, not the input tape, which is read-only. If we included the input tape in our calculations, we’d end up with a trivial situation where PSPACE equals P, and that’s not what we want to explore. 
+
+There’s a significant gap between these complexity classes. For example, we know that nondeterministic logarithmic space, or NL, is contained in P due to Savitch’s theorem. Similarly, PSPACE is contained in exponential time, or EXPTIME, thanks to the configuration bound. Both of these gaps are known to be at least polynomially large, and we don't yet know if they might actually be equal. So, keep these pitfalls in mind as you navigate through the complexities of algorithms and their resource requirements!

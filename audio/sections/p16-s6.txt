@@ -1,0 +1,9 @@
+Let’s dive into some questions about self-aware Turing machines and their implications. First, let’s compare this to the proof in Problem 3. In that case, we created an external machine D' that flips the decision of D. We asked what happens when D' runs on itself. Now, in Problem 16, we have machine M flipping D from within itself. The recursion theorem gives us ⟨M⟩ for free, so we skip the awkward step of building D'. Both approaches lead to the same contradiction, but the recursion theorem streamlines the process. 
+
+Now, does M actually "know" its own code? Yes, in the sense provided by the recursion theorem. M can construct ⟨M⟩ using a quine technique, which means it’s baked into its design from the start, rather than being a runtime feature. 
+
+Self-reference pops up in other parts of our course too. For instance, Rice's theorem in Problem 14 uses similar principles. Gödel’s incompleteness theorems rely on self-reference at the formal proof level, and the fixed-point combinator Y in λ-calculus showcases this concept functionally. 
+
+When it comes to HALT TM, we can indeed use this reasoning. By assuming D' can decide HALT TM, we create M with access to ⟨M⟩. On input w, M queries D' with ⟨M, w⟩. If D' signals "halts," M will loop, and if it says "doesn't halt," M will halt, creating a contradiction with D's classification. 
+
+Lastly, can we use this to show A DFA is undecidable? Not quite. A DFA is decidable, and the recursion theorem needs a language that has an actual fixed point in the model, which TMs have. DFAs can’t encode arbitrary programs, meaning they lack that unrestricted self-reference we need.

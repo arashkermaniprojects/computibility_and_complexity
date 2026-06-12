@@ -1,0 +1,9 @@
+Let’s dive into some key questions about the space hierarchy theorem. First, why do we call it "space-constructible"? Well, for a language D to compute a function f(n) on its work tape, it needs to know when to stop simulating. Space-constructible means there’s a Turing machine that, given the input 1 raised to the power of n, can compute f(n) using O(f(n)) space. Functions like n, n squared, and even two raised to n all work here.
+
+Now, why do we have that f times log f gap instead of just f? It’s because when D is simulating a machine that uses SPACE(f), it needs a bit of extra space to keep track of the tape head position, the state, and the clock. That’s where the log factor comes in.
+
+Next, why doesn’t this imply that P is a strict subset of NP? The hierarchy theorem separates classes based on resource bounds. Since both P and NP operate within polynomial resources, it’s really about determinism versus nondeterminism, not the amount of resources used.
+
+Finally, can I share the time hierarchy theorem? If t(n) is at least n log n and is time-constructible, then TIME(t(n)) is a strict subset of TIME(t(n) times log t(n)). The proof involves simulating each TIME(t) machine while keeping track of time with a clock that limits to t(n) times log t(n) steps.
+
+From this, we see separations like NL being a subset of SPACE(log squared), which is a subset of SPACE(log squared times log log squared), and so on, leading to NL being strictly less than PSPACE. Similarly, P is strictly less than EXPTIME due to the time hierarchy.

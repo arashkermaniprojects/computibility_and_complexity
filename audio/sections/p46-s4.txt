@@ -1,0 +1,7 @@
+Let’s break down these questions about the time hierarchy theorem. First, when we talk about the log f overhead in the simulation, it’s important to understand that a universal Turing machine simulating a TIME(f) machine has to do a bit of extra work. It needs log f extra time per step for bookkeeping tasks like looking up the transition table, tracking where the head is on the tape, and scaling the tape. This log f factor represents the cost of that extra layer of indirection.
+
+Now, onto time-constructible functions. A function is time-constructible if a machine can compute f(n) on its own clock. This is crucial because the machine needs to know when to halt the simulation and produce the opposite output. The idea is that f(n) should be computable in O(f(n)) time, meaning it can be done without exceeding the time budget.
+
+As for whether this proves P is not a subset of NP, the answer is no. The key difference is in determinism; NP problems require certificates for yes-instances, whereas P problems can be solved deterministically without this requirement. The Time Hierarchy is comparing time bounds within the same model, while P versus NP is still an open question. 
+
+Lastly, there is indeed a Space Hierarchy theorem. It states that SPACE(f) is a subset of SPACE(f · g) for any space-constructible f and unbounded g. This is tighter than the time version because when it comes to space simulation, there’s no log overhead involved. This gives us results like L being a subset of PSPACE and NL being a subset of PSPACE.

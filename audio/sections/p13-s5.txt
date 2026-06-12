@@ -1,0 +1,7 @@
+When working on quines, students often trip up in a few key areas. First, there’s a common misconception about file input and output. A quine doesn’t read its own source code from a file. If it did, it would be trivial. Instead, a quine relies solely on internal string variables. The match between the source code and the output is achieved through its clever construction, not by looking at itself. 
+
+Another big hurdle involves string encoding. Getting all the quotes, backslashes, and escape sequences right can be tricky. Most of the bugs that pop up in quines are actually related to these escape sequences, rather than any logic flaws. 
+
+Then, there's the confusion between recursion and the recursion theorem. Just because both terms use "recursion" doesn’t mean they’re the same. Recursion is a function calling itself, while the recursion theorem is about a program being able to describe itself. 
+
+Finally, remember that a quine serves as a constructive proof. It’s not just an example; it shows how to build a program with a specific property, which is what makes the recursion theorem so powerful for proofs.

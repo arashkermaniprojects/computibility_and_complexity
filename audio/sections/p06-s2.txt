@@ -1,0 +1,5 @@
+Let’s dive into the construction of our new machine, M prime, which will help us show that ETM is undecidable. The idea here is to take a specific machine M and a particular input w, and transform that into a new machine M prime that decides whether M accepts anything at all.
+
+So, picture this: M prime will completely ignore any input it receives. Instead, it has w hard-coded inside it. When M prime is given an input x, it follows a simple three-step process. First, it completely ignores x. Then, it simulates the original machine M on the input w. Finally, if M accepts w, M prime will accept x as well.
+
+This construction is crucial because it turns our original problem—whether M accepts w—into a question about whether M prime accepts all inputs. The key thing to notice is that the pair ⟨M, w⟩ is finite, making it computable to write down M prime. The transition from ⟨M, w⟩ to ⟨M prime⟩ is what we call the reduction, and it sets the stage for our proof about the undecidability of ETM.

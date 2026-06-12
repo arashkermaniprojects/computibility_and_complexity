@@ -1,0 +1,7 @@
+Let’s dive into the animated demo for our kamikaze Turing machine. This demo runs through its three-stage lifecycle. First, you’ll see it auto-play, which means it operates automatically, showcasing its functionality without any input. 
+
+As the animation starts, you’ll notice the machine quickly prints its own description. This is a crucial step because it illustrates how self-reference works. Then, it enters a “fictitious erased” state, demonstrating the concept of pure recursion. The machine doesn’t really erase; it just transitions into a state that represents infinite loops, which is fascinating.
+
+If you want to pause the action, there’s that option too. Pausing lets you take a moment to absorb what’s happening or to focus on the details of the machine’s behavior. When you’re ready, you can step through the process one action at a time. This feature is great for breaking down each part of the lifecycle.
+
+You can also reset the demo to start over and explore again at your own pace. And adjusting the speed lets you slow down or speed up, making it easier to follow along with the recursive magic happening right before your eyes.

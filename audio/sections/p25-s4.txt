@@ -1,0 +1,5 @@
+Imagine you're watching an animated demo of the Cook–Levin tableau. The tableau fills up, cell by cell, representing the entire computation of a Turing machine. You see how the grid comes to life, with each square filling in at a steady pace. This animation helps visualize how the Turing machine processes information step by step.
+
+Now, let's talk about the auto-play feature. It automatically fills in the tableau, letting you focus on how the computation unfolds without having to click through each cell. If you want to take a moment to think, you can hit pause. This gives you a chance to analyze the current state of the tableau before it continues filling up.
+
+You also have the option to reset the animation if you want to start over or try a different scenario. And if you want to speed things up or slow them down, you can adjust the playback speed. This way, you can find a pace that works best for your understanding, allowing you to really grasp how the tableau represents the SAT problem through its dynamic filling process.

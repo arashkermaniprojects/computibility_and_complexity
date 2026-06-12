@@ -1,0 +1,5 @@
+Let’s dive into the animated demo of our single-tape Turing machine. Imagine we have a tape filled with a sequence of zeroes followed by an equal number of ones, like 0 to the power of n followed by 1 to the power of n. What we want to do is pair them off, one zero with one one. 
+
+As the animation plays, you'll see the machine start at the leftmost zero. It reads that zero, moves right, and when it finds a one, it marks both as paired. Notice how it goes back and forth on the tape. Each time it pairs a zero and a one, the machine has to traverse the tape multiple times, which means the number of steps grows quadratically with the size of the input.
+
+Now, watch how the animation auto-plays. If you hit pause, it freezes right where it is, letting you see the current state. You can also reset it to start again from the beginning or adjust the speed to really grasp the movement. This back-and-forth shuttling is key to understanding how our single-tape Turing machine processes these inputs efficiently.

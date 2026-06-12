@@ -1,0 +1,5 @@
+Let’s explore how we can construct a decider for a language L using two recognizers: R_L, which recognizes L, and R_¬L, which recognizes the complement of L. The key here is to run both recognizers in parallel, a technique known as interleaved simulation.
+
+Imagine we have an input x. We start by simulating R_L and R_¬L at the same time. We alternate steps: first, we make one move for R_L, then one move for R_¬L, and we keep going back and forth like this. Now, here’s where it gets interesting. If R_L accepts x, then our decider D immediately accepts. On the other hand, if R_¬L accepts x, then D rejects.
+
+It’s important to note that both recognizers can’t accept simultaneously. If R_L accepts, that means x is in L, and R_¬L can’t accept because x can’t be both in L and not in L at the same time. Eventually, one of the recognizers will halt and accept, leading us to a definitive decision about x. This guarantees that our decider D will always halt, since for every input x, either x is in L or it’s not, and the corresponding recognizer will eventually reach that conclusion.

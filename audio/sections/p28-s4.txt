@@ -1,0 +1,7 @@
+Let's dive into some important questions about the relationship between CLIQUE and VERTEX-COVER through their complements. First off, why does the complement work? In the original graph G, edges connect the members of a clique. When we look at the complement, G̅, we see that the edges represent the non-edges of G. So, if we have a k-clique in G, that means there are no edges connecting any pair from that clique in G̅. Therefore, every edge in G̅ must connect to at least one vertex outside of that clique. This outside set, which is V minus S, forms a vertex cover in G̅.
+
+Now, how long does it take to perform this reduction? To compute G̅, you just need to check all possible pairs of vertices, which takes O of n squared time. Finding n minus k is a simple constant-time operation. So overall, you still have a polynomial time reduction with O of n squared.
+
+Is it possible to reverse this reduction from VERTEX-COVER to CLIQUE? Absolutely, and this works because of the symmetry in the relationships. You can show that if you have a vertex cover in G, then you can derive a corresponding clique in the complement G̅. 
+
+Finally, what’s the current chain of reductions? We have 3SAT reducing to CLIQUE, which in turn reduces to VERTEX-COVER. All three problems are NP-complete, and the chain continues with VERTEX-COVER reducing to HAMPATH and then to SUBSET-SUM, and so on. This interconnectedness highlights the deep relationships between these problems in computational complexity.

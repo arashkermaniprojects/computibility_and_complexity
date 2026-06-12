@@ -1,0 +1,7 @@
+Let’s dive into the connections within the hierarchy family. We start with the time hierarchy theorem, which tells us that if you have more time to compute, you can recognize strictly more languages. Specifically, if you compare TIME(t) and TIME(t log t), we find that TIME(t) is a strict subset of TIME(t log t). This idea comes from diagonalization, where we can simulate computations in a way that shows this separation.
+
+Then we have the nondeterministic hierarchy. Similar to the deterministic case, we see that NTIME(t) is strictly contained in NTIME(t log t). This was established by Cook back in 1972 and later reinforced by Seiferas, Fischer, and Meyer in 1978. There’s also the well-known fact that NP is contained within NEXPTIME.
+
+Now, let’s discuss the gap theorem by Borodin and Constable. It shows that there are computable functions f for which TIME(f) equals TIME(2 to the f). This indicates that the hierarchy isn’t perfectly smooth; there are some bumps.
+
+Finally, we have the speedup theorem by Blum, which tells us that for some languages, no matter how you design your Turing machine, a faster machine can always be crafted. This highlights that optimal resource bounds aren’t always achievable. As for the relationship between P and PSPACE, it’s widely believed that P is strictly contained in PSPACE, but we don’t have a proof for that yet. The hierarchy theorems help us see that while we can assert P is contained in EXPSPACE, they don’t allow us to neatly fit between P and PSPACE.

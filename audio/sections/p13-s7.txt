@@ -1,0 +1,5 @@
+If you're looking to dive deeper into the concept of Quines and the recursion theorem, I'd recommend starting with Michael Sipser's textbook. In particular, check out section 6.1, which gives a solid introduction to the recursion theorem. You’ll find Theorem 6.3, which is crucial for understanding how Quines work, and then Theorem 6.5, which tells us that every Turing machine has a way to recognize its own description. 
+
+For a more hands-on approach, look at the lecture notes from your course. There's a part in Module 3 that explains the T equals A times B construction, which is key to grasping the recursion theorem conceptually. 
+
+After that, tackle some companion problems to really solidify your understanding. Problem 14 deals with Rice's theorem, and then you can move on to Problem 15, which covers the fixed-point version of the theorem. Finally, Problem 16 asks about self-aware Turing machines, which ties everything together nicely. Engaging with these resources will deepen your understanding and give you a well-rounded view of the topic.

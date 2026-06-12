@@ -1,0 +1,5 @@
+Imagine you're navigating a graph, where each vertex represents a state in a computation. We want to count how many vertices we can reach starting from a given point. This counting process can be visualized as an animated demo. Picture it auto-playing, where you see the vertices light up one by one.
+
+As you watch, the demo highlights each vertex you can reach, looping back to show the connections between them. It’s like a journey where you pause briefly at each vertex, allowing you to understand how the paths connect. You can even adjust the speed to see how quickly you can traverse the graph.
+
+Now, here’s a key part: you compute the reachable vertices step by step. Each step brings you closer to understanding the entire structure of the graph. If you hit a dead end, you can reset and try a different approach, exploring other paths. This interactive experience helps reinforce the concept that, using just a limited amount of resources, we can effectively count the reachable vertices in a graph, leading us to important conclusions about complexity classes like NL and coNL.

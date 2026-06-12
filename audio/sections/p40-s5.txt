@@ -1,0 +1,7 @@
+If you're looking to dive deeper into the topic of generalized chess and its complexity, a great starting point is the textbook by Michael Sipser. Specifically, you can check out section 8.3, where he discusses the connections between chess and computational complexity. It's quite insightful and really helps clarify how these concepts interrelate.
+
+For a historical perspective and the original proof regarding chess's PSPACE-hardness, you can look at a paper by Fraenkel and Lichtenstein from 1981. They really laid the groundwork for understanding chess in the context of computational problems.
+
+You might also want to explore some lecture notes from your course, particularly Module 6, where they provide additional context and examples that can help solidify your understanding. 
+
+And don’t forget to tackle the companion problems, especially problem 38, which deals with geography, and problem 39, which connects TQBF to geography. These problems are designed to enhance your grasp of the material and show its applications in different contexts. Happy reading!

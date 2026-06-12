@@ -17,7 +17,7 @@
 
 <div class="component-audio" style="margin:8px 0 12px;padding:8px 12px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:10px;font-family:var(--sans,system-ui);font-size:12px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Narration</span><audio controls preload="none" src="../audio/components/p62-narration.mp3" style="height:30px;flex:1;max-width:320px;"></audio><span style="color:#999;font-style:italic;">Counting argument for A<sub>LBA</sub> decidability, then the computation-history reduction for E<sub>LBA</sub> undecidability.</span></div>
 
-<section><div class="section-label">1 · The two languages</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p62-s1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">1 · The two languages</div>
 <div class="theorem-box"><div class="theorem-label">A<sub>LBA</sub> = {⟨M, w⟩ : M is an LBA that accepts w}</div>
 <p style="margin:4px 0;"><strong>Decidable.</strong> Sipser Theorem 5.9.</p>
 </div>
@@ -27,7 +27,7 @@
 <p style="margin:8px 0;">Both questions are about LBAs (linear-bounded automata — Turing machines that can only use cells holding the input). Yet one is decidable, one isn't. Why?</p>
 </section>
 
-<section><div class="section-label">2 · A<sub>LBA</sub> decidability · the configuration-count argument</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p62-s2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">2 · A<sub>LBA</sub> decidability · the configuration-count argument</div>
 <div class="widget"><div class="widget-title">Why A<sub>LBA</sub> is decidable — bounded configurations <span class="pill">Auto-plays</span></div>
 <div class="controls">
 <button class="btn play-btn" id="ab-run">⏸ Pause</button><button class="btn ghost" id="ab-step">Step</button><button class="btn ghost" id="ab-reset">Reset</button>
@@ -46,7 +46,7 @@
 </div>
 </section>
 
-<section><div class="section-label">3 · E<sub>LBA</sub> undecidability · the computation-history reduction</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p62-s3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">3 · E<sub>LBA</sub> undecidability · the computation-history reduction</div>
 <div class="theorem-box"><div class="theorem-label">Why the configuration bound doesn't save E<sub>LBA</sub></div>
 <p style="margin:4px 0;">A<sub>LBA</sub> asks about <em>one specific w</em>: bound the time, simulate, done. E<sub>LBA</sub> asks about <em>ALL possible inputs</em>: is the language empty? You'd have to check every string — infinitely many.</p>
 </div>
@@ -61,14 +61,14 @@
 </div>
 </section>
 
-<section><div class="section-label">4 · The contrast in one sentence</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p62-s4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">4 · The contrast in one sentence</div>
 <div class="theorem-box"><div class="theorem-label">Same machine model. Different scope of question.</div>
 <p style="margin:4px 0;"><strong>A<sub>LBA</sub>:</strong> "does this LBA accept THIS specific w?" — finite simulation suffices because configurations are bounded.</p>
 <p style="margin:4px 0;"><strong>E<sub>LBA</sub>:</strong> "does this LBA accept ANY w?" — checking all strings is infinite, and there's no shortcut because LBAs can encode arbitrary TM computation histories.</p>
 </div>
 </section>
 
-<section><div class="section-label">5 · Q&amp;A defence notes</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p62-s5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">5 · Q&amp;A defence notes</div>
 <ul class="qa-list">
 <li><div class="q">Q1. Why isn't A<sub>TM</sub> also decidable by the same configuration-count argument?</div><div class="a">A TM can use unbounded tape. The number of possible configurations is <strong>infinite</strong>: |Q| · ∞ · |Γ|<sup>∞</sup>. So the bound is not finite, no termination guarantee.</div></li>
 <li><div class="q">Q2. What's the exact bound for an LBA's configurations?</div><div class="a"><strong>|Q| · n · |Γ|<sup>n</sup></strong>, where n = |w|. State × head position (n cells) × tape content (each of n cells holds one of |Γ| symbols).</div></li>

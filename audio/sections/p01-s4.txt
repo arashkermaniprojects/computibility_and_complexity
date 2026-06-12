@@ -1,0 +1,5 @@
+Imagine you have a list of all the real numbers between zero and one. To visualize this, picture a table where each row represents a different number, written out in decimal form. Now, here's where Cantor's diagonal argument comes into play. We take a journey down that diagonal, creating a new number as we go. 
+
+As we move down each row, we look at the first digit of the first number, the second digit of the second number, and so on. But instead of just accepting those digits, we flip each one. If it’s a 0, we change it to a 1, and if it’s a 1, we change it to a 0. This clever flipping creates a new decimal that can’t possibly be on our original list, because it differs from every number at least in one digit. 
+
+So, no matter how many numbers we list, we can always construct a new one that’s not included. This playful yet profound process of building rows, flipping digits, and discovering new numbers shows us that there are simply more real numbers than we can ever list. It's a key moment in understanding the limits of what can be counted and opens the door to the larger world of undecidability.

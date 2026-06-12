@@ -1,0 +1,7 @@
+Alright, let’s dive into how you can present the undecidability of REGULAR TM in class. Start by motivating the topic. Ask your classmates, “Can I tell if my program’s language is regular?” This question sets the stage and piques their interest, as it relates to their own experiences with programming and checking properties of languages.
+
+Next, you’ll want to construct the modified machine, M prime, on the board. Show how it branches into two cases. In the first case, M prime simulates the original Turing machine, M, on the input w. You can illustrate what happens if M accepts w. In the second case, M prime processes a string in the language {0 to the n followed by 1 to the n}. Make sure to pause between these two cases so your classmates can digest each part.
+
+After running through the visualization, transition into analyzing the two cases. Emphasize that L of M prime is either {0 to the n followed by 1 to the n} or it’s just the entire set of strings, Sigma star. This contrast is crucial for understanding why M's acceptance of w leads to L of M prime being regular.
+
+Finally, tease Rice’s theorem. Mention that this is just one among many undecidability results, setting up a broader context for the implications of this topic. This will leave your audience curious about the other undecidable problems they’ll encounter in theoretical computer science.

@@ -1,0 +1,9 @@
+Alright, let's dive into some questions about quines and the recursion theorem. First up, you might wonder if it seems like cheating for a program to read its own source file. Well, the cool thing is, there’s no file input or output needed here. The quine operates on a string variable, which holds a description of its own source. It’s designed so that the output matches the source automatically by reassembling that string. 
+
+Next, how does this connect to the recursion theorem? Basically, the recursion theorem tells us that any Turing machine can access its own description. A quine is a straightforward example of this because it uses that self-access to print itself directly. 
+
+Now, why is this theorem so handy for proving undecidability? It allows a hypothetical machine to reason about its own description without needing complicated diagonalization. For example, Rice's theorem uses this concept to create a machine that does the opposite of what a candidate decider claims about its own description, making the process much easier.
+
+And speaking of quines, a really simple one in Python is just a one-liner: `s='s=%r;print(s%%s)';print(s%s)`. It’s pretty compact, with just sixteen characters for the payload.
+
+Finally, are there programming languages where quines can’t exist? Yes, some languages that lack string manipulation features, like certain pure forms of Brainfuck, might struggle with this. While the recursion theorem applies to Turing-complete languages, it requires that those languages have the ability to generate self-printable code, which isn’t guaranteed for every Turing-complete language.

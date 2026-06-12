@@ -5,7 +5,7 @@
 <h1>Big-O · identify the dominant term</h1><p class="sub">Polynomials decompose into bands; the highest power wins.</p>
 <div class="tags"><span class="tag-pill">CLO-3</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L9</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · Big-O, formally</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p20-s1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">1 · Big-O, formally</div>
 <div class="theorem-box"><div class="theorem-label">Definition (Sipser §7.1)</div>
 <p style="margin:4px 0;">f(n) = O(g(n)) iff there exist constants c &gt; 0 and n<sub>0</sub> ≥ 0 such that for all n ≥ n<sub>0</sub>, f(n) ≤ c · g(n). Read it as "f is eventually upper-bounded by a constant multiple of g."</p>
 </div>
@@ -18,7 +18,7 @@
 </div>
 </section>
 
-<section><div class="section-label">2 · The classification recipe</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p20-s2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">2 · The classification recipe</div>
 <div class="diagram" style="margin:14px 0;">
 <svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
   <text x="380" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">Recipe · find the dominant term, drop constants, that's your O</text>
@@ -68,13 +68,13 @@
 </div>
 </section>
 
-<section><div class="section-label">3 · Animated demo · auto-plays · loops</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p20-s3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">3 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Cycle through example polynomials <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="b-run">⏸ Pause</button><button class="btn ghost" id="b-step">Step</button><button class="btn ghost" id="b-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="b-speed" min="0.25" max="3" step="0.25" value="1"><span id="b-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="b-svg" viewBox="0 0 760 320" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="b-explain"></div></div></section>
-<section><div class="section-label">4 · Pitfalls</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p20-s4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">4 · Pitfalls</div>
 <ul style="margin:6px 0 0 20px;">
   <li><strong>O is one-sided.</strong> 3n² = O(n³) is true (n³ is also a valid upper bound), just not tight. If you want tight, use Θ.</li>
   <li><strong>The constant <em>c</em> matters for the proof, not the answer.</strong> When proving f = O(g), pick any constants that work. They don't have to be tight or small.</li>
@@ -83,14 +83,14 @@
 </ul>
 </section>
 
-<section><div class="section-label">5 · Q&amp;A defence notes</div><ul class="qa-list">
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p20-s5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">5 · Q&amp;A defence notes</div><ul class="qa-list">
 <li><div class="q">Q1. Why drop the constants?</div><div class="a">Big-O is about <em>asymptotic</em> behaviour. 3n² and n² differ by a constant that doesn't change as n grows. For complexity theory, the shape of growth is what matters; multiplicative constants depend on machine details and aren't intrinsic to the algorithm.</div></li>
 <li><div class="q">Q2. Big-O vs Theta vs little-o?</div><div class="a">O is an upper bound (could be loose). Θ is tight (matching upper and lower). o is strict — f = o(g) means f/g → 0, so f grows strictly slower than g. Example: 3n² = O(n³) is true; 3n² = Θ(n³) is false; 3n² = o(n³) is true.</div></li>
 <li><div class="q">Q3. What does "dominated by" mean rigorously?</div><div class="a">For sufficiently large n (n ≥ n<sub>0</sub>), the lower-order terms become arbitrarily small relative to the leading term. Removing them changes the value by at most a fixed multiplicative factor, which Big-O ignores anyway.</div></li>
 <li><div class="q">Q4. Why does Big-O use ≤ instead of strict &lt;?</div><div class="a">Because f = O(f) — every function is its own Big-O. With strict &lt;, that would fail. The ≤ version is the right notion for "no worse than."</div></li>
 </ul></section>
 
-<section><div class="section-label">6 · Where to read more</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p20-s6.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">6 · Where to read more</div>
 <p><strong>Sipser:</strong> §7.1 (Big-O), §7.1 Examples 7.4–7.7. <strong>Lecture notes:</strong> Module 4 slide 2. <strong>Companion problem:</strong> P17 (growth-rate race, visual contrast).</p>
 </section></div><footer class="foot">P20 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){

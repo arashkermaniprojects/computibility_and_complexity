@@ -1,0 +1,7 @@
+When we talk about the relationship between P and EXPTIME, it’s important to understand that just because P is a subset of EXPTIME, it doesn’t automatically mean P is also a subset of NP. This is because we’re comparing two different axes here: deterministic time versus nondeterministic time. 
+
+When we say P is in EXPTIME, we’re looking only at problems that can be solved by deterministic algorithms within exponential time. But NP includes nondeterministic algorithms, which can explore many possible solutions simultaneously. So, the fact that P is in EXPTIME doesn’t tell us anything definitive about the relationship between P and NP.
+
+Now, consider EXPTIME-complete problems. If any of these problems were in P, that would mean P equals EXPTIME, which contradicts what we believe about their separation. Problems like generalized chess or succinct circuit problems are great examples of problems that are indeed outside of P. 
+
+When we talk about diagonal witnesses, those are somewhat artificial and may not give us an intuitive grasp of the separation. On the other hand, the natural witnesses are the EXPTIME-complete games, which serve as compelling examples of why P is truly a subset of EXPTIME but not equal to it.

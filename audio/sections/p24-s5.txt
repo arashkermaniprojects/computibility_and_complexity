@@ -1,0 +1,7 @@
+Let’s tackle some key Q&A defense notes. First, consider PATH and HAMPATH. PATH asks whether there’s any directed path from a starting point s to a target point t. You can solve that efficiently using breadth-first search, which runs in linear time, O(V + E), where V is vertices and E is edges. On the other hand, HAMPATH wants to know if there’s a path that visits all vertices exactly once before ending at t. This is much harder because it involves checking all n! possible orders of the vertices. The difference lies in the existential requirement; PATH’s local check is much simpler compared to HAMPATH’s global coordination.
+
+Next, let’s discuss Euclid’s algorithm for finding the greatest common divisor. It’s fast because each step reduces the size of the smaller number by at least half. So, in terms of iterations, you only need O(log min(a, b)). When you multiply numbers, it takes O(n²), leading to a total complexity of O(n³) when considering the bit length.
+
+Then there’s CYK, which involves a dynamic programming table with O(n²) cells. Each cell needs to check O(n) possible split points, resulting in an overall complexity of O(n³), plus a constant for the grammar.
+
+Finally, the biggest open problem in computer science is the P versus NP question. It asks whether problems like SAT and HAMPATH can be solved in polynomial time. While many believe P is not equal to NP, no one has been able to prove it yet. This is a huge question and part of the Clay Millennium Problems, with a million-dollar prize for a solution.

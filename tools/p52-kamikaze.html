@@ -15,7 +15,7 @@
 
 <div class="wrap">
 
-<section><div class="section-label">1 · Theory</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p52-s1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">1 · Theory</div>
 <p>The recursion theorem doesn't only give us quines. It lets us build TMs that inspect, modify, and react to their own description in any computable way. This problem demonstrates one such construction.</p>
 <div class="theorem-box"><div class="theorem-label">The kamikaze construction</div>
 <p style="margin:4px 0;">M on any input w:</p>
@@ -23,7 +23,7 @@
 <p style="margin:4px 0;">M's existence shows: <strong>"self-aware" TMs aren't theoretical artefacts</strong> — they can be concretely constructed via the recursion theorem.</p></div>
 </section>
 
-<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p52-s2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">2 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">The 3-stage lifecycle <span class="pill">Auto-plays</span></div>
 <div class="controls">
 <button class="btn play-btn" id="kz-run">⏸ Pause</button><button class="btn ghost" id="kz-step">Step</button><button class="btn ghost" id="kz-reset">Reset</button>
@@ -33,7 +33,7 @@
 <div class="explain-panel" id="kz-explain"></div>
 </div></section>
 
-<section><div class="section-label">3 · Pitfalls</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p52-s3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">3 · Pitfalls</div>
 <ul style="margin:6px 0 0 20px;">
   <li><strong>"Erasure" isn't real.</strong> TMs don't delete their own code; the kamikaze just halts with a marker after printing itself. The drama is pedagogical.</li>
   <li><strong>δ is fixed at construction time.</strong> No TM can modify its own transition function at runtime. Self-modification is simulated by interpreting a description on the tape.</li>
@@ -41,7 +41,7 @@
 </ul>
 </section>
 
-<section><div class="section-label">4 · Q&amp;A defence notes</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p52-s4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">4 · Q&amp;A defence notes</div>
 <ul class="qa-list">
 <li><div class="q">Q1. Is "erasing" really meaningful in a TM?</div><div class="a">TMs don't have file-system erasure. The kamikaze enters a halt state with a marker. The "erasure" is conceptual — used to dramatise the self-destructive aspect of self-printing TMs.</div></li>
 <li><div class="q">Q2. Could a TM modify its own transition function during execution?</div><div class="a">No — δ is fixed at construction time. But the TM can <em>simulate</em> a different machine by interpreting a description on its tape, effectively running a modified version of itself.</div></li>
@@ -49,7 +49,7 @@
 <li><div class="q">Q4. What's the pedagogical point?</div><div class="a">"Self-aware" TMs aren't theoretical artefacts. The recursion theorem provides a constructive recipe for building TMs that perform any computable operation involving their own description. The kamikaze is the most dramatic such example.</div></li>
 </ul></section>
 
-<section><div class="section-label">5 · Where to read more</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p52-s5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">5 · Where to read more</div>
 <p><strong>Sipser:</strong> §6.1 (recursion theorem). <strong>Lecture notes:</strong> Module 3 slide 5. <strong>Companion problems:</strong> P13 (quine), P15 (fixed point), P16 (self-aware TM).</p>
 </section>
 

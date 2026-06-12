@@ -1,0 +1,5 @@
+If you want to dive deeper into the relationship between P and EXPTIME, I highly recommend checking out Michael Sipser's textbook. Specifically, look at Corollary 9.16, where he discusses how P is a proper subset of EXPTIME. It’s a great resource because it not only outlines the theory but also gives you examples that help solidify these concepts in your mind.
+
+You might also find lecture notes particularly useful. Module 7 covers the time hierarchy theorem, which is essential for understanding how certain problems sit outside P while still being in EXPTIME. 
+
+In addition, tackling the companion problems can be really beneficial. For instance, problem P46 focuses on the time hierarchy, which directly relates to our topic. P47 explores the relationship between nondeterministic logarithmic space and PSPACE. Lastly, P63 discusses how NP fits into the broader framework of EXPTIME. Working through these problems will help reinforce your understanding and give you some practical experience with these concepts. Happy studying!

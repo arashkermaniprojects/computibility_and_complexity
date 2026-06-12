@@ -1,0 +1,7 @@
+Let’s talk about how to build a decider using two recognizers, R sub L and R sub ¬L. The idea here is to create a method that decides whether a string is in the language L or its complement, ¬L. 
+
+We start by understanding that R sub L recognizes strings in L, while R sub ¬L recognizes strings in L’s complement. So, we can use both of these recognizers together in a clever way to decide L. 
+
+Picture this: we take an input string and run both R sub L and R sub ¬L simultaneously. We interleave their simulations. This means we take turns checking with R sub L and then with R sub ¬L, one step at a time. If R sub L accepts the string at any point, we know it’s in L, and we can immediately say "yes." Conversely, if R sub ¬L accepts first, we decide "no." 
+
+We keep doing this until one of them gives us a definitive answer. Since we know L is decidable when both recognizers are Turing-recognizable, this interleaved approach effectively creates a decider for L. It’s a powerful technique that allows us to leverage the strengths of both recognizers to reach a conclusion.

@@ -1,0 +1,5 @@
+When you're working with empirical data to analyze the running time of a Turing machine, it’s crucial to remember that the data can suggest trends, but it doesn’t prove anything definitively. For instance, if you find a nice quadratic curve through your data points, it might seem like you’ve confirmed that the complexity is O(n²). But be careful! There could be hidden factors, like a log term or a constant, that aren’t visible when you’re only looking at small input sizes.
+
+To get a better picture, it’s helpful to calculate steps divided by n squared. If that ratio approaches a constant as n increases, then you can confidently say you have Θ(n²). However, if that ratio keeps increasing, then the actual complexity is higher than quadratic. 
+
+Also, stay vigilant for outliers. The same Turing machine can behave very differently on different inputs of the same length. It’s essential to focus on worst-case scenarios instead of average cases, as worst-case profiling gives you a more accurate understanding of the machine's performance.

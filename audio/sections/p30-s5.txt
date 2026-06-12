@@ -1,0 +1,5 @@
+If you're looking to dive deeper into the concepts we've covered, I highly recommend checking out Sipser’s textbook, specifically Theorem 7.46. It really lays out the foundation for understanding the reduction from 3SAT to HAMPATH. Pay particular attention to Figures 7.49 through 7.51; they illustrate the gadgets we discussed, like the variable diamonds and clause spreaders, which are crucial for visualizing how the reductions work.
+
+Also, if you have access to lecture notes, look for Module 5. It might have some additional insights or examples that could clarify the process further. 
+
+For hands-on practice, there are some companion problems that can solidify your understanding. Problem 23 focuses on the HAMPATH verifier, which will challenge you to think about how you verify the existence of a path given an assignment. And then, Problem 29 is all about SUBSET-SUM, which ties into our discussions on reductions in a different context. Working through these problems will really help reinforce your grasp of these reductions and their applications.

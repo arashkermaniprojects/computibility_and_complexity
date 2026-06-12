@@ -1,0 +1,7 @@
+Let's talk about some common pitfalls when you're working with SAT. First off, it’s important to understand that when you negate a variable, you’re flipping the literal, not the variable itself. So, if you have ¬x, that’s true when x is false, but remember, x doesn’t change. It’s just the truth value of that literal that flips.
+
+Now, think about clauses. A clause needs just one true literal to be satisfied. So, don’t accidentally set it up so that you think all literals must be true—if you do that, you’re treating it like an AND, not an OR. Clauses are all about ORs. 
+
+Also, keep in mind that an empty clause is a big red flag. It’s unsatisfiable, and if you encounter a clause with zero literals, it’s considered false by convention. Some encodings might lead to those empty clauses, so recognize that right away as a clear “no.”
+
+Lastly, don’t confuse practical SAT solvers with the worst-case scenarios. Techniques like DPLL and CDCL can solve most real-world SAT problems quickly, but the worst case, which can grow exponentially, is often engineered by tricky inputs. Just remember, that’s not what you’ll usually be dealing with.

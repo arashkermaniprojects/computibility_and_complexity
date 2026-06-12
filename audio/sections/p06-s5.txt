@@ -1,0 +1,7 @@
+Let's dig into a concrete example to see how we can understand this reduction. Imagine we have a machine M that accepts an input if its length is a multiple of 3. Now, let's take a specific input, like "aaaaaa," which has a length of 6. When we feed this into M, it accepts because 6 is divisible by 3. 
+
+Now, we want to create a new machine, M prime. This machine runs M on "aaaaaa" and, since M accepts, M prime will accept any input x. So, the language of M prime includes everything—this means its language is Σ star, or all strings. Because M prime accepts everything, the description of M prime, which we can denote as ⟨M'⟩, does not belong to E sub T M, meaning it’s not an element of the set of empty languages.
+
+Now, let’s change our input to "aaaaa," which has a length of 5. This time, M will reject because 5 is not a multiple of 3. When we run M prime on any input x, it runs M on "aaaaa," and since M rejects, M prime never accepts anything. Therefore, the language of M prime is empty. As a result, ⟨M'⟩ is now in E sub T M.
+
+Through this example, we see how the question of whether M accepts our input w translates to whether the language of M prime is empty or not. This connection is what makes the undecidability of E sub T M clear.

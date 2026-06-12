@@ -1,0 +1,7 @@
+Let’s dive into the reduction graph and how it connects various undecidable problems. When we look at the reduction from A sub T M to HALT T M, we first create a new machine, M prime, that accepts only a specific input, w. This technique helps us demonstrate that if we could solve HALT T M, we could also solve A sub T M. 
+
+This idea doesn’t stop with HALT T M. We can also show that problems like regular Turing machines, context-free languages, and even the equality problem for Turing machines are undecidable through similar reductions. For instance, when we say the equality problem is not recognizable or co-recognizable, we mean that there’s no way to determine if two machines accept the same language or not.
+
+Then, we have more complex problems like Post Correspondence Problem, tiling problems, and the word problem for groups. All of these can be reduced from either A sub T M or HALT T M, reinforcing their undecidability. 
+
+A key concept is Rice’s theorem, which tells us that any non-trivial property of a language will reduce from A sub T M. Each of these proofs follows a similar structure: if you could solve one problem, you could solve A sub T M, which we know is impossible. Understanding these connections helps solidify the landscape of undecidable problems and the power of reductions in computability theory.

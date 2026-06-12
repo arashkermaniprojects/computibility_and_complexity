@@ -1,0 +1,7 @@
+If you want to dive deeper into the concepts of 3COLOR and its NP-completeness, a great resource is Michael Sipser's book. Check out section 7.5, where he breaks down the relationship between 3SAT and 3COLOR, and don’t skip the exercises either. Specifically, Exercise 7.27 is a fantastic way to test your understanding and really solidify the ideas we've discussed.
+
+You should also look at Richard Karp's original work on NP-completeness. His paper lays the groundwork for many of these concepts and provides a historical perspective that can enrich your understanding.
+
+For some practical applications, you might want to explore the lecture notes that cover this topic in detail. They often provide a step-by-step approach that can help clarify complex ideas.
+
+Lastly, don't forget about the companion problems, particularly Problem 27, which connects 3SAT to CLIQUE, and Problem 28 that looks at the relationship between CLIQUE and vertex cover. Working through these problems will give you hands-on experience with the material and help reinforce your learning.

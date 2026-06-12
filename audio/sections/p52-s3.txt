@@ -1,0 +1,5 @@
+Let’s talk about some pitfalls when dealing with the kamikaze Turing machine. First off, the idea of "erasure" is a bit misleading. When we say the kamikaze deletes its own code, that’s not quite what happens. Instead, it halts after it prints its own description and leaves a marker. It's more of a dramatic gesture than an actual erasure. 
+
+The transition function, denoted as delta, is fixed when the machine is constructed. This means that a Turing machine can’t modify its own rules while it’s running. So, what seems like self-modification is really just the machine interpreting a description that’s already on its tape. 
+
+This is where the recursion theorem comes into play. Once you understand this theorem, creating a machine that performs actions like "M prints its own description and then does something else" becomes a straightforward task. The kamikaze is just one example of that kind of construction. It’s all about leveraging the power of recursion in a playful way, rather than thinking of it as truly erasing or modifying itself.

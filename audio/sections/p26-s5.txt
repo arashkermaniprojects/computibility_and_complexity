@@ -1,0 +1,5 @@
+Let’s dive into the process of splitting a 4-literal clause into 3-literal clauses, which is a key step in transforming our CNF formulas. Imagine we have a clause like “A or B or C or D.” We want to convert this into a format where every clause has exactly three literals, while keeping the satisfiability intact.
+
+To do this, we introduce an auxiliary variable. Let’s call it X. We can rewrite our 4-literal clause as two separate clauses: one with three literals and the auxiliary variable, and another that incorporates the variable as well. So, we would have “A or B or X” and “not X or C or D.” 
+
+This transformation ensures that if the original clause is satisfied, at least one of the new clauses will also be satisfied. The great part is that we can automate this process. Imagine an animated demo that shows this transformation happening step by step. You’d see the original clause split into two, and as you play it out, it would auto-play through each step, allowing you to pause or reset if needed. This visual approach really helps solidify the concept of auxiliary-variable splitting in a clear, intuitive way.

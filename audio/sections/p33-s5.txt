@@ -1,0 +1,7 @@
+If you’re looking to dive deeper into space complexity and related concepts, a great starting point is the book by Sipser. Specifically, check out section 8.1, where he breaks down space complexity in a way that’s very approachable.
+
+You might also want to look at some lecture notes, particularly in Module 6. There’s some great content that visually explains the relationships between time and space complexity, which can really help solidify your understanding.
+
+Additionally, tackling some companion problems can be incredibly beneficial. For instance, problem 34 deals with Savitch’s theorem and explores the Savitch tree. This is a classic example that illustrates the relationship between space and time. Problem 35 looks at the differences between PSPACE and NPSPACE, which can deepen your appreciation for the nuances in complexity classes. And don’t miss problem 63, which shows that NP is a subset of EXPTIME, helping you connect the dots between these critical concepts.
+
+These resources will provide you with a solid foundation and offer various perspectives on the time-space tradeoff in algorithms. Happy studying!

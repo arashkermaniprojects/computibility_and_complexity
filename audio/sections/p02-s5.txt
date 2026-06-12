@@ -1,0 +1,9 @@
+Let’s walk through how the universal Turing machine simulates a Turing machine that accepts strings with an even number of 0s. We’re going to use the input 0000 as our example. 
+
+The machine starts in state q0, which means it has seen an even number of 0s so far. The tape reads 0000, and the machine reads the first 0. According to our rule, it stays in state q0 and moves to the right. Now we have 0 in state q0, and the tape reads 00. The machine reads the next 0, switches to state q1 because it’s seen an odd number of 0s, and moves right again. 
+
+Next, it reads 0 in state q1, switches back to q0 because now it’s even again, and moves to the right. It then reads the last 0 in state q0, moves to the right into the blank space, and stays in state q0. 
+
+Finally, it reaches the blank square, and since it's in state q0, it knows it has seen an even number of 0s. So it moves to the accepting state qa. 
+
+This whole process is what we mean by simulation. The universal Turing machine is just following these rules step by step, just like the original machine would.

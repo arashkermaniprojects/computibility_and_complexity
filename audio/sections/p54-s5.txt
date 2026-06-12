@@ -1,0 +1,7 @@
+If you want to dive deeper into the topic of composites and their relationship with NP, there are some excellent resources you can explore. A great place to start is the textbook by Sipser, specifically in section 7.3. It covers NP examples in a way that’s both accessible and insightful. 
+
+You might also find the AKS paper interesting. It introduces concepts related to primality testing, which connects nicely with our discussions about divisors and checking for composite numbers. 
+
+Additionally, make sure to check out the lecture notes, particularly in Module 5, where they delve into examples that could reinforce your understanding. 
+
+Don’t forget the companion problems as well; they’re really useful for practice. For instance, problem 21 compares the roles of verifiers and solvers, while problem 22 focuses on the SAT problem, which is another classic example in NP. Engaging with these problems can help solidify your grasp of the concepts we’ve talked about. Happy studying!

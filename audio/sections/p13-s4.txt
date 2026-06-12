@@ -1,0 +1,7 @@
+Let’s dive into the idea of a quine with a fun animated demo. Imagine running a program that prints its own source code. When you execute it, you’ll see the code appear in the output just like magic! Now, what’s fascinating about this is how it loops. 
+
+As the demo plays, it auto-plays the quine, showing the process in action. You can actually pause it to take a closer look or even reset it if you want to see it again from the start. It’s like watching a little performance! 
+
+Now, if you compare the output with the source code, you’ll notice they’re identical. This reinforces the concept of self-replication in programming. The quine doesn’t just run; it’s a clever way to illustrate recursion. 
+
+You might also notice options to adjust the speed of the demo. Slowing it down can help you really grasp how each part contributes to the whole. So, as you watch, think about how that loop works—each time it runs, it’s creating a perfect copy of itself. Isn’t that a neat trick?

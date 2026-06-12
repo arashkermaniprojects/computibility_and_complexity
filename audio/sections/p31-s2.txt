@@ -1,0 +1,7 @@
+Let’s dive into an animated demonstration that will help you visualize how we can construct the 3COLOR problem from a 3SAT formula. Imagine we’re building a graph step by step, piece by piece. Each component represents a part of the formula.
+
+We start with variable gadgets. For each variable in our formula, we’ll create a structure that allows us to represent both the true and false assignments. You can think of this as a little group of nodes that can be colored in different ways. Each gadget will have connections to other components, which we'll add next.
+
+Now, let’s move on to the OR-gadgets. These are critical because they allow us to combine variables. When we build these, you'll notice how they connect to the variable gadgets we just created. The connections ensure that if one variable is satisfied, it will influence the coloring of the overall graph.
+
+As the animation plays, you’ll see how the pieces fit together. You can pause it, step through it slowly, or reset it if you need to review. Adjusting the speed can also help you grasp the construction better. The key takeaway is that if this graph can be colored with three colors, it means our original formula is satisfiable.

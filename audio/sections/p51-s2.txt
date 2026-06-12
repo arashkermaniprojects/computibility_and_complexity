@@ -1,0 +1,7 @@
+Let's dive into a small example of the Post Correspondence Problem, or PCP. Imagine you have two sets of dominoes, each with a top and a bottom half. The challenge here is to align these dominoes so that when you stack them, the top halves match the bottom halves in the same sequence. 
+
+Now, picture an animated demo showing a few dominoes being placed one after another. You might see the top halves start to form a pattern. As the animation plays, you can notice that sometimes, even if you think you're close, the bottom halves don't line up. This is a crucial part of the problem—it's not just about placing the dominoes but finding the right match.
+
+You can pause the animation if you want to take a closer look, or even step through it one domino at a time. This interaction helps you see how different arrangements can affect the outcome. And if you want to start over, there's an option to reset the demo. The speed setting allows you to slow down or speed up the process, giving you control over how you explore the problem. 
+
+By experimenting with these options, you'll get a more intuitive feel for how tricky it can be to find a successful match in the PCP.

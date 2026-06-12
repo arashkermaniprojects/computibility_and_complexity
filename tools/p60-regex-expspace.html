@@ -5,16 +5,16 @@
 <h1>REGEX equivalence is EXPSPACE-complete</h1><p class="sub">Adding squaring (R²) to regex turns equivalence checking into exponential space.</p>
 <div class="tags"><span class="tag-pill">CLO-5</span><span class="tag-pill warn">R3·40 pts</span><span class="tag-pill info">L16</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · Theory</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p60-s1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">1 · Theory</div>
 <div class="theorem-box"><div class="theorem-label">Stockmeyer–Meyer (1973)</div><p style="margin:4px 0;">For regular expressions extended with squaring (R² = RR), deciding equivalence is <strong>EXPSPACE-complete</strong>. Lower bound: encode an EXPSPACE TM's computation as regex.</p></div>
 <p>Why squaring? Because a regex with squaring can describe languages requiring exponential-size minimal DFA — pushing the equivalence test to exponential space.</p></section>
-<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p60-s2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">2 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Regex with squaring · exponential blowup <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="re-run">⏸ Pause</button><button class="btn ghost" id="re-step">Step</button><button class="btn ghost" id="re-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="re-speed" min="0.25" max="3" step="0.25" value="1"><span id="re-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="re-svg" viewBox="0 0 760 280" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="re-explain"></div></div></section>
-<section><div class="section-label">3 · Pitfalls</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p60-s3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">3 · Pitfalls</div>
 <ul style="margin:6px 0 0 20px;">
   <li><strong>Plain regex equivalence is PSPACE-complete; with squaring it's EXPSPACE-complete.</strong> One extra operator pushes the class up by an exponential.</li>
   <li><strong>"Squaring" R² ≡ RR is shorthand.</strong> Iterated squaring R^(2^k) writes a regex of polynomial size but describes exponentially long strings.</li>
@@ -22,14 +22,14 @@
 </ul>
 </section>
 
-<section><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p60-s4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
 <li><div class="q">Q1. Why is plain regex equivalence in PSPACE?</div><div class="a">Convert each regex to an NFA (polynomial blow-up via Thompson's construction). Equivalence ⇔ symmetric difference is empty. Determinise via the subset construction (exponential states in worst case, but only PSPACE workspace needed). Check emptiness in space proportional to states.</div></li>
 <li><div class="q">Q2. What does squaring add?</div><div class="a">R² doubles the language length. Iterated squaring R^(2^k) creates exponentially long languages from polynomial-size regex. This forces the equivalence test into exponential space — EXPSPACE-complete (Stockmeyer–Meyer 1973).</div></li>
 <li><div class="q">Q3. Practical implication?</div><div class="a">Real-world regex engines avoid squaring/back-references for this reason. POSIX regex stays in P; Perl/Java/Python regex with backrefs is NP-hard for matching, and pathological cases (catastrophic backtracking) can run for years on simple-looking inputs.</div></li>
 <li><div class="q">Q4. Where does EXPSPACE sit?</div><div class="a">EXPSPACE = ⋃<sub>k</sub> SPACE(2<sup>n<sup>k</sup></sup>). Above PSPACE, above EXPTIME, below 2-EXPTIME. PSPACE ⊊ EXPSPACE by Space Hierarchy.</div></li>
 </ul></section>
 
-<section><div class="section-label">5 · Where to read more</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p60-s5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">5 · Where to read more</div>
 <p><strong>Sipser:</strong> §9.3. Stockmeyer–Meyer 1973 paper. <strong>Lecture notes:</strong> Module 7 slide 6. <strong>Companion problems:</strong> P12 (decidable trio), P57 (EXPTIME vs PSPACE).</p>
 </section></div><footer class="foot">P60 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){

@@ -1,0 +1,7 @@
+Let’s dive into how we can feed our contradiction machine, D, to itself. When we compute D of its own encoding, D(⟨D⟩), we actually get two different results, which is where the contradiction arises. 
+
+First, let’s consider the definition of D. If D accepts ⟨D⟩, according to H, our hypothetical machine that decides the acceptance problem, that means D should reject ⟨D⟩. This is our first contradiction: D accepts, but H tells us it must reject. 
+
+Now, let’s flip that around. If we say D rejects ⟨D⟩, then H tells us that D should actually accept ⟨D⟩. Again, we hit a contradiction: D rejects, but H says it has to accept. 
+
+Either way, whether D accepts or rejects its own encoding leads to a contradiction. The only assumption we made was that H exists, but since we’ve shown that H leads to contradictions, H cannot exist. So, we’ve proven that the acceptance problem is undecidable.

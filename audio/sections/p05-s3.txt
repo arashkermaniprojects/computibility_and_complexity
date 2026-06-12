@@ -1,0 +1,5 @@
+Let’s walk through the proof using the contradiction machine S. We start by assuming there’s a decider R for HALT sub T M. This means R can determine whether a given Turing machine M halts on input w. Now, we define our machine S, which is designed to solve A sub T M, the acceptance problem.
+
+When S receives an input, which is a pair ⟨M, w⟩, it first runs R on this input. If R rejects, that means M doesn’t halt on w, so S will also reject. This is straightforward. But if R accepts, we know M halts on w, and that’s where things get interesting. S then simulates M on w directly. Since R confirmed that M halts, S is guaranteed that this simulation will finish. 
+
+Now, S accepts if and only if that simulation accepts. So, S always halts and provides the correct output based on whether M accepts w. But here’s the catch: we’ve just shown that S decides A sub T M, which contradicts the fact that no decider exists for A sub T M. This contradiction means our initial assumption that R exists must be wrong, proving that HALT sub T M is undecidable.

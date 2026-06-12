@@ -1,0 +1,9 @@
+Let’s dive into what the class P contains, focusing on three classic problems that really showcase polynomial time algorithms. P is essentially the set of problems that can be solved in polynomial time, or formally, it’s the union of all problems that can be solved in O(n^k) time for any k.
+
+First up is the PATH problem. Imagine you have a directed graph and you want to find if there’s a path from point s to point t. You can use a breadth-first search starting from s, marking every vertex you can reach. If you end up marking t, then you have your answer. The running time here is O(V + E), which is pretty efficient since it’s linear in terms of the graph size.
+
+Next is RELPRIME, which deals with finding if two numbers are coprime, meaning their greatest common divisor is 1. You can use Euclid’s algorithm for this, which involves repeatedly replacing the two numbers with the second number and the remainder when the first is divided by the second. The time complexity is O(log min(a, b)), focusing on the number of bits in the input.
+
+Finally, we have ACFG, where the problem is to determine if a context-free grammar generates a specific string. This can be tackled by converting the grammar to Chomsky Normal Form and then using the CYK algorithm. It has a time complexity of O(n³ · |G|), making it cubic, which is slower than the others but still polynomial.
+
+These three problems illustrate the diversity within P and how different algorithms can operate efficiently under polynomial time constraints.

@@ -1,0 +1,5 @@
+When working on mapping reductions, especially when dealing with the undecidability of ¬EQ TM, students often trip over a few key points. First, remember that we're reducing to ¬EQ TM, not EQ TM. So when you take an instance like ⟨M, w⟩ from A sub T M, it corresponds to ⟨M1, M2⟩ that is not in EQ TM. This is crucial because the undecidability of ¬EQ TM directly tells us that EQ TM is undecidable as well. 
+
+Now, let’s talk about M2—it’s designed to ignore its input. A common mistake is to say, "M2 on input x runs M on x." That won't work because you’d find that L(M2) equals L(M), which isn't what we want. M2 should ignore its input completely and always check M against the specific string w. Also, be careful with the concept of loops. If M runs forever on w, that means M2, regardless of input, will also run forever on w. So, in that case, L(M2) becomes empty. 
+
+Remember, when constructing M2, you're not actually running M; you're describing how it would simulate M on w. The real action happens later, only if the EQ TM oracle decides to call M2. Keep these points in mind, and you'll avoid some common pitfalls!

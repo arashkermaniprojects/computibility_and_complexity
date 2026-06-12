@@ -1,0 +1,7 @@
+When we're working on the reduction from 3SAT to CLIQUE, it's crucial to keep a few potential pitfalls in mind. First off, remember that the size of the clique we're looking for, that k value in the CLIQUE problem, should match the number of clauses in the Boolean formula, not the number of variables. It’s easy to mistakenly think k should be the number of variables, n, but that's not the case here. 
+
+Each literal occurrence in the formula corresponds to its own node in the graph. So, if a variable appears multiple times across different clauses, it means you’ll have multiple nodes for that variable, one for each occurrence. For example, if a variable x shows up in three different clauses, you actually create three separate nodes for it.
+
+The edges in this graph represent compatibility between literal pairs, not their truth values. The graph doesn’t care what's true or false; it simply tells us which pairs of literals could potentially be true together. To solve the problem, you want to find a clique that includes m mutually-compatible literals, which correspond directly to those clauses. 
+
+Lastly, remember that this reduction only goes one way. We can reduce 3SAT to CLIQUE, but if you want to go the other direction, from CLIQUE back to 3SAT, you’ll need a different approach entirely. Keep these points in mind, and you'll have a much clearer understanding of the process!

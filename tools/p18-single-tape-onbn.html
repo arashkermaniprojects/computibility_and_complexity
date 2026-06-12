@@ -5,14 +5,14 @@
 <h1>Single-tape TM on {0ⁿ1ⁿ} · O(n²) by pairing</h1><p class="sub">Watch a single-tape TM shuttle back and forth; step counter grows quadratically.</p>
 <div class="tags"><span class="tag-pill">CLO-3</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L9</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · The problem and the strategy</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p18-s1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">1 · The problem and the strategy</div>
 <p>The language {0<sup>n</sup>1<sup>n</sup> : n ≥ 0} demands equal counts of 0s followed by equal counts of 1s. On a single-tape Turing machine with one head, you cannot count both groups in parallel — you have one moving part. Sipser's canonical algorithm (Example 7.2) uses the only strategy available: <strong>pair off one 0 with one 1, mark them both, rewind, repeat</strong>.</p>
 <div class="theorem-box"><div class="theorem-label">Time analysis</div>
 <p style="margin:4px 0;">Each pair-off requires an O(n) round-trip across the input. There are n/2 pairs to match. Total: <strong>Θ(n²)</strong>. The lower bound is also Θ(n²), proven by a <em>crossing-sequence</em> argument: the head must cross the input's middle Θ(n) times to communicate information between the 0-region and the 1-region.</p></div>
 <p>The two-tape contrast: a 2-tape TM solves the same problem in O(n). Copy 0s to tape 2, then march tape 1 right through the 1s while tape 2 marches left through the copied 0s, both in sync. Quadratic-vs-linear is the price of having only one tape.</p>
 </section>
 
-<section><div class="section-label">2 · Worked example · trace 000111</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p18-s2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">2 · Worked example · trace 000111</div>
 <p>Trace the algorithm on "000111" (n = 3 pairs):</p>
 <ul style="margin:8px 0 0 20px;">
   <li><strong>Pair 1.</strong> Mark leftmost 0 → X. Walk right to leftmost unmarked 1, mark Y. Tape: X 0 0 Y 1 1. ≈ 6 steps.</li>
@@ -23,7 +23,7 @@
 <p>For n = 3, ≈ 18 steps. For n = 6, ≈ 72 steps. Doubling input quadruples work — the quadratic signature.</p>
 </section>
 
-<section><div class="section-label">3 · Animated demo · auto-plays · loops</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p18-s3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">3 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Watch the pair-off strategy <span class="pill">Auto-plays</span></div>
 <div class="controls"><label>Input <input type="text" id="o-input" value="000111" maxlength="20" style="width:120px;"></label>
 <button class="btn play-btn" id="o-run">⏸ Pause</button><button class="btn ghost" id="o-step">Step</button><button class="btn ghost" id="o-reset">Reset</button>
@@ -31,7 +31,7 @@
 <svg id="o-svg" viewBox="0 0 760 180" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="status"><div class="stat">Step <b id="o-steps">0</b></div><div class="stat">Phase <b id="o-phase">find0</b></div><div class="stat">Verdict <b id="o-verdict">—</b></div></div>
 <div class="explain-panel" id="o-explain"></div></div></section>
-<section><div class="section-label">4 · Pitfalls</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p18-s4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">4 · Pitfalls</div>
 <ul style="margin:6px 0 0 20px;">
   <li><strong>The order matters.</strong> The algorithm must also reject inputs like "1100" or "010101" — anything where 0s and 1s are interleaved or out of order. A first-pass structural scan checks the 0*1* shape before pairing begins.</li>
   <li><strong>Each pair's O(n) hides the rewind.</strong> The constant inside is ≈ 3: walk right to find 1, walk all the way back, then start the next pair. Including rewinds is what makes the lower bound Θ(n²), not just O(n²).</li>
@@ -39,14 +39,14 @@
 </ul>
 </section>
 
-<section><div class="section-label">5 · Q&amp;A defence notes</div><ul class="qa-list">
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p18-s5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">5 · Q&amp;A defence notes</div><ul class="qa-list">
 <li><div class="q">Q1. Why exactly Θ(n²)?</div><div class="a">n/2 pairs × O(n) per pair = O(n²). The matching lower bound comes from a crossing-sequence argument: every bit of "information transferred" between left and right halves requires the head to physically cross the middle. With n bits to communicate, you need Ω(n) crossings, each of cost Ω(n).</div></li>
 <li><div class="q">Q2. Can a single-tape TM do better than Θ(n²)?</div><div class="a">No. The crossing-sequence lower bound is tight. Adding a second tape, two heads, or random-access — any of these gets you to O(n). The slowdown is the price of single-tape sequentiality.</div></li>
 <li><div class="q">Q3. Why doesn't this break P?</div><div class="a">O(n²) is still polynomial. P is robust across reasonable machine models — single-tape, multi-tape, RAM, all polynomial-time equivalent. The constants and exponents may change, but the class P does not.</div></li>
 <li><div class="q">Q4. Is there a faster single-tape algorithm using cleverer marking?</div><div class="a">Sipser §7.2 covers a variant that marks 0s in groups, achieving the same Θ(n²) but with better constants. The asymptotic class doesn't change.</div></li>
 </ul></section>
 
-<section><div class="section-label">6 · Where to read more</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p18-s6.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">6 · Where to read more</div>
 <p><strong>Sipser:</strong> Example 7.2 (the pair-off algorithm), Theorem 7.8 (multi-tape simulation). <strong>Lecture notes:</strong> Module 4 slides 3–4. <strong>Companion problem:</strong> P19 (two-tape race).</p>
 </section></div><footer class="foot">P18 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){

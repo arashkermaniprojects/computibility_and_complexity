@@ -1,0 +1,7 @@
+Let’s talk about some common pitfalls students encounter when dealing with growth rates. First off, constants can matter a lot in practice, but they don’t impact whether something is in the class P. For example, a 10 to the 100 times n algorithm is technically in P, but in real-world applications, it’s pretty much useless. Remember, P is a theoretical classification, not a guarantee of efficiency in practice. 
+
+Next, it’s crucial to remember how n log n compares to n squared. Under pressure, it’s easy to forget that n log n grows much slower than n squared. Logarithmic growth is slow, much slower than linear growth, so don’t underestimate that.
+
+Another big misconception is viewing 2 to the n as just "n times worse" than n. It’s actually much worse because each additional input doubles the work. That exponential growth means that one more bit of input can drastically increase the time required.
+
+Lastly, don’t confuse pseudo-polynomial with polynomial. For algorithms like SUBSET-SUM using dynamic programming, the time complexity is O(n times S), where S represents the numeric value of the input. But that S can be exponential in terms of the number of bits, so polynomial time really refers to the bit length, not the value itself. Keep these distinctions clear, and you’ll be in a much better place!

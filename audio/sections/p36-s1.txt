@@ -1,0 +1,7 @@
+Let’s dive into TQBF and its game-tree interpretation. TQBF stands for true quantified Boolean formulas. A QBF consists of a Boolean formula that starts with alternating quantifiers like "there exists" and "for all," followed by a quantifier-free part we call the kernel. 
+
+When we evaluate something like "there exists x such that ψ(x)," we check if ψ is true for either value of x, 0 or 1. For "for all x, ψ(x)," it needs to be true for both values. You keep repeating this process until you reach the kernel, which is just a standard Boolean formula that you can evaluate directly.
+
+Now, imagine this whole process as a game between two players. One player, ∃, gets to choose values for the ∃-variables, trying to make the formula true. The other player, ∀, chooses for the ∀-variables, aiming to make it false. The formula is true if ∃ has a winning strategy, which is a fantastic way to connect TQBF to game theory. 
+
+Interestingly, TQBF is PSPACE-complete, meaning it's pretty complex. When we evaluate it, we only need to keep track of the current path in the tree, so we use linear space. Even though the whole tree has two to the n leaves, we can manage our space efficiently since we work on each branch independently and then discard it.

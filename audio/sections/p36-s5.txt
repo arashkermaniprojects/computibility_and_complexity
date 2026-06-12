@@ -1,0 +1,5 @@
+If you're looking to dive deeper into TQBF and its properties, a great starting point is Michael Sipser's textbook. Check out Theorem 8.9, which discusses how TQBF is PSPACE-complete. This is a crucial concept in computational complexity, showing just how challenging this problem is.
+
+You might also find it helpful to look at some lecture notes, specifically Module 6, which covers concepts related to quantified boolean formulas. Pay attention to slides two and three; they break down the evaluation of these formulas and how game trees represent them.
+
+To reinforce your understanding, try tackling some companion problems. Problem 37 focuses on TQBF itself, while Problem 38 introduces a geography-related challenge. Problem 39 connects TQBF to geography, helping you see the application of these concepts in different areas. Finally, Problem 40 gives you a chess-related scenario, which can be both fun and insightful. Working through these problems will solidify your grasp of the material and its implications in computational theory.

@@ -1,0 +1,5 @@
+Let’s dive into how we can visualize the concepts of decidability with some animated demos. Imagine three different deciders working side by side: for ADFA, we’re checking if a given string is accepted by a deterministic finite automaton. For EDFA, we’re determining if two DFAs accept the same language. And then for ACFG, we’re checking if a context-free grammar generates a particular string.
+
+Now, as we watch these deciders in action, you’ll notice they can auto-play, meaning they’ll run through the inputs automatically. But you can also pause the animation at any time to really focus on what’s happening. If you want to see the progress step by step, there’s an option to step through each transition, which highlights how each decider processes the input. 
+
+If at any point you want to reset and start fresh, there’s a reset button, allowing you to begin from the start. You can also adjust the speed of the animation to suit your learning pace. This interactive approach helps make the concepts of decidability more tangible and engaging.

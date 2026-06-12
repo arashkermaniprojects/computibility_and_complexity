@@ -1,0 +1,9 @@
+Let’s break down some important questions regarding decidability in automata. First, why is A DFA decidable while A TM isn't? A DFA processes an input of length n by visiting exactly n plus one states, one for each position in the input. This means that the simulation always halts. In contrast, a Turing machine can loop indefinitely, which leads us to the core issue of halting. Diagonalization shows that halting cannot be determined in general for Turing machines.
+
+Now, let’s look at why E DFA is in O of the size of Q times the size of the alphabet, but E TM is undecidable. For a DFA, checking if the language is empty is a finite graph problem; you can use a breadth-first search to see if there's a path from the start state to any accept state. But for a Turing machine, you need to consider whether it accepts any possible input from the entire set of strings, which is an infinite task.
+
+Next, think about where CYK’s cubic time complexity comes from. The table has O of n squared entries because it considers all possible start positions and lengths of substrings. Each entry needs to check O of j split points and verify a constant number of rules. This leads to a total work of O of n cubed times the size of the grammar.
+
+Now, is EQ DFA decidable? Yes! You can construct a symmetric-difference DFA, which captures the difference between two languages. Since regular languages are closed under operations like union and intersection, you can check if the resulting language is empty, and that’s decidable in polynomial time.
+
+For EQ NFA and EQ REX, it’s a different story. They’re decidable but PSPACE-complete. The conversion to DFA can cause exponential blow-up, making it impractical for polynomial-time algorithms.

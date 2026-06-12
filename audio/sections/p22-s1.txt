@@ -1,0 +1,7 @@
+Let’s dive into SAT, which stands for satisfiability. SAT is all about figuring out if a certain type of Boolean formula, specifically one in conjunctive normal form, can be satisfied. So, what does that mean? A CNF formula is made up of clauses, and each clause is a collection of literals. Now, a literal can be a variable, say \( x_i \), or its negation, written as \( \neg x_i \). 
+
+The goal is to find an assignment of true or false values to these variables so that every clause in the formula is true. If you can find such an assignment, we say that the formula is satisfiable. 
+
+Now, SAT is a member of a bigger class of problems called NP. In simple terms, if you have a satisfying assignment, you can easily check whether it’s correct by going through each clause and making sure at least one literal in each clause evaluates to true. This checking process can be done in linear time relative to the number of literals involved. 
+
+SAT is particularly interesting because it’s NP-complete, meaning every problem in NP can be transformed into a SAT problem in polynomial time. This makes SAT a crucial starting point for understanding the complexities of NP-completeness.

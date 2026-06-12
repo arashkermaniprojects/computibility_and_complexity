@@ -15,7 +15,7 @@
 
 <div class="wrap">
 
-<section><div class="section-label">1 · The crucial inversion · check non-membership, not membership</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p11-s1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">1 · The crucial inversion · check non-membership, not membership</div>
 <p>ALL<sub>CFG</sub> = {⟨G⟩ : L(G) = Σ*}. Sipser proves it undecidable by reducing from A<sub>TM</sub>. The construction has a key inversion that students often find confusing: we don't build a CFG that <em>recognises</em> accepting computation histories — that would require a CFG to verify a TM, which is beyond CFG power. Instead we build a CFG that recognises <em>everything except</em> accepting computation histories.</p>
 
 <div class="theorem-box"><div class="theorem-label">Why this matters</div>
@@ -35,7 +35,7 @@
 </div>
 </section>
 
-<section><div class="section-label">2 · The reverse-write trick · why CFGs can match (C<sub>i</sub>, C<sub>i+1</sub>)</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p11-s2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">2 · The reverse-write trick · why CFGs can match (C<sub>i</sub>, C<sub>i+1</sub>)</div>
 
 <div class="diagram" style="margin:14px 0;">
 <svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
@@ -84,7 +84,7 @@
 <p>The grammar nondeterministically guesses where a violation occurs, then checks it locally. Crucially: the grammar accepts when it <em>finds</em> a violation. A correctly-formed accepting history goes through the grammar without any violation being detectable — so it is <em>not</em> generated.</p>
 </section>
 
-<section><div class="section-label">3 · Animated demo · auto-plays · loops</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p11-s3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">3 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">The CFG works by guessing where a history goes wrong <span class="pill">Auto-plays</span></div>
 <div class="controls">
 <button class="btn play-btn" id="ac-run">⏸ Pause</button><button class="btn ghost" id="ac-step">Step</button><button class="btn ghost" id="ac-reset">Reset</button>
@@ -94,7 +94,7 @@
 <div class="explain-panel" id="ac-explain"></div>
 </div></section>
 
-<section><div class="section-label">4 · Pitfalls students stumble on</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p11-s4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">4 · Pitfalls students stumble on</div>
 <ul style="margin:6px 0 0 20px;">
   <li><strong>L(G<sub>M,w</sub>) = Σ* is the answer.</strong> The CFG <em>does</em> generate everything iff M doesn't accept w. Generating everything means "every string is broken." Don't flip the direction in your head.</li>
   <li><strong>The reverse-write trick is not optional.</strong> Without writing alternate configurations backwards, the CFG would have to match c<sub>1</sub> with c<sub>n+1</sub> at the same position — which requires synchronisation a CFG can't do. The trick converts position-matching into adjacency-matching.</li>
@@ -103,7 +103,7 @@
 </ul>
 </section>
 
-<section><div class="section-label">5 · Q&amp;A defence notes</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p11-s5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">5 · Q&amp;A defence notes</div>
 <ul class="qa-list">
 <li><div class="q">Q1. Why is "find ONE violation" easier than "check ALL pairs are correct"?</div><div class="a">Existential vs universal quantification. A CFG can nondeterministically pick a position and locally verify a single property there — that's the pushdown automaton's natural mode of operation. "No problems anywhere" requires correlating all positions simultaneously, which exceeds the CFG/PDA's bounded-stack capability. This existential/universal asymmetry is the deep reason CFGs sit strictly below TMs.</div></li>
 <li><div class="q">Q2. Why is the trick to write C<sub>i+1</sub> backwards?</div><div class="a">In the standard construction, alternate configurations are written reversed, so checking whether (C<sub>i</sub>, C<sub>i+1</sub>) follow by δ becomes a palindrome-like local comparison — pairing up positions that are adjacent across the # boundary. A PDA's stack handles exactly this kind of nested matching.</div></li>
@@ -112,7 +112,7 @@
 <li><div class="q">Q5. Does the same trick work for LBAs?</div><div class="a">For LBAs we don't need the reverse-write trick because LBAs can do bidirectional sweeps over the whole input. That's the asymmetry between Problem 10 (E<sub>LBA</sub> via verifying) and this problem (ALL<sub>CFG</sub> via violating). Both rely on computation histories, but the verification mechanics differ.</div></li>
 </ul></section>
 
-<section><div class="section-label">6 · Where to read more</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p11-s6.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">6 · Where to read more</div>
 <p><strong>Sipser:</strong> §5.1, Theorem 5.13 (ALL<sub>CFG</sub> is undecidable). <strong>Lecture notes:</strong> Module 3 slide 4 covers G<sub>M,w</sub>. <strong>Companion problems:</strong> P9 (computation histories), P10 (E<sub>LBA</sub>, the LBA sibling), P14 (Rice's theorem — does this for arbitrary non-trivial TM properties).</p>
 </section>
 

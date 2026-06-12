@@ -1,0 +1,9 @@
+Let’s dive into some key questions about self-reducibility and how it relates to SAT. First, why does checking if φ with x set to true tells us the value of x? If our decider D finds that φ with x set to true is satisfiable, then we know there’s a satisfying assignment where x is indeed true, so we set x to true. If D says it’s not satisfiable, then the original formula must have a satisfying assignment where x is false, so we set x to false. 
+
+Now, how many times do we call D? It’s n plus one—one initial check for the whole formula, and then we make n calls for each variable fix. This is still polynomial in the size of the original formula.
+
+Does this self-reducibility concept work for other NP-complete problems? Absolutely! SAT's self-reducibility is a great template. You can apply similar strategies to problems like Hamiltonian Path, where you can peel off one vertex at a time, or Clique, where you check if there’s a clique containing a specific vertex. 
+
+The term "self-reducibility" comes from the idea that the algorithm reduces a SAT search problem into multiple instances of the SAT decision problem. It’s like solving a bigger problem by breaking it down into smaller instances of itself.
+
+Finally, the punchline for P versus NP is crucial. If P equals NP, that means for every NP-complete problem, we can not only decide if a solution exists but also find that solution in polynomial time. A world where P equals NP would be a game changer—think about how it would transform cryptography, optimization, and theorem-proving!

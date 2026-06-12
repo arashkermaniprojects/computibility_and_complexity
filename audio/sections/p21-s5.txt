@@ -1,0 +1,11 @@
+Let’s dive into some key questions about verifiers and brute-force solvers. 
+
+First, why does a verifier finish in m steps instead of 2 to the n? The key here is that the verifier is given a satisfying assignment upfront. Instead of searching through possibilities, it just checks if this assignment satisfies the m clauses—doing one constant-time check for each clause. So, we end up with a total of O(m) steps. 
+
+Now, what if the verifier gets a wrong certificate? In that case, at least one clause is going to evaluate to false, which means the verifier will simply reject it. This highlights an important aspect of NP: it's one-sided. There exists at least one valid certificate for a yes-instance, but the verifier only needs to recognize the good ones, not all possible ones.
+
+Next, let’s touch on UNSAT, the complement of SAT. UNSAT is thought not to be in NP because to certify that no assignment works, you’d need to rule out all 2 to the n possibilities, and there’s no known polynomial-size certificate for that. Instead, UNSAT is in coNP, and whether NP equals coNP is still an open question.
+
+Can our solver be smarter than brute force? Absolutely! Techniques like DPLL and CDCL run faster in practice. But, we don’t have any algorithm with a known polynomial worst-case runtime; the worst-case remains 2 to the O(n).
+
+Finally, look at PRIMES. For a long time, it was believed to be only in NP. But in 2002, it was proven to be in P, meaning there is a polynomial-time algorithm for it. So being "in NP" doesn’t imply there’s no polynomial algorithm; it just means one isn’t obvious.

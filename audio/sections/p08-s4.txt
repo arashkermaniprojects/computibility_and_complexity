@@ -1,0 +1,7 @@
+Let’s dive into how we can visualize the concept of mapping reduction with an animated demonstration. Imagine we have two machines, M1 and M2. The goal is to compare their languages. We’ll start by building these machines based on the input from an original machine M and a specific input string w.
+
+As the animation plays, you’ll see M1 and M2 being constructed step by step. The key point here is that we are setting up M1 and M2 in such a way that they are equivalent if and only if M does not accept w. This is crucial for our mapping reduction.
+
+Now, notice how you can control the animation. You can pause it to examine a specific step, or even step through it incrementally, which helps in understanding how the machines evolve. If you ever feel lost, you can reset the animation to start over. 
+
+You can also adjust the speed of the animation. Slowing it down can help you see the details of how M1 and M2 relate to M and w. This interactive approach makes it easier to grasp the underlying logic of undecidability and how mapping reductions function.

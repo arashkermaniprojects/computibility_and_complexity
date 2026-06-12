@@ -5,7 +5,7 @@
 <h1>PSPACE = NPSPACE · the proof walker</h1><p class="sub">Apply Savitch step-by-step on a small NSPACE machine.</p>
 <div class="tags"><span class="tag-pill">CLO-5</span><span class="tag-pill warn">R3·40 pts</span><span class="tag-pill info">L13</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · Savitch's theorem · the canonical NSPACE collapse</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p35-s1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">1 · Savitch's theorem · the canonical NSPACE collapse</div>
 <p>Savitch's theorem (Sipser §8.2): for f(n) ≥ log n, NSPACE(f(n)) ⊆ SPACE(f²(n)). The polynomial blowup is only quadratic, so <strong>PSPACE = NPSPACE</strong> — nondeterminism gives no extra power in polynomial space. (Contrast with P vs NP, which is open.)</p>
 
 <div class="theorem-box"><div class="theorem-label">The CANYIELD reduction</div>
@@ -25,13 +25,13 @@
 </div>
 </section>
 
-<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p35-s2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">2 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Apply Savitch's CANYIELD to a config graph <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="p-run">⏸ Pause</button><button class="btn ghost" id="p-step">Step</button><button class="btn ghost" id="p-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="p-speed" min="0.25" max="3" step="0.25" value="1"><span id="p-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="p-svg" viewBox="0 0 760 320" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="p-explain"></div></div></section>
-<section><div class="section-label">3 · Pitfalls</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p35-s3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">3 · Pitfalls</div>
 <ul style="margin:6px 0 0 20px;">
   <li><strong>f² is the upper bound, not the lower.</strong> Whether NSPACE(f) ⊊ SPACE(f) is open. The quadratic blowup is what we can prove; it might be unnecessary.</li>
   <li><strong>Recursion depth is log(t), not log(f).</strong> Time budget t = 2<sup>O(f)</sup>, so log(t) = O(f). That's the depth count.</li>
@@ -39,14 +39,14 @@
 </ul>
 </section>
 
-<section><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p35-s4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
 <li><div class="q">Q1. Why f² and not just f?</div><div class="a">Recursion depth = log(t) = O(f) levels. Each frame stores one configuration (size O(f)). Total stack size = O(f) levels × O(f) per frame = O(f²).</div></li>
 <li><div class="q">Q2. Why doesn't this trick work in TIME?</div><div class="a">Time can't be reused. In space, when a recursive call returns, the cells are free for the next call. In time, even if you computed something earlier, you still spent the time on it. CANYIELD's two recursive calls would take t/2 + t/2 = t time — no savings.</div></li>
 <li><div class="q">Q3. So is NTIME(f) ⊆ TIME(f²) similarly?</div><div class="a">No — that's exactly the P vs NP question (or close to it). NTIME(n^k) ⊆ TIME(n^poly) would imply P = NP. Savitch's technique fundamentally relies on space reusability.</div></li>
 <li><div class="q">Q4. Does Savitch give an efficient algorithm?</div><div class="a">In theory yes; in practice no. The constant-factor overhead is brutal and CANYIELD's recursion explores all possible midpoints. The theorem is conceptually crucial but not practically used.</div></li>
 </ul></section>
 
-<section><div class="section-label">5 · Where to read more</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p35-s5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">5 · Where to read more</div>
 <p><strong>Sipser:</strong> Theorem 8.5 (Savitch). <strong>Lecture notes:</strong> Module 6 slide 1. <strong>Companion problems:</strong> P34 (Savitch tree), P33 (space-time chart).</p>
 </section></div><footer class="foot">P35 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){

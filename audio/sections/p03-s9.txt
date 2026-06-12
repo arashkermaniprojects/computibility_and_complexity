@@ -1,0 +1,11 @@
+Let’s start with a quick recap of the problems we've covered. Remember Cantor's diagonal argument? That showed us that some sets are uncountably infinite. Then we talked about recognizable languages, where we established that a Turing machine can recognize some languages, but that doesn’t mean it can decide them. Our goal today is to show that a language can be recognizable but not decidable.
+
+Now, let’s assume we have a hypothetical Turing machine, H, that decides A sub T M. This machine always halts. That’s key—if it doesn’t halt, we can’t really use it to decide anything.
+
+Next, we’re going to construct a new Turing machine, D. Picture this: D takes an input and simulates H on its own description. If H says that D accepts its own description, then D will reject it. If H says D rejects its own description, then D will accept. 
+
+Now, visualize this. When we run D, pause for a moment when D appears in gold below the table. This is where the contradiction kicks in. 
+
+Let’s do a case split. First, if D accepts ⟨D⟩, then according to our construction, it must reject ⟨D⟩. But if it rejects ⟨D⟩, then it must accept! This contradiction shows us that our assumption about H was wrong.
+
+Finally, let’s tie this back to practical applications, like compilers or static analysis tools. This is exactly why your integrated development environment can’t warn you if your loop never terminates. For every possible input, there’s no way to decide whether it will halt or not. This undecidability is a fundamental limit in computation.

@@ -1,0 +1,7 @@
+Let’s start by getting everyone engaged with a hook: “Nondeterminism is free in space — but not in time.” This contrast opens up a fascinating discussion about P versus NP. Once you’ve set that stage, shift focus to defining CANYIELD. Write it out clearly. Emphasize that if we can tackle this problem, we can effectively solve the simulation issue we’re dealing with when we talk about nondeterministic space machines. 
+
+Now, let’s dive into the midpoint recursion. Focus on the two main ideas: sequential calls and how we loop over M. This is crucial because it lays the groundwork for understanding how we can manage the complexity of our recursion tree. 
+
+Next, visualize the recursion tree with depth 4, then depth 5. As you go through this, pause when it mentions that there’s "only one root-to-leaf path on the stack." This moment is key because it highlights how, despite the branching, we have a controlled way of managing our space. 
+
+Finally, let’s talk about resource accounting. Write out that log t times O(f) bits equals O(f squared). This neatly wraps everything up, giving a tangible sense of how we can simulate nondeterministic machines within deterministic space.

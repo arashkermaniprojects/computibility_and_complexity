@@ -1,0 +1,9 @@
+Let’s dive into some questions about Cantor's diagonal argument. First, why is the flipped function g not in the list? Well, g disagrees with the function in row i at column i minus one for every i. So, it can’t be the same as any function in the list, making it unique. 
+
+Now, why does Cantor's theorem matter for computability? Remember, Turing machines can only be countably many because each has a finite description. The languages they recognize, however, form a much larger, uncountable set. This means there are way more languages than Turing machines can handle, indicating that most languages aren't Turing-recognizable.
+
+Next, is this the same as the A sub T M diagonalization problem? The technique is similar, but the context differs. In this case, we’re working with arbitrary functions, while in the A sub T M problem, we’re flipping accepts and rejects for Turing machines.
+
+Does the order of listing matter? Not at all! We just need any enumeration of functions. The diagonal trick works for any such listing.
+
+Lastly, let’s prove that the reals between 0 and 1 are uncountable. Each real number in that interval has a binary expansion, which can be thought of as a function from natural numbers to {0, 1}. This shows that the size of the interval is the same as the size of the set of all functions from natural numbers to {0, 1}. So, Cantor's theorem applies here as well! Just keep in mind the caveat about dyadic numbers; they have two expansions but don’t affect the overall proof.

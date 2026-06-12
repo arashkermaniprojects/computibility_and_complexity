@@ -1,0 +1,5 @@
+If you want to dive deeper into the Immerman–Szelepcsényi theorem, a great starting point is Michael Sipser's book. Specifically, check out Theorem 8.27. Sipser does a fantastic job breaking down the theory and providing context that can really help solidify your understanding. 
+
+You might also want to explore some lecture notes, particularly those that cover Module 7. Pay attention to the discussions on how to analyze the complexity of problems like PATH. 
+
+And don't forget about the companion problems! They can be really useful for applying what you've learned. Problem 42 deals with whether PATH is in NL, which will help you practice the concepts in a hands-on way. Then there's Problem 43, where you get to investigate PATH being NL-complete, which is a crucial concept in complexity theory. Working through those problems will help reinforce your understanding of the material and give you practical experience with these ideas. Happy studying!

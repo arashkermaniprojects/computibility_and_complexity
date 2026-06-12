@@ -1,0 +1,5 @@
+Let’s dive into some questions around the PATH problem and its relationship to NL-completeness. First, why do we talk about polynomial configurations? A configuration is made up of a constant state, two head positions, and then the contents of the work tape. Each head position takes O(log n) bits, and the tape content is also O(log n). So, when you add them up, you get a total of O(log n) bits per configuration. Since two times O(log n) is still polynomial, we end up with polynomially many distinct configurations.
+
+Now, why is the reduction done in log space? Instead of building the entire configuration graph, we just focus on one configuration at a time, represented as a short string. We compute its successors by simulating the machine's transition function for just one step. This step only uses O(log n) space and gives us O(log n)-size output configurations.
+
+When we say NL is the set of languages that log-space reduce to PATH, it means that every problem in NL can be transformed into the PATH problem using log-space reductions. The direction of the reduction goes from any NL problem to PATH. That’s what makes PATH NL-complete.

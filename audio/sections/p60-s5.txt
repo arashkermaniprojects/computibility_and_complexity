@@ -1,0 +1,7 @@
+If you want to dive deeper into the topic of regex equivalence and its complexity, a couple of resources can really enhance your understanding. First, take a look at chapter 9.3 in Michael Sipser's textbook. It's a solid foundation for grasping the theoretical aspects of automata and complexity, including the nuances of regex equivalence.
+
+You might also find the Stockmeyer and Meyer paper from 1973 particularly insightful. They really laid the groundwork for understanding the relationships between different complexity classes, and their work can give you historical context and depth.
+
+Additionally, if you have access to some lecture notes, Module 7 can be very helpful. Specifically, focus on the part that discusses the equivalence of regex and its implications in complexity theory.
+
+Lastly, don't forget about the companion problems. Problem 12, which deals with a decidable trio, and Problem 57, comparing EXPTIME and PSPACE, are excellent exercises to reinforce what you've learned and challenge your understanding of these concepts. Happy studying!

@@ -1,0 +1,9 @@
+Let’s dive into some key questions about auxiliary-variable splitting in converting CNF to 3CNF. First, why do we use a fresh auxiliary variable for each clause? If we reused an auxiliary variable across different clauses, we’d create unintended correlations. Imagine you set a variable to true for one clause. If that variable is also used in a different clause, it might force that clause to become unsatisfiable, even if the original was satisfiable. By keeping each variable fresh, we ensure the clauses remain independent.
+
+Now, is the reduction many-one or Turing? It’s a many-one mapping reduction. This means we take the CNF formula and convert it directly to a 3CNF formula without any oracle calls. 
+
+What about size blow-up? The increase in size is linear. The number of clause-literals stays within a bound of O(L). In the worst case, when we have all-unit clauses, it can go up to about three times the original size.
+
+Does this approach work for 4SAT or kSAT for k greater than or equal to 4? Yes, it does! Any kSAT for fixed k of three or more is NP-complete. We can apply the same chain trick here.
+
+Finally, why is 2SAT in P while 3SAT is NP-complete? 2SAT can be solved efficiently using implication graphs and strong connectivity in linear time. Once we allow three literals, we gain enough flexibility to express complex Boolean constraints, which is why 3SAT jumps into NP-completeness.

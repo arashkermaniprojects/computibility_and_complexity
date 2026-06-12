@@ -1,0 +1,7 @@
+Let’s work through a concrete example with a Turing machine M. Imagine M is designed to check if its input starts with a 1. If it does, it accepts; if it doesn’t, it loops forever. Now, let’s say we choose the input w to be "01". When we run M on "01", it sees that it starts with a 0, so it loops indefinitely. Since M doesn't accept w, we need to create two other machines, M1 and M2.
+
+First, we build M1 to be a rejecter. It simply rejects everything, meaning its language is empty, or L(M1) equals the empty set. Now for M2, we set it up to simulate M on "01" for any input x. Since M loops on "01", M2 will also never accept any input. So, L(M2) is also empty.
+
+Now we can check the equality of the languages: L(M1) equals L(M2), both are empty. This means the pair ⟨M1, M2⟩ is in the EQTM set. And indeed, since ⟨M, "01"⟩ is not in ATM, our reduction holds.
+
+Now let's flip the input to w = "1xyz". Here, M accepts w, so M2 will also accept everything since it simulates M on "1xyz". This means L(M2) is the entire set of possible strings, or Σ*. However, L(M1) is still empty. So now we see L(M1) is not equal to L(M2), meaning ⟨M1, M2⟩ is not in EQTM. The contract we established holds again, confirming our reduction is correct.

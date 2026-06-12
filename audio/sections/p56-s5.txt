@@ -1,0 +1,7 @@
+If you're looking to dive deeper into NP-completeness and the relationship between problems like Vertex-Cover and Set-Cover, a great resource is Sipser's book. In particular, check out section 7.5, where he discusses extensions of NP-completeness. It’s a solid read and breaks down the concepts in a way that really helps reinforce what we talked about.
+
+Another useful resource is the lecture notes from your course. Specifically, the module on NP-completeness covers key ideas and gives you a structured way to understand the material. 
+
+Also, if you enjoy solving problems, take a look at the companion problems, especially problem 28. It’s focused on transforming the CLIQUE problem to Vertex-Cover, which will give you practical experience with these reductions and help solidify your understanding. 
+
+Exploring these resources will give you a broader picture and help you connect the dots in the theory of computational complexity. Happy studying!

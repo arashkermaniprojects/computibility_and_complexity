@@ -1,0 +1,7 @@
+Let's dive into some key questions about nondeterministic log-space and the PATH problem. First, why do we use nondeterminism instead of determinism? A deterministic log-space machine can't keep track of all the neighbors it has tried because it would need way too much memory, specifically, it would require at least as many bits as the number of vertices. Nondeterminism allows us to "magically" guess the right neighbor at each step without needing that extra memory.
+
+Now, about the counter being limited to the number of vertices, or |V|. If there is a valid path, it can’t be longer than |V| minus one, since you can't revisit vertices in a simple path. By capping the counter at |V|, we ensure that our search will eventually stop. Otherwise, a nondeterministic walk could endlessly loop back to the same vertices.
+
+Next, is PATH in L? That’s still an open question. If we could show that PATH is in L, it would mean L equals NL, which is a significant mystery in computational theory. Reingold proved that UNDIRECTED-PATH is in L, but the directed case is still unresolved.
+
+Lastly, let’s talk about coNL. This refers to the complements of NL languages. So, if you have every nondeterministic path returning a "no," that fits into coNL. The exciting part is that a result from Immerman and Szelepcsényi in 1987 showed that coNL is actually equal to NL. This tells us that nondeterministic space classes are closed under taking complements, which is different from NP, where we don’t know if that holds true.

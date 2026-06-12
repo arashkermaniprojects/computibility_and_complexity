@@ -1,0 +1,5 @@
+Let’s dive into a concrete example with the subset-sum problem and how we can size our verifier. Imagine we have a verifier V that takes n bits and runs in n squared steps. For our input size, if n is 10, we end up with a tableau that has 100 cells, and for n equals 100, that's 10,000 cells. Now, each of these cells has variables that we get from the size of our alphabet and states, which we can estimate to be around 20. 
+
+So, when we multiply the number of cells by the number of variables, we get a pretty large number of variables overall. For example, with n being 10, we could see around 200,000 variables. As n increases to 100 or even 1,000, the number of variables skyrockets to around 10 billion. 
+
+While this might sound intimidating, modern SAT solvers are quite powerful and can manage problems with millions of variables effectively. It’s important to remember that while the Cook–Levin reduction is a foundational concept, in practical applications, we often use tighter reductions, like directly to 3SAT, to tackle NP-completeness problems more efficiently.

@@ -1,0 +1,5 @@
+Let's dive into the closure properties of decidable and recognizable languages. Picture a table where you can see how these classes behave under different operations. When we talk about decidable languages, they have a superpower: they are closed under every operation you can imagine. This means if you take two decidable languages and perform operations like union, intersection, or even complementation, the result will always be decidable.
+
+Now, let’s focus on recognizable languages. They’re a bit trickier. While they are closed under operations like union and intersection, they stumble when it comes to complementation. This means if you have a recognizable language and you want to find its complement, that might not be recognizable. This gap is crucial—it leads us to the bridge theorem, which helps us understand the relationship between these two classes.
+
+So, think of decidable languages as a sturdy bridge that can support all kinds of traffic, while recognizable languages are like a path that’s great for some trips but has limitations. Understanding these differences is key to grasping the power and boundaries of computational theory.

@@ -1,0 +1,5 @@
+Let’s start by assuming something that we’re going to eventually break. Imagine there’s a Turing machine, let’s call it H, that decides the problem A sub T M, meaning it can tell us whether any given Turing machine M will accept a specific input w. So, if you give H the encoding of M and w, it always gives you an answer: it accepts if M accepts w, or it rejects if M does not accept w, which includes both cases where M outright rejects or goes into an infinite loop.
+
+Now, from this assumption about H, we’re going to create a new Turing machine, which we’ll call D. The way D works is pretty straightforward. First, it takes the description of a machine M as input. Then, it runs H on the encoding of M along with its own encoding, asking, does M accept its own description? If H says yes, meaning M accepts its own description, then D will reject. But if H says no, meaning M does not accept its own description, then D will accept.
+
+Here’s the key point: D is also a Turing machine, and it has its own encoding. When we feed D its own encoding, we set the stage for a contradiction. This is where things get really interesting!

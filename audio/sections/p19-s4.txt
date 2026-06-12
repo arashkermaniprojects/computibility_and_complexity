@@ -1,0 +1,5 @@
+Let’s talk about some common pitfalls when comparing single-tape and two-tape Turing machines, particularly when simulating one on the other. A key point to remember is that simulating a k-tape machine on a single tape doesn’t just cost time proportional to t(n) multiplied by k. Instead, it actually costs Θ(t(n)²). Why is that? The biggest reason is that the single tape has to shuttle the head back and forth across the k simulated tapes for each step, leading to that quadratic time complexity.
+
+Now, you might think that since P is invariant under the number of tapes, it would be safe to assume that adding more tapes wouldn’t change things too dramatically. But watch out for EXPTIME! Even though polynomial-bounded classes can handle that polynomial blowup, exponential-time classes also hold up under similar circumstances.
+
+When it comes to two-tape machines, the real speedup happens when both heads can move independently. If you force them to move together, you lose that advantage. The independent head movement is what really makes the two-tape model efficient, so keep that in mind as you think about how these models differ!

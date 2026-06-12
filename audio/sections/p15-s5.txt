@@ -1,0 +1,5 @@
+When diving into the recursion theorem, students often trip over a few key points. First, remember that the fixed point concept is semantic, not syntactic. This means that the programs R and t applied to the encoding of R, which we can think of as t(⟨R⟩), might look very different in terms of their structure, states, or even tape alphabets. They just need to recognize the same language. 
+
+Another common stumble is forgetting that t has to be a total computable function. If t gets stuck in a loop when processing some input, like ⟨P⟩, then we can’t reliably create the composite function t∘q for our purposes. Most transformations we consider, like renaming states or adding transitions, tend to be total and don’t cause issues.
+
+It’s also crucial to note that R isn’t unique. The recursion theorem only guarantees that at least one fixed point exists for a given t, but there could be many. Lastly, don’t stress about memorizing the s-m-n theorem. It essentially tells us that you can create a program that hard-codes some inputs. Most programming languages can do this easily. Focus on the proof's structure and the concept rather than the exact syntax.

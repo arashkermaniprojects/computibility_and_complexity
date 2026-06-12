@@ -1,0 +1,5 @@
+When we talk about nondeterministic log-space or NL, one of the key points to remember is that acceptance is based on the existence of a successful branch. Essentially, a nondeterministic machine accepts input if at least one path leads to an accepting state. If some branches fail to find a solution, that’s okay. The only thing that matters is whether at least one branch hits the target.
+
+Now, there’s an important mechanism in place to prevent these nondeterministic walks from getting stuck in infinite loops. We use a counter to limit the number of steps. If the machine doesn’t find a solution within the number of vertices in the graph, it will hit this cap and stop. This limitation is crucial because, without it, the machine could wander around indefinitely without making any progress.
+
+Another point to highlight is that NL is actually a subset of P. Why? Because any nondeterministic log-space machine can only have a polynomial number of configurations, and we can check reachability among these configurations efficiently using breadth-first search, which is in P. However, whether NL equals P is still an open question in computer science.

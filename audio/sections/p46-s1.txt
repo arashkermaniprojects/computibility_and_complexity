@@ -1,0 +1,7 @@
+Let’s dive into the Time Hierarchy Theorem, which is a fascinating result in complexity theory. The core idea is pretty intuitive: if you give a Turing machine more time, it can decide more languages. Essentially, having more computational time translates into more power.
+
+The theorem states that if you have a function f(n) that grows at least as fast as n log n, and is time-constructible, then there's a strict separation between TIME(f(n)) and TIME(f(n) log f(n)). What this means is that there are languages that a machine running in time f(n) simply cannot recognize, but a machine with time f(n) log f(n) can.
+
+To prove this, we can construct a specific Turing machine, let’s call it D. This machine simulates another machine M on its input but runs for a predetermined time of f applied to the size of M. It then outputs the opposite of what M would output. Because of this clever construction, D’s language isn’t in TIME(f), but it runs within the bounds of TIME(f log f), showcasing that more time indeed allows for more languages to be processed.
+
+This has significant implications, like showing that polynomial time is strictly smaller than exponential time, and further, that linear time is less powerful than quadratic time. So, the more time you have, the more languages you can decide—it's a crucial concept that shapes our understanding of computational limits!

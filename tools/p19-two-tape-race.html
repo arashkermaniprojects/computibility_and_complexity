@@ -5,7 +5,7 @@
 <h1>Single-tape vs Two-tape · {0ⁿ1ⁿ} race</h1><p class="sub">Same problem. Different machine model. O(n²) vs O(n).</p>
 <div class="tags"><span class="tag-pill">CLO-3</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L9</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · Why a second tape changes everything</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p19-s1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">1 · Why a second tape changes everything</div>
 <p>The same language {0<sup>n</sup>1<sup>n</sup>} that costs a single-tape TM Θ(n²) time (Problem 18) drops to O(n) on a two-tape TM. The strategy: <strong>copy the 0s to tape 2; then march tape 1 right through the 1s while tape 2 marches left through the copied 0s, both in sync</strong>. If both tapes hit their end-of-data markers at the same step, accept. If one runs out before the other, reject.</p>
 <div class="theorem-box"><div class="theorem-label">Sipser Theorem 7.8 · the robustness of P</div>
 <p style="margin:4px 0;">Every k-tape Turing machine running in time t(n) can be simulated by a single-tape TM in time O(t(n)²). Polynomial composed with polynomial is polynomial, so <strong>P is invariant under tape count</strong> — the class doesn't change when you add or remove tapes.</p>
@@ -56,7 +56,7 @@
 </div>
 </section>
 
-<section><div class="section-label">3 · Animated demo · auto-plays · loops</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p19-s3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">3 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Two tape models racing on the same input <span class="pill">Auto-plays</span></div>
 <div class="controls"><label>n: <input type="range" id="r-n" min="3" max="10" value="5" style="width:120px;"> <span id="r-nl">5</span></label>
 <button class="btn play-btn" id="r-run">⏸ Pause</button><button class="btn ghost" id="r-reset">Reset</button>
@@ -66,7 +66,7 @@
 <div style="min-width:0;"><h4>Two-tape · O(n)</h4><svg id="r-s2" viewBox="0 0 400 120" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg><div style="font-family:var(--sans),sans-serif;font-size:12px;color:var(--muted);">Steps: <b id="r-st2" style="font-family:var(--mono);">0</b></div></div>
 </div>
 <div class="explain-panel" id="r-explain"></div></div></section>
-<section><div class="section-label">4 · Pitfalls</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p19-s4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">4 · Pitfalls</div>
 <ul style="margin:6px 0 0 20px;">
   <li><strong>The simulation is t(n)², not t(n) × k.</strong> Simulating a k-tape TM on a single tape costs Θ(t(n)²) — independent of k, because the limiting step is shuttling the single head across all k simulated tapes per simulated step.</li>
   <li><strong>P is invariant under tape count — but EXPTIME is too.</strong> The robustness theorem actually shows polynomial-bounded classes survive any polynomial blowup. Exponential-time classes also survive.</li>
@@ -74,14 +74,14 @@
 </ul>
 </section>
 
-<section><div class="section-label">5 · Q&amp;A defence notes</div><ul class="qa-list">
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p19-s5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">5 · Q&amp;A defence notes</div><ul class="qa-list">
 <li><div class="q">Q1. Why does two-tape win so much on this problem?</div><div class="a">The second tape acts as a scratch register that holds half the data. The two heads then move past each other in parallel, doing the count-comparison in a single sweep instead of n separate sweeps. The mechanism is "free copying" — copy 0s in O(n), then compare in O(n).</div></li>
 <li><div class="q">Q2. Why doesn't this break P?</div><div class="a">The simulation cost is at most a quadratic blowup, and a quadratic blowup of a polynomial is still a polynomial. P is defined to be robust under such blowups precisely because tape count is a model-specific detail.</div></li>
 <li><div class="q">Q3. What's the limit of multi-tape speedup?</div><div class="a">Some problems get a linear speedup (factor n) from extra tapes; some get a polylog speedup; some don't speed up at all. For decision problems, you can usually get a quadratic-to-linear improvement, but not arbitrary speedups — they're bounded below by information-theoretic lower bounds like Ω(n log n) for sorting.</div></li>
 <li><div class="q">Q4. Is this why we care about the random-access machine (RAM) model?</div><div class="a">Yes — RAMs let you address any tape cell in O(1) without shuttling, so they sit at the convenient "what your laptop feels like" point. RAM time is polynomially equivalent to TM time, so theorists use either freely.</div></li>
 </ul></section>
 
-<section><div class="section-label">6 · Where to read more</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p19-s6.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">6 · Where to read more</div>
 <p><strong>Sipser:</strong> Theorem 7.8 (k-tape ↔ 1-tape simulation), Example 7.2. <strong>Lecture notes:</strong> Module 4 slide 4 has this exact race. <strong>Companion problem:</strong> P18 (single-tape Θ(n²) detail).</p>
 </section></div><footer class="foot">P19 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){

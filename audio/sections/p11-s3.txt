@@ -1,0 +1,5 @@
+Imagine you have a context-free grammar, or CFG, that’s designed to generate strings, but it’s also set up to avoid those strings that represent accepting computation histories of a machine, M. Now, think about how this CFG operates. It’s like it’s playing a guessing game. It tries to figure out where the history goes wrong during the computation.
+
+Now, let’s picture an animated demo where this CFG is auto-playing. You can see the strings being generated right in front of you. If you want, you can pause the animation at any time to examine what’s happening. It’s a bit like watching a movie where you can hit the brakes and look closely at a particular scene. 
+
+You can also step through the process one move at a time, which helps you understand how the CFG makes its decisions at each stage. If things don’t seem right, you have the option to reset the animation and start over. And if you want to speed things up or slow them down, you can adjust that too. This interactive approach helps to visualize how the CFG is constantly working to avoid those accepting histories, making the concept much clearer and intuitive.

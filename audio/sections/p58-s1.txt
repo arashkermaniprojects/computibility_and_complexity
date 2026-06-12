@@ -1,0 +1,5 @@
+Let's dive into the theory behind Generalized Hex. Picture a hexagonal grid where two players, Red and Blue, take turns placing their stones. Red's goal is to connect the top edge to the bottom edge, while Blue aims to link the left edge to the right edge. The beauty of Hex is that the first player has a guaranteed win, but figuring out the best move isn’t straightforward. 
+
+Now, when we talk about the complexity of Generalized Hex, we refer to a fascinating result from Even and Tarjan back in 1976. They showed that determining the winning move on an n by n board for Hex is not just hard; it's PSPACE-complete. This means that solving it requires an amount of computational resources that grows polynomially with the size of the input. 
+
+Interestingly, the way this works is that you can represent specific instances of a problem called TQBF, which stands for true quantified Boolean formulae, as positions on the Hex board. This connection to TQBF illustrates just how intricate and challenging solving Generalized Hex can be. So, in essence, not only is the game strategic and engaging, but it also opens up a window into the deep world of computational complexity.

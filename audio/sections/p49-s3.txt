@@ -1,0 +1,5 @@
+Let’s dive into some of the pitfalls when dealing with recognizable and decidable languages. One key point is that recognizable languages allow for looping, while decidable languages do not. This means a decider will always halt, even if the input is not in the language. In contrast, a recognizer might loop indefinitely if it’s given an input that isn’t in the language. It’s all about how each type behaves on inputs that don’t belong to the language.
+
+When you’re working with two languages, say L1 and L2, and you want to recognize their union, you can’t just run a recognizer for L1 to completion and then run one for L2. That’s risky; M1 might loop forever, and you wouldn’t make any progress. Instead, you need to interleave the steps of M1 and M2, allowing each machine to make progress without getting stuck.
+
+The closure failure for complements really highlights the difference between recognizable and decidable languages. Most undecidability proofs hinge on the idea that a language L is recognizable but its complement L-bar is not. The bridge theorem clarifies this gap, emphasizing the importance of understanding these properties in computation.

@@ -1,0 +1,7 @@
+Let’s dive into classifying languages using a decision tree approach. Start with the simplest question: can you provide a Turing machine that always halts for a given input? If yes, congratulations! You’re in the decidable category. 
+
+Next, ask whether you can give a Turing machine that accepts yes-inputs but might loop on no-inputs. If you can do that, you’re looking at a recognizable language. Now, if you can give a machine that accepts no-inputs but may loop on yes, you land in the co-recognizable category. 
+
+But what if you find a machine that fits into both recognizable and co-recognizable? That’s a special case because it implies you have a decidable language, thanks to the bridge theorem that connects the two. 
+
+Now, if neither condition is satisfied for your machine, then you’re outside of all these categories, and that language is simply not recognizable. The tricky part often comes from proving non-recognizability, which usually involves a reduction from something like co-A sub T M. Keep that in mind as you work through examples!

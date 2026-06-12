@@ -1,0 +1,7 @@
+Let’s dive into understanding how configuration graphs work for a tiny NL machine. Imagine an automaton that processes input step by step. Each state it enters can be thought of as a configuration. As the machine reads the input, it transitions from one state to another. 
+
+Now, picture this: we have an animated demo showing these transitions in real time. You can see how the machine starts in an initial state, processes the input, and moves through various configurations. It’s like following a path through a maze, where each position represents a unique state of the machine.
+
+You can pause the animation whenever you want to take a closer look at a specific state or transition. If you want to see how the machine behaves with different inputs, there’s an option to reset it back to the beginning. You might also notice a speed control, allowing you to slow down or speed up the transitions. 
+
+This interactive view helps you grasp how every NL machine can be represented in this configuration graph, emphasizing the relationship between various states and transitions. By seeing it in action, it becomes much clearer how complex behavior emerges from these simple rules.

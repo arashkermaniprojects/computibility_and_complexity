@@ -1,0 +1,5 @@
+Let’s think about the difference between checking a solution and finding one. Imagine you’re trying to solve a puzzle, like a jigsaw. If someone hands you a completed puzzle and says, “Here, this is the solution,” all you have to do is check that the pieces fit together. That’s like what a verifier does. It’s quick and straightforward to verify that a claim is correct.
+
+Now, finding that completed puzzle from scratch? That’s a whole different story. It can take a lot of time and effort to sift through all the pieces and figure out how they fit together. This is where we get into the heart of NP problems. When we say a problem is in NP, we mean that while checking a solution is easy, finding one is much harder. 
+
+If P equals NP, that would mean there’s a method to not just check but also efficiently find solutions every time. But if P doesn’t equal NP, it suggests that for some problems, finding a solution is intrinsically harder than simply verifying one. That asymmetry is what makes NP so fascinating!

@@ -5,7 +5,7 @@
 <h1>Growth-rate race · log n vs n² vs 2ⁿ</h1><p class="sub">Six complexity functions race; pinpoint where exponential overtakes polynomial.</p>
 <div class="tags"><span class="tag-pill">CLO-3</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L9</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · The asymptotic hierarchy</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p17-s1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">1 · The asymptotic hierarchy</div>
 <p>Complexity is about <em>how time grows with input size</em>, not about absolute speed. The race here puts six canonical growth rates side by side so you can watch which ones stay manageable and which explode.</p>
 <div class="theorem-box"><div class="theorem-label">Big-O totals at n = 40</div>
 <p style="margin:4px 0;">log n ≈ 5  ·  n = 40  ·  n log n ≈ 213  ·  n² = 1,600  ·  n³ = 64,000  ·  2ⁿ ≈ 10<sup>12</sup>.</p>
@@ -13,7 +13,7 @@
 </div>
 </section>
 
-<section><div class="section-label">2 · Where exponential overtakes polynomial · the crossover table</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p17-s2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">2 · Where exponential overtakes polynomial · the crossover table</div>
 <div class="diagram" style="margin:14px 0;">
 <svg viewBox="0 0 760 340" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
   <text x="380" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">When does 2ⁿ overtake n^k? Where is the crossover point?</text>
@@ -51,7 +51,7 @@
 </div>
 </section>
 
-<section><div class="section-label">3 · Worked example · scaling a problem</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p17-s3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">3 · Worked example · scaling a problem</div>
 <p>Suppose you have an algorithm that runs in 10⁻⁹ × T(n) seconds (one nanosecond per operation). How big a problem can you solve in one second of CPU time?</p>
 <ul style="margin:8px 0 0 20px;">
   <li><strong>log n algorithm:</strong> n ≈ 2<sup>10⁹</sup>. Astronomical. Logarithmic algorithms scale trivially.</li>
@@ -63,13 +63,13 @@
 </ul>
 <p>This is why P is the working definition of "feasible" — polynomial-time algorithms scale; exponential-time ones do not.</p>
 </section>
-<section><div class="section-label">4 · Animated demo · auto-plays · loops</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p17-s4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">4 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Six curves race <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="g-run">⏸ Pause</button><button class="btn ghost" id="g-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="g-speed" min="0.25" max="3" step="0.25" value="1"><span id="g-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="g-svg" viewBox="0 0 760 380" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="g-explain"></div></div></section>
-<section><div class="section-label">5 · Pitfalls students stumble on</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p17-s5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">5 · Pitfalls students stumble on</div>
 <ul style="margin:6px 0 0 20px;">
   <li><strong>Constants matter in practice but not in P.</strong> A 10<sup>100</sup>·n algorithm is in P. In the real world it's useless. But P is a mathematical category, not an engineering claim — and the gap between "in P" and "fast in practice" is usually small for natural problems.</li>
   <li><strong>n log n is below n².</strong> Easy to forget under pressure. n log n grows much slower than n²; log n grows much slower than n.</li>
@@ -86,7 +86,7 @@
 <li><div class="q">Q4. Is n¹⁰⁰ really feasible?</div><div class="a">In theory it's in P. In practice, even n = 2 gives 2¹⁰⁰ steps — completely infeasible. The Cobham–Edmonds thesis is empirical: most natural problems in P turn out to have algorithms with small exponents. The famous exception is interior-point methods for LP (originally n³·⁵, now n^(2+ε)).</div></li>
 </ul></section>
 
-<section><div class="section-label">7 · Where to read more</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p17-s7.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">7 · Where to read more</div>
 <p><strong>Sipser:</strong> §7.1 (Big-O), §7.2 (P). <strong>Lecture notes:</strong> Module 4 slide 1 has the same race; slide 2 covers Big-O formally. <strong>Companion problems:</strong> P18 (single-tape 0ⁿ1ⁿ — concrete O(n²) example), P20 (Big-O classifier), P24 (P showcase — natural P algorithms).</p>
 </section></div><footer class="foot">P17 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){

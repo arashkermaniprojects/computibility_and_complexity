@@ -1,0 +1,5 @@
+Imagine we have a machine, let's call it M, and a string w that we want to check. We need to create two new machines, M1 and M2, through a mapping reduction. The idea is that M1 and M2 should be constructed in such a way that they are equivalent if and only if M does not accept w. 
+
+Think of M1 as a machine that simulates M but with a twist. When M1 runs, it checks if M processes w correctly. If M accepts w, M1 will reject any input. On the other hand, M2 is a machine that will accept any input. So, if M does not accept w, M1 and M2 behave the same way: they will both accept or reject based on the same conditions.
+
+This relationship is crucial because it allows us to translate the problem of deciding whether M accepts w into the equivalence of M1 and M2. If we can show that M1 and M2 are equivalent, then we can conclude that M does not accept w. This mapping reduction is a powerful tool in demonstrating undecidability in computational theory.

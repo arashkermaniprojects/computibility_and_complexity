@@ -1,0 +1,9 @@
+Let’s dive into some key Q&A notes to solidify our understanding. First, why is D itself a Turing machine? Well, D is built from H using composition. When you run H and flip the result, you're still working within the realm of Turing machines. Since H is a Turing machine, D inherits that property too. Remember, every effectively-computable procedure is a Turing machine, according to the Church–Turing thesis.
+
+Now, let’s talk about that diagonal cell. It creates a contradiction because it’s the unique cell where D’s input matches its own description. In that scenario, D is forced to disagree with itself. 
+
+Now, think about Cantor's diagonal argument. It has a similar structure. Cantor’s method shows disagreement with function values at specific indices. In our case, we disagree with the Turing machine at the index where it describes itself.
+
+Next, why doesn’t this contradiction affect the universal Turing machine? The universal Turing machine is a recognizer, not a decider. Recognizers can loop indefinitely. The contradiction in D relies on H being a decider, which always halts.
+
+As a bonus question, is A sub T M co-recognizable? The answer is no. If it were, combining the recognizer and the co-recognizer would let us decide A sub T M. Since A sub T M is undecidable, its complement cannot be recognizable either.

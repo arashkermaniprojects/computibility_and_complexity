@@ -1,0 +1,7 @@
+Let’s dive into an example to really understand Rice's theorem. Imagine we have a property P, which is whether the language of a Turing machine M, denoted as L(M), contains the binary encoding of some prime number. First off, we need to check if this property is nontrivial. 
+
+Take Turing machine 1, which accepts only the binary string "10". Since "10" represents the number 2, and 2 is prime, this machine satisfies property P. Now, consider Turing machine 2, which only accepts "1". Since "1" isn't prime, it doesn’t satisfy property P. So we’ve established that this property is indeed nontrivial.
+
+Next, we assess if it’s semantic. The property P depends solely on L(M) and not on how M is constructed or written. This means asking, “Does this program ever accept a prime?” is a semantic question. 
+
+According to Rice’s theorem, because property P is both nontrivial and semantic, we can conclude that it’s undecidable. This underscores a key point: any program-behavior question about outputs generally falls into the undecidable category. That's why, in practice, people often rely on pattern matching and runtime testing instead of formal verification.

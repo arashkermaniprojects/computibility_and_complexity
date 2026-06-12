@@ -1,0 +1,7 @@
+Let’s dive into the space class known as L, or log-space. This is a fascinating area because it represents the smallest interesting space class we encounter in computational theory. When we talk about L, we’re looking at decision problems that can be solved by a deterministic Turing machine using only a logarithmic amount of work-tape space, specifically O(log n). 
+
+Now, remember that the input tape is read-only and doesn’t count against this space limit. If it did, then we could trivially store the entire input and solve everything, which wouldn't be interesting! So, why log n? Well, log n bits are just enough to keep track of a pointer to any position in the input. 
+
+An excellent example of a problem in L is checking for palindromes. Imagine you have a string w of length n. You can use two pointers: one at the start, let’s call it i, and another at the end, j. You keep moving these pointers toward each other, checking if the characters at these positions match. If they ever differ, you reject the input; if the loop completes, you accept it. 
+
+This method only uses a constant amount of extra space along with those two pointers, so it fits neatly into our log-space constraint. Other classic problems in L include reachability in undirected graphs, checking parity, and comparing unary numbers. Understanding these concepts opens up fascinating discussions about the limits of computation!

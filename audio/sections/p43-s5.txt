@@ -1,0 +1,7 @@
+If you want to dive deeper into the topic of PATH being NL-complete, a great resource is Michael Sipser’s book. Specifically, check out Theorem 8.25, which really lays out the details of how PATH fits into the landscape of nondeterministic logarithmic space. 
+
+You might also find helpful insights in lecture notes that cover configuration graphs, particularly the parts that discuss how every NL machine can be reduced to PATH using logarithmic space. 
+
+And don’t forget about the companion problems that can really help solidify your understanding. Problem 42 deals specifically with PATH in NL, while Problem 44 explores the relationship between NL and coNL. There’s also Problem 41, which focuses on log space. 
+
+Working through these problems will give you a hands-on feel for the concepts, making them much clearer. So, grab your resources, and get ready to deepen your understanding of this fascinating area of computational theory!

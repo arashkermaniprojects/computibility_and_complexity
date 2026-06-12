@@ -1,0 +1,5 @@
+When we talk about the pitfalls in encoding a QBF as a generalized geography game, we need to focus on a few key aspects, particularly the structure of the QBF itself. It must be in what's called alternating prenex form—this means you have a strict alternation of existential and universal quantifiers, like ∃∀∃∀. This structure mirrors the game's turn-taking. 
+
+Now, it’s important to remember the normalization process we discussed earlier. A crucial rule is that no vertex can be revisited. This is where player 1 can get trapped. If player 1 chooses a literal that turns out to be false, they can’t go back to the variable that was already visited because of that no-revisit rule. Essentially, the literal they picked connects to a target that they’ve already been to. 
+
+While the process of building this game graph is polynomial time, playing the game optimally is another story. That’s where things get tough—it remains PSPACE-hard. So, understanding these pitfalls is essential for navigating the complexities of the game and the QBF structure.

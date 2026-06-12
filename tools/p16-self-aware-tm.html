@@ -15,7 +15,7 @@
 
 <div class="wrap">
 
-<section><div class="section-label">1 · The trick · a TM that reads its own description</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p16-s1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">1 · The trick · a TM that reads its own description</div>
 <p>The recursion theorem (Sipser §6.1) says: <strong>any TM can effectively obtain its own description ⟨M⟩</strong> on its tape and use it as data. This unlocks a remarkably short proof that A<sub>TM</sub> is undecidable — one with no explicit diagonal argument visible.</p>
 
 <div class="theorem-box"><div class="theorem-label">A<sub>TM</sub> undecidable · recursion-theorem proof</div>
@@ -31,7 +31,7 @@
 <p>The diagonalisation is hidden inside M itself, not stretched across a separate machine D' as in Problem 3. The recursion theorem absorbs the bookkeeping; what remains is just "build a program that defies its own classifier."</p>
 </section>
 
-<section><div class="section-label">2 · Two views of the same proof · side by side</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p16-s2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">2 · Two views of the same proof · side by side</div>
 
 <div class="diagram" style="margin:14px 0;">
 <svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
@@ -66,7 +66,7 @@
 <p>The proofs are the same proof in different clothes. The diagonal argument shows up <em>somewhere</em> — the recursion theorem just packages it. The recursion-theorem version is easier to generalise: Rice's theorem (Problem 14) uses the same template, replacing "D decides A<sub>TM</sub>" with "D decides any non-trivial property of L(M)."</p>
 </section>
 
-<section><div class="section-label">3 · Worked example · M defies its classifier</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p16-s3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">3 · Worked example · M defies its classifier</div>
 <p>Spell out one execution. Suppose D is your candidate decider for A<sub>TM</sub>. By the recursion theorem, there exists a TM M that on any input w:</p>
 <ol style="margin:8px 0 0 20px;">
   <li>Writes down ⟨M⟩ (its own code).</li>
@@ -77,7 +77,7 @@
 <p>Pick any w. D produces some classification. M does the opposite. So D's classification is wrong on (⟨M⟩, w). One wrong classification is enough — D was supposed to be correct on <em>every</em> input. Contradiction.</p>
 </section>
 
-<section><div class="section-label">4 · Animated demo · auto-plays · loops</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p16-s4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">4 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">M inspects ⟨M⟩ and decides what to do <span class="pill">Auto-plays</span></div>
 <div class="controls">
 <button class="btn play-btn" id="sa-run">⏸ Pause</button><button class="btn ghost" id="sa-step">Step</button><button class="btn ghost" id="sa-reset">Reset</button>
@@ -87,7 +87,7 @@
 <div class="explain-panel" id="sa-explain"></div>
 </div></section>
 
-<section><div class="section-label">5 · Pitfalls students stumble on</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p16-s5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">5 · Pitfalls students stumble on</div>
 <ul style="margin:6px 0 0 20px;">
   <li><strong>"Obtain ⟨M⟩" is not magic.</strong> The recursion theorem says ⟨M⟩ is constructible — there's an actual procedure (Problem 13's quine machinery). It's not hand-waving; it's a buildable feature of the TM.</li>
   <li><strong>M is not the same as D's classification of M.</strong> M produces an answer (accept/reject w). D produces a classification ("M accepts w" or not). The contradiction is that M's answer disagrees with D's classification on (M, w). Don't conflate the two.</li>
@@ -96,7 +96,7 @@
 </ul>
 </section>
 
-<section><div class="section-label">6 · Q&amp;A defence notes</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p16-s6.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">6 · Q&amp;A defence notes</div>
 <ul class="qa-list">
 <li><div class="q">Q1. Compare with the Problem 3 proof.</div><div class="a">Problem 3 builds an external machine D' that flips D, and asks what happens on D' fed itself. Problem 16's M flips D <em>from inside itself</em>, using the recursion theorem to get ⟨M⟩ for free. Same contradiction, but the recursion theorem absorbs the awkward "build D'" step. The technique generalises immediately to Rice's theorem.</div></li>
 <li><div class="q">Q2. Does M actually "know" its own code?</div><div class="a">In the sense the recursion theorem provides: yes. ⟨M⟩ is constructible by M itself, using the quine technique from Problem 13. It's not a runtime introspection feature — it's baked into M's construction at compile time.</div></li>
@@ -105,7 +105,7 @@
 <li><div class="q">Q5. Can we use this to prove A<sub>DFA</sub> undecidable?</div><div class="a">No — A<sub>DFA</sub> is decidable. The recursion theorem requires the language being defined to have an actual fixed point in the model, which works for TMs. DFAs don't have unrestricted self-reference because they can't encode arbitrary programs.</div></li>
 </ul></section>
 
-<section><div class="section-label">7 · Where to read more</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p16-s7.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">7 · Where to read more</div>
 <p><strong>Sipser:</strong> Theorem 6.5 (recursion theorem corollary — A<sub>TM</sub> proof). <strong>Lecture notes:</strong> Module 3 slide 5 (T = A·B construction). <strong>Companion problems:</strong> P3 (classic A<sub>TM</sub> proof, contrast), P13 (quine, prerequisite), P14 (Rice via recursion theorem), P15 (fixed-point form).</p>
 </section>
 

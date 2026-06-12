@@ -1,0 +1,7 @@
+Let’s dive into the Q&A defense notes, focusing on how we can enforce strict alternation in our TQBFs. When you have two consecutive existential quantifiers, for instance, you can introduce a dummy variable that doesn’t affect the meaning of the formula. So, instead of just having ∃x ∃y, you can rewrite it as ∃x ∀d ∃y. The variable d is fresh, meaning it doesn't appear anywhere else in the matrix, so it doesn’t change what the formula is saying.
+
+Next, let’s talk about converting the matrix to 3-CNF. You’ll apply the SAT to 3SAT splitting rule. If you encounter wide clauses, you can break them down using auxiliary variables. These auxiliaries will be placed as the innermost existential quantifiers. This process does cause a linear blowup in the size of the matrix.
+
+Now, regarding the total size blowup, it remains polynomial. The strict alternation adds at most n dummy variables, and the conversion to 3-CNF adds a linear number of auxiliary variables and clauses. 
+
+Finally, yes, this normal form is crucial in proofs. For example, the famous TQBF to GEOGRAPHY reduction, as mentioned in Sipser, starts with a TQBF₃ instance. The strict alternation is essential for enabling the game-tree-to-graph encoding.

@@ -1,0 +1,5 @@
+Let's dive into the fascinating world of the recursion theorem. This theorem isn't just a neat trick for creating quines, which are programs that print their own description. It actually opens the door to constructing Turing machines that can look at, modify, and respond to their own descriptions in any computable way. 
+
+Take the kamikaze machine, for example. When we feed it an input, say "w," it first prints its own description on the tape. That's a guarantee from the recursion theorem. After that, it appends a message that states, "I have shown my source. Now I erase." Finally, it enters a special state called "qkz," which means it effectively halts and clears the tape. 
+
+What's really exciting about this is that the existence of the kamikaze machine demonstrates that self-aware Turing machines aren’t just theoretical musings. They can be concretely built using the principles laid out by the recursion theorem. It’s a powerful illustration of how we can leverage self-reference in computation.

@@ -1,0 +1,5 @@
+When working on this topic, students often stumble on a few key points. First, remember that the construction of the machine B sub M, w is crucial, but it’s not about how the LBA executes. You’re really just transforming the problem syntactically. So when given ⟨M, w⟩, you’re writing down the description of B sub M, w. You’re not actually running any simulations during this reduction phase. The real LBA execution occurs later if you use an E LBA oracle. 
+
+Another common pitfall is forgetting the importance of negation. You need to keep in mind that if L of B sub M, w isn’t empty, that leads to the negation of E LBA. So, the relationship is that ⟨M, w⟩ being in A sub T M is equivalent to ⟨B sub M, w⟩ not being in E LBA. 
+
+Also, generating an accepting computation history for M can be tricky. B doesn’t generate these histories; it checks them. The input is given, and that’s key. The term "linear bounded" means the tape size is linear with respect to the input size. So, even if M creates long histories, the LBA has enough space because it’s proportional to the size of that input x. Keep these distinctions clear to avoid confusion!

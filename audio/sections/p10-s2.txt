@@ -1,0 +1,5 @@
+Let’s dive into why an LBA has the budget to recognize accepting computation histories. When we talk about an LBA, or a linear bounded automaton, we’re essentially discussing a machine that operates within certain constraints. One key thing to remember is that each time the LBA makes a pass over the input, it's just doing a finite-state walk. 
+
+Now, think about the role of the input. The LBA doesn't generate the entire history of the computation itself. Instead, it relies on the input, which contains this history, to guide its process. So, the heavy lifting — that is, producing the actual history of the computation — is done by whoever provides that input. 
+
+What the LBA does is validate that history. It checks whether the computation matches the rules and transitions it's designed to recognize. This validation is what the LBA is built to do. So in essence, the LBA has the budget, or the capability, to perform these tasks efficiently because it’s focusing on a limited scope: verifying a given history rather than creating it from scratch. This is crucial for understanding why the language of accepting computation histories is within the LBA's reach.

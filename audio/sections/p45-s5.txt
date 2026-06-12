@@ -1,0 +1,5 @@
+Let’s work through an example to illustrate the space hierarchy theorem, focusing on the relationship between L and PSPACE. We start by considering functions of the form f(n) = log n, which defines a complexity class known as SPACE(log n). This class is contained within SPACE(log n · log log n), and we can also see that this is a subset of SPACE(log squared n). 
+
+Now, if we keep applying this logic, we can keep iterating. So, SPACE(log squared n) is strictly contained in SPACE(log squared log squared), which in turn is a subset of SPACE(log cubed n). You can see the pattern here. Eventually, we reach SPACE(n) and even go beyond it to SPACE(n squared) and so on. 
+
+For any growing k, SPACE(n) is strictly contained in SPACE(n squared), and that continues for higher powers as well. Therefore, L is strictly inside PSPACE, which is the union of all those SPACE(n to the k) classes. Even though each step appears small, those log factors add up, allowing us to eventually leap across any polynomial gap. This illustrates the power and implications of the space hierarchy theorem.

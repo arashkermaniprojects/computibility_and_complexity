@@ -1,0 +1,7 @@
+Alright, let’s dive into how a Turing machine runs through its computations using an animated demo. Imagine we have a Turing machine set up to copy the string "00" and add an "X" at the end, so it transforms "00" into "00X". 
+
+As the animation auto-plays, you’ll notice the machine starts scanning the input. It moves from left to right, reading each symbol. You can see the tape moving, and each step of the machine is highlighted. It reads "0", writes it back, and moves to the next symbol. This process continues until it reaches the end of the input.
+
+Now, if we pause the demo, you can analyze each step. You can reset the machine to see it start all over again. Speed is adjustable too, allowing you to slow things down or speed them up, giving you a chance to really grasp what’s happening at each moment. 
+
+This visualization is super helpful, especially when you're trying to understand loops. The machine can repeat certain actions, like going back to re-check or adjust what it's doing. Understanding this flow is crucial as it lays the groundwork for more complex computations later on.

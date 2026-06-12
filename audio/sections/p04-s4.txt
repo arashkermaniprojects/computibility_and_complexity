@@ -1,0 +1,7 @@
+Let’s dive into the idea of decidable, recognizable, and co-recognizable languages. Picture a big circle for decidable languages—these are the languages we can solve with an algorithm that always gives a yes or no answer. Think of problems like whether a number is prime or if a string is in a regular language. 
+
+Now, there’s another circle for recognizable languages. These include languages that we can confirm if they belong, but if they don’t, we might never get an answer. Imagine the problem of determining if a string is a valid encoding of a Turing machine that halts—if it does, we can recognize it, but if it doesn’t, we might loop forever. 
+
+Then we have co-recognizable languages, which are kind of the opposite. They’re about problems where, if a string isn’t accepted, we can be sure it’s rejected eventually, like whether a Turing machine doesn’t halt for certain inputs. 
+
+As we cycle through these languages, it’s helpful to visualize how they relate. Decidable languages fit neatly inside recognizable ones, while co-recognizable languages sit outside, touching the boundary. Keeping these relationships in mind helps clarify the landscape of computational problems.

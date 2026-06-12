@@ -1,0 +1,9 @@
+Let’s start by sketching a Venn diagram on the board. Imagine a big rectangle that represents all languages, then draw two overlapping circles inside. One circle is for recognizable languages, and the other is for co-recognizable languages. The area where these two circles overlap is where we place decidable languages. 
+
+Now, let’s talk about the bridge theorem. This theorem essentially tells us that if a language is recognizable, then its complement is co-recognizable. The proof involves a parallel-simulation argument, where we can simulate both a recognizer for the language and the recognizer for its complement simultaneously. 
+
+Next, let’s visualize some classic languages. We’ll walk through them one by one, asking ourselves, “What region does this language belong to, and why?” For instance, the language of all Turing machines that halt is recognizable, but its complement, the language of machines that do not halt, is co-recognizable. 
+
+Then, we’ll look at a concrete example: the dovetailing recognizer for the complement of the language E sub T M. This example shows how we can effectively recognize a non-decidable language. 
+
+To wrap it up, remember Rice's theorem, which states that every non-trivial property of Turing machines is at least recognizable but not necessarily decidable. This ties everything together and gives us a clear understanding of these concepts.

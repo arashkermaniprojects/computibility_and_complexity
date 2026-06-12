@@ -5,15 +5,15 @@
 <h1>Cook–Levin on a concrete NP language</h1><p class="sub">Encode the HAMPATH verifier as a SAT formula for a tiny instance.</p>
 <div class="tags"><span class="tag-pill">CLO-4</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L11</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · Theory</div><p>For a specific NP language (HAMPATH), walk through the four clause families that build φ<sub>x</sub>.</p>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p55-s1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">1 · Theory</div><p>For a specific NP language (HAMPATH), walk through the four clause families that build φ<sub>x</sub>.</p>
 <div class="theorem-box"><div class="theorem-label">Four clause families</div><p style="margin:4px 0;">φ<sub>cell</sub>: each cell has exactly one symbol/state.<br>φ<sub>start</sub>: row 0 = start config on (G, π).<br>φ<sub>accept</sub>: some row contains q<sub>accept</sub>.<br>φ<sub>move</sub>: every 2×3 window matches δ.</p></div></section>
-<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p55-s2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">2 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Reveal each clause family <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="r-run">⏸ Pause</button><button class="btn ghost" id="r-step">Step</button><button class="btn ghost" id="r-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="r-speed" min="0.25" max="3" step="0.25" value="1"><span id="r-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="r-svg" viewBox="0 0 760 320" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="r-explain"></div></div></section>
-<section><div class="section-label">3 · Pitfalls</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p55-s3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">3 · Pitfalls</div>
 <ul style="margin:6px 0 0 20px;">
   <li><strong>The four families are not independent.</strong> Each constrains different aspects; the conjunction is the whole formula. Missing one breaks correctness.</li>
   <li><strong>φ<sub>cell</sub> uses both "at least one" and "at most one" clauses.</strong> The disjunction says the cell has some symbol; the pairwise-not-both clauses prevent multiple symbols at once.</li>
@@ -21,14 +21,14 @@
 </ul>
 </section>
 
-<section><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p55-s4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
 <li><div class="q">Q1. Why is φ<sub>cell</sub> needed?</div><div class="a">Without it, SAT variables could "claim" a cell holds multiple symbols simultaneously, which is meaningless as a TM tape state. φ<sub>cell</sub> enforces exactly-one-symbol per cell.</div></li>
 <li><div class="q">Q2. How big is the formula?</div><div class="a">O(n<sup>2k</sup>) clauses for a TM running in time n<sup>k</sup>. Polynomial in input size.</div></li>
 <li><div class="q">Q3. Why is this a polynomial reduction?</div><div class="a">The formula is constructed by a procedure whose running time is polynomial in |x|. So if SAT were in P, every NP language would be too — proving SAT is NP-complete.</div></li>
 <li><div class="q">Q4. How does the 2×3 window encode the transition?</div><div class="a">The window has 2 rows (consecutive configurations) and 3 columns (the head's cell plus neighbours). For each transition δ in M, the legal 2×3 patterns are enumerated; φ<sub>move</sub> says every window matches one of them.</div></li>
 </ul></section>
 
-<section><div class="section-label">5 · Where to read more</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p55-s5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">5 · Where to read more</div>
 <p><strong>Sipser:</strong> Theorem 7.37 (Cook–Levin). <strong>Lecture notes:</strong> Module 5 slide 3. <strong>Companion problems:</strong> P25 (Cook-Levin tableau), P22 (SAT).</p>
 </section></div><footer class="foot">P55 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){

@@ -1,0 +1,5 @@
+If you're looking to dive deeper into TQBF and its normal forms, I recommend starting with Sipser's textbook, specifically section 8.3. This part covers reductions related to TQBF, which will help solidify your understanding of how these problems relate to each other.
+
+Another great resource is the lecture notes from Module 6. You’ll find a wealth of information, particularly on the third slide. It effectively illustrates key concepts that can enhance your grasp of TQBF.
+
+As for practice, the companion problems are super helpful. Problem 26 is about the reduction from SAT to 3SAT, which is crucial for understanding how these transformations work. Then, check out Problem 36, which focuses on the game tree for TQBF. This will give you a practical perspective on how to approach these types of problems. Finally, don’t miss Problem 39, which ties TQBF into geography. It’s a unique way to see these concepts in action. So, grab those resources, and happy studying!

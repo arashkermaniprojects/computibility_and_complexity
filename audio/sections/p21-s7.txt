@@ -1,0 +1,5 @@
+If you want to dive deeper into the concepts of verifiers and brute-force solvers, a great starting point is Michael Sipser's book. Check out section 7.3 for a solid definition of NP. It breaks down what it means for a problem to be in NP and really clarifies the role of verifiers. Then, move on to section 7.4, which covers NP-completeness. This part helps you understand why certain problems are tougher than others and what it means for a problem to be NP-complete.
+
+Also, take a look at some lecture notes. There’s a helpful diagram in Module 5 that illustrates the equivalence between verifiers and non-deterministic Turing machines. It’s a visual way to grasp how these concepts connect.
+
+Finally, don’t miss the companion problems. Problem 22 looks at SAT in an interactive way, while Problem 23 focuses on the HAMPATH verifier. Problem 24 showcases the P class, which will help you see the contrast with NP. These exercises can really solidify your understanding.

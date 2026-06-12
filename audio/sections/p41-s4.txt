@@ -1,0 +1,7 @@
+Let’s dive into some key questions about log-space machines and palindromes. First, you might wonder why the input tape is considered "free." In the context of language L, we use a two-tape model: one tape is read-only for the input, while the other is a work tape. The critical point is that only the work tape counts towards our space limit. If the input tape counted, then we’d have to say reading anything of length n takes up Ω(n) space, which would make L equal to P, and that’s not the case.
+
+Now, let’s talk about the two pointers we use for checking palindromes. Each pointer keeps track of an index in the input string, ranging from 0 to n minus 1. We can encode each pointer using log base 2 of n bits, so using two pointers gives us a total of 2 log n bits. If we add a bit of extra state information, we still stay within O(log n) space.
+
+When we check if a string is a palindrome, we’re doing this in linear time, O(n), because we compare each character pair exactly once. So, PALINDROME is in L, which is a subset of P. Remember, L is like a finer classification within polynomial time.
+
+Finally, regarding the relationship to NL, it's important to know that L is contained within NL. This means that anything we can do deterministically in log space can also be done nondeterministically in log space. Whether L and NL are actually equal is still an open question in computer science!

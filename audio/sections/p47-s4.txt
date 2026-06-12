@@ -1,0 +1,7 @@
+Let’s dive into why we’re discussing Savitch’s theorem. It tells us that nondeterministic logarithmic space, or NL, is actually a subset of deterministic space that uses logarithmic squared time. This is super important because it connects nondeterministic log space directly into the broader deterministic polynomial space. Without Savitch, we wouldn't have a clear way to compare nondeterministic space with any deterministic space classes.
+
+Now, onto why the inclusions in SPACE(log squared n) are strictly contained. Each step in that hierarchy is established through the Space Hierarchy Theorem. We use diagonalization to demonstrate that for every level, there’s a language that one level can’t decide, but the next level can. This technique ensures that the inclusions are strict.
+
+When we look at NL compared to P or P compared to NP, things get tricky. Those comparisons involve different types of resources: nondeterministic space versus deterministic time. The hierarchy theorems help separate classes within the same resource type, but crossing those boundaries requires different strategies. 
+
+As for what we know about NL versus P, we do know that NL is a subset of P — that’s pretty straightforward. However, whether NL is strictly contained within P is still an open question. Many people think that it is, but there’s no proof yet.

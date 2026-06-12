@@ -1,0 +1,7 @@
+Let’s dive into the central trick of our reduction from 3SAT to SUBSET-SUM. The beauty of this technique lies in how we use digit positions in base-10 numbers to represent constraints of our logic formula. When we construct our numbers, each digit position corresponds to a different part of our formula—specifically, the variables and clauses. 
+
+Imagine you have a formula with n variables and m clauses. Each number we create will have n plus m digits. The first n digits represent the variables, and the remaining m digits represent the clauses. For each variable, say x_i, we create two numbers: one for when x_i is true and another for when it’s false. In the digit position for x_i, we put a 1 in the corresponding variable’s number.
+
+Now, for the clause positions, we place a 1 in any clause that this literal satisfies. To ensure we account for the number of satisfying literals in each clause, we also add slack numbers. These slacks help bridge the gap between having one true literal and needing three total to meet our target. 
+
+Our target, t, is designed so that we need exactly one variable number per position and three in the clauses. The clever part is that by summing these numbers digit by digit, we effectively check all our logical constraints at once. This means that if we can reach the target, we have a satisfying assignment for the formula, and if we can't, the formula isn't satisfiable. This intertwining of digit positions with logical constraints is what makes this reduction so elegant and powerful.

@@ -1,0 +1,7 @@
+Let’s dive into some important questions about SAT. First, what’s the worst-case running time for brute-force SAT? You’re looking at two to the power of n assignments to try out, and each one takes O(m) time to check. So, it all adds up to O(m times 2 to the n). If n is 20, that’s about a million assignments. For n is 30, we’re talking a billion, and by n equals 60, you're at around 10 to the 18th. That’s a huge number!
+
+Now, are there smarter algorithms for SAT? Absolutely! The DPLL algorithm, developed back in 1962, uses techniques like unit propagation and backtracking to be more efficient. Then there’s CDCL, which adds conflict-driven clause learning. While these methods are practically faster, they still have exponential worst-case running times, and we don’t know of any polynomial-time algorithm.
+
+Next, how does a verifier differ from a solver? A verifier gets both the formula and a candidate assignment. It simply checks if that assignment works. On the other hand, a solver only has the formula and has to search for a valid assignment. The verifier runs in O(m) time, while the solver can take exponential time in the worst case.
+
+Finally, is 2SAT NP-complete? Nope! 2SAT, which deals with clauses that have at most two literals, is in P. It can be reduced to finding strongly-connected components in an implication graph. It’s interesting because the shift from 2SAT to 3SAT is where SAT problems become significantly harder.

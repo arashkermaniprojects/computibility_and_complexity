@@ -1,0 +1,5 @@
+Understanding Rice's theorem is crucial because it helps us grasp the limitations of what we can determine about computer programs. When we talk about properties of a program, like whether it halts or what kind of output it produces, we quickly run into undecidability. Rice's theorem tells us that every nontrivial property of the language recognized by a Turing machine is undecidable. 
+
+This means if you have a property that some programs have while others don’t, you can’t create a general algorithm that will tell you whether any given program has that property. For example, a linter can catch syntax errors—those are decidable issues. But if you ask it whether a function returns only prime numbers, it can't provide a definitive answer. 
+
+This is a big deal because it underlines the inherent limitations in static analysis and program verification. It shows why tools often hedge their statements with "may be" instead of giving absolute answers. So, Rice's theorem doesn’t just address specific cases; it gives us a broad framework for understanding the undecidability of program properties across the board.

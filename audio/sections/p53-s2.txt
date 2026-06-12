@@ -1,0 +1,5 @@
+Let’s dive into how we can visualize the running time of a Turing machine with an animated demo. Imagine you have a Turing machine that's processing inputs of varying lengths. As the animation plays, you’ll see it automatically add data points one at a time. This is really helpful because it allows us to see how the number of steps the machine takes varies with the size of the input.
+
+As the demo auto-plays, pay attention to how quickly the machine executes each step. You can pause the animation if you want to analyze a specific moment, which is great for understanding what’s happening at any point in the process. If you find yourself wanting to take a closer look at the mechanics, you can step through the animation frame by frame, which lets you really break down the actions of the machine.
+
+And if you want to experiment with different input sizes, you can reset the demo to start fresh. You can also adjust the speed of the playback, so if you want to see everything happening more slowly, just change the speed to a lower setting. This hands-on approach makes it much easier to grasp how the running time of the Turing machine scales with different input sizes.

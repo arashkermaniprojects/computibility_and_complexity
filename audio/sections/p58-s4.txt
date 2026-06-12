@@ -1,0 +1,7 @@
+Let's dive into some key questions about Hex and why it's such an interesting game in terms of complexity. First, why is Hex always determined? The strategy-stealing argument is crucial here. If Blue, the second player, had a winning strategy, Red could just play any first move and then follow Blue's strategy, pretending that Blue's extra stone didn’t exist. Since the extra stone can’t hurt Red, that gives Red a winning strategy, which leads to a contradiction. So, there’s no way for the game to end in a draw; Red always wins.
+
+Now, let’s talk about why Hex is in PSPACE and not EXPTIME. Each player places one stone with a maximum of n squared moves in total. This creates a polynomial depth game tree. Even though the tree could have exponentially many nodes, using a depth-first search to evaluate moves means you only need to store the current path, which is polynomial space. 
+
+Next, can we find Red's optimal move efficiently? Unfortunately, not in polynomial time under standard assumptions. PSPACE-completeness indicates that there’s no fast algorithm to find that winning strategy, despite knowing it exists.
+
+Finally, there are other board games that share this complexity class, like Generalized Geography, generalised checkers, and generalised chess with bounded moves. In contrast, games like chess and Go without move limits fall into EXPTIME.

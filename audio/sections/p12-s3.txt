@@ -1,0 +1,7 @@
+Let’s walk through the CYK algorithm using a small input. We have a context-free grammar in Chomsky Normal Form, where the start variable is S, and the production rules include options like S goes to AB or BC, and so on. Our input string is "baaba".
+
+First, we create a table, T, where each cell T[i, j] will hold the variables that can derive the substring starting at position i with length j. We begin with the first row, filling in T[1,1] through T[5,1]. For example, looking at the first character 'b', we find that it derives B, so T[1,1] becomes {B}. For the second character 'a', both A and C can derive 'a', so T[2,1] is {A, C}. We continue this for each character, resulting in T[3,1] as {A, C}, T[4,1] as {B}, and T[5,1] as {A, C}.
+
+Next, we fill in the second row for length-2 substrings. For the substring "ba", we check if we can derive it using rules like X → YZ. Since B is in T[1,1] and A is in T[2,1], we find that S can derive BA. We keep checking and filling in the table until we reach T[1,5].
+
+Finally, we check T[1,5]. If S is there, our string is accepted. The CYK algorithm runs efficiently in cubic time, thanks to the way we fill each cell based on previous computations.

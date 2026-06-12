@@ -5,7 +5,7 @@
 <h1>Generalized Geography · play against the computer</h1><p class="sub">Two players move a token along a directed graph. No vertex repeats. Last mover wins.</p>
 <div class="tags"><span class="tag-pill">CLO-4</span><span class="tag-pill warn">R3·40 pts</span><span class="tag-pill info">L14</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · Generalised Geography · the canonical PSPACE-complete game</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p38-s1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">1 · Generalised Geography · the canonical PSPACE-complete game</div>
 <p>Generalised Geography (GG) abstracts the children's word game "Geography" (each next word starts with the previous word's last letter) into a graph game:</p>
 <div class="theorem-box"><div class="theorem-label">Rules</div>
 <p style="margin:4px 0;">Given a directed graph G and starting vertex s. A token is placed at s. Players alternate turns. On your turn, you move the token to an unvisited successor of its current position. If you can't move (the token's successors are all already visited), you lose.</p>
@@ -19,13 +19,13 @@
 <p>The "no vertex repeats" rule is what makes the game terminate. Without it, players could move in cycles forever, and the question "does player 1 win?" would have no well-defined answer.</p>
 </section>
 
-<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p38-s2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">2 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Watch optimal play from a fixed graph <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="gg-run">⏸ Pause</button><button class="btn ghost" id="gg-step">Step</button><button class="btn ghost" id="gg-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="gg-speed" min="0.25" max="3" step="0.25" value="1"><span id="gg-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="gg-svg" viewBox="0 0 760 280" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="gg-explain"></div></div></section>
-<section><div class="section-label">3 · Pitfalls</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p38-s3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">3 · Pitfalls</div>
 <ul style="margin:6px 0 0 20px;">
   <li><strong>"Player 1 wins" means optimal play.</strong> The question is whether a winning strategy exists, not whether player 1 actually wins under random play.</li>
   <li><strong>The "no repeat" rule is essential.</strong> Without termination, the game state space is infinite. With termination, the game tree has ≤ |V|! distinct branches but only |V| depth.</li>
@@ -33,14 +33,14 @@
 </ul>
 </section>
 
-<section><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p38-s4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
 <li><div class="q">Q1. Why does the no-vertex-repeat rule matter?</div><div class="a">Without that rule, players could move in cycles forever and the game would never terminate. With it, the game ends in at most |V| moves (each vertex visited at most once), so winning strategies are well-defined and computable.</div></li>
 <li><div class="q">Q2. How does the PSPACE-completeness proof work?</div><div class="a">Reduce TQBF₃ to GG. Build a graph with gadgets: a "diamond" for each variable that lets the responsible player choose true/false; a "clause chain" that ∀-player traverses to falsify; the connection makes the game tree mirror the QBF evaluation tree. Sipser Theorem 8.11.</div></li>
 <li><div class="q">Q3. Time vs space for the minimax algorithm?</div><div class="a">Exponential time (the game tree has 2<sup>O(n)</sup> nodes in the worst case), but polynomial space (depth-first with reuse stores only the current path, O(n) cells). This is why GG is in PSPACE but not known to be in P.</div></li>
 <li><div class="q">Q4. Are real-world games PSPACE-complete?</div><div class="a">Generalised chess on n×n boards is PSPACE-complete (assuming polynomial moves). Generalised Go is at least PSPACE-hard. Most natural board games end up at least PSPACE-hard under generalisation.</div></li>
 </ul></section>
 
-<section><div class="section-label">5 · Where to read more</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p38-s5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">5 · Where to read more</div>
 <p><strong>Sipser:</strong> §8.3, Theorem 8.11. <strong>Lecture notes:</strong> Module 6 slide 3. <strong>Companion problems:</strong> P36 (TQBF), P39 (TQBF → geography), P40 (chess hardness).</p>
 </section></div><footer class="foot">P38 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){

@@ -17,7 +17,7 @@
 
 <div class="component-audio" style="margin:8px 0 12px;padding:8px 12px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:10px;font-family:var(--sans,system-ui);font-size:12px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Narration</span><audio controls preload="none" src="../audio/components/p63-narration.mp3" style="height:30px;flex:1;max-width:320px;"></audio><span style="color:#999;font-style:italic;">The NTM tree-exploration argument, time analysis, a 3-SAT worked example, and the PSPACE corollary.</span></div>
 
-<section><div class="section-label">1 · The theorem</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p63-s1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">1 · The theorem</div>
 <div class="theorem-box"><div class="theorem-label">NP ⊆ EXPTIME (Sipser §7.2)</div>
 <p style="margin:4px 0;">Every NP language can be decided by a deterministic Turing machine running in time 2<sup>O(n<sup>k</sup>)</sup> for some k. Equivalently: every NTM that halts on every branch in time n<sup>k</sup> can be deterministically simulated in time 2<sup>O(n<sup>k</sup>)</sup>.</p>
 </div>
@@ -26,7 +26,7 @@
 </div>
 </section>
 
-<section><div class="section-label">2 · Construction · BFS the nondeterministic computation tree</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p63-s2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">2 · Construction · BFS the nondeterministic computation tree</div>
 <div class="widget"><div class="widget-title">An NTM's computation tree, explored exhaustively <span class="pill">Auto-plays</span></div>
 <div class="controls">
 <button class="btn play-btn" id="np-run">⏸ Pause</button><button class="btn ghost" id="np-step">Step</button><button class="btn ghost" id="np-reset">Reset</button>
@@ -36,7 +36,7 @@
 <div class="explain-panel" id="np-explain"></div>
 </div></section>
 
-<section><div class="section-label">3 · The deterministic simulator</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p63-s3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">3 · The deterministic simulator</div>
 <div class="theorem-box"><div class="theorem-label">Algorithm DSim — simulate NTM N on input x</div>
 <ol style="margin:6px 0 6px 22px;">
 <li>Let b = maximum number of nondeterministic choices at any step (a constant of N). N runs for at most T = |x|<sup>k</sup> steps on every branch.</li>
@@ -48,7 +48,7 @@
 </div>
 </section>
 
-<section><div class="section-label">4 · Worked example · 3-SAT with n = 4 variables</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p63-s4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">4 · Worked example · 3-SAT with n = 4 variables</div>
 <div class="theorem-box"><div class="theorem-label">An NTM for 3-SAT on n variables</div>
 <ol style="margin:6px 0 6px 22px;">
 <li>For i = 1 to n: nondeterministically guess assignment of variable x<sub>i</sub> (branch ×2).</li>
@@ -59,7 +59,7 @@
 </div>
 </section>
 
-<section><div class="section-label">5 · Q&amp;A defence notes</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p63-s5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">5 · Q&amp;A defence notes</div>
 <ul class="qa-list">
 <li><div class="q">Q1. Why BFS and not DFS?</div><div class="a">DFS would also work, but BFS keeps the depth bounded at every level — easier to argue that we stop after T levels and reject if no accept seen. Either traversal still costs 2<sup>O(n<sup>k</sup>)</sup>.</div></li>
 <li><div class="q">Q2. Could we do better than 2<sup>O(n<sup>k</sup>)</sup>?</div><div class="a">Not in general — this is the open P vs NP question. If we could simulate any NTM in polynomial deterministic time, P = NP.</div></li>

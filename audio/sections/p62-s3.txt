@@ -1,0 +1,7 @@
+Let’s dive into the undecidability of the empty language problem for the E LBA. When we think about E LBA, we're dealing with a question that goes beyond just one specific input. It asks if the language is empty for all possible strings, which means we need to check every string in the language. Since there are infinitely many strings, this is where the challenge lies.
+
+Now, let’s look at the reduction from A sub T M to co-E LBA. Given a Turing machine M and an input w, we can construct an LBA, let’s call it B sub M,w. The language of this LBA consists of all accepting computation histories of M on w. A computation history is simply a string that lists every configuration M goes through during its run, separated by a special symbol, like a hash.
+
+B sub M,w can verify a candidate history using three local checks: it checks if the initial configuration is correct, ensures every step of the computation is legal, and finally, it checks if the end configuration is accepting. Each of these checks only requires a constant amount of tape per cell, which is what keeps B sub M,w within the bounds of an LBA.
+
+Now, here’s the key point: if the language of B sub M,w is not empty, that means M accepts w. So, if we had a decider for the E LBA problem, we could use it to decide co-A sub T M, which we know is impossible. This shows why E LBA is undecidable—it’s all about that infinite checking of histories versus the bounded configurations we see in ALBA.

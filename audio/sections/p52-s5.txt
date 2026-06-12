@@ -1,0 +1,5 @@
+If you want to dive deeper into the concept of self-reference and the kamikaze Turing machine, a great resource is Michael Sipser’s textbook. In chapter six, section 1, he discusses the recursion theorem in detail. It’s a fantastic starting point because it lays the groundwork for understanding how Turing machines can reference themselves.
+
+You might also find value in lecture notes that cover similar topics. Look for Module 3, particularly the fifth part where they explain self-reference in Turing machines. It can give you a different perspective or clarify any points that might be tricky.
+
+Additionally, engaging with companion problems can really enhance your understanding. For example, problem 13 involves a quine, which is a program that outputs its own source code. Then there’s problem 15, which covers fixed points, and problem 16, which deals with self-aware Turing machines. Working through these problems will give you hands-on experience with the concepts we’ve discussed.

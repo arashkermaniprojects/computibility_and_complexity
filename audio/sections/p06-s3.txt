@@ -1,0 +1,7 @@
+Let’s dive into the proof of why the language of our machine M prime, or M', is all-or-nothing. It boils down to two clear cases based on whether the original machine M accepts the input w. 
+
+First, if M accepts w, then every possible input x to M' triggers the accept branch. That means M' will accept everything, making its language equal to Σ star, which is the set of all possible strings. In this scenario, we conclude that the encoding of M', or ⟨M'⟩, is not in E sub T M, because it accepts everything.
+
+Now, let’s consider the second case where M does not accept w. This can happen if M either rejects w or loops indefinitely. In this situation, for any input x, M' will either reject or also loop. So, the language of M' becomes empty, which means ⟨M'⟩ is in E sub T M, because it doesn't accept anything.
+
+Therefore, we see a direct relationship: if ⟨M, w⟩ is in A sub T M, then ⟨M'⟩ cannot be in E sub T M, and vice versa. If we could decide E sub T M, we could decide A sub T M, which we know is impossible. This contradiction shows us that E sub T M is undecidable.

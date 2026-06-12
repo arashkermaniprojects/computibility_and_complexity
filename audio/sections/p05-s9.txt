@@ -1,0 +1,9 @@
+Let’s start by getting everyone engaged. Ask them, “Why can’t your IDE warn you about every infinite loop?” This question really hooks the audience because it relates to their everyday programming experiences. It brings out the idea that there are limits to what we can compute or predict, and that’s where undecidability comes in.
+
+Next, clearly state your goal: to show that the problem of determining whether a given Turing machine halts on a specific input is undecidable by reducing the acceptance problem, A sub T M, to the halting problem, H A L T. Before diving into the technicalities, define what we mean by A ≤ B. Intuitively, this means if we can solve problem B, we can also solve problem A. 
+
+Now, let’s walk through the construction of our simulator, S. Picture it in three parts: first, the input goes into a box labeled R, which represents our machine. Then, it moves to the simulator box where S does its work. Finally, we get the output. Make sure to emphasize how these three regions work together.
+
+Now, let’s visualize this process. We can go through the five stages of simulation together. I’ll pause at key moments so we can discuss what’s happening and why each step is crucial to our understanding.
+
+Finally, let’s wrap up with the worked example table. Pay special attention to row one, the “shortcut.” This row is where the magic happens; it’s the heart of the trick that connects our two problems. It’s a neat way to illustrate how we can leverage one problem to gain insights into another, ultimately showing the undecidability of the halting problem.

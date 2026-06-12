@@ -1,0 +1,5 @@
+If you’re looking to dive deeper into the concepts we’ve just discussed, a great resource is the textbook by Sipser. Check out Example 7.2; it’s really helpful for understanding how to analyze the running time of Turing machines in a more detailed way. 
+
+You might also want to look at the lecture notes from Module 4, specifically the third part. It provides some additional insights and examples that can clarify the relationship between input size and the number of steps taken by a Turing machine. 
+
+For hands-on practice, the companion problems are invaluable. Problem 17, which involves a growth race, is a fun way to see how different Turing machines perform against each other as input size increases. Then there’s Problem 18, which focuses on a single-tape machine processing strings of the form zero to the n followed by one to the n. Finally, Problem 19 gives you a chance to explore the dynamics of a two-tape race. Working through these problems will really solidify your understanding of the concepts we've covered.

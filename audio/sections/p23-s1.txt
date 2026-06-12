@@ -1,0 +1,7 @@
+Let’s dive into HAMPATH, which is an interesting problem in computer science. HAMPATH is the set of all pairs of directed graphs, along with two specific vertices, where the graph has a Hamiltonian path starting at the first vertex and ending at the second. Now, what’s a Hamiltonian path? It’s a path that visits every vertex in the graph exactly once. 
+
+Finding such a path in a general graph can be really tough—it's one of those problems that’s known for being hard. But here’s the cool part: verifying whether a given path is indeed a Hamiltonian path is much easier, which is what makes HAMPATH a classic example in the NP category.
+
+When we have a graph G, and two vertices s and t, along with a certificate, which is just a sequence of vertices, we check a few things. First, we make sure the length of the sequence matches the number of vertices; that’s our length check. Next, we need to confirm that all the vertices are distinct—no duplicates allowed. Then, we check that the path starts at s and ends at t. Finally, for each pair of adjacent vertices in the sequence, we confirm there’s an edge connecting them in the graph. This verification process is efficient, taking just O(n²) time, or even O(n) if we use a hash set. 
+
+That’s why HAMPATH is in NP, and it’s also NP-complete, meaning it’s as tough as the hardest problems in NP.

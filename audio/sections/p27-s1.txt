@@ -1,0 +1,7 @@
+Let’s dive into the theory behind the reduction from 3SAT to CLIQUE. First, recall what CLIQUE is: it’s the problem of deciding if a graph has a complete subgraph, or clique, on a certain number of vertices, say k. We need to show that CLIQUE is NP-complete, and we do this by reducing 3SAT to it. 
+
+In this reduction, we start with a 3CNF formula, which is just a Boolean formula structured with clauses, where each clause has exactly three literals. For each clause in our formula, we create a node in the graph for every literal occurrence. So if we have m clauses, we end up with 3m nodes.
+
+Now, we connect nodes with edges only if they belong to different clauses and their literals aren’t negations of each other. The crucial point here is that a clique of size m in this graph corresponds to selecting one literal from each clause that can all be true at the same time. This is exactly what a satisfying assignment for the formula does.
+
+The construction is efficient, with 3m nodes and at most 9m squared edges, meaning our reduction runs in polynomial time. If the original formula is satisfiable, we can pick true literals to form our clique. Conversely, if we have a clique, it guarantees that we can satisfy the formula since we can assign true values to the selected literals. This connection firmly shows how these two problems relate to each other.

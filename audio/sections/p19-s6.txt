@@ -1,0 +1,7 @@
+If you want to dive deeper into the differences between single-tape and two-tape Turing machines, I recommend checking out Michael Sipser's book. In particular, take a look at Theorem 7.8, where he talks about how k-tape machines can be simulated by one-tape machines. This is a foundational concept that helps clarify the computational power of different tape setups. 
+
+Also, Example 7.2 in his book provides a practical illustration of these ideas, so it’s worth your time to read through that. 
+
+For a more hands-on experience, you can refer to the lecture notes, specifically Module 4, where you'll find a direct comparison of the race between single-tape and two-tape machines. This will give you a clearer visual understanding of their performance differences.
+
+Finally, don’t miss out on the companion problem P18. It focuses on the single-tape machine's Θ(n²) complexity, which is a great way to solidify your grasp of the concepts we’ve discussed. Overall, these resources will enhance your understanding of how different Turing machines operate.

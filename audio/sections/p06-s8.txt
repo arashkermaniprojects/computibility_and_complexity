@@ -1,0 +1,9 @@
+Let’s break down some key points about this reduction from the acceptance problem to the complement of the emptiness problem. First, when we talk about why our machine M prime ignores its input, it’s really about simplifying the situation. We want the language of M prime to be either all strings or none, depending on whether M accepts a specific string w. By ignoring the input, we ensure that M prime’s behavior is purely tied to M's acceptance of that fixed w, which is crucial for our proof.
+
+Now, regarding whether M prime halts, the answer is yes. M prime will halt and accept if and only if M halts and accepts on w. If M gets stuck in a loop with w, then M prime will loop for every input. But that’s okay because we’re only interested in the membership question for M prime.
+
+Moving on, this is a mapping reduction. The function that takes our pair ⟨M, w⟩ and gives us ⟨M prime⟩ is computable and keeps the essence of the membership question intact.
+
+Now, let’s discuss whether E sub T M is co-recognizable. It is indeed. The complement, which is not E sub T M, is recognizable. You can enumerate all possible strings and run M on each one in parallel, accepting as soon as one accepts.
+
+Lastly, if we place E sub T M in the Venn diagram, it falls into the area of co-recognizable but outside decidable. That’s because we’ve established that not E sub T M is recognizable, while E sub T M is undecidable.

@@ -1,0 +1,7 @@
+Let’s talk about some common pitfalls when dealing with polynomial time problems. One key thing to remember is that when we say “polynomial,” we’re referring to the input size, not the actual value being computed. For instance, the RELPRIME algorithm runs in O(log min(a, b)) iterations. That’s polynomial in terms of the bit length of a and b, but it can be exponential based on their actual values. 
+
+Always think in terms of the size of the input, which is often denoted as n, where n equals the number of bits in the input. So, O(n³) is definitely polynomial, and you might hear it referred to as a "slow polynomial." But it’s still in the class P.
+
+Now, when we look at the hierarchy of problems, P is contained within TIME(n³) and others, but they’re still within P. It’s also important to consider the representation of graphs. For example, the PATH algorithm operates in O(V + E) with an adjacency-list, but if you’re using an adjacency-matrix, it becomes O(V²). Both of these are polynomial.
+
+Lastly, just because a problem is in P doesn’t mean it’s easy to solve in practice. A polynomial with a high degree or large constants can still be infeasible to compute. So, while P is the right mathematical abstraction, in engineering, we need to pay attention to those constants and degrees.

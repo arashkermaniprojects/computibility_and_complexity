@@ -15,7 +15,7 @@
 
 <div class="wrap">
 
-<section><div class="section-label">1 · Why this matters · the BIG picture</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p07-s1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">1 · Why this matters · the BIG picture</div>
 <p>
 "Can my program's language be described by a regex?" is a natural classification question. It would be useful to know — regular languages have linear-time matchers, predictable behavior, no need for stack or tape. Sadly, the question is <strong>undecidable</strong> in general. This is the simplest example of a <em>structural</em> language property that Rice's theorem will later unify.
 </p>
@@ -23,7 +23,7 @@
 <p style="margin:4px 0;">REGULAR<sub>TM</sub> = {⟨M⟩ : L(M) is a regular language} is undecidable.</p></div>
 </section>
 
-<section><div class="section-label">2 · Setup · the gadget trick</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p07-s2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">2 · Setup · the gadget trick</div>
 <p>Reduce A<sub>TM</sub> to REGULAR<sub>TM</sub>. Given ⟨M, w⟩, build M' with two branches:</p>
 <div class="theorem-box" style="background:#fffaf3;"><div class="theorem-label">Construction</div>
 <p style="margin:4px 0;font-family:var(--mono);font-size:13.5px;">
@@ -35,7 +35,7 @@ M' = "on input x:<br>
 <p><strong>Why 0<sup>n</sup>1<sup>n</sup>?</strong> Because it's the canonical non-regular decidable language. The construction needs a "non-regular base case" that M' can recognize on its own; {0<sup>n</sup>1<sup>n</sup>} is the simplest.</p>
 </section>
 
-<section><div class="section-label">3 · The proof · case analysis</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p07-s3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">3 · The proof · case analysis</div>
 <ul style="font-size:14px;line-height:1.65;">
 <li><strong>If M does NOT accept w</strong> · branch 2 never accepts. So L(M') = {0<sup>n</sup>1<sup>n</sup>} — <em>not</em> regular (pumping lemma).</li>
 <li><strong>If M accepts w</strong> · branch 2 accepts every x. So L(M') = Σ* (everything from branch 1 ∪ branch 2) — <em>regular</em>.</li>
@@ -43,7 +43,7 @@ M' = "on input x:<br>
 <p>So ⟨M, w⟩ ∈ A<sub>TM</sub> ⇔ ⟨M'⟩ ∈ REGULAR<sub>TM</sub>. A decider for REGULAR<sub>TM</sub> ⇒ decider for A<sub>TM</sub>. Contradiction ⇒ REGULAR<sub>TM</sub> undecidable. <span class="math">∎</span></p>
 </section>
 
-<section><div class="section-label">4 · Animated demo · auto-plays · loops</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p07-s4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">4 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">L(M') flips between {0<sup>n</sup>1<sup>n</sup>} and Σ* <span class="pill">Auto-plays</span></div>
 <div class="controls">
 <button class="btn play-btn" id="reg-run">⏸ Pause</button><button class="btn ghost" id="reg-step">Step</button><button class="btn ghost" id="reg-reset">Reset</button>
@@ -53,7 +53,7 @@ M' = "on input x:<br>
 <div class="explain-panel" id="reg-explain"></div>
 </div></section>
 
-<section><div class="section-label">5 · Worked example · concrete M and w</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p07-s5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">5 · Worked example · concrete M and w</div>
 <p>Take M = "always halts and rejects" (so M(w) = reject for every w). Then for every choice of w:</p>
 <ul style="font-size:14px;line-height:1.65;">
 <li>M does not accept w.</li>
@@ -64,7 +64,7 @@ M' = "on input x:<br>
 <p>Take M' = "always halts and accepts everything", w = anything. M accepts w. Branch 2 always accepts. L(M') = Σ*, regular. ⟨M'⟩ ∈ REGULAR<sub>TM</sub>.</p>
 </section>
 
-<section><div class="section-label">6 · Connections · the family of language-property reductions</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p07-s6.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">6 · Connections · the family of language-property reductions</div>
 <ul style="font-size:14px;line-height:1.7;">
 <li><strong>E<sub>TM</sub></strong> (P6) · same trick, gadget = ∅ vs Σ*.</li>
 <li><strong>CFL<sub>TM</sub></strong> · "is L(M) context-free?" — replace {0<sup>n</sup>1<sup>n</sup>} with a non-CF language like {0<sup>n</sup>1<sup>n</sup>2<sup>n</sup>}.</li>
@@ -73,7 +73,7 @@ M' = "on input x:<br>
 </ul>
 </section>
 
-<section><div class="section-label">7 · Common pitfalls · what students miss</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p07-s7.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">7 · Common pitfalls · what students miss</div>
 <ol style="font-size:14px;line-height:1.7;">
 <li><strong>Forgetting branch 1.</strong> Without the unconditional accept of 0<sup>n</sup>1<sup>n</sup>, L(M') = ∅ when M doesn't accept w — and ∅ <em>is</em> regular. The construction fails.</li>
 <li><strong>Confusing "regular" with "decidable".</strong> {0<sup>n</sup>1<sup>n</sup>} is decidable but not regular. The gadget needs decidable + non-regular.</li>
@@ -82,7 +82,7 @@ M' = "on input x:<br>
 </ol>
 </section>
 
-<section><div class="section-label">8 · Q&amp;A defence notes</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p07-s8.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">8 · Q&amp;A defence notes</div>
 <ul class="qa-list">
 <li><div class="q">Q1. Why {0<sup>n</sup>1<sup>n</sup>}?</div><div class="a">Because it's not regular (pumping lemma) but is decidable. Any non-regular decidable language would work; this is the canonical choice.</div></li>
 <li><div class="q">Q2. What if M loops on w?</div><div class="a">Then for x ∉ {0<sup>n</sup>1<sup>n</sup>}, M' loops. But L(M') = {0<sup>n</sup>1<sup>n</sup>} still — those are exactly the strings M' accepts. Looping on other strings doesn't add them to the language.</div></li>
@@ -90,7 +90,7 @@ M' = "on input x:<br>
 <li><div class="q">Q4. Generalize: which other properties of L(M) is this proof template good for?</div><div class="a">Any nontrivial semantic property — that's Rice's theorem (Problem 14). Pick any pair of languages, one with property P and one without; build a similar gadget.</div></li>
 </ul></section>
 
-<section><div class="section-label">9 · How to present this in class</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p07-s9.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">9 · How to present this in class</div>
 <p style="font-size:13.5px;"><strong>Total time: 8 minutes.</strong></p>
 <ul style="font-size:13.5px;line-height:1.7;">
 <li><strong>(1 min)</strong> Motivate: "Can I tell if my program's language is regular?"</li>

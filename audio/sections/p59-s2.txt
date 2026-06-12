@@ -1,0 +1,5 @@
+Let’s dive into the implication graph for a 2-CNF formula. Imagine we have a formula with variables that can be either true or false. In this graph, each variable creates two nodes: one for the variable itself and one for its negation. When you have a clause like (x or y), it means if x is false, then y must be true. So, you draw an edge from ¬x to y. Similarly, for (¬x or ¬y), you draw an edge from x to ¬y.
+
+Now, what’s interesting is when we auto-play the construction of this graph. You can see how the edges connect as we build it up. If you pause and look closely, you can spot loops forming. These loops are crucial because they tell us something about the satisfiability of the formula. If you find a loop that goes from a variable to its negation, like z leading to ¬z and back, it means the formula is unsatisfiable.
+
+You can reset the graph anytime to start fresh or speed up the animation to see how quickly those connections form. This dynamic visual helps reinforce the concept that checking these loops can reveal the satisfiability of the entire formula.

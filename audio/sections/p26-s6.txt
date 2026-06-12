@@ -1,0 +1,5 @@
+Let’s break down why the reduction from SAT to 3SAT is a polynomial-time reduction. When we have a clause with a width of k, the process of splitting it into 3 literals generates k minus 2 new clauses and k minus 3 auxiliary variables. This means that if you start with a formula that has m clauses and a total of L literals, your output in the worst case will still have at most L clauses and L auxiliary variables. 
+
+Now, the key point here is that the time it takes to perform this transformation is linear with respect to L. So, we can say the reduction runs in O(L) time. Since L is derived from the original formula φ, this ensures that our reduction is polynomial in the size of φ. 
+
+Even when we have to pad clauses with only one or two literals, it adds at most four additional clauses, which again is a linear increase. So, overall, we maintain that the transformation is efficient, keeping the complexity within polynomial bounds. That’s why we can confidently say this reduction is a polynomial-time reduction, or ≤ p.

@@ -1,0 +1,7 @@
+Let’s dive into some questions about composites and their verification. First up, why is the certificate considered "small"? When we think about a non-trivial divisor, it’s important to note that it will always be less than or equal to the square root of n. So, if you take the bit length of this divisor, it ends up being at most half the bit length of n, which is pretty manageable. This is actually polynomial in the size of the input.
+
+Now, is the verifier polynomial? Absolutely! When you divide n by this divisor using long division, it takes a number of operations that’s proportional to the square of the bit length of n, specifically O((log n)²). Checking if n is divisible by d fits snugly into polynomial time.
+
+Next, let’s touch on the AKS algorithm. This clever method verifies primality using a polynomial identity test over a certain ring. It checks whether a specific polynomial condition holds for various values, and it does all this in O((log n)⁶) operations, which is quite efficient.
+
+Finally, consider the historical context. Just because something is in NP doesn’t mean it’s out of P. For example, PRIMES was in NP for over 25 years until AKS showed it’s actually in P. There’s a chance other NP problems could follow suit, though NP-complete problems would still require P to equal NP for that to happen.

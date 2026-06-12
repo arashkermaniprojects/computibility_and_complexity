@@ -1,0 +1,9 @@
+Let’s break down some key points about why an LBA can check accepting computation histories. The checks it performs are all local. Think about it: parsing the separators, matching the starting configuration, validating each step in a specific window, and finally checking the accept state. These local checks fit nicely within the LBA’s finite-state control and allow for a few sweeps over the tape, which is exactly what an LBA is designed to do.
+
+Now, why is A LBA decidable, but E LBA isn’t? A LBA works with a specific input and asks if B accepts that input. Because B is limited by the size of the input, there are only finitely many configurations possible. On the other hand, E LBA asks if B accepts any input at all, which leads to an infinite number of strings and complicates things without a fixed space bound.
+
+When it comes to the size of an LBA computation history, know that for an input of length n, there are at most |Q| · n · |Γ|^n configurations. If any configuration repeats, the LBA is in a loop, which helps the A LBA decider identify non-halting situations. 
+
+And yes, this reasoning shows that all LBA properties are undecidable. If you take the same reduction and complement the LBA, you can switch from accepting strings to rejecting them, demonstrating that many natural LBA properties collapse similarly to how Rice's theorem works.
+
+Lastly, when we talk about the reduction using B M,w instead of just simulating M, it's crucial to understand that an LBA can’t simulate an arbitrary Turing machine because that would require unlimited space. Instead, it verifies a candidate history that stays within the input length, highlighting the key difference between computation and verification.

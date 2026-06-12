@@ -1,0 +1,7 @@
+When diving into the concept of verifiers and brute-force solvers, students often hit a few common pitfalls. First, it’s crucial to understand that the certificate, or witness, must be short—specifically, polynomially short in relation to the input size. If we allowed certificates to be exponentially long, then every language would have a verifier, since you could just provide a massive answer table. That polynomial constraint is what ensures the witness has a structured form.
+
+Another common misconception is equating verifiers with deciders. Remember, a verifier takes both the input and the certificate, while a decider only looks at the input. This distinction is central to understanding NP, which is defined through verifiers, whereas P is tied to deciders.
+
+Also, don’t forget that the certificate acts like an explicit existential quantifier. In NP, we’re dealing with decision problems, not search problems. “Yes” instances are those that come with a witness. The verifier is there just to confirm the existence of that witness; it doesn’t create or return it.
+
+And finally, NP doesn’t mean “not polynomial.” It stands for nondeterministic polynomial time. Every problem in P is also in NP; you can just ignore the certificate when it’s already trivial. Keeping these points in mind will help clarify the differences and the structure of these concepts.

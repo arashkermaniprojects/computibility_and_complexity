@@ -1,0 +1,9 @@
+Let’s dive into some key questions about Rice's theorem to clarify your understanding. First, why must the property P be nontrivial? If P is trivial—meaning it applies to all Turing machines or none at all—then it’s automatically decidable. Rice's theorem really comes into play only when we have a mix of yes-TMs and no-TMs; that’s where the complexity arises.
+
+Next, why does P need to depend solely on L(M), the language? Imagine two Turing machines that recognize the same language but differ in some property, like the number of states. If P can vary while the languages are identical, then it’s not truly a property of the language, and Rice’s theorem doesn’t apply.
+
+Now, let’s sketch the proof. Suppose we have a decider D for property P. Using the recursion theorem, we can construct a machine M that asks, “What does D say about me?” and then creates a language that contradicts D’s answer. This leads to a contradiction, proving that D can’t exist.
+
+For a simple example of a decidable property, think about structural properties like the number of states in a machine or its alphabet size. These are not about the language itself, so they fit the criteria.
+
+Finally, does Rice's theorem apply to other models like NFAs, DFAs, or context-free grammars? Not really. Those models have decidable language properties, whereas Turing machines, with their ability to simulate arbitrary computation, lead to more complex, undecidable semantic properties.

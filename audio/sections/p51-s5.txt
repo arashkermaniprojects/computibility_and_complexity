@@ -1,0 +1,5 @@
+If you’re looking to dive deeper into the Post Correspondence Problem and its undecidability, a great place to start is the textbook by Sipser. Specifically, check out section 5.2 and look for Theorem 5.15, which covers the undecidability of the PCP in detail. Sipser really breaks down the concepts in an approachable way, helping you understand how PCP relates to other computational problems.
+
+You might also find some valuable insights in the lecture notes from Module 3. There's a specific part that discusses the nuances of the problem, which can reinforce what you learn from Sipser. 
+
+Additionally, if you want to challenge yourself, try out some companion problems like P9, which deals with computation histories, and P10, that focuses on E LBA. These problems are designed to give you practical experience and deepen your understanding of the concepts we’ve discussed. Engaging with those exercises can really solidify your grasp on the material. Happy studying!

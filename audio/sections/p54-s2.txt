@@ -1,0 +1,5 @@
+Let's dive into how we can visualize the concept of verifying whether a number is composite through an animated demo. Imagine we have a number, say 12. To determine if it's composite, we need to find a non-trivial divisor, which means we want a divisor that’s neither 1 nor the number itself. 
+
+In our animation, you’ll see a process that auto-plays, showing us the steps involved. First, we’ll start multiplying potential divisors, like 2, 3, or 4, with a visual representation of the number being tested. As the animation plays, we can pause it at any moment to take a closer look at each step. 
+
+If we find, for instance, that 2 multiplied by 6 equals 12, we’ve demonstrated that 2 is a non-trivial divisor. You can reset the animation to try different numbers or speed it up to see the process unfold quickly. This interactive approach helps solidify the idea that verifying composites is really about finding those divisors and checking their products. It makes the concept tangible and engaging!

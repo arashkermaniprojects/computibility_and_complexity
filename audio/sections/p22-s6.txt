@@ -1,0 +1,5 @@
+If you want to dive deeper into the concepts we’ve discussed about SAT and NP-completeness, a great resource is Sipser’s book. Check out Theorem 7.37, which covers the Cook–Levin theorem. It’s a cornerstone in computational theory and really helps clarify the relationship between problems in NP and how they can relate to SAT.
+
+For more visual learners, the lecture notes are also really helpful. You can look at Module 5, specifically slides 3 and 4. Slide 3 presents the Cook–Levin tableau, which is an excellent way to visualize how we can represent computations. Slide 4 goes into the NP-complete chain, showing how different NP-complete problems are interrelated.
+
+And don’t forget to tackle the companion problems. Problem 21 is great for understanding the difference between a verifier and a solver. Problem 26 helps you explore the transformation from SAT to 3SAT, which is really crucial in understanding reductions. Finally, Problem 55 focuses specifically on the Cook–Levin theorem, giving you a chance to engage with the material in a hands-on way. So, grab those resources and start exploring!

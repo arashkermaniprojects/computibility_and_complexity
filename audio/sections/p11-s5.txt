@@ -1,0 +1,7 @@
+Let’s dive into some questions and answers that really clarify our understanding of these concepts. First, when we ask why finding one violation is easier than checking all pairs, it comes down to existential versus universal quantification. A context-free grammar can nondeterministically pick a spot and check a single property there, which is how pushdown automata naturally operate. But checking that there are “no problems anywhere” means you need to correlate all positions at once, and that’s beyond what a CFG or PDA can handle due to their limited stack capabilities. 
+
+Now, why do we write C sub i plus one backwards? In our standard construction, when we reverse alternate configurations, it allows us to check pairs like (C sub i, C sub i plus one) through a kind of palindrome-like comparison. This nests the matching, which is perfect for what a PDA’s stack can manage. 
+
+Moving on to EQ CFG, this is defined as the set of pairs of grammars where their languages are equal. It’s undecidable because if you fix a grammar G star that generates everything, then you can link the ALL CFG problem to EQ CFG. 
+
+Lastly, regarding CFG G sub M, w, it’s basically a union of four sub-grammars, each handling a specific failure mode. This includes issues like bad formats or bad transitions. For linear bounded automata, we don’t need to reverse the writing because they can sweep in both directions over the input, which changes the game a bit compared to context-free grammars. Both rely on computation histories, but how they verify those histories is different.

@@ -1,0 +1,11 @@
+Let's start by framing our main question: is the language of our machine M, denoted as L(M), empty? This is really about whether the program associated with this machine ever produces any output. It’s a fundamental question when we think about the behavior of computational systems.
+
+Now, let’s move into constructing M prime, which we’ll denote as M prime. I’ll write this down, but remember that we’re hard-coding the input w, while the variable x is ignored. This is key because it allows us to transform our problem into something we can analyze more clearly.
+
+Once we have M prime set up, we can run a visualization to see how L(M prime) is computed. I’ll pause here because it’s crucial to understand what happens when we look at the two possible cases: first, when L(M prime) equals the set of all strings, Σ star, and second, when L(M prime) is empty. 
+
+Let’s work through these cases explicitly. If L(M prime) equals Σ star, it means M accepts w for every possible input x. On the flip side, if L(M prime) is empty, M does not accept w for any input. 
+
+To make this concrete, let’s consider a specific machine M and a specific string w. We can see how this construction plays out in practice. 
+
+Finally, remember to link this back to Rice’s theorem. It’s a powerful result that tells us that any non-trivial property of the languages recognized by Turing machines is undecidable, reinforcing our understanding of why ETM is undecidable.

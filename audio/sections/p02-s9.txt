@@ -1,0 +1,9 @@
+Let’s start with a relatable analogy. Think about how Python is a universal machine written in C. Then, you have the C runtime, which is itself a universal machine written in machine code. And if you go even deeper, the CPU is a universal machine made from silicon. This idea of universality is central to understanding the universal Turing machine.
+
+Now, let’s state the key theorem: A Turing machine is recognizable. This means there exists a recognizer, which we can call R. Picture R as the machine that will simulate any Turing machine we want to analyze. 
+
+Next, I’ll demonstrate how R works. I’ll run the “accept” preset live. Watch as it processes the input. I’ll pause midway and point to the explain panel to highlight how the machine is functioning. 
+
+Now, let’s switch gears and run the “loop” preset. I’ll let it run for over 50 steps. After a while, I’ll ask, “How long do we wait before concluding it loops?” The answer is, unfortunately, forever. That’s the crux of the problem—recognizability doesn’t guarantee decidability. 
+
+Finally, let’s tie this back to our larger discussion. This concept of recognizability without decidability will be crucial as we move forward, especially when we tackle Problem 3, which will help clarify why a decider isn’t possible here.

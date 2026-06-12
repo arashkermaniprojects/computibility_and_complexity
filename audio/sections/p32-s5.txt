@@ -1,0 +1,5 @@
+If you’re looking to dive deeper into the topics we’ve discussed, a great starting point is Sipser’s book, particularly section 7.4. In that part, he talks about the differences between search problems and decision problems within the context of NP. It really helps to clarify how SAT fits into the bigger picture of computational problems.
+
+You might also find it helpful to look at the lecture notes from Module 5, especially the part where we discuss the relationship between SAT search and SAT decision. It’s a nice way to reinforce the concepts we’ve covered.
+
+Additionally, there are some companion problems that can really enhance your understanding. Problem 22 focuses on SAT in a more interactive context, which can give you a hands-on feel for these concepts. And then there’s Problem 14, which contrasts SAT with Rice’s theorem. Both of these will challenge you and help solidify your grasp on the material. So, take a look at those resources—they’ll definitely help deepen your understanding!

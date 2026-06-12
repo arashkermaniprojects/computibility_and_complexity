@@ -1,0 +1,11 @@
+Let’s dive into a concrete example to make Cantor's diagonal argument really clear. Imagine someone claims they’ve listed all possible binary sequences and gives us these four: 
+
+For the first sequence, f one, we have 0, 1, 0, 1, 1, 0. For the second, f two, it’s 1, 1, 0, 0, 1, 0. The third, f three, is 0, 0, 1, 1, 0, 0. And finally, f four, which is 1, 0, 0, 0, 1, 1. 
+
+Now, let’s focus on the diagonal elements: from f one, we take 0; from f two, we take 1; from f three, we take 1; and from f four, we take 0. 
+
+Next, we create a new function g by flipping each of these diagonal bits. So, g of 0 is 1 minus f one of 0, which is 1 minus 0, giving us 1. For g of 1, it’s 1 minus f two of 1, which results in 0. We keep doing this, and we find that g starts as 1, 0, 0, 1, and so on.
+
+Now, let’s compare g to each of the original sequences. For g compared to f one, they differ at index 0. For f two, they differ at index 1. For f three, they differ at index 2, and for f four, they differ at index 3. 
+
+In each case, g is different from every function in the list at exactly one position. This means g can’t be in the list at all, which contradicts the idea that we have every binary sequence. This is how we show that there are always more sequences than you can list, driving home the point of undecidability!

@@ -1,0 +1,7 @@
+Imagine you have a procedure, a SAT decider, that can tell you if a formula is satisfiable, but it doesn’t give you the actual satisfying assignment. You might wonder, can you still find that assignment? The answer is yes, and it’s pretty clever how it works. 
+
+You start by checking if your formula is unsatisfiable. If it is, you just output “UNSAT” and stop. If it’s satisfiable, you then look at each variable, one by one. For each variable, you substitute it with TRUE and see if the formula still holds. If the decider says it’s still satisfiable with that variable set to TRUE, you know there’s a satisfying assignment that includes it, so you keep it that way. 
+
+If setting it to TRUE makes the formula unsatisfiable, then you know that variable must be FALSE, and you substitute it that way. Each time you make a substitution, the formula has one less variable, making it easier to handle. After going through all the variables, you’ll end up with a complete satisfying assignment. 
+
+This process is called self-reducibility. It shows that if we can decide SAT quickly, we can also search for satisfying assignments quickly, which is a big deal in computational theory!

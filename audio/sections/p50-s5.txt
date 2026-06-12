@@ -1,0 +1,5 @@
+If you’re looking to dive deeper into the topic of undecidability and specifically finite languages, a great resource is Sipser’s textbook. You’ll want to check out section 5.2, which covers Rice's theorem in detail. This theorem is fundamental because it connects properties of languages with decidability, helping you understand why certain problems can't be solved algorithmically.
+
+Another valuable resource is the lecture notes from your course, particularly Module 3. You'll find examples and explanations that can help clarify some of these concepts. 
+
+Also, don’t forget about the companion problems. Problem 14 specifically deals with Rice’s theorem and will give you hands-on practice that reinforces what you've learned. By working through these problems, you’ll not only get familiar with the theoretical aspects but also with how to apply them in different scenarios. So, make sure to check these resources out; they’ll really enhance your understanding of why FINITETM is undecidable.

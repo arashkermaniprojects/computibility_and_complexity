@@ -1,0 +1,5 @@
+Let’s dive into this animated demo about the undecidability of the ATM problem. Imagine we're walking through a diagonal of possible inputs for our machine. This diagonal represents all the different programs and the tapes they could process.
+
+Now, as we move along this diagonal, we come across the machine D. D is a special machine that takes a program and its input and decides whether that program halts on that input. But here’s where things get tricky. D is designed to challenge itself. If D says that a program halts on its input, it’ll do the opposite and run forever. If D says it doesn’t halt, then it halts. This creates a contradiction. It’s like a loop where D can’t consistently decide what it should do!
+
+The animation plays out these actions automatically, illustrating how D interacts with the diagonal, pausing at key moments to emphasize this contradiction. You might see it reset and speed up, showing how the process unfolds dynamically. This all reinforces how we can't build a machine that decides the ATM problem, highlighting the inherent limitations in computation.

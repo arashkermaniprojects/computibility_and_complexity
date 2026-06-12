@@ -1,0 +1,7 @@
+Let’s dive into how we can visualize the strict separation between NL and PSPACE through an animated demonstration. Imagine an interactive setup where we can explore these concepts dynamically. 
+
+Picture this: you have a little machine that can perform computations in nondeterministic logarithmic space, which we call NL. When you press the play button, it starts running an algorithm. You’ll notice that it can make choices, or "nondeterministically" guess solutions. This is akin to navigating through a maze where at each crossroad, you can choose your path.
+
+Now, if we switch to PSPACE, the machine can handle much larger problems, but it requires more space. So, when you engage the auto-play feature, it starts to show how these bigger problems unfold. You’ll see loops and pauses where the machine needs to keep track of more information, reflecting the extra space it uses.
+
+If you want to slow things down or reset, you can adjust the speed or hit the reset button. This allows you to really grasp how NL operates within its limited space while PSPACE can tackle more complex tasks that require additional resources. It’s a clear visual representation of that strict separation, emphasizing how powerful these different classes are.

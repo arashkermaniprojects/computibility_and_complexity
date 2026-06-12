@@ -1,0 +1,5 @@
+Let’s dive into the gadget trick for reducing the A sub T M problem to the REGULAR T M problem. We start with a machine M and an input w. The goal is to create a new machine, M prime, that has two key behaviors based on the input it receives.
+
+First, M prime will check if the input x has the form 0 raised to n followed by 1 raised to n. If it does, M prime will accept that input right away. This is important because the language made up of strings like 0 to the n followed by 1 to the n is a classic example of a non-regular language. It's decidable, but it can't be recognized by a regular machine.
+
+Now, if the input doesn’t match that form, M prime will simulate the original machine M on the input w. It will then accept x if and only if M accepts w. This two-branch approach cleverly ensures that we have a regular case to handle while also capturing the essence of what we're trying to prove about the undecidability of REGULAR T M. By embedding this non-regular structure into M prime, we set the stage for our reduction effectively.

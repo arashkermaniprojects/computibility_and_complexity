@@ -1,0 +1,5 @@
+If you're looking to dive deeper into growth rates and complexity, I recommend checking out Michael Sipser's textbook. Start with section 7.1, where he breaks down Big-O notation. It’s essential for understanding how we compare different functions and their growth rates. Then, move on to section 7.2, which discusses the class P. This section will give you insights into what makes certain problems solvable in polynomial time, which is crucial for grasping our earlier discussions about polynomial versus exponential growth.
+
+Additionally, if you have access to lecture notes, Module 4 is valuable. It has a great illustration of the complexity race we talked about. The first part revisits the different functions we’ve analyzed, while the second part dives into Big-O notation more formally.
+
+Lastly, don’t miss the companion problems. Problem 18 gives a concrete example of O(n²) with a single-tape language, which can really help solidify your understanding. Problem 20 is a useful Big-O classifier, and Problem 24 showcases natural P algorithms. These exercises will reinforce the concepts and give you practical experience with the material.

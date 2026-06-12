@@ -1,0 +1,7 @@
+Alright, let’s talk about some common pitfalls that students often encounter when working with this reduction from the A sub T M problem to the complement of E sub T M. One big mistake is thinking that M prime runs M on the input w. That’s not right! M prime actually runs M on a fixed w that’s hard-coded inside it. If you do it the other way around, the whole trick falls apart.
+
+Another thing to keep in mind is the direction of the reduction. We need to show A sub T M is reducible to E sub T M, not the opposite. Remember, the problem we know is undecidable has to be the one feeding into the one we’re trying to prove undecidable. 
+
+Students also get mixed up between E sub T M and its complement, ¬E sub T M. The reduction shows that M accepts w if and only if the language of M prime is all possible strings, which tells us that the encoding of M prime doesn’t belong to E sub T M. 
+
+Finally, some think M prime has to halt to be valid. That’s not the case! A Turing machine can be valid even if it loops forever on every input, and a language that’s empty is just fine. The key is to correctly set L of M prime to be all strings versus empty, because that’s what E sub T M is asking about.

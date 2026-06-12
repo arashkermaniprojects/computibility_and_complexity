@@ -1,0 +1,9 @@
+When discussing the space hierarchy theorem, one common pitfall is the misconception that it can be used to prove that P is not equal to NP. Remember, both P and NP are constrained by polynomial resources, and the theorem requires a real resource gap. If there’s no gap, the diagonalization doesn’t hold. 
+
+Another mistake students make is ignoring constructibility. For the diagonalization to work, the function f needs to be space-constructible. Without that, the diagonalization process doesn't know when to stop simulating, which undermines the whole argument. 
+
+Also, be careful with the relationship between log f and log n. The overhead for simulation depends on f, not directly on n. For instance, if f equals n, the gap is log n, but if f is log n, then the gap shrinks to log log n. 
+
+And when it comes to D's contradiction, it’s not as straightforward as saying M sub k of M sub k equals M sub k of M sub k plus one. It’s actually about balancing bits, leading to an impossibility with 2b equals one. 
+
+Lastly, you don’t need Cantor’s bijection. A simple Turing machine enumeration suffices, and we’re not trying to enumerate all reals here. Keep these points in mind to avoid confusion!

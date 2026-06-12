@@ -1,0 +1,11 @@
+Let’s dive into some questions and answers about this topic. 
+
+First, why do we use the empty-language machine M1? It’s really a fixed reference point. When we compare the language of M2 against the empty set, we’re essentially asking if M2 accepts anything at all. This boils down to the EQTM question for M2. So, in a way, this reduction shows that EQTM is at least as hard as ETM, which we know is undecidable.
+
+Next, is EQTM recognizable? The answer is no. Neither EQTM nor its complement ¬EQTM is Turing-recognizable. They sit in that tricky "neither" area of the recognizable and decidable Venn diagram. This is a stronger claim than just being undecidable—both directions fail here.
+
+Now, let’s talk about the difference between mapping reduction and Turing reduction. A mapping reduction involves a single computable function that translates instances of one problem into another. A Turing reduction, on the other hand, is more flexible; it uses an oracle for the second problem and can make multiple queries. Mapping is stricter and preserves both decidability and Turing-recognizability.
+
+Why does mapping reduction preserve undecidability? If EQTM had a decider, we could create a function that decides A_TM using it, leading to a contradiction since A_TM is known to be undecidable. 
+
+Finally, could we have reduced directly to EQTM instead of its complement? Sure! You could just swap the roles of the machines. Make M1 dependent on M(w) and let M2 be an acceptor for the entire alphabet. The equality would hold if M accepts w. Either way, you reach the same conclusion about undecidability; we just chose the simpler empty reference for clarity.

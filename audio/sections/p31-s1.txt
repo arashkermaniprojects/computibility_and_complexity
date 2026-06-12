@@ -1,0 +1,9 @@
+Let’s dive into the gadget reduction from 3SAT to 3COLOR. First off, 3COLOR is the problem of determining if you can color the vertices of a graph using three colors such that no two connected vertices share the same color. This problem is NP-complete, meaning it’s as hard as the hardest problems in NP.
+
+Now, when we reduce from 3SAT, we assign logical meanings to our three colors. We’ll label them T for true, F for false, and B for base. To ensure these colors are distinct throughout the graph, we start with a “palette triangle.” 
+
+For each variable in our formula, say x_i, we create a triangle using three nodes: x_i, ¬x_i, and B. Since these three nodes are mutually connected, they must each have different colors. We fix B to the base color, which forces x_i and ¬x_i to take T and F. This setup captures the essence of Boolean logic since the coloring directly corresponds to variable assignments.
+
+Next, for each clause in our formula, like (a ∨ b ∨ c), we create an OR gadget, a specific five-node sub-graph. This gadget is designed so that it’s 3-colorable if at least one of a, b, or c is colored T. If all inputs are F, then there’s no valid coloring.
+
+In total, by combining all variable triangles and OR gadgets, we’re left with a graph that’s 3-colorable if and only if the original formula is satisfiable. This clever construction elegantly shows the connection between coloring problems and logical formulas!

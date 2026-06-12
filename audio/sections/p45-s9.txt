@@ -1,0 +1,9 @@
+Let’s start by engaging the class with a thought-provoking question: among all those big open problems like P versus NP or L versus NL, is there any separation we can actually prove? That’s where the space hierarchy theorem comes in. 
+
+Now, let’s state the theorem clearly. It tells us that for any function f that grows, there’s a strict separation between languages that can be recognized with space f and those that can be recognized with space f times the logarithm of f. This gap, while small, is non-trivial, and it's our gateway into understanding more complex relationships in computational theory.
+
+Next, let’s dive into how we construct our diagonalization argument. Picture three main steps: we first enumerate all the languages, then we simulate our machine on those languages, and finally, we flip a bit to create a language that’s guaranteed not to be in our original list. 
+
+When we visualize this, pause when you see the row for D highlighted in gold. This is where we find our contradiction. If D is in the list, it means it can be simulated, but that leads us to a situation where b equals one minus b, which just can’t hold true. 
+
+Finally, let’s wrap up by listing some important corollaries: we get separations like L is a subset of PSPACE, NL is a subset of PSPACE, P is a subset of EXPTIME, and NP is a subset of NEXPTIME. It’s crucial to close with a reminder: this hierarchy can’t give us P does not equal NP, since we’re dealing with different types of determinism but the same resource bounds.

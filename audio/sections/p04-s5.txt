@@ -1,0 +1,7 @@
+Let’s talk about classifying the language ¬E sub T M, which consists of all Turing machines that do not accept any strings. To determine if it's recognizable, we first need to outline a recognizer for this language. 
+
+Imagine we have a Turing machine N. When it receives an input ⟨M⟩, it starts by enumerating all possible strings in a specific order, let’s say shortlex order. It goes through these strings one by one. For each string, it simulates the Turing machine M for a certain number of steps. 
+
+For example, it first checks w sub 1, then w sub 2, and continues this process, increasing the number of steps for each string. If at any point M accepts any of these strings during the simulation, N will accept ⟨M⟩. This method of dovetailing the simulations is key because it effectively demonstrates that there exists a string w such that M accepts w.
+
+Since we can construct this recognizer, we conclude that ¬E sub T M is indeed recognizable. However, keep in mind that E sub T M itself is not recognizable, as it would be decidable, which it isn't.

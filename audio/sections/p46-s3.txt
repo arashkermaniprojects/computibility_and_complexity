@@ -1,0 +1,5 @@
+Let’s dive into some pitfalls when discussing the time hierarchy theorem. One important point is that while the log factor is significant, it's relatively small. For instance, we can prove that TIME of n is strictly contained in TIME of n squared. This separation is clear. However, TIME of n compared to TIME of n log squared n is also separable, but it’s much tighter, making it a bit trickier to work with. If we could remove that log factor entirely, it would be a groundbreaking result.
+
+Another critical aspect is that this theorem doesn’t apply when we talk about P versus NP. The relationship between determinism and nondeterminism isn’t directly tied to the time resource axis. So, it’s entirely possible that P is contained in NP, even though we’ve already shown that P is contained in EXPTIME.
+
+Also, we need to consider what "time-constructible" means. The diagonalizer, which is key to our proof, must be able to determine when to stop. If the function f isn’t computable in O(f) time, then the proof falls apart. So, understanding these nuances is crucial for grasping the depth of the time hierarchy theorem.

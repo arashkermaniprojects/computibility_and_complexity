@@ -1,0 +1,5 @@
+Let’s talk about some common pitfalls when discussing log-space machines and their relationship to the class P. One key area of confusion is the idea of input tape versus work tape. Remember, in a log-space machine, we only count the memory used for the work tape, not the input tape. If we counted both, then we’d trivially have L equal P, which isn't the case. That distinction is vital because it allows us to define L as a meaningful subclass of P.
+
+Now, a log-space machine can create a limited number of configurations—specifically, it's bounded by the size of the state space times log of the input size. So, we can simulate a log-space machine in polynomial time, which means L is at most P.
+
+However, the big question remains: is L actually equal to P? This is still an open question in computer science, and many researchers believe that L is properly contained within P, denoted as L being a subset of P but not equal to P. Understanding these nuances helps clarify the landscape of computational complexity.

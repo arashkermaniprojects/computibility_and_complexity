@@ -1,0 +1,9 @@
+Let’s dive into Savitch's theorem and its fascinating implications in computational complexity. At its core, Savitch's theorem tells us that if we have a nondeterministic machine that uses f(n) space, we can simulate it deterministically using O(f(n)²) space. This means if the nondeterministic machine explores many paths, we can capture that exploration in a structured way, leading to an exponential recursion tree with logarithmic depth. 
+
+Now, when we talk about PSPACE, which is the class of problems solvable in polynomial space, we find that it equals NPSPACE, the class of problems solvable by a nondeterministic machine in polynomial space. This equality stems directly from Savitch's theorem. 
+
+A specific problem that’s pivotal in PSPACE is TQBF, which stands for the true quantified Boolean formula. Savitch's recursion allows us to evaluate TQBF efficiently within polynomial space. 
+
+Then, we have an interesting result called the Immerman–Szelepcsényi theorem, which shows that NL, or nondeterministic logarithmic space, is equal to coNL. This was a surprise in the field, as it employs inductive counting rather than the midpoint recursion we see in Savitch's work.
+
+Finally, there’s still an open question: is the f² in Savitch's theorem the best we can do? For over 55 years, no one has found a tighter bound, making it a captivating area of study in computational complexity.

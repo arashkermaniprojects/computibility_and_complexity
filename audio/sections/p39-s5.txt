@@ -1,0 +1,5 @@
+If you’re looking to dive deeper into the relationship between TQBF and Generalized Geography, a great resource is Michael Sipser's textbook. Specifically, check out Theorem 8.11, which gives an overview of the complexity classes and how they relate to decision problems, including QBF. Figure 8.13 in that same chapter visually illustrates the encoding of these problems, which can be really helpful for grasping the concepts.
+
+Additionally, if you have access to lecture notes, Module 6 has some key insights that will complement what you’ve learned. Pay attention to slide 3, as it breaks down the encoding of quantifiers into game-like structures, which is central to understanding how we alternate between existential and universal moves.
+
+For practice, there are companion problems that can solidify your understanding. Problem 36 focuses on TQBF, while problem 38 challenges you with various aspects of Generalized Geography. Don’t forget to tackle problem 40 too, which deals with chess hardness, as it connects the dots between these topics and shows how they all fit together in computational complexity. Happy studying!

@@ -1,0 +1,5 @@
+If you want to dive deeper into Big-O notation and really solidify your understanding, I recommend starting with Sipser's book. Check out section 7.1, where he breaks down the concept in a very accessible way. You’ll find some great examples in sections 7.4 through 7.7 that illustrate how to identify the dominant term in various polynomials. These examples will show you how the highest power determines the growth rate, which is crucial for understanding Big-O.
+
+Also, if you have access to lecture notes, look for Module 4, particularly the second part. It’ll give you a different perspective and reinforce what you've learned from Sipser. 
+
+Lastly, there’s a companion problem, P17, that I think you'll find valuable. It’s a growth-rate race, and it visually contrasts different functions. Working through that will help you apply what you’ve learned about dominant terms and growth rates in a practical way. Engaging with these resources will definitely enhance your grasp of the topic!

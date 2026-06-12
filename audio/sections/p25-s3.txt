@@ -1,0 +1,7 @@
+Let’s dive into the four clause families that make up our formula φ x. First, we have φ cell, which ensures that each cell in our tableau holds exactly one symbol. It combines clauses that state either a symbol is in a specific cell or it isn’t, making sure there's no ambiguity.
+
+Next up is φ start. This one sets the stage by specifying that the first row represents our starting configuration. Here, we allow some bits to be free, but we firmly establish which symbols are present at the beginning of the computation.
+
+Then, we have φ accept. This clause family is crucial because it ensures that at least one cell in the tableau contains our accept state, q accept. It’s like a checkpoint, confirming that the computation has successfully reached an accepting configuration.
+
+Finally, there’s φ move. This part checks that every 2×3 window in the tableau adheres to the transition function of the Turing machine. Because a Turing machine's transition involves the head position and its neighboring cells, examining these specific windows ensures that we capture all the necessary details of a valid transition. By ensuring all windows are legal, we effectively guarantee that the entire computation follows the rules of the machine.

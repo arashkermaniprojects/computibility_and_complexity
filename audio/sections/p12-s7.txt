@@ -1,0 +1,5 @@
+If you're looking to dive deeper into the topics we've discussed, I highly recommend checking out Sipser's textbook, especially section 4.1. It provides a comprehensive overview of decidability and includes Theorems 4.1 through 4.7, which lay out the full decidability table. This is a great resource for understanding the concepts in detail.
+
+Additionally, if you want a more structured approach, the lecture notes from Module 1 go through the constructions we've talked about, offering a step-by-step breakdown. This can help reinforce your understanding of how to apply these concepts in practice.
+
+Don’t forget to tackle some companion problems as well. Problem 02 focuses on universal Turing machines, which can help you contrast different types of machines. Problem 14 deals with Rice's theorem, giving you a chance to explore another important aspect of decidability. Working through these problems will strengthen your grasp on the material and prepare you for more advanced topics. Happy studying!

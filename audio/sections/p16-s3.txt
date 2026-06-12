@@ -1,0 +1,5 @@
+Let’s walk through a specific example that illustrates how a self-aware Turing machine can defy its classifier. Imagine you have a decider, which we’ll call D, that’s supposed to determine whether any Turing machine M accepts a given input w. Thanks to the recursion theorem, we can construct a Turing machine M that really knows itself. 
+
+So, what does M do? First, it writes down its own description, that’s ⟨M⟩. Then, it calls D with the pair ⟨M, w⟩. D gives a yes or no answer based on whether it thinks M accepts w. But here’s the twist: if D says that M accepts w, then M will actually reject w. Conversely, if D says that M does not accept w, then M will accept w instead. 
+
+No matter what input w we pick, M will always do the opposite of what D predicts. This means D’s classification is wrong for the pair ⟨M⟩, w, and that’s a problem because D was supposed to be correct all the time. Just one incorrect classification is enough to show that D can’t be a decider for A sub T M. That’s our contradiction!

@@ -1,0 +1,7 @@
+Let’s dive into the midpoint recursion as part of Savitch's theorem. The idea here is to make the problem more manageable by cutting the time in half. Imagine you have two configurations, A and B, and you want to see if you can transform A into B in a specific time, t. The trick is to guess a midpoint configuration, M, that lies between A and B.
+
+Now, we have a function called CANYIELD that checks if it's possible to go from A to B in time t. If t is just 1, it simply checks if A is equal to B or if A can go to B in one step. For larger t, we iterate over all possible midpoints M, which can be up to 2 raised to the power of our space function, f. 
+
+For each midpoint M, we make two recursive calls: one to see if A can reach M in half the time, and another to check if M can then reach B in the same half time. Here’s the key point: these calls run one after the other, not at the same time, allowing us to reuse our memory efficiently. 
+
+As we go deeper into recursion, the total depth is logarithmic with respect to t, which is O(f). Even though we have exponentially many nodes in this recursion tree, at any moment, we’re only using space for a single path from root to leaf. This results in a space complexity of O(f squared) and a time complexity of 2 raised to the power of O(f squared). It may be slow, but it's a clever way to use space efficiently.

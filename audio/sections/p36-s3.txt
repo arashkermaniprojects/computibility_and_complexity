@@ -1,0 +1,5 @@
+Alright, let’s dive into some important pitfalls when working with quantified formulas. One key point to remember is that the order of quantifiers really matters. For example, take the expression "there exists an x such that for all y, ψ of x and y." This is not the same as "for all y, there exists an x such that ψ of x and y." In the first case, x is fixed while y varies, but in the second, x can change depending on the specific y. This difference can lead to vastly different outcomes.
+
+Also, when we talk about "true QBF," we mean that the formula is true under standard logical semantics. It’s crucial to understand that quantifiers are part of the formula itself, not just an assignment that makes it true. 
+
+Now, let’s talk about space complexity. Using depth-first search, or DFS, is essential because it allows for polynomial space usage. If you tried a breadth-first approach and stored all possible leaves, the space requirement would grow exponentially, which is obviously impractical. So, keeping these pitfalls in mind will help you avoid common mistakes when evaluating quantified formulas.

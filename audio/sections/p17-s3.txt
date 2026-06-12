@@ -1,0 +1,9 @@
+Let’s work through a practical example to see how different algorithms scale when we have a constraint of one second of CPU time. Imagine an algorithm that takes one nanosecond per operation. So, in one second, you can perform one billion operations. Now, let’s look at how many items you can handle based on the type of algorithm.
+
+For a logarithmic algorithm, we can set up the equation n equals two to the power of ten to the ninth. That gives us a number that’s truly astronomical—like billions of billions of items. Logarithmic growth scales incredibly well.
+
+Now, if we take a linear algorithm, we just have n equals ten to the ninth, which means we can handle one billion items. That’s still impressive! For an n log n algorithm, you get n roughly equal to forty million items. It’s still a significant number, but we’re starting to see the limits of scaling.
+
+When we switch to n squared, we’re looking at about thirty thousand items, and n cubed drops us down to just a thousand items. Finally, with an exponential algorithm, n equals thirty—just thirty items. 
+
+This stark difference highlights why polynomial-time algorithms are considered feasible. They scale nicely with the size of the problem, while exponential algorithms quickly become impractical.

@@ -1,0 +1,7 @@
+Let’s dive into what we mean by “local” in the context of a Turing machine and the 2 by 3 window. When a Turing machine is processing information, it operates based on its current configuration, which includes the state of the machine and the symbols on the tape. 
+
+Now, imagine the machine's head is over a specific cell on the tape. This head can only read that cell and its immediate neighbors—one to the left and one to the right. So, for any step the machine takes, it really only needs to focus on three cells: the one it's currently on and the two next to it.
+
+When we talk about verifying a step in the computation, it’s all about checking those three cells. You look at the current configuration, C sub i, and see what symbols are there in those three cells. Then you check C sub i plus one, the next configuration, and make sure those three cells match what the transition function, denoted by delta, tells you should happen. 
+
+This means you don’t need to keep track of everything else on the tape, just these three cells. It’s a powerful concept because it simplifies how we think about the computation process—everything is happening locally, right under the head of the machine.

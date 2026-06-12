@@ -15,7 +15,7 @@
 
 <div class="wrap">
 
-<section><div class="section-label">1 · Why this matters · the BIG picture</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p04-s1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">1 · Why this matters · the BIG picture</div>
 <p>
 This Venn diagram is the <strong>map of computability</strong>. Once you have proved a few landmark theorems
 (A<sub>TM</sub> recognizable but undecidable; co-A<sub>TM</sub> not even recognizable; EQ<sub>TM</sub> neither),
@@ -34,7 +34,7 @@ a language to be undecidable?", the answer is a finger pointing at the recogniza
 </ul></div>
 </section>
 
-<section><div class="section-label">2 · Setup · the bridge theorem</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p04-s2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">2 · Setup · the bridge theorem</div>
 <p>The central observation that organizes everything:</p>
 <div class="theorem-box"><div class="theorem-label">Bridge theorem</div>
 <p style="margin:4px 0;"><strong>L is decidable ⇔ both L and L̅ are recognizable.</strong></p>
@@ -45,7 +45,7 @@ locate co-A<sub>TM</sub> in the diagram: A<sub>TM</sub> sits in "recognizable \\
 </p>
 </section>
 
-<section><div class="section-label">3 · How to classify · the decision tree</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p04-s3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">3 · How to classify · the decision tree</div>
 <ol style="font-size:14px;line-height:1.7;">
 <li>Can you give a TM that <em>always halts</em>? → Decidable. Done.</li>
 <li>Can you give a TM that accepts yes-inputs (may loop on no)? → Recognizable.</li>
@@ -56,7 +56,7 @@ locate co-A<sub>TM</sub> in the diagram: A<sub>TM</sub> sits in "recognizable \\
 <p>The tricky step is always #5 — proving non-recognizability typically requires a <em>reduction</em> from co-A<sub>TM</sub> or similar.</p>
 </section>
 
-<section><div class="section-label">4 · Animated demo · auto-plays · loops</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p04-s4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">4 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Cycle through languages, watch the placement <span class="pill">Auto-plays</span></div>
 <div class="controls">
 <button class="btn play-btn" id="v-run">⏸ Pause</button>
@@ -68,7 +68,7 @@ locate co-A<sub>TM</sub> in the diagram: A<sub>TM</sub> sits in "recognizable \\
 <div class="explain-panel" id="v-explain"></div>
 </div></section>
 
-<section><div class="section-label">5 · Worked example · classifying ¬E<sub>TM</sub></div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p04-s5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">5 · Worked example · classifying ¬E<sub>TM</sub></div>
 <p>Let's place ¬E<sub>TM</sub> = {⟨M⟩ : L(M) ≠ ∅} in the diagram. Is it recognizable?</p>
 <div class="theorem-box" style="background:#fffaf3;"><div class="theorem-label">Recognizer for ¬E<sub>TM</sub></div>
 <p style="margin:4px 0;font-family:var(--mono);font-size:13.5px;">
@@ -82,7 +82,7 @@ N = "on input ⟨M⟩:<br>
 <p>This dovetailing trick is the canonical way to show "exists w such that M(w) accepts" languages are recognizable. So ¬E<sub>TM</sub> is recognizable. E<sub>TM</sub> itself is not (it would be decidable by the bridge theorem, which it isn't — see Problem 6).</p>
 </section>
 
-<section><div class="section-label">6 · Connections · the placement of every famous language</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p04-s6.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">6 · Connections · the placement of every famous language</div>
 <table style="font-size:13.5px;width:100%;border-collapse:collapse;margin:10px 0;">
 <thead><tr style="background:var(--gold-soft);">
 <th style="padding:6px;border:1px solid var(--rule);">Language</th>
@@ -101,7 +101,7 @@ N = "on input ⟨M⟩:<br>
 </table>
 </section>
 
-<section><div class="section-label">7 · Common pitfalls · what students miss</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p04-s7.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">7 · Common pitfalls · what students miss</div>
 <ol style="font-size:14px;line-height:1.7;">
 <li><strong>"Recognizable means decidable."</strong> No — recognizable allows looping. Decidable requires halting on every input.</li>
 <li><strong>Forgetting closure properties differ.</strong> Decidable is closed under complement; recognizable is not.</li>
@@ -111,7 +111,7 @@ N = "on input ⟨M⟩:<br>
 </ol>
 </section>
 
-<section><div class="section-label">8 · Q&amp;A defence notes</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p04-s8.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">8 · Q&amp;A defence notes</div>
 <ul class="qa-list">
 <li><div class="q">Q1. Why is A<sub>TM</sub> recognizable but not decidable?</div><div class="a">Universal TM gives the recognizer. Problem 3 shows no decider can exist.</div></li>
 <li><div class="q">Q2. Why is the complement of A<sub>TM</sub> not recognizable?</div><div class="a">If it were, both A<sub>TM</sub> and its complement would be recognizable. By the bridge theorem, A<sub>TM</sub> would then be decidable. Contradiction.</div></li>
@@ -120,7 +120,7 @@ N = "on input ⟨M⟩:<br>
 <li><div class="q">Q5 (bonus). Are there languages outside even "Neither"?</div><div class="a">Yes — there are uncountably many languages over {0,1}* but only countably many TM descriptions. Most languages are not even definable, let alone recognizable.</div></li>
 </ul></section>
 
-<section><div class="section-label">9 · How to present this in class</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p04-s9.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">9 · How to present this in class</div>
 <p style="font-size:13.5px;"><strong>Total time: 10 minutes.</strong></p>
 <ul style="font-size:13.5px;line-height:1.7;">
 <li><strong>(1 min)</strong> Sketch the Venn diagram on the board: outer rectangle = all languages, two overlapping circles = recognizable / co-recognizable, intersection = decidable.</li>

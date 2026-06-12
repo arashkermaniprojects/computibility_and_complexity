@@ -1,0 +1,5 @@
+If you're looking to dive deeper into the connection between CLIQUE and VERTEX-COVER, a great resource is Michael Sipser's textbook. Check out Theorem 7.44, which lays out the reduction from CLIQUE to VERTEX-COVER in a clear way. It really helps solidify the understanding of how these two problems relate through their complements.
+
+You might also want to take a look at lecture notes, especially Module 5, where they discuss the reductions in detail. There’s a lot of helpful information there that can clarify how the concepts fit together.
+
+For hands-on practice, try working on some companion problems. For example, Problem 27 involves the reduction from 3-SAT to CLIQUE. That’s a classic problem that helps reinforce your grasp of these NP-complete concepts. Another interesting one is Problem 31, which connects to 3-COLOR, another graph-theoretic NP-complete problem. Engaging with these problems will deepen your understanding and give you a practical perspective on the theory.

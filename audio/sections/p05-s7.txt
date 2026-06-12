@@ -1,0 +1,7 @@
+When you're working on proving that a problem B is undecidable, it’s crucial to remember that you need to reduce a known undecidable problem to B, not the other way around. So if you think of it as "A reduces to B," that means B is at least as hard as A. If you mix this up, you could end up with a flawed proof.
+
+Another common pitfall is forgetting why a simulation is safe. When you directly simulate M on w, it only terminates because R has already confirmed that M halts. Without R, M could potentially loop forever. 
+
+Also, it’s important to realize that HALT and A sub T M have the same degree of unsolvability. They’re both undecidable, so reductions can go both ways. If R rejects, it doesn’t mean M halts and rejects; it actually means M does not halt at all. Remember, R is a decider for HALT, not for acceptance.
+
+Finally, watch out for confusing Turing reductions with mapping reductions. Turing reductions can perform additional work after the call, while mapping reductions cannot. Thankfully, for undecidability, either type of reduction will do the job. Keep these points in mind, and you’ll avoid some of the common traps!

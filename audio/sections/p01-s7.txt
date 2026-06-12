@@ -1,0 +1,9 @@
+Alright, let’s dive into some common pitfalls when working with Cantor's diagonal argument. First up, a lot of students wonder, "What if we just list g too?" If you try that and add g as f sub m plus one, you can diagonalize again. What happens? You create a new function, g prime, that still differs from every function in your extended list. So, no countable list can ever be closed under diagonalization.
+
+Next, some students get tripped up on what it means for g to be "in the list." When we say that, we mean there's a specific index k where f sub k equals g as functions. This means that for every n, f sub k of n is equal to g of n. But remember, the contradiction shows that for any k you choose, there’s at least one n, specifically n equals k minus one, where they disagree.
+
+Another common question is about the diagonal we pick. It doesn’t actually matter which diagonal you choose. You can flip any cell in each row, as long as you pick a different column each time. The diagonal is just a convenient choice, but any bijection works.
+
+Now, some might think, "Cantor proved this over 130 years ago—what's modern about it?" Well, Cantor showed that sets have different sizes, but we take that proof pattern and apply it to computational limits. This leap to Turing machines is what really laid the groundwork for computer science.
+
+Finally, there's the idea that maybe there could be a super-clever enumeration that avoids diagonalization. But the beauty of the proof is that it targets any enumeration you propose. No matter how clever, as long as you stick to a specific ordering, the diagonal argument will construct a function that escapes that list. So, these pitfalls are important to grasp if you want to fully understand the implications of Cantor's work.

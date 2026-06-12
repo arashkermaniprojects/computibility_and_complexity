@@ -1,0 +1,7 @@
+Let’s dive into the Q&A defense notes. First, you might wonder why we choose a fixed finite chunk like the set where the length of x is less than or equal to 10. The reason is simple: it guarantees that the language of our new machine, M', is non-empty in both scenarios, but it turns finite or infinite based on whether M accepts w. And yes, that “10” is arbitrary. Any explicitly finite set will work just fine.
+
+Now, could we use any finite set? Absolutely! You could use {ε}, {0, 1}, or really any finite set that's clearly enumerable. What’s important is that we can decide if the set is finite or not independently of M.
+
+Next, let’s look at Rice's theorem. It tells us that if we say “L(M) is finite,” that depends solely on the language itself, which is a semantic property. It doesn’t matter how M is built, and it’s nontrivial because some Turing machines have finite languages while others do not. So, FINITE TM is undecidable, and we don’t need any complex construction beyond Rice.
+
+Lastly, regarding regular Turing machines, there’s a parallel. The set REGULAR TM, which is the collection of machines where L(M) is regular, is also undecidable by Rice's theorem. Regularity is also a semantic property and nontrivial, so we can use a similar construction to show that it’s undecidable.

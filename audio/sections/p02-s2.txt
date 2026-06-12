@@ -1,0 +1,7 @@
+Alright, let’s dive into what we’re trying to build with the universal Turing machine. Remember, a Turing machine, which we’ll call M, is defined by a tuple that includes things like states, input alphabet, tape alphabet, transition function, and so on. The key thing to focus on is that the only truly infinite part of M is its tape; everything else can be described with a finite set of rules. 
+
+So, we can write down M as a finite string, which we’ll refer to as ⟨M⟩. To do this, we need an encoding method. One simple approach is to list each transition of M in a format like “(state, read) → (state, write, direction)” all on one line. This string is just data, essentially. 
+
+Now, when we talk about ⟨M, w⟩, we mean the encoded description of our Turing machine M followed by an input w, separated by some delimiter. 
+
+The universal Turing machine, often called U, is a special machine that takes this ⟨M, w⟩ on its tape and simulates M on w. It has three key regions on its tape: a program region for M’s transitions, a tape region for the contents M would be working on, and a state region that keeps track of M’s current state and head position. This setup is crucial because it allows U to mimic any Turing machine, making it a powerful concept in computability theory.

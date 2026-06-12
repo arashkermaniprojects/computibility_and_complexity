@@ -1,0 +1,5 @@
+If you want to dive deeper into mapping reductions and undecidability, a great place to start is with Michael Sipser's textbook. Check out Theorem 5.4 and the section on mapping reductions in Chapter 5. Sipser lays out the concepts in a clear way, which can really help solidify your understanding.
+
+You can also look at lecture notes from your course, especially the notes on Module 2. Those cover reductions to the Halting problem, which is a classic example. And don’t miss Module 3; it includes a general reduction template that can be super helpful for understanding how to set up your own reductions.
+
+If you want to test your understanding, tackle some companion problems. Problem 5 focuses on the Halting problem, while Problem 6 is about emptiness for Turing machines. Lastly, check out Problem 14, which deals with Rice's theorem. It’s a powerful result that generalizes these ideas to any non-trivial property of languages. These resources will give you a solid grasp of the material and help you see how these concepts fit together.

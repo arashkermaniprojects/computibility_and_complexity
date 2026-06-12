@@ -15,7 +15,7 @@
 
 <div class="wrap">
 
-<section><div class="section-label">1 · Why this matters · the BIG picture</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p06-s1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">1 · Why this matters · the BIG picture</div>
 <p>
 "Is this program's language empty?" is one of the most basic questions you can ask about a TM — and it is undecidable.
 This means: there is no algorithm that, given an arbitrary program, can tell you whether it ever produces any output
@@ -26,7 +26,7 @@ any reachable accepting path?" — undecidable in general.
 <p style="margin:4px 0;"><span class="math">E<sub>TM</sub> = {⟨M⟩ : L(M) = ∅}</span> is not decidable. We give a mapping reduction A<sub>TM</sub> ≤<sub>m</sub> ¬E<sub>TM</sub>, showing E<sub>TM</sub> is at least as hard as A<sub>TM</sub>.</p></div>
 </section>
 
-<section><div class="section-label">2 · Setup · the construction</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p06-s2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">2 · Setup · the construction</div>
 <p>We turn a question about M accepting one specific input w into a question about a new machine M' accepting <em>anything at all</em>. The trick: hard-code w inside M', and have M' ignore its input.</p>
 <div class="theorem-box" style="background:#fffaf3;"><div class="theorem-label">Construction of M' (from ⟨M, w⟩)</div>
 <p style="margin:4px 0;font-family:var(--mono);font-size:13.5px;">
@@ -39,7 +39,7 @@ M' = "on input x:<br>
 <p>Note ⟨M, w⟩ is finite, so writing M' down is computable. The map ⟨M, w⟩ ↦ ⟨M'⟩ is the reduction.</p>
 </section>
 
-<section><div class="section-label">3 · The proof · L(M') is all-or-nothing</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p06-s3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">3 · The proof · L(M') is all-or-nothing</div>
 <p>Two cases:</p>
 <ul style="font-size:14px;line-height:1.65;">
 <li><strong>If M accepts w</strong> · Every x triggers the accept branch ⇒ L(M') = Σ* ⇒ ⟨M'⟩ ∉ E<sub>TM</sub>.</li>
@@ -48,7 +48,7 @@ M' = "on input x:<br>
 <p>So ⟨M, w⟩ ∈ A<sub>TM</sub> ⇔ ⟨M'⟩ ∉ E<sub>TM</sub>. If we had a decider for E<sub>TM</sub>, we could build a decider for A<sub>TM</sub> (run the E<sub>TM</sub>-decider, flip the answer). Impossible ⇒ E<sub>TM</sub> is undecidable. <span class="math">∎</span></p>
 </section>
 
-<section><div class="section-label">4 · Animated demo · auto-plays · loops</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p06-s4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">4 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Construct M' stage by stage <span class="pill">Auto-plays</span></div>
 <div class="controls">
 <button class="btn play-btn" id="e-run">⏸ Pause</button><button class="btn ghost" id="e-step">Step</button><button class="btn ghost" id="e-reset">Reset</button>
@@ -58,7 +58,7 @@ M' = "on input x:<br>
 <div class="explain-panel" id="e-explain"></div>
 </div></section>
 
-<section><div class="section-label">5 · Worked example · concrete M and w</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p06-s5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">5 · Worked example · concrete M and w</div>
 <p>Take M = "accept iff input length is a multiple of 3", w = "aaaaaa" (length 6).</p>
 <ul style="font-size:14px;line-height:1.65;">
 <li>M(w) = accept (6 ≡ 0 mod 3).</li>
@@ -74,7 +74,7 @@ M' = "on input x:<br>
 <p>The "membership in A<sub>TM</sub>" question (does M accept w?) became "is L(M') empty?" — a question about E<sub>TM</sub>.</p>
 </section>
 
-<section><div class="section-label">6 · Connections · related undecidable language properties</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p06-s6.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">6 · Connections · related undecidable language properties</div>
 <ul style="font-size:14px;line-height:1.7;">
 <li><strong>REGULAR<sub>TM</sub></strong> (Problem 7) · "Is L(M) regular?" Same construction trick: make L(M') simple iff M accepts w.</li>
 <li><strong>EQ<sub>TM</sub></strong> (Problem 8) · "Do M<sub>1</sub>, M<sub>2</sub> recognize the same language?" Even stronger — not even recognizable.</li>
@@ -83,7 +83,7 @@ M' = "on input x:<br>
 </ul>
 </section>
 
-<section><div class="section-label">7 · Common pitfalls · what students miss</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p06-s7.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">7 · Common pitfalls · what students miss</div>
 <ol style="font-size:14px;line-height:1.7;">
 <li><strong>"M' runs M on x, not on w."</strong> No! M' runs M on the <em>fixed</em> w that's hard-coded inside M'. Otherwise the trick fails.</li>
 <li><strong>Reducing the wrong direction.</strong> We need A<sub>TM</sub> ≤ E<sub>TM</sub>, not the other way. The known-undecidable problem must be the source.</li>
@@ -93,7 +93,7 @@ M' = "on input x:<br>
 </ol>
 </section>
 
-<section><div class="section-label">8 · Q&amp;A defence notes</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p06-s8.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">8 · Q&amp;A defence notes</div>
 <ul class="qa-list">
 <li><div class="q">Q1. Why does M' "ignore" its input?</div><div class="a">Because we want L(M') to be either everything or nothing — a binary signal mirroring M's acceptance of the fixed w. Ignoring x kills any dependence on x.</div></li>
 <li><div class="q">Q2. Does this construction halt?</div><div class="a">M' halts (and accepts) iff M halts (and accepts) on w. If M loops on w, M' loops on every x. That's fine — we only need ⟨M'⟩ to encode the membership question.</div></li>
@@ -102,7 +102,7 @@ M' = "on input x:<br>
 <li><div class="q">Q5 (bonus). Place E<sub>TM</sub> in the Venn diagram (Problem 4).</div><div class="a">co-Rec \\ Dec. Because ¬E<sub>TM</sub> is recognizable (Q4) and E<sub>TM</sub> is undecidable (proven here).</div></li>
 </ul></section>
 
-<section><div class="section-label">9 · How to present this in class</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p06-s9.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">9 · How to present this in class</div>
 <p style="font-size:13.5px;"><strong>Total time: 10 minutes.</strong></p>
 <ul style="font-size:13.5px;line-height:1.7;">
 <li><strong>(1 min)</strong> State the question: "is L(M) empty?" Hook: connect to "does this program ever produce output?"</li>

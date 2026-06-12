@@ -1,0 +1,5 @@
+When we talk about prenex form, we're really focusing on how to arrange the quantifiers at the front of a formula. For instance, take a formula like "there exists an x such that P of x and for all y, Q of x and y." This isn't in prenex form because the quantifiers aren't all upfront. To convert it, we apply some rules about scope. So, we can rearrange it as "there exists an x, for all y, such that P of x and Q of x and y." 
+
+Now, it’s important to remember that we can use dummy quantifiers. These are just placeholders that help with the alternation of quantifiers but don’t actually change the truth of the formula. They’re like padding to help structure the formula properly. 
+
+And when we get to 3-CNF, remember that it strictly refers to the matrix—the part of the formula that’s in conjunctive normal form. The way we arrange our quantifiers in the prefix doesn’t affect the matrix’s CNF structure. Keeping these ideas clear will help you avoid common pitfalls as you work with QBFs!

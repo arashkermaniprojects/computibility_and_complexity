@@ -1,0 +1,7 @@
+If you're looking to dive deeper into self-aware Turing machines, a great place to start is with Michael Sipser's textbook. Check out Theorem 6.5, which covers the recursion theorem corollary. This theorem gives you a solid proof involving self-aware Turing machines. 
+
+You might also find it helpful to look at some lecture notes, specifically the part where it talks about the construction of Turing machines, including the A times B construction. This will give you a practical understanding of how these machines can operate on their own descriptions.
+
+For hands-on practice, try working on some companion problems. Problem 3 is a classic example of the A sub T M proof, and it contrasts nicely with what you've learned. Then there's Problem 13, which involves a quine—an essential prerequisite for understanding these concepts. 
+
+If you're interested in exploring Rice's theorem through the lens of the recursion theorem, Problem 14 is perfect for that. And finally, Problem 15 lets you play around with the fixed-point form, which can really deepen your understanding. So, there’s plenty out there to help you grasp these complex ideas!

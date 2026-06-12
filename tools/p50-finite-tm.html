@@ -15,7 +15,7 @@
 
 <div class="wrap">
 
-<section><div class="section-label">1 · Theory</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p50-s1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">1 · Theory</div>
 <p>FINITE<sub>TM</sub> = {⟨M⟩ : L(M) is finite}. Direct application of Rice (Problem 14): "finite" is a nontrivial property of L(M), so FINITE<sub>TM</sub> is undecidable.</p>
 <div class="theorem-box"><div class="theorem-label">Explicit reduction · A<sub>TM</sub> ≤<sub>m</sub> ¬FINITE<sub>TM</sub></div>
 <pre style="font-size:13px;">M' on input x:
@@ -25,7 +25,7 @@
 <p style="margin:4px 0;">If M accepts w: L(M') = Σ* — infinite. If M doesn't accept w: L(M') ⊆ {x : |x| ≤ 10} — finite. So M accepts w ⇔ ⟨M'⟩ ∉ FINITE<sub>TM</sub>.</p></div>
 </section>
 
-<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p50-s2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">2 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Two scenarios for L(M') <span class="pill">Auto-plays</span></div>
 <div class="controls">
 <button class="btn play-btn" id="ft-run">⏸ Pause</button><button class="btn ghost" id="ft-step">Step</button><button class="btn ghost" id="ft-reset">Reset</button>
@@ -35,7 +35,7 @@
 <div class="explain-panel" id="ft-explain"></div>
 </div></section>
 
-<section><div class="section-label">3 · Pitfalls</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p50-s3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">3 · Pitfalls</div>
 <ul style="margin:6px 0 0 20px;">
   <li><strong>Don't conflate "finite" with "small."</strong> Finite means there's a bound, no matter how huge. Even 10<sup>100</sup> elements is finite.</li>
   <li><strong>The reduction is to ¬FINITE<sub>TM</sub>.</strong> ⟨M, w⟩ ∈ A<sub>TM</sub> ⇔ L(M') is infinite ⇔ ⟨M'⟩ ∉ FINITE<sub>TM</sub>.</li>
@@ -43,7 +43,7 @@
 </ul>
 </section>
 
-<section><div class="section-label">4 · Q&amp;A defence notes</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p50-s4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">4 · Q&amp;A defence notes</div>
 <ul class="qa-list">
 <li><div class="q">Q1. Why use a fixed finite chunk like {|x| ≤ 10}?</div><div class="a">It ensures L(M') is non-empty in both cases, but finite or infinite depending on M(w). The "10" is arbitrary — any explicit finite set works.</div></li>
 <li><div class="q">Q2. Could we use any finite set?</div><div class="a">Yes — {ε}, {0, 1}, anything explicitly enumerable. The point is the set's finiteness is decidable independently of M.</div></li>
@@ -51,7 +51,7 @@
 <li><div class="q">Q4. What's the analog for REGULAR<sub>TM</sub>?</div><div class="a">REGULAR<sub>TM</sub> = {⟨M⟩ : L(M) is regular} is also undecidable by Rice's theorem (regularity is semantic and nontrivial). Construction is similar — make L(M') a specific non-regular language iff M accepts w.</div></li>
 </ul></section>
 
-<section><div class="section-label">5 · Where to read more</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p50-s5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">5 · Where to read more</div>
 <p><strong>Sipser:</strong> §5.2 (Rice's theorem). <strong>Lecture notes:</strong> Module 3 slide 6. <strong>Companion problems:</strong> P14 (Rice's theorem).</p>
 </section>
 

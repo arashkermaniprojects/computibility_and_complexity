@@ -1,0 +1,5 @@
+Let’s dive into how we classify algorithms using Big-O notation. Think of it as a recipe for understanding how an algorithm behaves as the input size grows. The first step is to identify the dominant term in your function. In a polynomial, that’s the term with the highest power. For example, if you have something like 3x cubed plus 2x squared plus 5, the x cubed term is the dominant one because it grows the fastest as x becomes large.
+
+Next, we ignore the coefficients and lower-order terms. So in our example, you would drop the 3 and the 2x squared since they don’t matter in the long run. This simplification leads us to simply say the algorithm is O of x cubed.
+
+Remember, this is all about understanding growth rates. When comparing algorithms, the one with the lower Big-O classification typically performs better for larger inputs. By following this classification recipe, you can quickly assess and communicate the efficiency of different algorithms, helping you make better choices in your programming and problem-solving.

@@ -1,0 +1,7 @@
+Let’s dive into how the animated demo works with the auto-solver feature. When you start the auto-solver, it automatically tries different assignments for your variables in sequence. It’s like watching a smart assistant work through the problem step-by-step, testing each possibility until it finds a solution or exhausts all options.
+
+You’ll notice some controls on the screen. If you want to pause the animation at any point, just hit the pause button. This lets you take a moment to digest what's happening. You can also reset the demo if you want to start over from the beginning. 
+
+Now, speed control is another great feature. You can adjust how fast the auto-solver runs through the assignments. If you’re new to this, I recommend starting at the default speed. Once you’re comfortable, try speeding it up to see how quickly it cycles through the different variable assignments. 
+
+And don’t forget, the loops in the process help visualize how each assignment affects the clauses. It’s a really effective way to see the logical flow in action.

@@ -1,0 +1,5 @@
+Imagine you’re working through a SAT problem where you need to determine if there’s a satisfying assignment for a set of variables. Now, picture an animated demo that shows this process in action. As the demo plays, it automatically decides the value of each variable one by one. 
+
+You can visualize the decision-making flow as the animation loops through the variables, adjusting their values based on the constraints of the problem. If you need a moment to think about what’s happening, you can pause the animation. This feature allows you to take a closer look at how each decision impacts the overall equation.
+
+If you want to reset and start over, that’s easy too. You can clear everything and go back to the beginning of the problem. Plus, if you want to control the pace, you can adjust the speed of the animation. Slowing it down can help you really grasp the logic behind each decision. This dynamic approach makes understanding self-reducibility and the SAT problem more intuitive and engaging.

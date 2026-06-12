@@ -1,0 +1,5 @@
+If you’re looking to dive deeper into the time hierarchy theorem, a great starting point is Michael Sipser’s textbook. Specifically, take a look at Theorem 9.10, where he lays out the details in a very clear way. The explanations and examples he provides can help solidify your understanding of how time complexity relates to different classes of problems.
+
+In addition to the textbook, consider checking out lecture notes on the topic. There’s also a module that focuses on this theorem, and it includes some helpful visual aids and examples that can enhance your grasp of the concepts.
+
+Finally, tackling some companion problems is a fantastic way to reinforce what you’ve learned. Problem 45 challenges you to think about the hierarchy through diagonalization, while Problem 48 explores the relationship between P and exponential time classes, which can really deepen your insight into these complexity classes. Engaging with these resources will give you a more rounded understanding of the time hierarchy theorem and its implications in computational theory.

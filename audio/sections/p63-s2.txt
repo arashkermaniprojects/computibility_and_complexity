@@ -1,0 +1,7 @@
+Let’s dive into how we can simulate a nondeterministic Turing machine, or NTM, using a breadth-first search, or BFS, on its computation tree. Imagine the NTM as having multiple branches at each step of its computation. Each branch represents a different choice it could make. 
+
+When we simulate this NTM, we can think of it as building a tree where each level corresponds to a step in the computation. The root of the tree represents the initial configuration, and as we move down each level, we explore all possible configurations that can arise from the nondeterministic choices. 
+
+Using BFS, we explore all nodes at the current depth before moving deeper into the tree. This means we’ll examine all possible states the NTM could be in after one move before looking at what happens after two moves, and so on. 
+
+The key idea is that by systematically exploring these branches, we ensure we account for every possible computation path. While this approach might seem slow, the important part is that it’s systematic: we can be sure we’ll find any accepting paths if they exist. This method shows how even a complex nondeterministic process can be handled by a deterministic machine in a structured way.

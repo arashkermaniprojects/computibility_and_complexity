@@ -1,0 +1,5 @@
+If you want to dive deeper into the differences between EXPTIME and PSPACE, I recommend checking out Michael Sipser’s book, particularly section 9.1. He lays out the complexities of time and space classes in a very accessible way. Pay special attention to Corollary 9.16, as it discusses some important implications of these classes.
+
+Additionally, I suggest looking into lecture notes from your course, especially Module 7. There’s a part that explores these concepts thoroughly, which can really help solidify your understanding. 
+
+To get some practice with the material, take a look at the companion problems, specifically problem 46, which tackles the Time Hierarchy Theorem, and problem 48, which explores the relationship between P and EXPTIME. Working through these problems will give you a hands-on grasp of these concepts and help you see the nuances involved in proving PSPACE is strictly contained within EXPTIME. It’s a challenging area of study, but that’s what makes it so fascinating!

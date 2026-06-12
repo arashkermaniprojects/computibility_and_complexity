@@ -1,0 +1,5 @@
+Let’s dive into how we can understand the concept of undecidability through an animated demonstration. Imagine we’re constructing a new machine, M prime, step by step. The key idea is that we want M prime to accept a string if and only if another machine, M, accepts a specific input, w.
+
+Now, as we build M prime, it’s helpful to visualize this process with animations that auto-play. Picture M prime starting off in its initial state. As it runs, we can pause the animation to take a closer look at what’s happening. Each time we move forward, we can see a new stage in M prime’s operation. 
+
+Sometimes, it’s useful to reset the machine to see how it behaves from the beginning. You might want to adjust the speed of the animation too, so you can really grasp each transition. Watching M prime loop through its states gives you a clear view of how it processes inputs, ultimately leading to the conclusion about whether it accepts or rejects. This method helps make the concept of undecidability much more intuitive.

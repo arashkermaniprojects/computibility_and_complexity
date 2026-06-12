@@ -1,0 +1,7 @@
+Let’s dive into some key questions about the kamikaze Turing machine. First, is "erasing" really meaningful in a Turing machine? Well, Turing machines don't have the kind of file-system erasure you might think of. When the kamikaze enters its halt state, it's actually marking its end, and the concept of "erasure" here is more about dramatizing that self-destructive nature of these self-printing machines.
+
+Now, could a Turing machine modify its own transition function while it's running? The answer is no. The transition function, which we refer to as delta, is fixed at the time of construction. However, a Turing machine can simulate a different machine by interpreting a description on its tape. This means it can effectively run a modified version of itself based on that description.
+
+Next, how does the recursion theorem guarantee that first step? You apply the s-m-n theorem to create a function that takes a description and produces a new description. This new machine writes its own description to its tape and then runs the original machine. So, when we set P to append a specific text and halt, we get our kamikaze Turing machine.
+
+Finally, what's the takeaway here? Self-aware Turing machines aren't just theoretical curiosities. The recursion theorem gives us a handy recipe for constructing Turing machines that can perform actions involving their own descriptions, with the kamikaze being the most striking example of that.

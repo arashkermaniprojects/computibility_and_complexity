@@ -1,0 +1,7 @@
+Let’s imagine a scenario where a hypothetical machine H exists that can decide the acceptance problem for Turing machines. Now, picture we have four Turing machines, M1 through M4, and they behave in specific ways when we give them their own descriptions. 
+
+For M1, when it processes its own description, it accepts. M2 rejects, M3 accepts, and M4 rejects. If we run these through H, we get the following results for what H claims: M1 is accepted, M2 is rejected, M3 is accepted, and M4 is rejected. 
+
+Now, let’s build a machine D, which is supposed to flip the acceptance behavior of these machines. So, D will say M1 should reject, M2 should accept, M3 should reject, and M4 should accept. Now, if we look at D’s behavior on its own description, say D is actually M3. 
+
+This means D is supposed to accept when processing its own description, but D also tells us it should reject. So we have the same input, but two contradictory answers: accept and reject. This contradiction shows us that H cannot exist, as it leads to an impossible situation. No matter which index D is at, this contradiction proves the undecidability of the acceptance problem.

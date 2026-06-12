@@ -1,0 +1,5 @@
+If you're looking to dive deeper into generalized geography, a great resource is Sipser’s textbook. Specifically, you want to check out section 8.3, where he discusses some foundational concepts related to games on graphs. Theorem 8.11 is particularly interesting because it ties together some of the theoretical aspects with practical implications in graph-based games.
+
+If you're using lecture notes, look for Module 6, especially the third point. It’s packed with insights that can really help you understand the mechanics of the game and how the directed graphs work.
+
+Additionally, don't miss out on the companion problems. Problem 36 focuses on TQBF, which is a key concept in complexity theory that relates to our topic. Then there’s Problem 39, which connects TQBF to geography, helping you see how these abstract ideas play out in real scenarios. Finally, Problem 40 explores chess hardness, giving you a different angle on strategy in games. Each of these problems will sharpen your understanding and give you a practical edge in the topic. Happy reading!

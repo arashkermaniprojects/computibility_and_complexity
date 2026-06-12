@@ -6,7 +6,7 @@
 <div class="tags"><span class="tag-pill">CLO-4</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L11</span></div></header>
 <div class="wrap">
 
-<section><div class="section-label">1 · Why this matters · the BIG picture</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p25-s1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">1 · Why this matters · the BIG picture</div>
 <p>
 This is the <strong>founding theorem of NP-completeness</strong>. Before Cook (1971) and Levin (1973) independently
 proved it, NP existed as a class but no problem was known to be "the hardest". Cook–Levin pinned the title on
@@ -26,7 +26,7 @@ question is the most famous open problem in computer science.
 </p>
 </section>
 
-<section><div class="section-label">2 · Setup · what we are encoding</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p25-s2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">2 · Setup · what we are encoding</div>
 <p>Pick L ∈ NP with poly-time verifier V. By definition:</p>
 <ul style="font-size:14px;line-height:1.65;">
 <li>x ∈ L ⇔ ∃ certificate c (|c| ≤ poly(|x|)) with V(x, c) accepting.</li>
@@ -44,7 +44,7 @@ question is the most famous open problem in computer science.
 <p>Each cell becomes a set of Boolean variables: <span class="math">x<sub>t,p,s</sub></span> = "cell (t,p) holds symbol s". The variable count is n<sup>k</sup> · n<sup>k</sup> · |Γ ∪ Q| = polynomial.</p>
 </section>
 
-<section><div class="section-label">3 · The four clause families</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p25-s3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">3 · The four clause families</div>
 <p>We assemble φ<sub>x</sub> = φ<sub>cell</sub> ∧ φ<sub>start</sub> ∧ φ<sub>accept</sub> ∧ φ<sub>move</sub>.</p>
 
 <table style="font-size:13.5px;width:100%;border-collapse:collapse;margin:10px 0;">
@@ -67,14 +67,14 @@ question is the most famous open problem in computer science.
 </div>
 </section>
 
-<section><div class="section-label">4 · Animated demo · auto-plays · loops</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p25-s4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">4 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Fill the tableau cell-by-cell <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="t-run">⏸ Pause</button><button class="btn ghost" id="t-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="t-speed" min="0.25" max="3" step="0.25" value="1"><span id="t-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="t-svg" viewBox="0 0 760 360" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="t-explain"></div></div></section>
 
-<section><div class="section-label">5 · Worked example · sizes for a concrete verifier</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p25-s5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">5 · Worked example · sizes for a concrete verifier</div>
 <p>Suppose L is SUBSET-SUM and the verifier V takes n bits and runs in n² steps:</p>
 <table style="font-size:13.5px;width:100%;border-collapse:collapse;margin:10px 0;">
 <thead><tr style="background:var(--gold-soft);">
@@ -95,7 +95,7 @@ The Cook–Levin reduction is theoretical; tighter reductions (e.g. directly to 
 </p>
 </section>
 
-<section><div class="section-label">6 · Connections · the NP-complete family tree</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p25-s6.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">6 · Connections · the NP-complete family tree</div>
 <p>From Cook–Levin, every other NP-complete proof follows a fixed pattern: <em>"reduce SAT (or 3SAT) to my problem."</em></p>
 <ul style="font-size:14px;line-height:1.7;">
 <li><strong>3SAT</strong> · convert each clause of φ<sub>x</sub> into 3-literal clauses with auxiliary variables (Problem 26).</li>
@@ -106,7 +106,7 @@ The Cook–Levin reduction is theoretical; tighter reductions (e.g. directly to 
 <p style="font-size:13.5px;color:var(--ink-soft);">Karp's 1972 paper added 21 problems to the family in one stroke. Garey &amp; Johnson's 1979 book catalogued hundreds.</p>
 </section>
 
-<section><div class="section-label">7 · Common pitfalls · what students miss</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p25-s7.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">7 · Common pitfalls · what students miss</div>
 <ol style="font-size:14px;line-height:1.7;">
 <li><strong>"The tableau is the SAT formula."</strong> No — the tableau is a thought picture. The formula encodes constraints <em>about</em> the tableau using Boolean variables.</li>
 <li><strong>Confusing rows with tape, columns with time.</strong> The convention here is rows = time, columns = position. Pick one and stick with it.</li>
@@ -116,7 +116,7 @@ The Cook–Levin reduction is theoretical; tighter reductions (e.g. directly to 
 </ol>
 </section>
 
-<section><div class="section-label">8 · Q&amp;A defence notes</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p25-s8.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">8 · Q&amp;A defence notes</div>
 <ul class="qa-list">
 <li><div class="q">Q1. Why a 2×3 window?</div><div class="a">A TM transition affects only the head cell and possibly its neighbours, between two consecutive time steps. 2 rows × 3 columns captures one transition.</div></li>
 <li><div class="q">Q2. Why polynomial size?</div><div class="a">Tableau is n<sup>k</sup>×n<sup>k</sup> = poly cells. Each cell has |Γ|+|Q| Boolean variables (= which symbol/state). Formula size = polynomial in input size.</div></li>
@@ -125,7 +125,7 @@ The Cook–Levin reduction is theoretical; tighter reductions (e.g. directly to 
 <li><div class="q">Q5. Could SAT have a sub-exponential algorithm?</div><div class="a">Open. The Exponential Time Hypothesis (ETH) conjectures 3SAT cannot be solved in 2<sup>o(n)</sup>. Plenty of refined results assume ETH; no proof either way.</div></li>
 </ul></section>
 
-<section><div class="section-label">9 · How to present this in class</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p25-s9.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">9 · How to present this in class</div>
 <p style="font-size:13.5px;"><strong>Total time: 12 minutes.</strong></p>
 <ul style="font-size:13.5px;line-height:1.7;">
 <li><strong>(1 min)</strong> Hook: "Why is SAT special?" Because every NP problem can dress up as a SAT instance.</li>

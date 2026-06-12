@@ -1,0 +1,5 @@
+Let’s talk about some common pitfalls students face when grappling with Savitch's theorem. A big misconception is thinking that when you simulate a nondeterministic machine by trying every configuration, you're just using linear space. But that approach actually uses exponential space because you have to keep track of all the configurations you've seen. 
+
+Instead, the midpoint trick helps you avoid that exponential blow-up by showing how the recursion tree works. You might think that since the tree has two to the power of log t leaves, it uses that much space. But remember, only one path is on the stack at any given moment, so we’re looking at log t space, not two times f or something like that. 
+
+Also, don’t confuse log t with t; logs grow much slower. When it comes to time, it’s different because both child evaluations need to run, which leads to exponential time as their execution times add up. Space, on the other hand, gets reused efficiently. Lastly, don’t forget about the flooring when dividing t by 2. If t isn’t a power of two, you need to round up for one half and round down for the other. But don’t worry, this doesn’t change the asymptotic behavior.

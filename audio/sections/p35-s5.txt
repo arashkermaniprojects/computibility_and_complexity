@@ -1,0 +1,5 @@
+If you're looking to dive deeper into PSPACE and NPSPACE, I recommend checking out the work of Michael Sipser, particularly Theorem 8.5, which focuses on Savitch's theorem. This theorem is crucial because it establishes that any language that can be recognized by a non-deterministic space-bounded machine can also be recognized by a deterministic space-bounded machine, with only a polynomial increase in space. 
+
+You can also look at lecture notes from Module 6, which cover important concepts in more detail and provide additional context. It’s helpful for reinforcing the ideas we’ve discussed. 
+
+Don’t forget to tackle the companion problems too! Problem 34 is particularly interesting as it involves the Savitch tree, which can help you visualize how space complexity works. Problem 33 on the space-time chart will give you a better grasp of how these concepts interrelate in terms of computational resources. Engaging with these problems will solidify your understanding and prepare you for more advanced topics in computational complexity.

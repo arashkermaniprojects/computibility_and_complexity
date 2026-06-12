@@ -1,0 +1,5 @@
+If you want to dive deeper into this topic, there are some excellent resources that can help you understand the 3SAT to CLIQUE reduction more thoroughly. A great starting point is Michael Sipser's textbook, especially Theorem 7.32, where he provides the original Cook–Levin-style proof. This proof is foundational in understanding the relationship between different NP-complete problems.
+
+You should also check out section 7.5 in Sipser's book. This section discusses the NP-completeness chain, which is crucial for grasping how various problems relate to one another in terms of complexity. 
+
+Additionally, if you’re looking for more hands-on practice, there are companion problems that can reinforce your learning. Problem 22 focuses on SAT, while problem 28 takes you from CLIQUE to vertex cover, and problem 26 explores the transformation from SAT to 3SAT. Working through these problems will give you a solid grounding in these concepts and help you see how they connect in practical scenarios.

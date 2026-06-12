@@ -1,0 +1,7 @@
+Let’s break down some key points about decidable, recognizable, and co-recognizable languages. First, take A sub T M, which is the acceptance problem for Turing machines. It’s recognizable because there is a Turing machine that can confirm if a machine accepts a certain input. However, it’s not decidable because we can’t find a Turing machine that will always give a yes or no answer for every possible input. This is illustrated in Problem 3, showing that no decider can exist.
+
+Now, when we talk about the complement of A sub T M, it’s not recognizable either. If it were, both A sub T M and its complement would fall into the recognizable category, which would imply, thanks to the bridge theorem, that A sub T M is decidable. That leads to a contradiction.
+
+Moving on, consider EQ sub T M, which checks if two Turing machines accept the same language. This problem, along with its complement, is not recognizable. 
+
+On a different note, every finite language is indeed decidable because you can hard-code the membership checks as a simple lookup. Finally, there are languages that exist outside of even the recognizable and co-recognizable categories. Since there are uncountably many languages over the binary alphabet, but only a countable number of Turing machine descriptions, most languages simply aren’t definable or recognizable.

@@ -1,0 +1,5 @@
+If you're looking to dive deeper into computation histories and their connection to Turing machines, a great place to start is with Sipser's textbook. In section 5.1, he introduces computation histories in a formal way, which will help solidify your understanding of how Turing machines operate step by step. 
+
+You'll also want to check out Theorem 5.10, which deals with the empty linear bounded automaton, or E LBA, and Theorem 5.13, focusing on ALL CFG. These theorems illustrate how computation histories can be applied in specific contexts, and they provide a solid foundation for grasping these concepts in action.
+
+Additionally, the lecture notes from Module 3 contain some helpful visuals and explanations that reinforce these ideas, particularly in the first four notes. And don’t forget about the companion problems! Problems 10 and 11 specifically apply the techniques we've discussed regarding E LBA and ALL CFG, giving you a chance to practice and apply what you’ve learned. So, dig into those resources, and you’ll build a stronger intuition around computation histories and Turing machines.

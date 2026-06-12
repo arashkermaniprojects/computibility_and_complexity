@@ -1,0 +1,5 @@
+Let’s dive into a concrete example of the recursion theorem using the accept/reject swap. Imagine we have a Turing machine, M, that decides a language L. Now, consider a function t that takes the description of M, denoted as ⟨M⟩, and produces a new Turing machine that essentially swaps the accept and reject states of M. So, if M accepts an input, this new machine will reject it, and vice versa.
+
+Now, if M halts, the language recognized by this new machine, which we can call L(t(⟨M⟩)), will actually be the complement of L(M). This means it accepts exactly the strings that M rejects. The recursion theorem guarantees that there exists a Turing machine, R, such that L(R) equals L(t(⟨R⟩)). 
+
+What’s fascinating here is that L(R) is its own complement. This can only happen if R doesn’t halt on some inputs, leading it to loop indefinitely. So, we conclude that no halting Turing machine can be its own complement under this accept/reject swap. This insight highlights the limitations of Turing machines and the fascinating interplay between computation and self-reference.

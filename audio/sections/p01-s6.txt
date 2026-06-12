@@ -1,0 +1,9 @@
+Let’s talk about where Cantor's diagonal argument echoes in different areas of computer science and mathematics. First, you’ll see it when discussing the undecidability of certain problems, like the A sub T M problem. Here, we can think of rows as Turing machines and columns as their descriptions. By flipping the cells, we create a contradiction, leading to the conclusion that not all Turing machines can solve every problem.
+
+Then there's Rice's theorem, which tells us that any nontrivial semantic property of recognizable languages is undecidable. Diagonalization plays a key role there, too. Moving on, we have the time hierarchy theorem, where rows represent machines running in specific time bounds, and we can find inputs that force machines to exceed those bounds.
+
+The space hierarchy theorem follows a similar pattern but focuses on space complexity. It shows that there are concrete cases where SPACE of one function is strictly contained within SPACE of another. 
+
+Finally, diagonalization shows up in Gödel's incompleteness theorems, where self-referential sentences are crafted using this technique. It’s so common that whenever you see a statement saying "for every algorithm X, there's some input that escapes it," you should think diagonalization might be at play. 
+
+To make this work, you need three things: an enumeration of what you want to show is missing, a way to simulate those items, and a method to flip the answer. This is similar to the challenges in proving P does not equal NP, where simply flipping the answer of an NP machine isn’t straightforward while keeping the result in NP.

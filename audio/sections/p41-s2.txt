@@ -1,0 +1,5 @@
+Imagine you have a string of characters, and our goal is to check if it’s a palindrome. We can use a really neat method with just two pointers. Think of one pointer starting at the beginning of the string and the other at the end. As we play the animation, you’ll see these pointers moving towards each other.
+
+When the demo starts, both pointers are positioned at the first and last characters. The animation will auto-play, showing how the pointers check if the characters they’re pointing to are the same. If they match, they both move inward—one step for the left pointer and one step for the right. If they don’t match, we know the string isn’t a palindrome, and we can declare that right away.
+
+As this process loops, you’ll notice how the pointers converge. If they meet in the middle and all characters matched along the way, we conclude that it is a palindrome. This method is efficient because we only use a constant amount of memory, just those two pointers, while effectively verifying the string. It’s a simple yet powerful approach!

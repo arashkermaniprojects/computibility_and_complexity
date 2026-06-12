@@ -1,0 +1,5 @@
+Let’s walk through the proof using a reduction from A sub T M. First, we start by assuming that the language L sub P is decidable. Now, imagine we have two Turing machines: T sub empty, which recognizes the empty language, and another machine T sub P that has some property P we’re interested in. For simplicity, we can assume that the empty language does not have property P. 
+
+Now, we construct a new Turing machine, M prime. Here’s how M prime works: when it receives an input x, it first simulates another machine M on a specific string w. If M accepts w, then M prime will simulate T sub P on the input x. If T sub P accepts x, then M prime will accept it too. On the other hand, if M does not accept w, M prime will just accept nothing, since L of M prime would then be empty.
+
+So, if M accepts w, that means L of M prime has property P, and if M doesn’t accept w, L of M prime is empty and lacks property P. This sets up a direct relationship: if the pair ⟨M, w⟩ is in A sub T M, then ⟨M prime⟩ is in L sub P. If L sub P were decidable, we could decide A sub T M as well, which is a contradiction. So, we conclude that L sub P cannot be decidable.

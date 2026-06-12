@@ -1,0 +1,5 @@
+Let's visualize how we convert a 3SAT problem into a graph for the CLIQUE problem. Imagine we have a Boolean formula made up of clauses, each containing exactly three literals. For every variable in the formula, we’ll create two nodes in the graph: one for the positive literal and one for the negative literal. So if you have a variable X, you’ll have a node for X and another for NOT X.
+
+Next, we connect nodes based on the clauses. If a clause contains X, Y, and Z, you would draw edges connecting the nodes for X, Y, and Z. Importantly, you’ll only connect nodes that don't contradict each other. For instance, you wouldn’t connect the node for X to the node for NOT X because they can’t both be true at the same time.
+
+The size of the clique we’re looking for corresponds to the number of clauses in the original formula. If we can find a clique of that size, it means we’ve found a satisfying assignment for the Boolean formula. So, this transformation creates a clear pathway from satisfiability to finding a clique in a graph.

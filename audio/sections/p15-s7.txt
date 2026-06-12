@@ -1,0 +1,5 @@
+If you're interested in diving deeper into the recursion theorem and its fixed-point form, I recommend starting with the textbook by Michael Sipser. Check out section 6.1, where he discusses Theorem 6.8, which is all about the fixed-point form. It lays out the foundational ideas clearly. Then, move on to Theorem 6.9, which presents some important corollaries that expand on those concepts.
+
+For a more interactive approach, take a look at the lecture notes from Module 3. You'll find the T equals A times B construction, which can help solidify your understanding of how these ideas work in practice.
+
+Also, don't miss out on the companion problems! Problem 13 is a great exercise on quines, which are programs that output their own source code. Problem 14 explores Rice's theorem through the lens of the recursion theorem. And for a fun challenge, check out Problem 16, where you'll work with a self-aware Turing machine. These problems will give you hands-on experience and deepen your grasp of the material.

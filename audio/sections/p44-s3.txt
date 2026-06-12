@@ -1,0 +1,5 @@
+When we think about counting reachable vertices in this context, it's crucial to remember that the counts we use, like c sub i, are exact numbers. If we try to approximate them, we run into trouble. The whole technique hinges on having the precise count of vertices that can be reached in i steps. If we lose that precision, we can't maintain the witness logic we depend on.
+
+Now, when we talk about inductive counting, it’s not about keeping a full list of all reachable vertices. Instead, we only focus on storing these exact counts. If we attempted to store every reachable vertex, we’d run into problems because there could be too many to handle. This is where nondeterminism comes in handy; it allows us to check our work in real time without needing to enumerate everything explicitly.
+
+Also, it’s important to understand that while we can show NL equals coNL using this technique, it’s specific to log space. This method doesn’t extend to NP problems, because there’s no similar method for counting witnesses in NP. So, keep in mind the importance of exact counting and the limitations of our techniques as we navigate through these concepts.

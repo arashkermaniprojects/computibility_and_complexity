@@ -1,0 +1,7 @@
+Let’s dive into some important questions about the undecidability of REGULAR TM. First, why do we use the language {0 to the n 1 to the n}? Well, it’s a classic example because it’s not regular, as shown by the pumping lemma, but it is decidable. This makes it an ideal choice, but you could use any non-regular decidable language. 
+
+Now, what happens if M loops on the input w? In that case, M' will loop on any string not in {0 to the n 1 to the n}, but the language L of M' is still just {0 to the n 1 to the n}. Looping on other strings doesn’t change what M' accepts; it only accepts strings in that specific form.
+
+You might wonder, doesn’t this imply REGULAR TM is not even recognizable? Not quite. This argument only shows it’s undecidable. To argue for non-recognizability, you would show that if REGULAR TM were recognizable, then ¬REGULAR TM would also be recognizable, which contradicts the bridge theorem.
+
+Finally, this proof template can actually be generalized to other properties of L(M). According to Rice's theorem, you can pick any two languages, one with a specific property and one without, and create a similar gadget to show that property is undecidable. This approach is really powerful for exploring the boundaries of decidability!

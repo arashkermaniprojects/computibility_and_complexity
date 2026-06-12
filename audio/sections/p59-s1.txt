@@ -1,0 +1,5 @@
+Let’s dive into the theory behind 2-SAT and its relationship with non-deterministic logarithmic space, or NL. A 2-SAT formula consists of clauses with at most two literals, like “a or b.” Each 2-clause can be transformed into implications. For example, a clause like “a or b” translates to two implications: if not a, then b, and if not b, then a. 
+
+Now, here’s the crucial part: a 2-SAT formula is unsatisfiable if there's a variable, let's say z, that has a certain structure in our implication graph. Specifically, we need paths showing that z can lead to not z, and also that not z can loop back to z. This creates a contradiction.
+
+Interestingly, we can use the properties of NL and coNL here. A non-deterministic logarithmic space machine can explore the graph. If it finds such a cycle, it shows the formula is unsatisfiable. Conversely, if it can guess that no such cycle exists, it indicates that the formula is satisfiable. This connection between implications and cycles is what makes 2-SAT a fascinating topic in computational theory.

@@ -1,0 +1,7 @@
+Let’s dive into the concept of explicit languages in EXPTIME but not in P. A classic example is the language that checks whether a Turing machine halts within a specific number of steps, say two to the power of n. This language is part of the Time Hierarchy proof. Another good example is generalized chess, which is EXPTIME-complete. You can also think about succinct versions of P-complete or PSPACE-complete problems—those can be encoded in a way that allows them to fit into the next complexity class.
+
+Now, let’s clarify why we can prove P is strictly contained in EXPTIME, but we struggle with P and NP. The Time Hierarchy theorem is built on deterministic time bounds, while NP involves nondeterminism. These are fundamentally different models, so we lack a theorem that would connect their hierarchy in the same way.
+
+As for the separation between P and PSPACE, that’s still an open question. If we could show P is strictly contained in PSPACE, that would also help us resolve the P versus NP debate since NP is included in PSPACE. Most researchers believe P is indeed a subset of PSPACE, but we don’t have a definitive proof yet.
+
+Lastly, from P being a subset of EXPTIME and knowing NP is included in PSPACE, we can infer that at least one of these statements must be true: NP is not a subset of PSPACE, PSPACE is not a subset of EXPTIME, or NP equals EXPTIME. If none of these were true, it would contradict what we know about P and EXPTIME. However, we still don’t know which one it is.

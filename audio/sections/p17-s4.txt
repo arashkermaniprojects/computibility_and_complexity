@@ -1,0 +1,5 @@
+Let’s dive into this animated demo that showcases the growth rates of different functions. You’ll see six curves racing against each other: log n, n squared, and 2 to the power of n, among others. As the animation plays, pay close attention to how these functions behave as n increases. 
+
+Initially, log n is the slowest, but it starts off really high when n is small. Then, n squared begins to rise steadily, while 2 to the power of n remains fairly flat at first. But watch closely! At some point, that exponential curve starts to shoot up dramatically. 
+
+You can pause the animation at any moment if you want to study a particular part of the race. You can also reset it to see the curves again from the start, or adjust the speed to really grasp how quickly these functions grow over time. This visual representation helps us pinpoint where the exponential function overtakes the polynomial, emphasizing why understanding these growth rates is crucial in computer science. Keep an eye on that crossover point; it’s a key takeaway!

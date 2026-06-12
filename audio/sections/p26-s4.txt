@@ -1,0 +1,9 @@
+Let’s walk through transforming a CNF formula into a 3SAT format using auxiliary variables. We start with the formula φ, which has three clauses: the first clause has five literals, the second has two, and the last has one. 
+
+For the first clause, which is (x₁ ∨ x₂ ∨ ¬x₃ ∨ x₄ ∨ ¬x₅), we need to break it down. Since it has five literals, we introduce an auxiliary variable, let’s call it a₁. We can rewrite this clause as (x₁ ∨ x₂ ∨ a₁) and then create two new clauses: (¬a₁ ∨ ¬x₃ ∨ a₂) and (¬a₂ ∨ x₄ ∨ ¬x₅). Now we have three clauses from one! 
+
+Next, we tackle the second clause, (¬x₁ ∨ x₃). Since it has two literals, we can introduce another auxiliary variable, p₁. We rewrite this as (¬x₁ ∨ x₃ ∨ p₁) and (¬x₁ ∨ x₃ ∨ ¬p₁). 
+
+Finally, for the last clause, which is just (x₂), we need to expand it into a 3SAT format. We introduce two more auxiliary variables, p₂ and q₂, and we rewrite it into four new clauses: (x₂ ∨ p₂ ∨ q₂), (x₂ ∨ p₂ ∨ ¬q₂), (x₂ ∨ ¬p₂ ∨ q₂), and (x₂ ∨ ¬p₂ ∨ ¬q₂). 
+
+After all these transformations, we end up with nine clauses total and five new variables. It’s important to verify that this new formula maintains the same satisfiability as the original φ. Checking the literal counts shows that we started with eight literals and now have twenty-seven, which confirms that our growth is linear and our process is valid.

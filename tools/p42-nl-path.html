@@ -5,7 +5,7 @@
 <h1>PATH ∈ NL · nondeterministic guess-the-path</h1><p class="sub">Guess a neighbour each step; log n bits suffice per branch.</p>
 <div class="tags"><span class="tag-pill">CLO-5</span><span class="tag-pill warn">R3·40 pts</span><span class="tag-pill info">L15</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · PATH ∈ NL · the canonical nondeterministic log-space algorithm</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p42-s1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">1 · PATH ∈ NL · the canonical nondeterministic log-space algorithm</div>
 <p>PATH = {⟨G, s, t⟩ : directed graph G has a path from s to t}. PATH is the canonical NL problem and arguably the defining example of nondeterministic log-space — it's NL-complete (Problem 43) and one of the cleanest "nondeterminism actually helps" demonstrations.</p>
 <div class="theorem-box"><div class="theorem-label">The nondeterministic algorithm</div>
 <pre style="font-size:13px;margin:4px 0;">v ← s; counter ← 0
@@ -24,13 +24,13 @@ reject</pre>
 <p>NL is closed under reductions; therefore the existence of a log-space reduction to PATH proves a problem is in NL.</p>
 </section>
 
-<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p42-s2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">2 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Multiple branches explored in parallel · each log-n memory <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="n-run">⏸ Pause</button><button class="btn ghost" id="n-step">Step</button><button class="btn ghost" id="n-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="n-speed" min="0.25" max="3" step="0.25" value="1"><span id="n-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="n-svg" viewBox="0 0 760 280" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="n-explain"></div></div></section>
-<section><div class="section-label">3 · Pitfalls</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p42-s3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">3 · Pitfalls</div>
 <ul style="margin:6px 0 0 20px;">
   <li><strong>NL acceptance is existential.</strong> Accept iff <em>some</em> branch finds t. The other branches' failures don't matter.</li>
   <li><strong>The counter prevents infinite loops.</strong> Without it, the nondeterministic walk could move randomly forever. With ≤ |V| steps, we trip the cap if no t is found.</li>
@@ -38,14 +38,14 @@ reject</pre>
 </ul>
 </section>
 
-<section><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p42-s4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
 <li><div class="q">Q1. Why nondeterministic and not deterministic?</div><div class="a">A deterministic log-space machine doesn't have enough memory to remember which neighbours have been tried (would need Ω(|V|) bits to store the visited set). Nondeterminism lets us "magically" guess the right neighbour at each step.</div></li>
 <li><div class="q">Q2. Why must counter ≤ |V|?</div><div class="a">If a path exists, it has length ≤ |V| − 1 (no need to repeat vertices). Capping at |V| ensures termination — without the cap, a nondeterministic walk could revisit vertices and loop forever.</div></li>
 <li><div class="q">Q3. Is PATH in L?</div><div class="a">Open. Showing PATH ∈ L is equivalent to L = NL — a major open question. Reingold (2008) showed UNDIRECTED-PATH ∈ L, but the directed version remains open.</div></li>
 <li><div class="q">Q4. What's coNL?</div><div class="a">coNL = complements of NL languages = "for every nondeterministic branch, the answer is no." Immerman–Szelepcsényi (1987): coNL = NL. So nondeterministic space classes are closed under complement, unlike NP (which is open).</div></li>
 </ul></section>
 
-<section><div class="section-label">5 · Where to read more</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p42-s5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">5 · Where to read more</div>
 <p><strong>Sipser:</strong> §8.4, Example 8.21 (PATH algorithm). <strong>Lecture notes:</strong> Module 7 slide 2. <strong>Companion problems:</strong> P41 (log space), P43 (PATH NL-complete), P44 (inductive counting / coNL = NL).</p>
 </section></div><footer class="foot">P42 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){

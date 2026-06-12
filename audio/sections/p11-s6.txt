@@ -1,0 +1,5 @@
+If you're looking to dive deeper into the undecidability of ALLCFG, a great resource is the textbook by Sipser. Check out section 5.1 and specifically Theorem 5.13, which lays out the details and proofs regarding why ALLCFG is undecidable. It provides a solid theoretical foundation that will really help solidify your understanding. 
+
+Also, I recommend reviewing the lecture notes from Module 3, particularly the part that discusses G sub M, w. That will give you a concrete example of how to construct a context-free grammar that generates everything except the accepting computation histories of a Turing machine. 
+
+You might also want to tackle some companion problems that are designed to reinforce these concepts. Problem 9 looks at computation histories, which ties directly into what we've discussed. Then there's Problem 10, focusing on E sub LBA, which can deepen your insights into linear bounded automata. Finally, Problem 14 explores Rice's theorem, covering non-trivial properties of Turing machines. Each of these will enhance your grasp of the topic and its implications in computation theory. Happy studying!

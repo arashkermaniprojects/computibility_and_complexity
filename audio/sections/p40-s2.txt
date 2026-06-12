@@ -1,0 +1,7 @@
+Imagine we have a chessboard, and we want to encode a problem called TQBF, which stands for True Quantified Boolean Formula. It's a complex decision problem where we need to determine if a formula is true for all possible variable assignments. 
+
+Now, envision that we can represent this problem using pieces and positions on our chessboard. The player can move pieces in such a way that each move corresponds to a logical operation or variable assignment. As the game unfolds, we can see how the pieces interact, creating a visual representation of the problem.
+
+When we talk about auto-plays, think of a sequence of moves that automatically happens, almost like a simulation. This allows us to observe how the game progresses without manual intervention. You can pause it at any point to analyze the strategic positions or reset to start over. You can even adjust the speed of the auto-play to see the moves unfold faster or slower.
+
+Loops can be used to repeat certain sequences of moves, which is crucial when exploring different scenarios or strategies. By visualizing the TQBF problem this way, we can gain insights into its complexity and understand why generalized chess is considered PSPACE-hard.

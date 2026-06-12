@@ -1,0 +1,7 @@
+Let’s dive into what we’re actually encoding in this setup. We start by considering a language L that belongs to NP, which means it has a polynomial-time verifier V. When we say a string x is in L, it’s equivalent to saying there exists a certificate c such that the length of c is polynomial in the length of x, and V accepts the pair (x, c). 
+
+Now, since V runs in polynomial time, we know it will take at most n to the power of k steps, where n is the length of x. This means that during its entire operation, V will utilize at most n to the power of k tape cells over at most n to the power of k time steps. 
+
+To visualize this, we arrange everything in a grid or tableau. The rows of this grid represent the time steps, starting from t equals 0 up to n to the power of k. The columns represent the tape positions, going from p equals 0 to n to the power of k. Each cell in the grid, positioned at (t, p), holds either a symbol from the tape or a marker that indicates where the head of the tape is at that moment. 
+
+Now, here’s where it gets interesting: each cell can be represented by a set of Boolean variables. For example, we can denote that the cell at time t and position p holds a symbol s with a variable x sub t,p,s. The number of these variables we’ll end up with is n to the power of k multiplied by n to the power of k times the number of symbols in our tape alphabet plus the states. This is all polynomial in size, which is crucial for our encoding process.

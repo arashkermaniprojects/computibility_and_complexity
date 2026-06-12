@@ -1,0 +1,5 @@
+Let’s break down the proof of the recursion theorem into three manageable steps. The first key move involves a function, which we’ll call q. This function acts like a constructive engine. Its job is to take any program description, let’s say ⟨P⟩, and convert it into a modified version, ⟨P'⟩. What’s special about ⟨P'⟩ is that it incorporates its own code as part of the data. This is crucial because it allows the program to be self-aware, essentially preparing it for self-reference.
+
+Now, the second important move is rooted in the s-m-n theorem, which tells us that we can compute q effectively. This gives us confidence that q is indeed a computable function. Once we have this function, we can take our original computable function t and combine it with q, forming ⟨t∘q⟩. 
+
+Finally, we plug this combination back into q. This step is what closes the loop, allowing us to create a new Turing machine R. The beauty of this is that R can then recognize its own description, fulfilling the essence of self-reference in computation.

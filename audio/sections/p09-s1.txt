@@ -1,0 +1,9 @@
+Let’s dive into what a computation history is. When we talk about the computation history of a Turing machine, we’re referring to the full sequence of configurations that the machine goes through while processing an input. Imagine writing this out as a single string, where each configuration is separated by a special symbol, like a hashtag. So, it might look something like C1 # C2 # C3, and so on, until you reach the last configuration.
+
+Each configuration, which we denote as Ci, captures everything happening at that moment in the computation. It includes the contents of the tape, the position of the head, and the current state of the machine. There’s a convention here: we write the state symbol right next to the tape, just to the left of the head's position. 
+
+For example, if the machine is in state q3 with its head over the fourth position on the tape showing "01100", we would write it as C equals 0110 q3 0. This format keeps everything neat and compact.
+
+Now, a string is considered an accepting computation history of the Turing machine on the input if it meets three local conditions. First, the initial configuration must start with q0 followed by the input. Second, for every two adjacent configurations, the second must follow from the first through one application of the transition function. Lastly, the final configuration must include the accepting state.
+
+What’s really interesting is how these checks can be done locally. You don’t need to remember the whole string; you can just slide a small window over it to verify each condition. This is crucial because simpler models, like linear bounded automata or context-free grammars, can perform these local checks. They might not be able to simulate a full Turing machine, but they can validate if a computation history is legitimate, which ties back to some important undecidability results in the field.

@@ -1,0 +1,5 @@
+Let’s dive into what we’re trying to prove here. We’re looking at the set of functions from the natural numbers to the set {0, 1}. We call this set 2 raised to the natural numbers, or 2 to the power of N. Think of it as all possible infinite binary strings, like 010101… or 111000… You can imagine how vast this collection is.
+
+Now, Cantor’s theorem tells us that this set, 2 to the N, is uncountable. What does that mean? Well, it means there’s no way to set up a one-to-one correspondence between the natural numbers and this collection of infinite binary strings. In simpler terms, if you try to list all these functions as f1, f2, f3, and so on, you will always be able to find a function g that isn’t on your list. 
+
+We’re going to use a proof by contradiction for this. We’ll assume there is such a list, and then we’ll show that we can create a specific function that can't possibly be on that list. This technique is really powerful because it helps us uncover the limitations of what can be counted. So, let’s see how that unfolds!

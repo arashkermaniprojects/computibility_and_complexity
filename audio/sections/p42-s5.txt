@@ -1,0 +1,5 @@
+If you're looking to dive deeper into the topic of PATH and nondeterministic log space, a great place to start is with Michael Sipser's textbook. Specifically, check out section 8.4, where he outlines the PATH algorithm in detail. He provides a clear example, example 8.21, which will really help solidify your understanding of how the algorithm works and its implications in complexity theory.
+
+You might also want to look at the lecture notes for your course, particularly Module 7, where you'll find additional explanations and insights that can enhance your grasp of the concepts. 
+
+Don’t forget about the companion problems, as they can be super helpful for practice. Try tackling problem 41, which focuses on log space, and problem 43, which deals with PATH being NL-complete. These will challenge you to apply what you've learned in a practical way. Lastly, problem 44 dives into inductive counting and explores the relationship between coNL and NL, which is another interesting angle on this topic. Happy studying!

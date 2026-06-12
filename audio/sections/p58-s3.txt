@@ -1,0 +1,5 @@
+When we talk about Hex, one of the interesting aspects is that while the game is determined—meaning one player will always win with perfect play—the actual winning move can be incredibly hard to pinpoint. Red always has a winning strategy, which we can prove through a method called strategy-stealing. However, figuring out what that winning move is leads us into the world of PSPACE-completeness.
+
+The game tree for Hex expands exponentially as we consider all possible moves, but interestingly, its depth remains polynomial. If you think about the total moves available in an n by n board, it grows as n squared, leading to a polynomial-depth tree. This means we’re facing a PSPACE problem rather than something even larger like EXPTIME.
+
+Now, when we compare generalized Hex to the standard 11 by 11 size, things change. The 11 by 11 version is technically finite-decidable in constant time, which is pretty efficient. But the PSPACE-completeness we’re discussing really kicks in with that n by n generalization, where the complexity ramps up significantly.

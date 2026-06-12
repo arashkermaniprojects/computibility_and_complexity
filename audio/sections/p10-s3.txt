@@ -1,0 +1,7 @@
+Let’s dive into how we can visualize the concept of recognizing accepting computation histories of a Turing machine. Imagine we have this animated demo that auto-plays. You’ll notice it starts running through the computations of our Turing machine M on the input w. 
+
+As it plays, keep an eye on what’s being checked. The demo highlights each step, showing how the machine processes the input, and whether it reaches an accepting state. You can pause the animation anytime to analyze a specific part of the computation. This is really useful because it allows you to see exactly how M behaves at each step, and which configurations lead to acceptance.
+
+You’ll also find an option to step through the computation one move at a time. This is great for breaking things down further, especially if you want to really understand how the transitions work. And if you ever need to reset, there’s a button for that too, so you can start fresh and explore different paths. 
+
+The speed can be adjusted as well, allowing you to slow things down or speed them up, depending on how fast you want to absorb the information. This interactive approach makes it much easier to grasp the idea of computation histories and how they relate to undecidability.

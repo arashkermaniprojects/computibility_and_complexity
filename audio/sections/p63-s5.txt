@@ -1,0 +1,11 @@
+Let’s dive into some key questions and answers about simulating nondeterministic Turing machines. 
+
+First, why do we prefer breadth-first search, or BFS, over depth-first search, or DFS? Sure, DFS could work, but BFS helps us manage the depth of our search more effectively. It keeps the depth bounded at every level, which makes it easier to argue that we stop after a certain number of levels without finding an accepting state.
+
+Now, could we do better than the exponential time we get, like 2 raised to the power of O(n k)? Unfortunately, no, and that ties back to the big P versus NP question. If there were a way to simulate any nondeterministic Turing machine in polynomial time, that would imply P equals NP.
+
+Next, why is the branching factor, b, constant? An NTM has a fixed transition function, so the maximum number of possible transitions doesn’t depend on the input length; it’s just a property of the machine itself.
+
+What about the memory cost for the deterministic simulation, or DSim? If you store the whole frontier, it can get pretty wasteful, reaching 2 to the power of O(T) space. Instead, using something like Savitch's theorem or a DFS approach can reduce that down to polynomial space, which shows NP is a subset of PSPACE.
+
+Finally, just because NP is a subset of EXPTIME, does that mean every NP-complete problem is solvable in exponential time? Yes, at least in the worst case. Every NP-complete problem can indeed be solved by exhaustive search in that exponential time, although real-world algorithms often use heuristics for better performance on practical instances. But the worst-case scenario remains exponential, as far as we know.

@@ -1,0 +1,7 @@
+Let’s dive into some key questions about the relationship between time and space in algorithms. First, why isn't time equal to space? Well, think about it this way: space can be reused, but time can't. If you have a machine that's limited to a certain amount of space, it can revisit the same memory cells many times, potentially an exponential number of times, before it either halts or gets stuck in a loop. But once you take a step in time, that step is gone forever.
+
+Now, let’s look at some real examples where space is cheap but time is expensive. Consider depth-first search with an explicit stack. It uses O(depth) space, but in the worst case, it might have to explore exponentially many leaves. Other algorithms like branch-and-bound, alpha-beta pruning, and recursive backtracking also tend to use polynomial space while facing exponential running times.
+
+Next, is the bound that says SPACE is a subset of TIME with exponential growth tight? In a relativized world, yes. There are oracles that separate PSPACE from EXPTIME. The question of whether PSPACE equals EXPTIME or is just a subset of it is still open.
+
+Finally, where does NL fit into all this? NL, which stands for nondeterministic logarithmic space, is equal to NSPACE of log n. It's contained within P due to Savitch's theorem and deterministic simulation. It also trivially fits within PSPACE, and interestingly, NL equals coNL, thanks to the Immerman-Szelepcsényi theorem.

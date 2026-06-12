@@ -1,0 +1,7 @@
+Let's walk through the proof step by step. Assume, for contradiction, that the set of all functions from natural numbers to two values, which we can denote as 2 to the power of natural numbers, is countable. This means we can list these functions as f1, f2, f3, and so on. Picture this as an infinite table where each row represents a function, and each column represents the output for a specific input. So, in row one, we have f1(0), f1(1), f1(2), and so forth.
+
+Now, if we focus on the diagonal of this table, we take the values f1(0), f2(1), f3(2), and so on. Let's create a new function, g, defined such that g(n) equals 1 minus f(n+1)(n). What this does is flip the value at that diagonal position. 
+
+Now, let's suppose g is actually one of our listed functions, say fk for some k. If that's true, then g(k-1) must equal f(k)(k-1). But by our definition of g, g(k-1) would also equal 1 minus f(k)(k-1). This leads to a contradiction because we end up saying f(k)(k-1) equals 1 minus f(k)(k-1). A Boolean value can't equal its own negation! 
+
+So, we conclude that no such k can exist, proving that our original assumption must be false. The key insight here is that g only needs to differ from each function at one specific point, the diagonal, ensuring it can't be part of our original list.

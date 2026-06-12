@@ -1,0 +1,5 @@
+If you want to dive deeper into closure properties and the differences between decidable and recognizable languages, I suggest starting with Sipser's textbook, particularly section 4.2. In there, you’ll find Theorem 4.22, which is known as the bridge theorem. This theorem really highlights the gap between decidable and recognizable languages, so it’s a critical piece to understand.
+
+You might also want to check out the lecture notes from the course, especially the part that maps out decidable, recognizable, and neither categories. It visually summarizes those concepts and can be really helpful for grasping how they interrelate.
+
+To solidify your understanding, there are companion problems that can challenge you. Problem 4 focuses on a Venn classifier, which will help you think about how different language classes overlap. Then, problem 5 involves a reduction related to the HALT problem, a classic example in computability theory. Working through these problems will give you practical insights into the theories we’ve discussed.

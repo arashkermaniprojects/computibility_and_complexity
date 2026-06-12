@@ -1,0 +1,7 @@
+Let’s dive into how we can visualize the game of Generalized Geography by building a graph for the expression ∃x ∀y. (x ∨ y). 
+
+Imagine starting with a node representing the initial state of the game. Here, we have the existential player, who gets to pick a value for x. Once x is chosen, the universal player follows by selecting a value for y. Since the expression is x or y, we have a branching scenario where both players influence the outcome with their choices.
+
+Now, if we animate this process, we can see how the game unfolds. The existential player makes a move, and the graph dynamically shows the possible responses from the universal player. This back-and-forth continues, illustrating how they alternate turns. 
+
+Notice that there are loops in the graph. These loops represent scenarios where players may revisit the same states, which can lead to strategic complexity. Just like in a real game, players have to think ahead. The animation lets us pause, step through each move, or reset to see different outcomes based on varying choices. This interactive element helps in understanding the flow and strategy of Generalized Geography, as well as how it connects with our original QBF.

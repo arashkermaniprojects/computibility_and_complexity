@@ -1,0 +1,5 @@
+Let’s dive into how we can visualize the concept of undecidability using an animated demo. Imagine we have a machine, let’s call it M prime, that flips between the language defined by the strings of the form {0 to the n followed by 1 to the n} and the set of all strings, Σ star. 
+
+Now, the animation shows M prime automatically playing through these states. You can see it toggling back and forth, which helps us understand how M prime behaves depending on the input it receives. When it’s in the {0 to the n followed by 1 to the n} state, it’s checking for that specific pattern. This is where things get interesting! 
+
+If M prime accepts a string w, we can see that language is regular, but if it doesn’t, it shows a different behavior. You can pause, step through, or reset the animation to observe how this flipping mechanism works. It’s like a game where you can control the speed of the demonstration, helping you grasp the nuances of how M prime operates. This interactive experience really highlights the complexity of undecidability in a tangible way.

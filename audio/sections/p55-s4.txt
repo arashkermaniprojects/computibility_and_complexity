@@ -1,0 +1,7 @@
+Let’s dive into some key points about encoding the HAMPATH verifier as a SAT formula. First, think about why we need that φ cell. Without it, a SAT variable could incorrectly suggest that a cell holds multiple symbols at the same time. That doesn't make sense since a tape can only hold one symbol in a cell at once. The φ cell makes sure that each cell has exactly one symbol, keeping everything consistent.
+
+Now, let’s talk about the size of the formula. It has O(n to the power of 2k) clauses if we have a Turing machine that runs in time n to the power of k. This means the size grows polynomially with the input size, which is a good thing for our reduction.
+
+Speaking of reductions, when we say this is a polynomial reduction, we mean that the way we construct the formula takes time that’s polynomial in the size of the input. So, if we can solve SAT efficiently, we could solve every NP language efficiently, which is what makes SAT NP-complete.
+
+Finally, regarding the 2 by 3 window that encodes transitions: this window has two rows, representing consecutive configurations of the Turing machine, and three columns, which include the cell where the head is plus its neighboring cells. For each transition in the machine, we enumerate the legal patterns that fit this window, and the φ move ensures that every window corresponds to one of these patterns, helping us correctly encode the state transitions.

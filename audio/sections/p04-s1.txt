@@ -1,0 +1,9 @@
+Understanding decidable, recognizable, and co-recognizable languages is crucial because it sets the foundation for what can be computed and what can't. Think of it as a map of computability, where each region tells you something significant about the language's properties. 
+
+When we talk about decidable languages, we're referring to those that a Turing machine can always solve, giving a definite yes or no answer. This region is nice because it’s closed under operations like union or intersection. 
+
+On the other hand, recognizable languages are a bit trickier. A Turing machine can identify when a language is accepted, but it might loop indefinitely for non-accepted inputs. Classic examples include problems like A sub T M and HALT sub T M. 
+
+Then there's co-recognizable, where the complement of a recognizable language is also recognizable. For example, if you can recognize something, you can also recognize when it's not true.
+
+Finally, we have the neither region, where neither a language nor its complement is recognizable, like EQ sub T M. By placing languages in these regions, we gain insights into their computability and the limits of what machines can do. This framework is essential for understanding the landscape of computational theory.

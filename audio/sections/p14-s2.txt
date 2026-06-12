@@ -1,0 +1,5 @@
+Let’s dive into the distinction between semantic and syntactic properties when we talk about Turing machines. Syntactic properties are all about the machine itself. For example, you could ask, “Does this machine have five states?” or “Is its alphabet binary?” These questions are decidable because you can just look at the description of the machine, M, and check the answers directly. 
+
+On the other hand, semantic properties relate to the language that the machine recognizes, which we denote as L(M). Questions like “Is L(M) empty?” or “Is L(M) finite?” fall into this category. These are much trickier because they depend on the behavior of the machine with respect to the language it accepts. 
+
+Rice's theorem tells us that if a semantic property is nontrivial—meaning it doesn’t hold for all machines or none at all—then it’s undecidable. This means if two machines recognize the same language, they will have the same properties concerning that nontrivial semantic question. So, understanding this distinction is key because it highlights the limits of what we can decide about machines based on their languages versus their structures.

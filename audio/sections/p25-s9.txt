@@ -1,0 +1,7 @@
+Let’s kick things off with a question: Why is SAT so special? It’s because every NP problem can be transformed into a SAT instance. That’s a powerful idea! Now, when we’re presenting the Cook–Levin tableau, we need to establish some conventions first. Think of the rows as time steps in the computation and the columns as the tape of the Turing Machine. This setup will help everyone visualize how the computation unfolds over time.
+
+Next, let’s dive into the four families of clauses that make up the SAT formula. Spend some time on the φ move, which is crucial. Picture a 2×3 window highlighting the current state and transition of the Turing Machine. This window is where the magic happens, as it captures the moving parts of the computation in a compact way. 
+
+After that, we can run through the visualization. When you get to the moment where the 2×3 window lights up, pause. It’s a great moment to let the audience absorb how everything connects.
+
+Finally, let's do a quick sanity check on size. If we assume an input size of n equals 100, how many cells are we talking about in our tableau? Encourage everyone to do the math together. And to wrap up, mention how Karp’s 21 problems all stem from this single reduction, highlighting how interconnected these concepts are.

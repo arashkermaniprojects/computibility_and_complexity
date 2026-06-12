@@ -1,0 +1,5 @@
+Let’s dive into what a quine is and why it’s such an interesting concept in computer science. A quine is essentially a program that, when you run it, prints out its own source code. Imagine writing a program that somehow knows exactly what it looks like and can recreate itself without using any file input or complex introspection. It’s all about self-reference, and that’s what makes it fascinating.
+
+Now, why do we care about quines? Well, quines are a practical demonstration of something called the recursion theorem, which is a fundamental concept in theoretical computer science. The recursion theorem tells us that for any computable function, there’s a machine that can compute it using its own description as part of its input. A quine is a specific case of this—the function just outputs its own code. 
+
+What’s cool is that you can create a quine in any Turing-complete language, and once you understand how to build one, you’ve got a solid foundation for grasping the larger ideas behind recursion and self-reference in computation. It’s like a stepping stone into deeper concepts in computer science!

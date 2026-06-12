@@ -1,0 +1,7 @@
+Let’s dive into some key questions about Big-O that really clarify its purpose. First up, why do we drop constants? Well, Big-O focuses on asymptotic behavior, which is all about how functions grow as n gets really large. When you compare 3n² to n², the difference is just a constant multiplier, and that doesn’t change as n increases. What truly matters is the shape of growth, not those machine-specific constants.
+
+Next, let’s compare Big-O, Theta, and little-o. Big-O provides an upper bound, which can be a bit loose. Theta, on the other hand, gives you a tight bound — both upper and lower limits match. Little-o indicates strict growth; for example, if f is little-o of g, it means that f grows strictly slower than g. So, 3n² being O(n³) is true, but it’s not Theta of n³, and it is little-o of n³.
+
+Now, what does it mean when we say a term is "dominated by" another? This means that as n gets really large, the lower-order terms become negligible compared to the leading term. Removing them only affects the value by a fixed factor, which Big-O ignores.
+
+Lastly, why do we use ≤ instead of strictly < in Big-O notation? It’s because every function is its own Big-O. If we used strict <, that wouldn’t hold true for functions like f = O(f). So, using ≤ captures the idea of being "no worse than" accurately.

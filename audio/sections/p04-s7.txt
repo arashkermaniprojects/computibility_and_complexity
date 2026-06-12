@@ -1,0 +1,9 @@
+Let’s talk about some common pitfalls that students often stumble over when learning about decidable, recognizable, and co-recognizable languages. One big misconception is that recognizable means decidable. That’s not true! Recognizable languages can loop forever on some inputs, while decidable languages must halt on every input. 
+
+Another confusion arises with closure properties. Decidable languages are closed under complement, meaning if a language is decidable, so is its complement. But recognizable languages don’t have this property; they aren’t closed under complement. 
+
+Students also mix up the statements about a language being recognizable versus its complement. When you say a language L is recognizable, that’s different from saying its complement, L bar, is recognizable. This distinction is crucial. 
+
+Then there’s the bridge theorem, which tells us that if both L and L bar are recognizable, then L is decidable. 
+
+And remember, the empty language is decidable because you can create a Turing machine that always rejects. It’s not recognizable because there’s no accepting path. Finally, don’t claim something is not recognizable without a proof. Usually, you’ll need to show a reduction from co-A sub T M to prove non-recognizability. Keep these points in mind, and you’ll have a clearer understanding!

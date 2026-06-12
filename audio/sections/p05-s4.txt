@@ -1,0 +1,5 @@
+Let’s dive into how we can reduce A sub T M, which is the problem of determining if a Turing machine accepts a particular input, to H A L T sub T M, the problem of determining if a Turing machine halts on an input. 
+
+Imagine we have a Turing machine M and an input w. What we want to do is create a new Turing machine M prime that behaves in a specific way. M prime will simulate M on w, but with a twist. If M accepts w, M prime will enter an infinite loop, meaning it never halts. On the other hand, if M does not accept w, M prime will halt and give a specific output.
+
+So, when we set this up, we can play it out step by step. First, we can pause the simulation to see how M behaves with w. If M makes a move and then enters that loop, we can observe that it doesn't halt. If it halts, we reset and know that it won't enter the loop. By using this method, we can show that if we can solve H A L T sub T M, we can also solve A sub T M, proving that A sub T M reduces to H A L T sub T M. This is a key step in demonstrating that H A L T sub T M is undecidable.

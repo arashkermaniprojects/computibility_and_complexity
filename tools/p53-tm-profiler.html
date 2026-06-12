@@ -5,15 +5,15 @@
 <h1>TM running-time profiler · empirical n vs steps</h1><p class="sub">Run the same TM on inputs of various lengths and plot steps vs n.</p>
 <div class="tags"><span class="tag-pill">CLO-3</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L9</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · Theory</div><p>Theoretical analysis predicts O(n²) for the {0<sup>n</sup>1<sup>n</sup>} single-tape decider. Empirical: plot actual step counts. The data points should lie on or under a parabola.</p>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p53-s1.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">1 · Theory</div><p>Theoretical analysis predicts O(n²) for the {0<sup>n</sup>1<sup>n</sup>} single-tape decider. Empirical: plot actual step counts. The data points should lie on or under a parabola.</p>
 <div class="theorem-box"><div class="theorem-label">What you should see</div><p style="margin:4px 0;">A quadratic fit cleanly through the data. Doubling n quadruples steps.</p></div></section>
-<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p53-s2.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">2 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Add data points one at a time <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="p-run">⏸ Pause</button><button class="btn ghost" id="p-step">Step</button><button class="btn ghost" id="p-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="p-speed" min="0.25" max="3" step="0.25" value="1"><span id="p-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="p-svg" viewBox="0 0 760 320" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="p-explain"></div></div></section>
-<section><div class="section-label">3 · Pitfalls</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p53-s3.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">3 · Pitfalls</div>
 <ul style="margin:6px 0 0 20px;">
   <li><strong>Empirical data only suggests, never proves.</strong> A clean quadratic fit through a dozen data points is consistent with O(n²) but doesn't prove it — a hidden log factor or constant could be invisible at small n.</li>
   <li><strong>Look at steps/n², not just steps.</strong> If steps/n² approaches a constant as n grows, you have Θ(n²). If it grows, the actual complexity is higher.</li>
@@ -21,14 +21,14 @@
 </ul>
 </section>
 
-<section><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p53-s4.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">4 · Q&amp;A defence notes</div><ul class="qa-list">
 <li><div class="q">Q1. How does empirical data confirm an O(n²) bound?</div><div class="a">Doubling n should approximately quadruple the step count. Plotting steps / n² against n should give a roughly flat line. If the ratio drifts upward, hidden log factors are present.</div></li>
 <li><div class="q">Q2. Could there be a constant factor we miss?</div><div class="a">Yes — Big-O ignores constants. Empirical timing can't reveal asymptotic equivalence vs huge multiplicative constants. But the <em>shape</em> (linearity of steps/n²) is the asymptotic claim and is what we test.</div></li>
 <li><div class="q">Q3. What would fail this empirical check?</div><div class="a">If the algorithm secretly took O(n²·log n), you'd see slight upward curvature in steps/n² as n grows. If it were O(n³), steps/n² would grow linearly. If it were O(n log n), steps/n² would decrease.</div></li>
 <li><div class="q">Q4. What's the relationship between this and the actual proof?</div><div class="a">Empirical profiling is sanity-checking, not proof. A formal Θ(n²) proof requires both an upper bound (here, n/2 pairs × O(n) per pair) and a lower bound (the crossing-sequence argument). Empirics validate the upper bound; the lower bound requires combinatorial analysis.</div></li>
 </ul></section>
 
-<section><div class="section-label">5 · Where to read more</div>
+<section><div class="component-audio" style="margin:8px 0 6px;padding:6px 10px;background:#fbf6ef;border-left:3px solid var(--gold,#c0a04e);border-radius:4px;display:flex;align-items:center;gap:8px;font-family:var(--sans,system-ui);font-size:11.5px;color:#555;"><span style="font-weight:700;color:var(--gold,#a68526);">🔊 Listen</span><audio controls preload="none" src="../audio/sections/p53-s5.mp3" style="height:28px;flex:1;max-width:280px;"></audio></div><div class="section-label">5 · Where to read more</div>
 <p><strong>Sipser:</strong> Example 7.2. <strong>Lecture notes:</strong> Module 4 slide 3. <strong>Companion problems:</strong> P17 (growth race), P18 (single-tape 0ⁿ1ⁿ), P19 (two-tape race).</p>
 </section></div><footer class="foot">P53 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){

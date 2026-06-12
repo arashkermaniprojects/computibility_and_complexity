@@ -1,0 +1,5 @@
+When we talk about regex equivalence, it's important to understand some pitfalls that can come into play. Regular expressions by themselves are actually PSPACE-complete, meaning they're already pretty complex. But when you add squaring—think of squaring as taking a regex and combining it with itself—you jump straight to EXPSPACE-complete. This extra operator, squaring, pushes the complexity up exponentially, which is a big leap.
+
+Now, consider iterated squaring, represented as R to the power of two to the k. You might have a regex that looks polynomial in size, yet it describes strings that are exponentially long. That’s a tricky situation because it can lead to performance issues.
+
+Then there are real regex engines that use backreferences. These are even more powerful and can handle more complex patterns, but they come with their own set of challenges. Backreferences can make matching NP-hard, which means the time it takes can grow significantly, sometimes leading to what we call pathological backtracking. In extreme cases, this can cause the matching process to run for years! So, it's crucial to be aware of these pitfalls when working with regex.

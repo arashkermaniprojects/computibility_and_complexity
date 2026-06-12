@@ -1,0 +1,7 @@
+Alright, let’s dive into the bridge theorem. This theorem gives us a really important connection between decidable languages and recognizable languages. It tells us that a language L is decidable if and only if both L and its complement, L̅, are recognizable. 
+
+To understand the proof for one direction, consider running the recognizers for L and L̅ at the same time. Since one of them has to accept for any string, whichever one accepts first gives you the answer about whether the string is in L or not. It’s a neat trick!
+
+Now for the other direction, it’s pretty straightforward: if L is decidable, then both L and L̅ must be recognizable. 
+
+But there’s also a contrapositive to think about. If L is undecidable but recognizable, then L̅ cannot be recognizable. This helps us place co-A sub T M in the Venn diagram. Since A sub T M is in the overlap of recognizable and decidable, co-A sub T M lands in the overlap of co-recognizable and decidable. And importantly, the complement of A sub T M, which is not recognizable, sits outside the recognizable region entirely. This framework helps us understand where these languages fit together logically.

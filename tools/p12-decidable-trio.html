@@ -15,16 +15,64 @@
 
 <div class="wrap">
 
-<section><div class="section-label">1 · Theory</div>
-<p>Three "easy" questions about finite/context-free models, all polynomial-time decidable. Contrast with their TM cousins, which are all undecidable.</p>
-<div class="theorem-box"><div class="theorem-label">Three deciders</div>
-<ul style="margin:4px 0;"><li><strong>A<sub>DFA</sub></strong>: simulate the DFA on the input. O(n).</li>
-<li><strong>E<sub>DFA</sub></strong>: BFS from start; non-empty iff some accept state is reachable. O(|Q|).</li>
-<li><strong>A<sub>CFG</sub></strong>: convert to CNF; run CYK dynamic programming. O(n³).</li></ul></div>
-<p>Why are these decidable while their TM versions aren't? Because DFAs and CFGs are <em>finite-state</em>: bounded configurations, bounded derivations.</p>
+<section><div class="section-label">1 · Three problems, three deciders</div>
+<p>Three apparently-similar yes/no questions, all polynomial-time decidable. The TM versions of these same questions — A<sub>TM</sub>, E<sub>TM</sub>, equivalence — are undecidable. Understanding what changes is the entire point of the comparison.</p>
+
+<div class="theorem-box"><div class="theorem-label">A<sub>DFA</sub> = {⟨B, w⟩ : DFA B accepts w}</div>
+<p style="margin:4px 0;">On input ⟨B, w⟩: simulate B on w. Track the current state, read each symbol of w, follow the transition. After |w| symbols, accept iff the state is in F. Runs in <strong>O(n)</strong> where n = |w| (each step is constant-time table lookup).</p></div>
+
+<div class="theorem-box"><div class="theorem-label">E<sub>DFA</sub> = {⟨B⟩ : L(B) = ∅}</div>
+<p style="margin:4px 0;">L(B) is non-empty iff some accept state is reachable from the start state through B's transition graph. So: do a graph BFS/DFS from q<sub>0</sub>; check if any visited state is in F. Runs in <strong>O(|Q|·|Σ|)</strong> — linear in the size of B's transition table.</p></div>
+
+<div class="theorem-box"><div class="theorem-label">A<sub>CFG</sub> = {⟨G, w⟩ : CFG G generates w}</div>
+<p style="margin:4px 0;">Convert G to Chomsky Normal Form; run the CYK dynamic-programming algorithm. CYK fills an n × n table where entry T[i, j] = {variables that derive the substring w<sub>i</sub>…w<sub>j</sub>}. Accept iff S ∈ T[1, n]. Runs in <strong>O(n³ · |G|)</strong> time.</p></div>
 </section>
 
-<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<section><div class="section-label">2 · Why these are decidable but A<sub>TM</sub>, E<sub>TM</sub>, EQ<sub>CFG</sub> aren't</div>
+
+<div class="diagram" style="margin:14px 0;">
+<svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+  <text x="380" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">The decidability boundary · what changes from DFA/CFG to TM</text>
+
+  <!-- Left column: decidable -->
+  <rect x="40" y="50" width="340" height="240" rx="10" fill="#f3faf6" stroke="var(--accent, #1c4a3f)" stroke-width="1.6"/>
+  <text x="210" y="76" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--accent, #1c4a3f)">DFA &amp; CFG world · DECIDABLE</text>
+  <text x="60" y="106" font-family="var(--sans), system-ui" font-size="11" fill="#444">• Finite control state set Q</text>
+  <text x="60" y="130" font-family="var(--sans), system-ui" font-size="11" fill="#444">• At most |Q|<sup>|w|+1</sup> distinct config trajectories on input w</text>
+  <text x="60" y="154" font-family="var(--sans), system-ui" font-size="11" fill="#444">• Derivation length bounded (2n−1 for CNF)</text>
+  <text x="60" y="178" font-family="var(--sans), system-ui" font-size="11" fill="#444">• Reachability = finite graph problem</text>
+  <text x="60" y="208" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--accent, #1c4a3f)">→ "all paths" is a finite search.</text>
+  <text x="60" y="232" font-family="var(--sans), system-ui" font-size="11" fill="#444">A<sub>DFA</sub>, E<sub>DFA</sub>, EQ<sub>DFA</sub></text>
+  <text x="60" y="250" font-family="var(--sans), system-ui" font-size="11" fill="#444">A<sub>CFG</sub>, E<sub>CFG</sub>, A<sub>NFA</sub>, A<sub>REX</sub></text>
+
+  <!-- Right column: undecidable -->
+  <rect x="400" y="50" width="340" height="240" rx="10" fill="#fdf4ed" stroke="var(--warn, #b95825)" stroke-width="1.6"/>
+  <text x="570" y="76" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--warn, #b95825)">TM world · UNDECIDABLE</text>
+  <text x="420" y="106" font-family="var(--sans), system-ui" font-size="11" fill="#444">• Unbounded tape, infinitely many configs</text>
+  <text x="420" y="130" font-family="var(--sans), system-ui" font-size="11" fill="#444">• Computation can loop forever</text>
+  <text x="420" y="154" font-family="var(--sans), system-ui" font-size="11" fill="#444">• "Reachable" requires deciding halting first</text>
+  <text x="420" y="178" font-family="var(--sans), system-ui" font-size="11" fill="#444">• Diagonalisation contradicts any candidate decider</text>
+  <text x="420" y="208" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--warn, #b95825)">→ "all paths" is infinite.</text>
+  <text x="420" y="232" font-family="var(--sans), system-ui" font-size="11" fill="#444">A<sub>TM</sub>, E<sub>TM</sub>, EQ<sub>TM</sub>, HALT<sub>TM</sub></text>
+  <text x="420" y="250" font-family="var(--sans), system-ui" font-size="11" fill="#444">EQ<sub>CFG</sub> (the one CFG question that's TM-flavoured)</text>
+</svg>
+</div>
+
+<p>The line between the two columns is sharper than students expect. EQ<sub>CFG</sub> — equivalence of context-free grammars — falls on the <em>undecidable</em> side, even though A<sub>CFG</sub> and E<sub>CFG</sub> are decidable. That single fact is the warning shot: small changes in the question can flip decidability. EQ<sub>CFG</sub> is undecidable because comparing two CFGs requires checking every string in Σ*, and that quantifier-over-Σ* pushes you out of "bounded search" land.</p>
+</section>
+
+<section><div class="section-label">3 · Worked example · CYK on a small input</div>
+<p>Take grammar G in CNF: S → AB | BC, A → BA | a, B → CC | b, C → AB | a. Input w = "baaba".</p>
+<p>CYK builds a table T where T[i, j] holds the set of variables that derive the substring of length j starting at position i.</p>
+<ul style="margin:8px 0 0 20px;">
+  <li>Row 1 (length-1 substrings): T[1,1]={B} (b→B), T[2,1]={A,C} (a→A,C), T[3,1]={A,C}, T[4,1]={B}, T[5,1]={A,C}.</li>
+  <li>Row 2 (length-2 substrings): for w<sub>1</sub>w<sub>2</sub>="ba", we look for X→YZ with Y∈T[1,1], Z∈T[2,1]. S→AB? B∈T[1,1]? Yes. A∈T[2,1]? Yes. So S → BA? Not in our rules; check rules whose RHS matches (B,A): A→BA. So T[1,2]={A}. Continue across the row.</li>
+  <li>…fill row by row until T[1,5]. Accept iff S ∈ T[1,5].</li>
+</ul>
+<p>The table has O(n²) cells, each computed in O(n·|G|) time → total O(n³·|G|).</p>
+</section>
+
+<section><div class="section-label">4 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Three deciders, three patterns <span class="pill">Auto-plays</span></div>
 <div class="controls">
 <button class="btn play-btn" id="t-run">⏸ Pause</button><button class="btn ghost" id="t-step">Step</button><button class="btn ghost" id="t-reset">Reset</button>
@@ -34,13 +82,27 @@
 <div class="explain-panel" id="t-explain"></div>
 </div></section>
 
-<section><div class="section-label">3 · Q&amp;A defence notes</div>
+<section><div class="section-label">5 · Pitfalls students stumble on</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>"Simulate" the DFA, not "convert" it.</strong> A<sub>DFA</sub>'s decider just runs the DFA mentally — no construction needed. The simplicity is the point.</li>
+  <li><strong>E<sub>DFA</sub> uses graph reachability, not language minimisation.</strong> You don't need to minimise B or compute L(B) explicitly. Just check whether any accept state is graph-reachable from q<sub>0</sub>. The decider doesn't care which accept state.</li>
+  <li><strong>CYK requires CNF.</strong> Don't try to run CYK directly on the input grammar — convert to Chomsky Normal Form first. The conversion is mechanical (Sipser §2.1) but takes a few transformation passes.</li>
+  <li><strong>EQ<sub>CFG</sub> is undecidable.</strong> A common slip: students remember "all CFG questions are decidable" and apply that to equivalence. They aren't all decidable. Equivalence flips the table.</li>
+</ul>
+</section>
+
+<section><div class="section-label">6 · Q&amp;A defence notes</div>
 <ul class="qa-list">
-<li><div class="q">Q1. Why is A<sub>DFA</sub> decidable but A<sub>TM</sub> isn't?</div><div class="a">DFA has |Q| configurations, all reachable in |w| steps. TM can loop indefinitely.</div></li>
-<li><div class="q">Q2. Why is E<sub>DFA</sub> O(|Q|) but E<sub>TM</sub> undecidable?</div><div class="a">For DFA: reachability is a simple graph problem on finitely many vertices. For TM: would require ranging over all possible inputs.</div></li>
-<li><div class="q">Q3. Where does the O(n³) for CYK come from?</div><div class="a">Table T[i,j] has O(n²) entries; computing each tries O(n) split points and a constant number of rules.</div></li>
-<li><div class="q">Q4. Is EQ<sub>DFA</sub> decidable?</div><div class="a">Yes — symmetric difference of two DFAs is empty iff they're equivalent; use E<sub>DFA</sub> on the product construction.</div></li>
+<li><div class="q">Q1. Why is A<sub>DFA</sub> decidable but A<sub>TM</sub> isn't?</div><div class="a">A DFA on input of length n visits exactly n + 1 states (one per position) and the simulation always halts. A TM may loop indefinitely on its input. Halting-vs-not-halting is exactly what diagonalisation shows can't be decided in general.</div></li>
+<li><div class="q">Q2. Why is E<sub>DFA</sub> O(|Q|·|Σ|) but E<sub>TM</sub> undecidable?</div><div class="a">For a DFA, "empty language" is a finite graph question: starting from q<sub>0</sub>, is any accept state reachable? Standard BFS. For a TM, "empty language" asks whether the TM ever accepts <em>any</em> input from Σ* — a quantifier over all strings, with no graph to walk because the configuration space is infinite.</div></li>
+<li><div class="q">Q3. Where does CYK's O(n³) come from?</div><div class="a">Table T[i, j] has O(n²) entries (start position × length). Computing T[i, j] tries O(j) split points where to break the substring, and for each split checks the constant number of rules A → BC. So total work = O(n²) · O(n) · O(|G|) = O(n³·|G|).</div></li>
+<li><div class="q">Q4. Is EQ<sub>DFA</sub> decidable?</div><div class="a">Yes. Build the symmetric-difference DFA C with L(C) = L(A) △ L(B). Regular languages are closed under complement, intersection, and union, so C exists and is constructible. Then L(A) = L(B) iff L(C) = ∅, which we decide via E<sub>DFA</sub>. Total: poly-time.</div></li>
+<li><div class="q">Q5. What about EQ<sub>NFA</sub> and EQ<sub>REX</sub>?</div><div class="a">Decidable but PSPACE-complete — the construction goes through DFA conversion which can incur exponential blow-up. Decidable in principle, but no known polynomial-time algorithm.</div></li>
 </ul></section>
+
+<section><div class="section-label">7 · Where to read more</div>
+<p><strong>Sipser:</strong> §4.1, Theorems 4.1–4.7 (the full decidability table). <strong>Lecture notes:</strong> Module 1 covers all three constructions slide-by-slide. <strong>Companion problems:</strong> P02 (universal TM, contrast), P14 (Rice's theorem, contrast).</p>
+</section>
 
 </div>
 <footer class="foot">Problem 12 · BCS 402 · Dr. Arash Kermani · CUD</footer>

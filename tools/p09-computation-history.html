@@ -15,15 +15,71 @@
 
 <div class="wrap">
 
-<section><div class="section-label">1 · Theory</div>
+<section><div class="section-label">1 · What a computation history is</div>
 <p>A <strong>computation history</strong> of M on w is the full sequence of configurations the TM passes through, written as a single string with separators:</p>
 <div class="math-block">C<sub>1</sub> # C<sub>2</sub> # C<sub>3</sub> # … # C<sub>ℓ</sub></div>
-<div class="theorem-box"><div class="theorem-label">Local checkability</div>
-<p style="margin:4px 0;">A string is "an accepting computation history of M on w" iff it satisfies <em>local</em> properties: (a) the first config is the start; (b) each adjacent pair (C<sub>i</sub>, C<sub>i+1</sub>) follows by one transition of δ; (c) the last config has the accept state. <strong>Humble machines (LBAs, CFGs) can verify these.</strong></p></div>
-<p>This is the key technique behind E<sub>LBA</sub> and ALL<sub>CFG</sub> undecidability (Problems 10, 11).</p>
+<p>Each configuration C<sub>i</sub> records the entire state of the computation at one moment: the tape contents, the head position, and the current control state. Convention (Sipser §5.1): write the state symbol inside the tape, immediately to the left of the head cell. So if M is in state q<sub>3</sub> with head at position 4 on tape "01100", we write C = <span class="math">0110 q<sub>3</sub> 0</span>. State + head + tape, all encoded in one string of constant local width.</p>
+<div class="theorem-box"><div class="theorem-label">Local checkability — the only property that matters</div>
+<p style="margin:4px 0;">A string σ is "an accepting computation history of M on w" iff it satisfies three <em>local</em> conditions:</p>
+<ol style="margin:6px 0 0 20px;">
+  <li><strong>Start:</strong> C<sub>1</sub> = q<sub>0</sub>w (initial state, input on tape).</li>
+  <li><strong>Step:</strong> for every adjacent pair (C<sub>i</sub>, C<sub>i+1</sub>), the second follows from the first by exactly one application of δ.</li>
+  <li><strong>Accept:</strong> C<sub>ℓ</sub> contains the accept state q<sub>accept</sub>.</li>
+</ol>
+<p style="margin:6px 0 0 0;">All three checks are <em>local</em>: each can be verified by a small sliding window over σ, without remembering the whole string at once.</p></div>
+<p>Why this matters: humble machine models (LBAs, CFGs, even some restricted NFAs) can perform local checks. They cannot simulate a full TM, but they <em>can</em> verify that someone's claimed computation history is genuine. This is the engine behind E<sub>LBA</sub> undecidability (Problem 10) and ALL<sub>CFG</sub> undecidability (Problem 11).</p>
 </section>
 
-<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<section><div class="section-label">2 · What's local? The 2×3 window</div>
+<div class="diagram" style="margin:14px 0;">
+<svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+  <text x="380" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">Adjacent configurations C_i and C_{i+1} agree everywhere except in a 2×3 window around the head</text>
+
+  <!-- C_i row -->
+  <text x="40" y="80" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="#1c4a3f">C_i:</text>
+  <g font-family="var(--mono), ui-monospace, monospace" font-size="14">
+  <rect x="90" y="60" width="34" height="34" fill="white" stroke="#888"/><text x="107" y="84" text-anchor="middle">0</text>
+  <rect x="124" y="60" width="34" height="34" fill="white" stroke="#888"/><text x="141" y="84" text-anchor="middle">1</text>
+  <rect x="158" y="60" width="46" height="34" fill="#fdf4ed" stroke="#b95825"/><text x="181" y="84" text-anchor="middle" font-weight="700" fill="#b95825">q₃</text>
+  <rect x="204" y="60" width="34" height="34" fill="#fff5e1" stroke="#b95825"/><text x="221" y="84" text-anchor="middle" font-weight="700">0</text>
+  <rect x="238" y="60" width="34" height="34" fill="white" stroke="#888"/><text x="255" y="84" text-anchor="middle">1</text>
+  <rect x="272" y="60" width="34" height="34" fill="white" stroke="#888"/><text x="289" y="84" text-anchor="middle">1</text>
+  </g>
+
+  <!-- C_{i+1} row -->
+  <text x="40" y="140" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="#1c4a3f">C_{i+1}:</text>
+  <g font-family="var(--mono), ui-monospace, monospace" font-size="14">
+  <rect x="90" y="118" width="34" height="34" fill="white" stroke="#888"/><text x="107" y="142" text-anchor="middle">0</text>
+  <rect x="124" y="118" width="34" height="34" fill="white" stroke="#888"/><text x="141" y="142" text-anchor="middle">1</text>
+  <rect x="158" y="118" width="34" height="34" fill="#fff5e1" stroke="#b95825"/><text x="175" y="142" text-anchor="middle" font-weight="700">1</text>
+  <rect x="192" y="118" width="46" height="34" fill="#fdf4ed" stroke="#b95825"/><text x="215" y="142" text-anchor="middle" font-weight="700" fill="#b95825">q₅</text>
+  <rect x="238" y="118" width="34" height="34" fill="white" stroke="#888"/><text x="255" y="142" text-anchor="middle">1</text>
+  <rect x="272" y="118" width="34" height="34" fill="white" stroke="#888"/><text x="289" y="142" text-anchor="middle">1</text>
+  </g>
+
+  <!-- highlight the 2x3 window -->
+  <rect x="150" y="52" width="96" height="104" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="5 3"/>
+  <text x="198" y="180" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="var(--accent)" font-weight="700">2×3 window where δ acts</text>
+
+  <!-- explanation -->
+  <text x="380" y="220" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" fill="#444">Outside the window: cells are unchanged.  Inside: must match δ's effect on (state, symbol).</text>
+
+  <!-- delta caption -->
+  <rect x="430" y="60" width="280" height="120" rx="8" fill="#f3faf6" stroke="#1c4a3f"/>
+  <text x="570" y="84" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="#1c4a3f">Reading the window</text>
+  <text x="570" y="104" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#333">δ(q₃, 0) = (q₅, 1, R)</text>
+  <text x="570" y="124" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#444">writes 1, moves right, becomes q₅</text>
+  <text x="570" y="146" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#444">Window above shows exactly this:</text>
+  <text x="570" y="162" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#444">0 → 1, q₃ marker hops right, state q₃ → q₅</text>
+
+  <!-- legend at bottom -->
+  <text x="380" y="260" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#666">An LBA scanning C₁#C₂#…#Cℓ checks each # boundary's 2×3 window in turn — that's all it needs to do.</text>
+</svg>
+</div>
+<p>This is the "local checkability" claim made concrete. A change of configuration affects at most three cells (one head cell plus its two neighbours, since the head can move left or right). Verifying a step means reading those three cells in C<sub>i</sub>, checking that the corresponding three cells in C<sub>i+1</sub> match what δ prescribes. No global memory needed.</p>
+</section>
+
+<section><div class="section-label">3 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Render a TM's full execution as a history <span class="pill">Auto-plays</span></div>
 <div class="controls">
 <label>Preset: <select id="hh-preset"><option value="copy">copy 00 → 00X</option><option value="parity">parity check 0000</option></select></label>
@@ -34,13 +90,27 @@
 <div class="explain-panel" id="hh-explain"></div>
 </div></section>
 
-<section><div class="section-label">3 · Q&amp;A defence notes</div>
+<section><div class="section-label">4 · Pitfalls students stumble on</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>The state inside the tape is part of the string.</strong> Encoding C<sub>i</sub> = 0110q<sub>3</sub>0 means the q<sub>3</sub> symbol literally appears in σ between the 4th and 5th tape symbols. The alphabet of σ is Γ ∪ Q (tape symbols + state symbols).</li>
+  <li><strong>"Computation history" implies <em>halting</em>.</strong> If M loops on w, there's no accepting computation history — the string σ doesn't exist. Reductions exploit exactly this: M accepts w iff some valid σ exists.</li>
+  <li><strong>Local checks ignore time order direction.</strong> The 2×3 window check works left-to-right or right-to-left — the constraint is symmetric. That's why CFGs (which can derive in any order) and LBAs (which can scan in any direction) can verify them.</li>
+  <li><strong>Don't confuse "verify" with "produce."</strong> An LBA or CFG can verify someone hands you a candidate history. It cannot <em>generate</em> all histories without knowing how to simulate M — but it doesn't need to, because the existence of any accepting history is enough.</li>
+</ul>
+</section>
+
+<section><div class="section-label">5 · Q&amp;A defence notes</div>
 <ul class="qa-list">
-<li><div class="q">Q1. Why insert the state inside the tape?</div><div class="a">A configuration must capture tape contents, head position, and state in one string. Writing the state right before the head cell encodes all three compactly.</div></li>
-<li><div class="q">Q2. Why is local checkability so powerful?</div><div class="a">LBAs / CFGs can verify a 2×3 "window" between adjacent configs but cannot count globally. Local checking is in their power; full simulation isn't.</div></li>
-<li><div class="q">Q3. Why doesn't this trick work for proving A<sub>TM</sub> undecidable?</div><div class="a">It does the opposite: it shows certain TM questions <em>reduce to questions about LBAs/CFGs</em>. The undecidability flows the other way.</div></li>
-<li><div class="q">Q4. What if the TM loops?</div><div class="a">No finite accepting computation history exists. The reduction's target language is empty in that case, which is exactly the information we want to encode.</div></li>
+<li><div class="q">Q1. Why insert the state inside the tape?</div><div class="a">A configuration must capture tape contents, head position, and state in one string. Writing the state symbol immediately before the head cell encodes all three compactly and lets the 2×3 window detect head movement directly — the state symbol shifts left or right between C<sub>i</sub> and C<sub>i+1</sub>.</div></li>
+<li><div class="q">Q2. Why is local checkability so powerful?</div><div class="a">It bridges Turing power and humbler models. LBAs / CFGs can verify a 2×3 window but cannot count globally. Local checking is in their power; full TM simulation isn't. Computation histories let undecidable TM questions hide inside emptiness or universality questions about LBAs and CFGs.</div></li>
+<li><div class="q">Q3. Why doesn't this trick make A<sub>TM</sub> decidable?</div><div class="a">The verification direction goes outward, not inward. We don't decide A<sub>TM</sub> by checking histories — we reduce <em>from</em> A<sub>TM</sub> to LBA/CFG questions. The undecidability of A<sub>TM</sub> flows into the LBA/CFG questions, making them undecidable too.</div></li>
+<li><div class="q">Q4. What if M loops on w?</div><div class="a">No finite accepting computation history exists. The reduction's target language is empty in that case (no history to accept), which is exactly the information we want — "M loops or rejects on w" corresponds to "the LBA accepts no history."</div></li>
+<li><div class="q">Q5. Could we use a different separator instead of #?</div><div class="a">Yes — any symbol not in Γ ∪ Q works. # is convention because it's visually clean. The choice doesn't affect the construction.</div></li>
 </ul></section>
+
+<section><div class="section-label">6 · Where to read more</div>
+<p><strong>Sipser:</strong> §5.1 introduces computation histories formally; Theorem 5.10 (E<sub>LBA</sub>) and Theorem 5.13 (ALL<sub>CFG</sub>) apply them. <strong>Lecture notes:</strong> Module 3 slides 1–4 use the same picture. <strong>Companion problems:</strong> P10 (E<sub>LBA</sub>) and P11 (ALL<sub>CFG</sub>) are direct applications of this technique.</p>
+</section>
 
 </div>
 <footer class="foot">Problem 9 · BCS 402 · Dr. Arash Kermani · CUD</footer>

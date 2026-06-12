@@ -9,22 +9,83 @@
 <header class="tool-header">
 <div class="crumb"><a href="index.html">← Student tools</a> · Problem 8 · Lecture 6 · Round 1 (30 pts)</div>
 <h1>EQ<sub>TM</sub> is undecidable · mapping reduction</h1>
-<p class="sub">From ⟨M, w⟩ produce ⟨M<sub>1</sub>, M<sub>2</sub>⟩ such that M<sub>1</sub> ≡ M<sub>2</sub> iff M accepts w.</p>
+<p class="sub">From ⟨M, w⟩ produce ⟨M<sub>1</sub>, M<sub>2</sub>⟩ such that M<sub>1</sub> ≡ M<sub>2</sub> iff M does <em>not</em> accept w. A mapping reduction A<sub>TM</sub> ≤<sub>m</sub> ¬EQ<sub>TM</sub>.</p>
 <div class="tags"><span class="tag-pill">CLO-2</span><span class="tag-pill warn">R1·30 pts</span><span class="tag-pill info">L6</span></div>
 </header>
 
 <div class="wrap">
 
-<section><div class="section-label">1 · Theory</div>
-<p>EQ<sub>TM</sub> = {⟨M<sub>1</sub>, M<sub>2</sub>⟩ : L(M<sub>1</sub>) = L(M<sub>2</sub>)}. We construct two machines that are equal iff M accepts w.</p>
-<div class="theorem-box"><div class="theorem-label">Construction</div>
-<p style="margin:4px 0;"><strong>M<sub>1</sub>:</strong> reject everything. L(M<sub>1</sub>) = ∅.</p>
-<p style="margin:4px 0;"><strong>M<sub>2</sub>:</strong> on input x, ignore x; run M on w; accept iff M accepts. So L(M<sub>2</sub>) = ∅ if M doesn't accept w, else Σ*.</p>
-<p style="margin:4px 0;"><strong>Then:</strong> L(M<sub>1</sub>) = L(M<sub>2</sub>) ⇔ L(M<sub>2</sub>) = ∅ ⇔ M doesn't accept w.</p>
-<p style="margin:4px 0;">So ⟨M, w⟩ ∈ A<sub>TM</sub> ⇔ ⟨M<sub>1</sub>, M<sub>2</sub>⟩ ∉ EQ<sub>TM</sub>. That's a mapping reduction A<sub>TM</sub> ≤<sub>m</sub> ¬EQ<sub>TM</sub>.</p></div>
+<section><div class="section-label">1 · The problem and the construction</div>
+<p>EQ<sub>TM</sub> = {⟨M<sub>1</sub>, M<sub>2</sub>⟩ : L(M<sub>1</sub>) = L(M<sub>2</sub>)}. We want to show EQ<sub>TM</sub> is undecidable by reducing A<sub>TM</sub> to it. The trick is to pick one fixed machine (M<sub>1</sub>) and engineer the other (M<sub>2</sub>) so the equality question turns into the A<sub>TM</sub> question in disguise.</p>
+
+<div class="theorem-box"><div class="theorem-label">Construction · the reduction function f(⟨M, w⟩)</div>
+<p style="margin:4px 0;"><strong>M<sub>1</sub>:</strong> on every input x, reject. Therefore L(M<sub>1</sub>) = ∅.</p>
+<p style="margin:4px 0;"><strong>M<sub>2</sub>:</strong> on input x, <em>ignore x</em>; simulate M on w; accept iff M accepts w. Therefore L(M<sub>2</sub>) = Σ* if M accepts w, and L(M<sub>2</sub>) = ∅ otherwise.</p>
+<p style="margin:4px 0;"><strong>Output:</strong> f(⟨M, w⟩) = ⟨M<sub>1</sub>, M<sub>2</sub>⟩.</p></div>
+
+<p>Why this works: M<sub>1</sub> accepts the empty language, no matter what. M<sub>2</sub> either accepts every string or accepts no string, depending on whether M accepts w. So L(M<sub>1</sub>) = L(M<sub>2</sub>) exactly when L(M<sub>2</sub>) = ∅, which is exactly when M does <em>not</em> accept w.</p>
 </section>
 
-<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<section><div class="section-label">2 · The reduction as a picture</div>
+
+<div class="diagram" style="margin:14px 0;">
+<svg viewBox="0 0 780 320" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+  <text x="390" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">f : ⟨M, w⟩  ↦  ⟨M₁, M₂⟩   ·   A_TM ≤_m ¬EQ_TM</text>
+
+  <!-- input -->
+  <rect x="30" y="100" width="140" height="80" rx="10" fill="white" stroke="#666" stroke-width="1.5"/>
+  <text x="100" y="130" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700">⟨M, w⟩</text>
+  <text x="100" y="152" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#666">A_TM instance</text>
+  <text x="100" y="170" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#666">"Does M accept w?"</text>
+
+  <!-- arrow -->
+  <path d="M 175 140 L 235 140" stroke="var(--accent)" stroke-width="2" fill="none" marker-end="url(#arr1)"/>
+  <defs><marker id="arr1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker></defs>
+  <text x="205" y="130" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="var(--accent)" font-style="italic">f</text>
+
+  <!-- M1 box -->
+  <rect x="245" y="60" width="240" height="100" rx="10" fill="#fdf4ed" stroke="var(--warn, #b95825)" stroke-width="1.6"/>
+  <text x="365" y="82" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--warn, #b95825)">M₁</text>
+  <text x="365" y="106" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="12" fill="#444">on input x: reject</text>
+  <text x="365" y="138" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="14" font-weight="700" fill="var(--warn, #b95825)">L(M₁) = ∅</text>
+
+  <!-- M2 box -->
+  <rect x="245" y="180" width="240" height="120" rx="10" fill="#f3faf6" stroke="var(--accent, #1c4a3f)" stroke-width="1.6"/>
+  <text x="365" y="202" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--accent, #1c4a3f)">M₂</text>
+  <text x="365" y="222" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">on input x: ignore x;</text>
+  <text x="365" y="238" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">simulate M on w;</text>
+  <text x="365" y="254" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">accept iff M accepts</text>
+  <text x="365" y="282" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" font-weight="700" fill="var(--accent, #1c4a3f)">L(M₂) = Σ* or ∅</text>
+
+  <!-- arrow to right -->
+  <path d="M 495 180 L 555 180" stroke="var(--accent)" stroke-width="2" fill="none" marker-end="url(#arr2)"/>
+  <defs><marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker></defs>
+
+  <!-- conclusion box -->
+  <rect x="560" y="100" width="200" height="160" rx="10" fill="white" stroke="#1c4a3f" stroke-width="1.5"/>
+  <text x="660" y="124" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="#1c4a3f">⟨M₁, M₂⟩</text>
+  <text x="660" y="146" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#666">EQ_TM instance</text>
+  <text x="660" y="172" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#333">L(M₁) = L(M₂)</text>
+  <text x="660" y="190" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#333">⇔ L(M₂) = ∅</text>
+  <text x="660" y="208" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#333">⇔ M does NOT</text>
+  <text x="660" y="224" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#333">accept w</text>
+  <text x="660" y="246" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="var(--accent)" font-style="italic">↳ ¬A_TM in disguise</text>
+</svg>
+</div>
+</section>
+
+<section><div class="section-label">3 · Worked example · a concrete M</div>
+<p>Let M be the TM that on input y, halts and accepts if y starts with a 1, otherwise loops. Pick w = "01".</p>
+<ul style="margin:8px 0 0 20px;">
+  <li><strong>Compute M(w):</strong> "01" starts with 0, so M(w) loops. M does <em>not</em> accept w.</li>
+  <li><strong>Build M<sub>1</sub>:</strong> rejecter. L(M<sub>1</sub>) = ∅.</li>
+  <li><strong>Build M<sub>2</sub>:</strong> on any input x, run M on "01"; that simulation loops; therefore M<sub>2</sub> never accepts. L(M<sub>2</sub>) = ∅.</li>
+  <li><strong>Verdict:</strong> L(M<sub>1</sub>) = L(M<sub>2</sub>) = ∅, so ⟨M<sub>1</sub>, M<sub>2</sub>⟩ ∈ EQ<sub>TM</sub>. And indeed ⟨M, "01"⟩ ∉ A<sub>TM</sub>. The reduction's contract — ⟨M, w⟩ ∈ A<sub>TM</sub> iff ⟨M<sub>1</sub>, M<sub>2</sub>⟩ ∉ EQ<sub>TM</sub> — holds.</li>
+</ul>
+<p style="margin-top:10px;">Now flip it: let w = "1xyz". Then M accepts w. M<sub>2</sub> on every input runs M on "1xyz", accepts, so L(M<sub>2</sub>) = Σ*. L(M<sub>1</sub>) = ∅ ≠ Σ* = L(M<sub>2</sub>), so ⟨M<sub>1</sub>, M<sub>2</sub>⟩ ∉ EQ<sub>TM</sub>. Contract holds again.</p>
+</section>
+
+<section><div class="section-label">4 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Build M<sub>1</sub>, M<sub>2</sub>, compare languages <span class="pill">Auto-plays</span></div>
 <div class="controls">
 <button class="btn play-btn" id="q-run">⏸ Pause</button><button class="btn ghost" id="q-step">Step</button><button class="btn ghost" id="q-reset">Reset</button>
@@ -34,13 +95,32 @@
 <div class="explain-panel" id="q-explain"></div>
 </div></section>
 
-<section><div class="section-label">3 · Q&amp;A defence notes</div>
+<section><div class="section-label">5 · Why this is a many-one reduction (and matters)</div>
+<p>A mapping (many-one) reduction is a single computable function <em>f</em>, no loops, no oracle calls. Our <em>f</em> takes the encoding ⟨M, w⟩ and outputs the encoding ⟨M<sub>1</sub>, M<sub>2</sub>⟩. The construction is purely syntactic — write down two new TM descriptions. No simulation happens during the reduction itself; the simulation only happens later, if and when M<sub>2</sub> actually runs.</p>
+<p>Because the reduction is many-one, undecidability transfers cleanly: if EQ<sub>TM</sub> were decidable, composing with <em>f</em> would give a decider for ¬A<sub>TM</sub> and hence for A<sub>TM</sub> — contradiction. The same composition would <em>not</em> work for a Turing reduction without extra care.</p>
+</section>
+
+<section><div class="section-label">6 · Pitfalls students stumble on</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>The reduction is to ¬EQ<sub>TM</sub>, not EQ<sub>TM</sub>.</strong> ⟨M, w⟩ ∈ A<sub>TM</sub> corresponds to ⟨M<sub>1</sub>, M<sub>2</sub>⟩ <em>not</em> in EQ<sub>TM</sub>. That's fine — undecidability of ¬EQ<sub>TM</sub> implies undecidability of EQ<sub>TM</sub> immediately, since L is decidable iff ¬L is.</li>
+  <li><strong>M<sub>2</sub> ignores its input.</strong> A common mistake is to write "M<sub>2</sub> on input x runs M on x." That doesn't work — you'd get L(M<sub>2</sub>) = L(M), not Σ* or ∅. M<sub>2</sub> <em>must</em> ignore its input and always test M against the fixed string w.</li>
+  <li><strong>"Loops" is not "rejects" for L(M<sub>2</sub>).</strong> If M on w loops, M<sub>2</sub> on every input runs M on w forever. M<sub>2</sub> doesn't accept anything in that case, so L(M<sub>2</sub>) = ∅. We're using "doesn't accept" — looping is one way to not accept.</li>
+  <li><strong>The construction never runs M.</strong> The reduction is a syntactic transformation of strings — write the description of M<sub>2</sub> that says "simulate M on w." The actual simulation only happens later, if the EQ<sub>TM</sub>-oracle decides to invoke M<sub>2</sub>.</li>
+</ul>
+</section>
+
+<section><div class="section-label">7 · Q&amp;A defence notes</div>
 <ul class="qa-list">
-<li><div class="q">Q1. Why use the empty-language M<sub>1</sub>?</div><div class="a">It's a fixed reference. Comparing against ∅ reduces EQ<sub>TM</sub> to E<sub>TM</sub> in disguise — we already know E<sub>TM</sub> is undecidable.</div></li>
-<li><div class="q">Q2. Is EQ<sub>TM</sub> recognizable?</div><div class="a">No. Neither EQ<sub>TM</sub> nor ¬EQ<sub>TM</sub> is recognizable. It sits in the "neither" region of the Venn diagram (Problem 4).</div></li>
-<li><div class="q">Q3. What's the difference between a mapping reduction and a Turing reduction?</div><div class="a">Mapping reduction is a single computable function that translates instances; the answer for B directly gives the answer for A. Turing reduction can call B's decider multiple times and do extra work. Mapping is stricter and preserves recognizability.</div></li>
-<li><div class="q">Q4. Why does mapping reduction preserve undecidability?</div><div class="a">If we could decide EQ<sub>TM</sub>, composing with the reduction gives a decider for A<sub>TM</sub> — contradiction.</div></li>
+<li><div class="q">Q1. Why use the empty-language M<sub>1</sub>?</div><div class="a">It's a fixed reference. Comparing L(M<sub>2</sub>) against ∅ is the same as asking whether L(M<sub>2</sub>) = ∅, which is the E<sub>TM</sub> question for M<sub>2</sub>. So under the hood this reduction is showing EQ<sub>TM</sub> is at least as hard as E<sub>TM</sub>, which we already know is undecidable.</div></li>
+<li><div class="q">Q2. Is EQ<sub>TM</sub> recognizable?</div><div class="a">No. Neither EQ<sub>TM</sub> nor ¬EQ<sub>TM</sub> is Turing-recognizable. It sits in the "neither" region of the recognizable/decidable Venn diagram. This is a stronger statement than mere undecidability — both directions fail.</div></li>
+<li><div class="q">Q3. What's the difference between a mapping reduction and a Turing reduction?</div><div class="a">A mapping reduction is a single computable function f that translates instances of A into instances of B such that x ∈ A iff f(x) ∈ B. A Turing reduction is an algorithm for A that uses an oracle (black box) for B and is allowed to make any number of queries and post-processing. Mapping is stricter; it preserves both decidability and Turing-recognizability.</div></li>
+<li><div class="q">Q4. Why does mapping reduction preserve undecidability?</div><div class="a">If EQ<sub>TM</sub> had a decider D, then "on input ⟨M, w⟩, output the opposite of D(f(⟨M, w⟩))" would decide A<sub>TM</sub>. Since A<sub>TM</sub> is undecidable, no such D exists.</div></li>
+<li><div class="q">Q5. Could we have reduced to EQ<sub>TM</sub> directly (not its complement)?</div><div class="a">Yes — swap which machine plays which role. Make M<sub>1</sub> the one that depends on M(w) and let M<sub>2</sub> be a reference Σ*-acceptor. Then equality holds iff M accepts w. Either direction gives undecidability; the version above happens to use the simpler ∅-reference.</div></li>
 </ul></section>
+
+<section><div class="section-label">8 · Where to read more</div>
+<p><strong>Sipser:</strong> Theorem 5.4 and §5.3 on mapping reductions. <strong>Lecture notes:</strong> Module 2 slide 4 (reductions to HALT<sub>TM</sub>) and Module 3 slide 1 (the general reduction template). <strong>Companion problems:</strong> P5 (HALT<sub>TM</sub>), P6 (E<sub>TM</sub>), P14 (Rice's theorem — generalises this kind of argument to every non-trivial language property).</p>
+</section>
 
 </div>
 <footer class="foot">Problem 8 · BCS 402 · Dr. Arash Kermani · CUD</footer>

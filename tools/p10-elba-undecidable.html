@@ -15,15 +15,74 @@
 
 <div class="wrap">
 
-<section><div class="section-label">1 · Theory</div>
-<p>An <strong>LBA</strong> is a TM restricted to use only the cells of its input. Surprisingly: <strong>A<sub>LBA</sub> is decidable</strong> (configurations are finite-bounded) but <strong>E<sub>LBA</sub> is undecidable</strong>.</p>
-<div class="theorem-box"><div class="theorem-label">Reduction A<sub>TM</sub> ≤ ¬E<sub>LBA</sub></div>
-<p style="margin:4px 0;">Given ⟨M, w⟩, build LBA B<sub>M,w</sub> on input string x:</p>
-<ol style="margin:4px 0;"><li>Check x parses as C<sub>1</sub> # C<sub>2</sub> # … # C<sub>ℓ</sub></li><li>Check C<sub>1</sub> is the start configuration of M on w</li><li>Check each (C<sub>i</sub>, C<sub>i+1</sub>) follows by one δ-step of M</li><li>Check C<sub>ℓ</sub> contains the accept state</li><li>Accept x iff all checks pass.</li></ol>
-<p style="margin:4px 0;">L(B<sub>M,w</sub>) ≠ ∅ iff M accepts w. So a decider for E<sub>LBA</sub> decides ¬A<sub>TM</sub>. Impossible.</p></div>
+<section><div class="section-label">1 · The asymmetry between A<sub>LBA</sub> and E<sub>LBA</sub></div>
+<p>An <strong>LBA</strong> (linear bounded automaton) is a TM restricted to use only the cells of its input — no scratch space outside the original |w| cells. Two surprising facts sit side by side:</p>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>A<sub>LBA</sub> = {⟨B, w⟩ : LBA B accepts w} is decidable.</strong> Because B is space-bounded by |w|, only finitely many distinct configurations exist. Simulate B and if you see a config repeat, B is looping — reject. Otherwise B halts.</li>
+  <li><strong>E<sub>LBA</sub> = {⟨B⟩ : L(B) = ∅} is undecidable.</strong> Emptiness asks "is there <em>any</em> input B accepts?" — that's a quantifier over <em>all</em> strings, including very long ones with their correspondingly large state spaces.</li>
+</ul>
+<p>The reduction A<sub>TM</sub> ≤<sub>m</sub> ¬E<sub>LBA</sub> exploits computation histories from Problem 9.</p>
+
+<div class="theorem-box"><div class="theorem-label">The construction f(⟨M, w⟩) = ⟨B<sub>M,w</sub>⟩</div>
+<p style="margin:4px 0;">Build LBA B<sub>M,w</sub> that on input string x performs four local checks:</p>
+<ol style="margin:4px 0 4px 20px;">
+  <li><strong>Parse:</strong> x has the form C<sub>1</sub> # C<sub>2</sub> # … # C<sub>ℓ</sub>.</li>
+  <li><strong>Start:</strong> C<sub>1</sub> = q<sub>0</sub>w (initial config of M on w).</li>
+  <li><strong>Step:</strong> for every i, (C<sub>i</sub>, C<sub>i+1</sub>) follows by one δ-step of M.</li>
+  <li><strong>Accept:</strong> C<sub>ℓ</sub> contains q<sub>accept</sub>.</li>
+</ol>
+<p style="margin:6px 0 0;">If all four pass, B<sub>M,w</sub> accepts x. Otherwise rejects.</p></div>
+
+<p>Key claim: L(B<sub>M,w</sub>) ≠ ∅ iff M accepts w. The forward direction is direct — if M accepts w, write down its accepting computation history σ, and B<sub>M,w</sub>(σ) succeeds. The reverse direction uses determinism: any string x accepted by B<sub>M,w</sub> <em>is</em> the genuine accepting history of M on w, which witnesses ⟨M, w⟩ ∈ A<sub>TM</sub>.</p>
 </section>
 
-<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<section><div class="section-label">2 · Why an LBA has the budget to do this</div>
+<div class="diagram" style="margin:14px 0;">
+<svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+  <text x="380" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">B_{M,w}'s tape — only the input cells, nothing more</text>
+
+  <!-- Tape cells -->
+  <g font-family="var(--mono), ui-monospace, monospace" font-size="13">
+  <rect x="60" y="60" width="34" height="36" fill="white" stroke="#1c4a3f"/><text x="77" y="85" text-anchor="middle">C₁</text>
+  <rect x="94" y="60" width="22" height="36" fill="#f3faf6" stroke="#1c4a3f"/><text x="105" y="85" text-anchor="middle">#</text>
+  <rect x="116" y="60" width="34" height="36" fill="white" stroke="#1c4a3f"/><text x="133" y="85" text-anchor="middle">C₂</text>
+  <rect x="150" y="60" width="22" height="36" fill="#f3faf6" stroke="#1c4a3f"/><text x="161" y="85" text-anchor="middle">#</text>
+  <rect x="172" y="60" width="34" height="36" fill="white" stroke="#1c4a3f"/><text x="189" y="85" text-anchor="middle">C₃</text>
+  <rect x="206" y="60" width="22" height="36" fill="#f3faf6" stroke="#1c4a3f"/><text x="217" y="85" text-anchor="middle">#</text>
+  <rect x="228" y="60" width="34" height="36" fill="white" stroke="#1c4a3f"/><text x="245" y="85" text-anchor="middle">···</text>
+  <rect x="262" y="60" width="22" height="36" fill="#f3faf6" stroke="#1c4a3f"/><text x="273" y="85" text-anchor="middle">#</text>
+  <rect x="284" y="60" width="34" height="36" fill="white" stroke="#1c4a3f"/><text x="301" y="85" text-anchor="middle">C_ℓ</text>
+  </g>
+  <!-- Tape boundary marker -->
+  <line x1="60" y1="100" x2="318" y2="100" stroke="#1c4a3f" stroke-width="2"/>
+  <text x="189" y="120" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#1c4a3f" font-weight="700">total tape = |x|, no extra space</text>
+
+  <!-- Sweep arrows -->
+  <path d="M 60 160 L 318 160" stroke="var(--accent)" stroke-width="2" fill="none" marker-end="url(#arrL)"/>
+  <defs><marker id="arrL" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker></defs>
+  <text x="189" y="155" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="var(--accent)">sweep 1: parse #-separators, check C₁ = start</text>
+  <path d="M 318 190 L 60 190" stroke="var(--accent)" stroke-width="2" fill="none" marker-end="url(#arrR)"/>
+  <defs><marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker></defs>
+  <text x="189" y="185" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="var(--accent)">sweep 2: walk pairs (Cᵢ, Cᵢ₊₁), check δ-step</text>
+  <path d="M 60 220 L 318 220" stroke="var(--accent)" stroke-width="2" fill="none" marker-end="url(#arrL2)"/>
+  <defs><marker id="arrL2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker></defs>
+  <text x="189" y="215" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="var(--accent)">sweep 3: check C_ℓ contains q_accept</text>
+
+  <!-- comparison side -->
+  <rect x="420" y="60" width="300" height="180" rx="8" fill="#fdf4ed" stroke="var(--warn)"/>
+  <text x="570" y="84" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700" fill="var(--warn)">What B does NOT need</text>
+  <text x="570" y="108" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#666">✗ Run M itself</text>
+  <text x="570" y="126" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#666">✗ Generate the history</text>
+  <text x="570" y="144" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#666">✗ Allocate extra tape</text>
+  <text x="570" y="162" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#666">✗ Decide whether M halts</text>
+  <text x="570" y="188" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#1c4a3f" font-weight="700">B just verifies, given input x.</text>
+  <text x="570" y="208" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#1c4a3f">All checks are local — fit in |x| cells.</text>
+</svg>
+</div>
+<p>Each sweep is a finite-state walk across the input. The hard work — producing the history — is offloaded onto whoever provides x. B<sub>M,w</sub> only validates. That is exactly the LBA's job description.</p>
+</section>
+
+<section><div class="section-label">3 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Inside B<sub>M,w</sub>: what is checked, what is not <span class="pill">Auto-plays</span></div>
 <div class="controls">
 <button class="btn play-btn" id="lb-run">⏸ Pause</button><button class="btn ghost" id="lb-step">Step</button><button class="btn ghost" id="lb-reset">Reset</button>
@@ -33,12 +92,27 @@
 <div class="explain-panel" id="lb-explain"></div>
 </div></section>
 
-<section><div class="section-label">3 · Q&amp;A defence notes</div>
+<section><div class="section-label">4 · Pitfalls students stumble on</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>The construction is f, not the LBA's execution.</strong> The reduction is a syntactic transformation: given ⟨M, w⟩, write down the description of B<sub>M,w</sub>. We're not running anything during the reduction. The actual LBA run only happens later if an E<sub>LBA</sub>-oracle is invoked.</li>
+  <li><strong>L(B<sub>M,w</sub>) ≠ ∅ is the answer.</strong> The reduction goes to <em>¬E<sub>LBA</sub></em>. ⟨M, w⟩ ∈ A<sub>TM</sub> ⇔ ⟨B<sub>M,w</sub>⟩ ∉ E<sub>LBA</sub>. Don't lose the negation.</li>
+  <li><strong>The hard part is M's history, but B doesn't pay for it.</strong> Generating an accepting computation history requires simulating M — which an LBA can't do in general. But the LBA doesn't generate; it only checks. The input x is given. This separation is the whole technique.</li>
+  <li><strong>"Linear bounded" means linear in the input.</strong> B<sub>M,w</sub>'s tape size scales with the size of the candidate history x, not with anything fixed at construction time. A long-running M produces long histories — but those long histories are themselves long inputs x, so the LBA still has enough space (proportional to |x|).</li>
+</ul>
+</section>
+
+<section><div class="section-label">5 · Q&amp;A defence notes</div>
 <ul class="qa-list">
-<li><div class="q">Q1. Why CAN an LBA check accepting computation histories?</div><div class="a">Each check is local: parsing, start-config match, adjacent δ-step validity, final-config accept-state check. All can be done by scanning the input multiple times within the original tape — that's the LBA budget.</div></li>
-<li><div class="q">Q2. Why is A<sub>LBA</sub> decidable but E<sub>LBA</sub> isn't?</div><div class="a">A<sub>LBA</sub> has fixed-length input; bounded configurations. E<sub>LBA</sub> asks "is the language empty?" over ALL inputs — that's a quantifier-over-all-strings question, much harder.</div></li>
-<li><div class="q">Q3. What's the size of an LBA computation history?</div><div class="a">If the LBA runs on input of length n, it has at most |Q|·n·|Γ|<sup>n</sup> distinct configurations. Repeats indicate looping. Hence the bound on A<sub>LBA</sub>.</div></li>
+<li><div class="q">Q1. Why CAN an LBA check accepting computation histories?</div><div class="a">Each of the four checks is <em>local</em>: parsing the # separators, matching the start config (a constant-size pattern at the beginning), validating each (C<sub>i</sub>, C<sub>i+1</sub>) δ-step in a 2×3 window, and checking the accept state at the end. Local checks fit in finite-state control plus a few sweeps over the original tape — that is exactly the LBA budget.</div></li>
+<li><div class="q">Q2. Why is A<sub>LBA</sub> decidable but E<sub>LBA</sub> isn't?</div><div class="a">A<sub>LBA</sub> takes a specific input w and asks whether B accepts that specific w. Because B is space-bounded by |w|, only finitely many distinct configurations exist on that input — at most |Q| · |w| · |Γ|<sup>|w|</sup>. Simulate and detect cycles. E<sub>LBA</sub> asks whether B accepts <em>any</em> input — a quantifier over infinitely many strings, with no a-priori space bound to fall back on.</div></li>
+<li><div class="q">Q3. What's the bound on an LBA computation history size?</div><div class="a">An LBA on input of length n has at most |Q| · n · |Γ|<sup>n</sup> distinct configurations. If any repeats, the LBA is in a loop — that's how A<sub>LBA</sub>'s decider catches non-halters. The exponential dependence on n is fine; it's still finite for each fixed n.</div></li>
+<li><div class="q">Q4. Does this also prove ALL<sub>LBA</sub> undecidable?</div><div class="a">Yes. Take the same reduction and complement the LBA — accept the strings B<sub>M,w</sub> rejects. Then "language is everything" replaces "language is empty" with the negation flowing through. Many natural LBA properties (regularity, finiteness) collapse this way; this is the LBA analog of Rice's theorem.</div></li>
+<li><div class="q">Q5. Why does the reduction use B<sub>M,w</sub> instead of just simulating M?</div><div class="a">An LBA <em>cannot</em> simulate an arbitrary TM — that would require unbounded scratch space. The LBA verifies a candidate history, which lives entirely within the input length. The crucial separation: <em>compute</em> vs <em>verify</em>.</div></li>
 </ul></section>
+
+<section><div class="section-label">6 · Where to read more</div>
+<p><strong>Sipser:</strong> §5.1, Theorem 5.10 (E<sub>LBA</sub> is undecidable). <strong>Lecture notes:</strong> Module 3 slides 2–3 (LBA definition, B<sub>M,w</sub> construction). <strong>Companion problems:</strong> P9 (computation histories — prerequisite), P11 (ALL<sub>CFG</sub> — sibling technique using CFGs instead of LBAs), P62 (A<sub>LBA</sub> vs E<sub>LBA</sub>).</p>
+</section>
 
 </div>
 <footer class="foot">Problem 10 · BCS 402 · Dr. Arash Kermani · CUD</footer>

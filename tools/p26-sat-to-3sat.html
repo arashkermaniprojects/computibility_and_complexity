@@ -2,23 +2,132 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>P26 · SAT → 3SAT</title><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
 <link rel="stylesheet" href="../presentation.css"><script src="../widget-loop.js"></script></head><body>
 <header class="tool-header"><div class="crumb"><a href="index.html">← Student tools</a> · Problem 26 · Lecture 11 · Round 2 (30 pts)</div>
-<h1>SAT → 3SAT · auxiliary-variable splitting</h1><p class="sub">Every clause with k > 3 literals becomes a chain of 3-literal clauses.</p>
+<h1>SAT ≤<sub>p</sub> 3SAT · auxiliary-variable splitting</h1><p class="sub">Every CNF clause is rewritten so every clause has <em>exactly</em> three literals — without changing satisfiability and in polynomial time.</p>
 <div class="tags"><span class="tag-pill">CLO-4</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L11</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · Theory</div>
-<div class="theorem-box"><div class="theorem-label">The splitting rule</div><p style="margin:4px 0;">(ℓ<sub>1</sub> ∨ ℓ<sub>2</sub> ∨ ℓ<sub>3</sub> ∨ ℓ<sub>4</sub>) becomes (ℓ<sub>1</sub> ∨ ℓ<sub>2</sub> ∨ a) ∧ (¬a ∨ ℓ<sub>3</sub> ∨ ℓ<sub>4</sub>) with a fresh variable a.</p></div>
-<p>Satisfiability preserved: pick a = (ℓ<sub>3</sub> ∨ ℓ<sub>4</sub>) effectively. Polynomial: k − 2 clauses, k − 3 auxiliary variables.</p></section>
-<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+
+<section><div class="section-label">1 · What we are reducing, and why we care</div>
+<p>SAT asks: given an arbitrary CNF formula, is there an assignment that satisfies it? 3SAT is the same question but restricted to formulas where <em>every</em> clause has exactly three literals. Cook–Levin proves SAT is NP-complete. Once we reduce SAT to 3SAT in polynomial time, 3SAT inherits the NP-completeness — and because 3SAT has a clean uniform shape, it becomes the starting point for almost every other NP-completeness proof in the chain (CLIQUE, VERTEX-COVER, HAM-PATH, SUBSET-SUM…).</p>
+
+<div class="theorem-box"><div class="theorem-label">Goal of the reduction</div>
+<p style="margin:4px 0;">Given a CNF formula φ over variables <span class="math">x<sub>1</sub>, …, x<sub>n</sub></span> with clauses of arbitrary width, build in polynomial time a 3CNF formula φ′ such that φ is satisfiable iff φ′ is satisfiable.</p></div>
+
+<p>The whole trick is one rule applied repeatedly. We replace each clause of width <em>k</em> with a chain of clauses of width 3, glued together by <em>fresh auxiliary variables</em>. The chain has the property that <em>any</em> satisfying assignment of the chain implies at least one of the original literals was true, and conversely if one of the original literals is true the chain can be satisfied by an appropriate choice of auxiliaries.</p>
+</section>
+
+<section><div class="section-label">2 · The splitting rule, by clause width</div>
+
+<div class="diagram" style="margin:14px 0;">
+<svg viewBox="0 0 760 360" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+  <text x="380" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">From a width-k clause to a chain of width-3 clauses</text>
+
+  <!-- k = 4 row -->
+  <text x="40" y="70" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="#1c4a3f">k = 4</text>
+  <rect x="100" y="55" width="200" height="32" rx="6" fill="white" stroke="#888"/>
+  <text x="200" y="76" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" fill="#1a1a1a">(ℓ₁ ∨ ℓ₂ ∨ ℓ₃ ∨ ℓ₄)</text>
+  <text x="320" y="76" font-family="var(--sans), system-ui" font-size="18" fill="var(--accent)">→</text>
+  <rect x="350" y="55" width="380" height="32" rx="6" fill="#f3faf6" stroke="#1c4a3f"/>
+  <text x="540" y="76" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" fill="#1c4a3f">(ℓ₁ ∨ ℓ₂ ∨ a₁) ∧ (¬a₁ ∨ ℓ₃ ∨ ℓ₄)</text>
+
+  <!-- k = 5 row -->
+  <text x="40" y="120" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="#1c4a3f">k = 5</text>
+  <rect x="100" y="105" width="200" height="32" rx="6" fill="white" stroke="#888"/>
+  <text x="200" y="126" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" fill="#1a1a1a">(ℓ₁ ∨ … ∨ ℓ₅)</text>
+  <text x="320" y="126" font-family="var(--sans), system-ui" font-size="18" fill="var(--accent)">→</text>
+  <rect x="350" y="105" width="380" height="32" rx="6" fill="#f3faf6" stroke="#1c4a3f"/>
+  <text x="540" y="126" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="12" fill="#1c4a3f">(ℓ₁ ∨ ℓ₂ ∨ a₁) ∧ (¬a₁ ∨ ℓ₃ ∨ a₂) ∧ (¬a₂ ∨ ℓ₄ ∨ ℓ₅)</text>
+
+  <!-- general k -->
+  <text x="40" y="170" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="#1c4a3f">k ≥ 4</text>
+  <rect x="100" y="155" width="200" height="32" rx="6" fill="white" stroke="#888"/>
+  <text x="200" y="176" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" fill="#1a1a1a">(ℓ₁ ∨ … ∨ ℓ_k)</text>
+  <text x="320" y="176" font-family="var(--sans), system-ui" font-size="18" fill="var(--accent)">→</text>
+  <rect x="350" y="155" width="380" height="32" rx="6" fill="#f3faf6" stroke="#1c4a3f"/>
+  <text x="540" y="176" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#1c4a3f">(ℓ₁ ∨ ℓ₂ ∨ a₁) ∧ (¬a₁ ∨ ℓ₃ ∨ a₂) ∧ … ∧ (¬a_{k−3} ∨ ℓ_{k−1} ∨ ℓ_k)</text>
+
+  <!-- pad cases -->
+  <text x="40" y="220" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="#b95825">k = 2</text>
+  <rect x="100" y="205" width="200" height="32" rx="6" fill="white" stroke="#888"/>
+  <text x="200" y="226" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" fill="#1a1a1a">(ℓ₁ ∨ ℓ₂)</text>
+  <text x="320" y="226" font-family="var(--sans), system-ui" font-size="18" fill="var(--accent)">→</text>
+  <rect x="350" y="205" width="380" height="32" rx="6" fill="#fdf4ed" stroke="#b95825"/>
+  <text x="540" y="226" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="12" fill="#b95825">(ℓ₁ ∨ ℓ₂ ∨ p) ∧ (ℓ₁ ∨ ℓ₂ ∨ ¬p)</text>
+
+  <text x="40" y="270" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="#b95825">k = 1</text>
+  <rect x="100" y="255" width="200" height="32" rx="6" fill="white" stroke="#888"/>
+  <text x="200" y="276" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="13" fill="#1a1a1a">(ℓ₁)</text>
+  <text x="320" y="276" font-family="var(--sans), system-ui" font-size="18" fill="var(--accent)">→</text>
+  <rect x="350" y="255" width="380" height="32" rx="6" fill="#fdf4ed" stroke="#b95825"/>
+  <text x="540" y="276" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#b95825">(ℓ₁ ∨ p ∨ q) ∧ (ℓ₁ ∨ p ∨ ¬q) ∧ (ℓ₁ ∨ ¬p ∨ q) ∧ (ℓ₁ ∨ ¬p ∨ ¬q)</text>
+
+  <!-- k=3 -->
+  <text x="40" y="320" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="#666">k = 3</text>
+  <text x="100" y="320" font-family="var(--sans), system-ui" font-size="13" fill="#444">leave unchanged — already 3-literal</text>
+</svg>
+</div>
+
+<p>The two "pad" cases (k = 1 and k = 2) are the ones students forget. The auxiliary variables <em>p, q</em> there are fresh — each clause-pad gets its own. The four-clause padding for <em>k</em> = 1 forces ℓ<sub>1</sub> to be true in every satisfying assignment, which is exactly what the unit clause (ℓ<sub>1</sub>) demands. The two-clause padding for <em>k</em> = 2 forces ℓ<sub>1</sub> ∨ ℓ<sub>2</sub> for the same reason: no choice of <em>p</em> can satisfy both clauses unless ℓ<sub>1</sub> ∨ ℓ<sub>2</sub> already holds.</p>
+</section>
+
+<section><div class="section-label">3 · Why satisfiability is preserved · both directions</div>
+
+<div class="theorem-box"><div class="theorem-label">Forward direction (⇒)</div>
+<p style="margin:4px 0;">Suppose φ is satisfiable under assignment τ. Take any clause C of width <em>k</em> ≥ 4. Some literal ℓ<sub>j</sub> in C is true under τ. Walk the chain left to right and set each auxiliary <em>a<sub>i</sub></em> to <strong>true</strong> while <em>i</em> &lt; <em>j</em> − 1, then to <strong>false</strong> from <em>i</em> = <em>j</em> − 1 onward. Every chain-clause becomes satisfied: the early ones because their <em>a<sub>i</sub></em> is true; the clause containing ℓ<sub>j</sub> because ℓ<sub>j</sub> is true; the later ones because their <em>¬a<sub>i</sub></em> is true.</p></div>
+
+<div class="theorem-box" style="margin-top:10px;"><div class="theorem-label">Reverse direction (⇐)</div>
+<p style="margin:4px 0;">Suppose φ′ is satisfied under τ′. Project τ′ back to the original variables. Claim: at least one ℓ<sub>j</sub> of the original clause C is true. Suppose for contradiction that <em>all</em> ℓ<sub>1</sub>, …, ℓ<sub>k</sub> are false. Then the first chain-clause forces <em>a<sub>1</sub></em> = true (else nothing in it is satisfied). The second chain-clause now needs <em>a<sub>2</sub></em> = true (its <em>¬a<sub>1</sub></em> is false and both literals are false). Propagating, <em>every</em> <em>a<sub>i</sub></em> = true. But the final chain-clause is (¬a<sub>k−3</sub> ∨ ℓ<sub>k−1</sub> ∨ ℓ<sub>k</sub>) — ¬a<sub>k−3</sub> is false, ℓ<sub>k−1</sub> and ℓ<sub>k</sub> are false — contradiction. So some ℓ<sub>j</sub> must be true.</p></div>
+</section>
+
+<section><div class="section-label">4 · Worked example · one CNF formula start-to-finish</div>
+<p>Take the formula</p>
+<div style="text-align:center;font-family:var(--mono),ui-monospace,monospace;font-size:14px;padding:10px;background:#f7f7f3;border-radius:6px;">φ = (x₁ ∨ x₂ ∨ ¬x₃ ∨ x₄ ∨ ¬x₅) ∧ (¬x₁ ∨ x₃) ∧ (x₂)</div>
+<p>Three clauses of widths 5, 2, 1. Apply the rules:</p>
+<ul style="margin:8px 0 0 20px;">
+  <li><strong>Clause 1, k=5</strong> → (x₁ ∨ x₂ ∨ a₁) ∧ (¬a₁ ∨ ¬x₃ ∨ a₂) ∧ (¬a₂ ∨ x₄ ∨ ¬x₅) &nbsp; <span style="color:var(--muted);">[2 fresh aux: a₁, a₂]</span></li>
+  <li><strong>Clause 2, k=2</strong> → (¬x₁ ∨ x₃ ∨ p₁) ∧ (¬x₁ ∨ x₃ ∨ ¬p₁) &nbsp; <span style="color:var(--muted);">[1 fresh aux: p₁]</span></li>
+  <li><strong>Clause 3, k=1</strong> → (x₂ ∨ p₂ ∨ q₂) ∧ (x₂ ∨ p₂ ∨ ¬q₂) ∧ (x₂ ∨ ¬p₂ ∨ q₂) ∧ (x₂ ∨ ¬p₂ ∨ ¬q₂) &nbsp; <span style="color:var(--muted);">[2 fresh aux: p₂, q₂]</span></li>
+</ul>
+<p>Result: a 3CNF with 9 clauses and 5 new variables — same satisfiability as φ. Sanity check: original has 3 clauses summing to 5+2+1 = 8 literals, output has 9 clauses summing to 27 literals; the growth is linear in the size of φ.</p>
+</section>
+
+<section><div class="section-label">5 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Split a 4-literal clause <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="s-run">⏸ Pause</button><button class="btn ghost" id="s-step">Step</button><button class="btn ghost" id="s-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="s-speed" min="0.25" max="3" step="0.25" value="1"><span id="s-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <div id="s-display" style="min-height:200px;padding:30px;text-align:center;font-family:ui-monospace,monospace;font-size:18px;"></div>
 <div class="explain-panel" id="s-explain"></div></div></section>
-<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
-<li><div class="q">Q1. Why a fresh variable a?</div><div class="a">A new variable not appearing elsewhere lets us split without affecting other clauses. Each clause-split introduces its own a.</div></li>
-<li><div class="q">Q2. Why is satisfiability preserved?</div><div class="a">If original is satisfied, at least one of ℓ₁…ℓ₄ is true. Set a = whether (ℓ₃∨ℓ₄) is true. That choice satisfies both new clauses. Converse is similar.</div></li>
-<li><div class="q">Q3. What's the running time of the reduction?</div><div class="a">Linear in formula size. Each k-literal clause becomes k−2 clauses with k−3 new variables.</div></li>
-</ul></section></div><footer class="foot">P26 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<section><div class="section-label">6 · Polynomial-time check · why the reduction is a ≤<sub>p</sub></div>
+<p>For a clause of width <em>k</em>, the splitting produces:</p>
+<ul style="margin:8px 0 0 20px;">
+  <li><em>k</em> − 2 new clauses</li>
+  <li><em>k</em> − 3 new auxiliary variables</li>
+</ul>
+<p>So if φ has <em>m</em> clauses with total literal count <em>L</em>, the output 3CNF has at most <em>L</em> clauses and <em>L</em> auxiliary variables in the worst case. The reduction runs in <strong>O(L)</strong> time — clearly polynomial in |φ|. Padding for <em>k</em> = 1 or 2 adds at most 4 clauses each, again linear.</p>
+</section>
+
+<section><div class="section-label">7 · Pitfalls students stumble on</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>Auxiliary variables must be fresh per clause.</strong> If you reuse <em>a₁</em> across two clause-splits, you create unwanted dependencies and break preservation. Every clause introduces its own batch.</li>
+  <li><strong>Don't forget k = 1 and k = 2.</strong> Unit clauses and 2-clauses aren't already in 3CNF. You must pad them, otherwise the output isn't a 3CNF formula at all.</li>
+  <li><strong>The reverse direction needs the chain argument, not "by symmetry."</strong> The proof above propagates a forced <em>a<sub>i</sub></em> = true through every link until the last clause fails. Glossing over this loses marks.</li>
+  <li><strong>This is not the same as the "exactly-3" definition.</strong> Some sources define 3SAT as "at most 3 literals" and skip k ≤ 2 padding. Sipser uses "exactly 3" — check which convention the rubric expects.</li>
+</ul>
+</section>
+
+<section><div class="section-label">8 · Q&amp;A defence notes</div><ul class="qa-list">
+<li><div class="q">Q1. Why a fresh auxiliary variable per clause?</div><div class="a">Reusing an auxiliary across multiple clause-splits creates correlations between unrelated clauses — if <em>a</em> is forced true to satisfy one chain, the other chain inherits that constraint and might become unsatisfiable when the original was satisfiable. Freshness keeps the chains independent.</div></li>
+<li><div class="q">Q2. Is the reduction many-one or Turing?</div><div class="a">Many-one (mapping reduction). The function takes the CNF formula as input and returns the 3CNF formula as output. No oracle calls.</div></li>
+<li><div class="q">Q3. What is the size blow-up?</div><div class="a">Linear. Total clause-literals stay within O(L). The constant is small — typically 3× for the worst case of all-unit clauses, which pad 1 literal into 12.</div></li>
+<li><div class="q">Q4. Does the reduction work for 4SAT or kSAT for k ≥ 4?</div><div class="a">Yes — any kSAT for fixed <em>k</em> ≥ 3 is NP-complete, and the same chain trick reduces SAT to it (chains of width <em>k</em> instead of 3). Only 2SAT escapes (it's in P).</div></li>
+<li><div class="q">Q5. Why is 2SAT in P but 3SAT NP-complete?</div><div class="a">2SAT can be decided by implication graphs and strongly-connected components in linear time. The jump at 3 happens because once you allow three literals, you have enough room to encode arbitrary Boolean constraints — Cook–Levin's tableau clauses are all 3-literal for exactly this reason.</div></li>
+</ul></section>
+
+<section><div class="section-label">9 · Where to read more</div>
+<p><strong>Sipser:</strong> §7.4, Theorem 7.32 (the canonical statement of this reduction). <strong>Lecture notes:</strong> Module 5, slide 4 (the NP-complete chain starting from SAT). <strong>MIT 18.404J Lecture 16</strong> covers the same construction with a slightly different diagram.</p>
+</section>
+
+</div><footer class="foot">P26 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){
 let stage=0;
 const stages=[

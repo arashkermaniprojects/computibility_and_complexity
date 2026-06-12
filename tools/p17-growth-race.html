@@ -5,19 +5,90 @@
 <h1>Growth-rate race · log n vs n² vs 2ⁿ</h1><p class="sub">Six complexity functions race; pinpoint where exponential overtakes polynomial.</p>
 <div class="tags"><span class="tag-pill">CLO-3</span><span class="tag-pill warn">R2·30 pts</span><span class="tag-pill info">L9</span></div></header>
 <div class="wrap">
-<section><div class="section-label">1 · Theory</div><p>Complexity classes are about <em>asymptotic</em> growth. Polynomials live in P; exponentials don't. Watch the gap appear visually.</p>
-<div class="theorem-box"><div class="theorem-label">Big-O totals at n = 40</div><p style="margin:4px 0;">log n ≈ 5 · n = 40 · n log n ≈ 213 · n² = 1,600 · n³ = 64,000 · 2ⁿ ≈ 10<sup>12</sup>. Trillion-fold gap.</p></div></section>
-<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<section><div class="section-label">1 · The asymptotic hierarchy</div>
+<p>Complexity is about <em>how time grows with input size</em>, not about absolute speed. The race here puts six canonical growth rates side by side so you can watch which ones stay manageable and which explode.</p>
+<div class="theorem-box"><div class="theorem-label">Big-O totals at n = 40</div>
+<p style="margin:4px 0;">log n ≈ 5  ·  n = 40  ·  n log n ≈ 213  ·  n² = 1,600  ·  n³ = 64,000  ·  2ⁿ ≈ 10<sup>12</sup>.</p>
+<p style="margin:4px 0 0;">The gap between n³ and 2ⁿ at n = 40 is already <strong>roughly fifteen million-fold</strong>; by n = 60 it's a trillion-fold; by n = 100, the heat death of the universe doesn't see the end of 2ⁿ operations.</p>
+</div>
+</section>
+
+<section><div class="section-label">2 · Where exponential overtakes polynomial · the crossover table</div>
+<div class="diagram" style="margin:14px 0;">
+<svg viewBox="0 0 760 340" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+  <text x="380" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">When does 2ⁿ overtake n^k? Where is the crossover point?</text>
+
+  <!-- Table -->
+  <g font-family="var(--mono), ui-monospace, monospace" font-size="13">
+  <rect x="60" y="50" width="120" height="36" fill="#1c4a3f"/><text x="120" y="74" text-anchor="middle" fill="white" font-weight="700">polynomial</text>
+  <rect x="180" y="50" width="160" height="36" fill="#1c4a3f"/><text x="260" y="74" text-anchor="middle" fill="white" font-weight="700">crossover with 2ⁿ</text>
+  <rect x="340" y="50" width="380" height="36" fill="#1c4a3f"/><text x="530" y="74" text-anchor="middle" fill="white" font-weight="700">interpretation</text>
+
+  <rect x="60" y="86" width="120" height="36" fill="#f3faf6" stroke="#1c4a3f"/><text x="120" y="110" text-anchor="middle">n</text>
+  <rect x="180" y="86" width="160" height="36" fill="white" stroke="#888"/><text x="260" y="110" text-anchor="middle">around n = 1</text>
+  <rect x="340" y="86" width="380" height="36" fill="white" stroke="#888"/><text x="530" y="110" text-anchor="middle">2ⁿ wins basically immediately</text>
+
+  <rect x="60" y="122" width="120" height="36" fill="#f3faf6" stroke="#1c4a3f"/><text x="120" y="146" text-anchor="middle">n²</text>
+  <rect x="180" y="122" width="160" height="36" fill="white" stroke="#888"/><text x="260" y="146" text-anchor="middle">around n = 4</text>
+  <rect x="340" y="122" width="380" height="36" fill="white" stroke="#888"/><text x="530" y="146" text-anchor="middle">2⁴ = 16 vs 4² = 16, then 2ⁿ pulls away</text>
+
+  <rect x="60" y="158" width="120" height="36" fill="#f3faf6" stroke="#1c4a3f"/><text x="120" y="182" text-anchor="middle">n³</text>
+  <rect x="180" y="158" width="160" height="36" fill="white" stroke="#888"/><text x="260" y="182" text-anchor="middle">around n = 10</text>
+  <rect x="340" y="158" width="380" height="36" fill="white" stroke="#888"/><text x="530" y="182" text-anchor="middle">2¹⁰ = 1024 vs 10³ = 1000, then 2ⁿ doubles each step</text>
+
+  <rect x="60" y="194" width="120" height="36" fill="#f3faf6" stroke="#1c4a3f"/><text x="120" y="218" text-anchor="middle">n¹⁰</text>
+  <rect x="180" y="194" width="160" height="36" fill="white" stroke="#888"/><text x="260" y="218" text-anchor="middle">around n = 60</text>
+  <rect x="340" y="194" width="380" height="36" fill="white" stroke="#888"/><text x="530" y="218" text-anchor="middle">even n¹⁰ loses eventually — exponential always wins</text>
+
+  <rect x="60" y="230" width="120" height="36" fill="#fdf4ed" stroke="#b95825"/><text x="120" y="254" text-anchor="middle" fill="#b95825" font-weight="700">2ⁿ</text>
+  <rect x="180" y="230" width="160" height="36" fill="white" stroke="#888"/><text x="260" y="254" text-anchor="middle">—</text>
+  <rect x="340" y="230" width="380" height="36" fill="white" stroke="#888"/><text x="530" y="254" text-anchor="middle" fill="#b95825">always beats every polynomial in the long run</text>
+  </g>
+
+  <text x="380" y="295" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" fill="#444">The asymmetry is structural: doubling forever beats multiplying by any fixed constant ratio.</text>
+  <text x="380" y="315" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" fill="#1c4a3f" font-weight="700">P captures "polynomial wins"; EXPTIME captures "exponential is acceptable."</text>
+</svg>
+</div>
+</section>
+
+<section><div class="section-label">3 · Worked example · scaling a problem</div>
+<p>Suppose you have an algorithm that runs in 10⁻⁹ × T(n) seconds (one nanosecond per operation). How big a problem can you solve in one second of CPU time?</p>
+<ul style="margin:8px 0 0 20px;">
+  <li><strong>log n algorithm:</strong> n ≈ 2<sup>10⁹</sup>. Astronomical. Logarithmic algorithms scale trivially.</li>
+  <li><strong>linear (n):</strong> n = 10⁹. A billion items in a second.</li>
+  <li><strong>n log n:</strong> n ≈ 4 × 10⁷. Forty million items.</li>
+  <li><strong>n²:</strong> n ≈ 3 × 10⁴. Thirty thousand items.</li>
+  <li><strong>n³:</strong> n = 1000. A thousand items.</li>
+  <li><strong>2ⁿ:</strong> n ≈ 30. Thirty items. <em>Thirty.</em></li>
+</ul>
+<p>This is why P is the working definition of "feasible" — polynomial-time algorithms scale; exponential-time ones do not.</p>
+</section>
+<section><div class="section-label">4 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Six curves race <span class="pill">Auto-plays</span></div>
 <div class="controls"><button class="btn play-btn" id="g-run">⏸ Pause</button><button class="btn ghost" id="g-reset">Reset</button>
 <label class="speed-control">Speed <input type="range" id="g-speed" min="0.25" max="3" step="0.25" value="1"><span id="g-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label></div>
 <svg id="g-svg" viewBox="0 0 760 380" class="svg-anim" style="background:#fcfbf7;border-radius:6px;"></svg>
 <div class="explain-panel" id="g-explain"></div></div></section>
-<section><div class="section-label">3 · Q&amp;A defence notes</div><ul class="qa-list">
-<li><div class="q">Q1. Why use a log scale?</div><div class="a">Because 2ⁿ at n=40 is ~10¹², while n² is 1600. Linear scale would crush all polynomials to a single line at the bottom.</div></li>
-<li><div class="q">Q2. Where does 2ⁿ overtake n³?</div><div class="a">Around n = 10. After that 2ⁿ grows roughly 2× per step; n³ only grows like (n+1)³/n³ ≈ 1 + 3/n.</div></li>
-<li><div class="q">Q3. Why is polynomial vs exponential the "right" boundary?</div><div class="a">Polynomials are closed under composition; exponentials are not. Robust across reasonable machine models (Cobham-Edmonds thesis).</div></li>
-</ul></section></div><footer class="foot">P17 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+<section><div class="section-label">5 · Pitfalls students stumble on</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>Constants matter in practice but not in P.</strong> A 10<sup>100</sup>·n algorithm is in P. In the real world it's useless. But P is a mathematical category, not an engineering claim — and the gap between "in P" and "fast in practice" is usually small for natural problems.</li>
+  <li><strong>n log n is below n².</strong> Easy to forget under pressure. n log n grows much slower than n²; log n grows much slower than n.</li>
+  <li><strong>2ⁿ is not "n times worse than n."</strong> It's <em>doubled per step</em>. The intuition "exponential just means a lot" misses that one extra bit of input doubles the work.</li>
+  <li><strong>Pseudo-polynomial isn't polynomial.</strong> Algorithms like SUBSET-SUM's DP run in O(n·S) where S is the numeric value of the input — but S itself can be exponential in the number of bits. Polynomial means polynomial in <em>bit length</em>, not in the value.</li>
+</ul>
+</section>
+
+<section><div class="section-label">6 · Q&amp;A defence notes</div>
+<ul class="qa-list">
+<li><div class="q">Q1. Why use a log scale on the y-axis?</div><div class="a">Because 2ⁿ at n=40 is ~10¹² while n² is 1600. A linear scale would flatten all polynomials into a single horizontal line at the bottom, hiding the polynomial-vs-polynomial differences. The log scale makes constant-factor differences look like vertical translations, which is exactly how Big-O treats them.</div></li>
+<li><div class="q">Q2. Where does 2ⁿ overtake n³?</div><div class="a">Around n = 10. At n = 10, both are 1024 vs 1000. After that, 2ⁿ doubles each step while n³ grows by a factor (n+1)³/n³ ≈ 1 + 3/n that shrinks toward 1. Exponential wins decisively.</div></li>
+<li><div class="q">Q3. Why is polynomial vs exponential the "right" boundary?</div><div class="a">The Cobham–Edmonds thesis: polynomial time is closed under composition (a polynomial in a polynomial is a polynomial), robust across reasonable machine models, and matches empirical experience with feasible algorithms. Exponential time has none of those properties — composition explodes, model choice matters more, and exponential algorithms rarely scale to interesting input sizes.</div></li>
+<li><div class="q">Q4. Is n¹⁰⁰ really feasible?</div><div class="a">In theory it's in P. In practice, even n = 2 gives 2¹⁰⁰ steps — completely infeasible. The Cobham–Edmonds thesis is empirical: most natural problems in P turn out to have algorithms with small exponents. The famous exception is interior-point methods for LP (originally n³·⁵, now n^(2+ε)).</div></li>
+</ul></section>
+
+<section><div class="section-label">7 · Where to read more</div>
+<p><strong>Sipser:</strong> §7.1 (Big-O), §7.2 (P). <strong>Lecture notes:</strong> Module 4 slide 1 has the same race; slide 2 covers Big-O formally. <strong>Companion problems:</strong> P18 (single-tape 0ⁿ1ⁿ — concrete O(n²) example), P20 (Big-O classifier), P24 (P showcase — natural P algorithms).</p>
+</section></div><footer class="foot">P17 · BCS 402 · Dr. Arash Kermani · CUD</footer>
 <script>(function(){
 const funcs={'log n':n=>Math.log2(Math.max(2,n)),'n':n=>n,'n log n':n=>n*Math.log2(Math.max(2,n)),'n²':n=>n*n,'n³':n=>n*n*n,'2ⁿ':n=>Math.pow(2,Math.min(n,60))};
 const colors={'log n':'#2a6f5f','n':'#2f60a8','n log n':'#9b59b6','n²':'#b58b00','n³':'#b95825','2ⁿ':'#c0392b'};

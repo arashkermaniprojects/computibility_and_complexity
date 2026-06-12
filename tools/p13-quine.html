@@ -15,14 +15,67 @@
 
 <div class="wrap">
 
-<section><div class="section-label">1 · Theory</div>
-<p>A <strong>quine</strong> is a program that, when executed, prints its own source code. Quines exist in every Turing-complete language; their existence is the simplest consequence of the recursion theorem.</p>
-<div class="theorem-box"><div class="theorem-label">The data/code split</div>
-<p style="margin:4px 0;">A quine has two parts: a string <strong>S</strong> containing the source with a placeholder, and a <strong>printer</strong> that emits S with the placeholder replaced by a quoted copy of S itself. Because the printer's behaviour is described in S, the output reproduces the source.</p></div>
-<p>This is the construction underlying the recursion theorem: any TM can effectively obtain its own description.</p>
+<section><div class="section-label">1 · What a quine is, and why we care</div>
+<p>A <strong>quine</strong> is a program that, when executed, prints its own source code. No file I/O, no introspection — the program builds its own source from its own behaviour. Quines exist in every Turing-complete language, and constructing one is the simplest, cleanest demonstration of <strong>Kleene's recursion theorem</strong> (Sipser §6.1).</p>
+
+<div class="theorem-box"><div class="theorem-label">The recursion theorem (Sipser Theorem 6.3)</div>
+<p style="margin:4px 0;">For any computable function t : Σ* × Σ* → Σ*, there is a TM R such that on input w, R computes t(⟨R⟩, w). In other words: every TM can effectively obtain its own description and use it as part of its computation.</p>
+</div>
+
+<p>A quine is the case t(⟨R⟩, w) = ⟨R⟩ — the function simply outputs its own description. The construction works in any language with string manipulation. Once you can write a quine, the rest of the recursion theorem follows from the same data/code-split trick.</p>
 </section>
 
-<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<section><div class="section-label">2 · The data/code split · the core trick</div>
+
+<div class="diagram" style="margin:14px 0;">
+<svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+  <text x="380" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">A quine has two parts that describe each other</text>
+
+  <!-- Part A: data -->
+  <rect x="40" y="60" width="320" height="100" rx="10" fill="#f3faf6" stroke="var(--accent, #1c4a3f)" stroke-width="1.6"/>
+  <text x="200" y="84" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--accent, #1c4a3f)">A · the data string S</text>
+  <text x="200" y="108" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">"Print my own source by emitting S</text>
+  <text x="200" y="124" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">with the placeholder replaced by a</text>
+  <text x="200" y="140" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">quoted copy of S itself."</text>
+
+  <!-- Part B: code -->
+  <rect x="400" y="60" width="320" height="100" rx="10" fill="#fff7e8" stroke="var(--gold, #c89933)" stroke-width="1.6"/>
+  <text x="560" y="84" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--gold, #c89933)">B · the printer code P</text>
+  <text x="560" y="108" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">read S</text>
+  <text x="560" y="124" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">print quoted-S followed by</text>
+  <text x="560" y="140" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">S with placeholder replaced</text>
+
+  <!-- Arrows -->
+  <path d="M 200 165 L 200 200 L 380 200 L 380 230" stroke="var(--accent)" stroke-width="2" fill="none" marker-end="url(#qarrA)"/>
+  <defs><marker id="qarrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker></defs>
+  <path d="M 560 165 L 560 200 L 380 200" stroke="var(--gold, #c89933)" stroke-width="2" fill="none"/>
+
+  <!-- Output -->
+  <rect x="290" y="230" width="180" height="60" rx="8" fill="white" stroke="#666" stroke-width="1.6"/>
+  <text x="380" y="252" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" font-weight="700">Output</text>
+  <text x="380" y="272" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#1c4a3f">= S concatenated with P</text>
+  <text x="380" y="286" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#1c4a3f">= the original source</text>
+</svg>
+</div>
+
+<p>The asymmetry is what makes it work. The string S <em>describes</em> what the program will do; the printer code P actually <em>does</em> it. P reads S as data, prints S as data (escaped), then prints the unescaped instructions encoded in S. Because S describes P's own behaviour exactly, the output reassembles to the original source.</p>
+</section>
+
+<section><div class="section-label">3 · Three quines in three languages</div>
+<p>Same trick, three syntaxes:</p>
+<pre style="background:#f7f7f3;padding:10px;font-size:12px;border-radius:6px;"><strong>Python:</strong>
+s='s=%r;print(s%%s)';print(s%s)
+
+<strong>JavaScript:</strong>
+(function f(){console.log('('+f+')()');})()
+
+<strong>Lisp:</strong>
+((lambda (x) (list x (list (quote quote) x)))
+ (quote (lambda (x) (list x (list (quote quote) x)))))</pre>
+<p>The Python version is the most readable: the string s contains a format-template that says "the string variable s, then printf-formatted with itself." When you execute it, the placeholder %r gets replaced by repr(s), which is s itself with quotes around it. The output reproduces the source.</p>
+</section>
+
+<section><div class="section-label">4 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">Run a quine, then compare with its source <span class="pill">Auto-plays</span></div>
 
 <div class="controls">
@@ -38,13 +91,27 @@
 <div class="explain-panel" id="qq-explain"></div>
 </div></section>
 
-<section><div class="section-label">3 · Q&amp;A defence notes</div>
+<section><div class="section-label">5 · Pitfalls students stumble on</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>No file I/O.</strong> A quine doesn't read its own source from disk — that would be trivial. The program only operates on internal string variables. The match between source and output is forced by the construction, not by introspection.</li>
+  <li><strong>The string encoding is the hard part.</strong> Getting quotes, backslashes, and escapes right is the practical difficulty. Most quine bugs are escape bugs, not logic bugs.</li>
+  <li><strong>The recursion theorem ≠ recursion.</strong> Recursion (a function calling itself by name) is unrelated to the recursion theorem (a program obtaining its own description). The name collision is historical and unfortunate.</li>
+  <li><strong>A quine is a constructive proof, not just an example.</strong> The recursion theorem says a program with property X exists for any computable X — but the quine construction shows you <em>how to build it</em>. That constructive power is what makes the theorem useful for proofs.</li>
+</ul>
+</section>
+
+<section><div class="section-label">6 · Q&amp;A defence notes</div>
 <ul class="qa-list">
-<li><div class="q">Q1. Isn't this cheating — reading its own source file?</div><div class="a">No file I/O. The program only operates on the string variable S, which happens to encode the source. The match is forced by the construction.</div></li>
-<li><div class="q">Q2. How does this relate to the recursion theorem?</div><div class="a">The recursion theorem says any TM can effectively access its own description. The quine is the special case where the TM uses that description to print itself.</div></li>
-<li><div class="q">Q3. Why is the recursion theorem useful for proving undecidability?</div><div class="a">It lets a hypothetical TM M reason about its own description ⟨M⟩. We construct M to do the opposite of what a hypothetical decider D(⟨M⟩) says — the standard diagonal argument made cleaner.</div></li>
-<li><div class="q">Q4. Write the simplest quine you know.</div><div class="a">Lisp: ((lambda (x) (list x (list (quote quote) x))) (quote (lambda (x) (list x (list (quote quote) x))))). Python: <code>s='s=%r;print(s%%s)';print(s%s)</code>.</div></li>
+<li><div class="q">Q1. Isn't this cheating — reading its own source file?</div><div class="a">No file I/O is allowed or needed. The program only operates on the string variable S, which happens to encode (a description of) the source. The match between source and output is forced by the construction: the printer reassembles its source from the data stored in S.</div></li>
+<li><div class="q">Q2. How does this relate to the recursion theorem?</div><div class="a">The recursion theorem says any TM can effectively access its own description ⟨R⟩. The quine is the simplest case: the TM uses that self-access to print ⟨R⟩ itself. More general uses replace "print ⟨R⟩" with arbitrary computable t(⟨R⟩, w).</div></li>
+<li><div class="q">Q3. Why is the recursion theorem useful for proving undecidability?</div><div class="a">It lets a hypothetical TM M reason about its own description without diagonalisation gymnastics. Rice's theorem (Problem 14), for example, builds an M that does the opposite of whatever a candidate decider D claims about ⟨M⟩. The recursion theorem makes that construction routine — no need to think about indices and codes.</div></li>
+<li><div class="q">Q4. What's the simplest quine you know?</div><div class="a">Python one-liner: <code>s='s=%r;print(s%%s)';print(s%s)</code>. Sixteen characters of payload, eighteen of housekeeping. The %r formatter quotes s automatically; %% escapes a literal % in the format string.</div></li>
+<li><div class="q">Q5. Are there languages where quines are impossible?</div><div class="a">Yes — languages without string-manipulation primitives (e.g., pure forms of Brainfuck with no output buffering) can fail. The recursion theorem holds for Turing-complete languages but requires self-printable code as a primitive — and not every Turing-complete language is self-printable in a small program.</div></li>
 </ul></section>
+
+<section><div class="section-label">7 · Where to read more</div>
+<p><strong>Sipser:</strong> §6.1, Theorem 6.3 (recursion theorem) and Theorem 6.5 (corollary: every TM "knows" its own description). <strong>Lecture notes:</strong> Module 3 slide 5 walks through the T = A·B construction underlying the recursion theorem. <strong>Companion problems:</strong> P14 (Rice's theorem), P15 (fixed-point version), P16 (self-aware TM).</p>
+</section>
 
 </div>
 <footer class="foot">Problem 13 · BCS 402 · Dr. Arash Kermani · CUD</footer>

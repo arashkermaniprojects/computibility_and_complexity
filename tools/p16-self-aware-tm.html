@@ -15,16 +15,69 @@
 
 <div class="wrap">
 
-<section><div class="section-label">1 · Theory</div>
-<p>The recursion theorem says: <strong>any TM can effectively obtain its own description ⟨M⟩</strong> on its tape and use it as data. This gives a beautifully short re-proof of A<sub>TM</sub>-undecidability.</p>
+<section><div class="section-label">1 · The trick · a TM that reads its own description</div>
+<p>The recursion theorem (Sipser §6.1) says: <strong>any TM can effectively obtain its own description ⟨M⟩</strong> on its tape and use it as data. This unlocks a remarkably short proof that A<sub>TM</sub> is undecidable — one with no explicit diagonal argument visible.</p>
+
 <div class="theorem-box"><div class="theorem-label">A<sub>TM</sub> undecidable · recursion-theorem proof</div>
 <p style="margin:4px 0;">Suppose D decides A<sub>TM</sub>. By the recursion theorem, build a TM M that on input w:</p>
-<ol style="margin:4px 0;"><li>Obtain ⟨M⟩.</li><li>Compute D(⟨M, w⟩).</li><li>Output the OPPOSITE of D's answer.</li></ol>
-<p style="margin:4px 0;">Then M accepts w ⇔ D says M doesn't accept w ⇔ M doesn't accept w. Contradiction.</p></div>
-<p>The diagonalization is now hidden inside M itself, not stretched across a separate machine D' as in Problem 3.</p>
+<ol style="margin:4px 0 0 20px;">
+  <li>Obtain ⟨M⟩ (recursion-theorem gift).</li>
+  <li>Compute D(⟨M, w⟩).</li>
+  <li>Output the <em>opposite</em> of D's answer.</li>
+</ol>
+<p style="margin:6px 0 0 0;">Now ask: does M accept w? M accepts w ⇔ D(⟨M, w⟩) rejects ⇔ M does not accept w. Contradiction. So D cannot exist.</p>
+</div>
+
+<p>The diagonalisation is hidden inside M itself, not stretched across a separate machine D' as in Problem 3. The recursion theorem absorbs the bookkeeping; what remains is just "build a program that defies its own classifier."</p>
 </section>
 
-<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<section><div class="section-label">2 · Two views of the same proof · side by side</div>
+
+<div class="diagram" style="margin:14px 0;">
+<svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+  <text x="380" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">Two proofs that A_TM is undecidable</text>
+
+  <!-- Classic diagonal proof -->
+  <rect x="40" y="50" width="340" height="200" rx="10" fill="#fdf4ed" stroke="var(--warn, #b95825)" stroke-width="1.6"/>
+  <text x="210" y="74" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--warn, #b95825)">Classic (P3) · diagonal proof</text>
+  <text x="60" y="100" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">Assume D decides A_TM.</text>
+  <text x="60" y="118" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">Build separate D':</text>
+  <text x="60" y="136" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">  on input ⟨M⟩:</text>
+  <text x="60" y="154" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">    run D(⟨M, ⟨M⟩⟩)</text>
+  <text x="60" y="172" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">    output opposite</text>
+  <text x="60" y="200" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">Apply D' to ⟨D'⟩:</text>
+  <text x="60" y="218" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">  contradiction at the</text>
+  <text x="60" y="236" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">  diagonal cell ⟨D', ⟨D'⟩⟩.</text>
+
+  <!-- Recursion theorem proof -->
+  <rect x="400" y="50" width="340" height="200" rx="10" fill="#f3faf6" stroke="var(--accent, #1c4a3f)" stroke-width="1.6"/>
+  <text x="570" y="74" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--accent, #1c4a3f)">Recursion theorem (P16)</text>
+  <text x="420" y="100" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">Assume D decides A_TM.</text>
+  <text x="420" y="118" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">By recursion theorem,</text>
+  <text x="420" y="136" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">build M with access to ⟨M⟩:</text>
+  <text x="420" y="154" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">  on input w:</text>
+  <text x="420" y="172" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">    run D(⟨M, w⟩)</text>
+  <text x="420" y="190" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">    output opposite</text>
+  <text x="420" y="218" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">M accepts w ⇔ ¬M accepts w</text>
+  <text x="420" y="236" font-family="var(--mono), ui-monospace, monospace" font-size="11" fill="#444">Contradiction. ∎</text>
+</svg>
+</div>
+
+<p>The proofs are the same proof in different clothes. The diagonal argument shows up <em>somewhere</em> — the recursion theorem just packages it. The recursion-theorem version is easier to generalise: Rice's theorem (Problem 14) uses the same template, replacing "D decides A<sub>TM</sub>" with "D decides any non-trivial property of L(M)."</p>
+</section>
+
+<section><div class="section-label">3 · Worked example · M defies its classifier</div>
+<p>Spell out one execution. Suppose D is your candidate decider for A<sub>TM</sub>. By the recursion theorem, there exists a TM M that on any input w:</p>
+<ol style="margin:8px 0 0 20px;">
+  <li>Writes down ⟨M⟩ (its own code).</li>
+  <li>Calls D on the pair ⟨M, w⟩, gets some yes/no answer.</li>
+  <li>If D says "M accepts w," then M rejects w.</li>
+  <li>If D says "M does not accept w," then M accepts w.</li>
+</ol>
+<p>Pick any w. D produces some classification. M does the opposite. So D's classification is wrong on (⟨M⟩, w). One wrong classification is enough — D was supposed to be correct on <em>every</em> input. Contradiction.</p>
+</section>
+
+<section><div class="section-label">4 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">M inspects ⟨M⟩ and decides what to do <span class="pill">Auto-plays</span></div>
 <div class="controls">
 <button class="btn play-btn" id="sa-run">⏸ Pause</button><button class="btn ghost" id="sa-step">Step</button><button class="btn ghost" id="sa-reset">Reset</button>
@@ -34,12 +87,27 @@
 <div class="explain-panel" id="sa-explain"></div>
 </div></section>
 
-<section><div class="section-label">3 · Q&amp;A defence notes</div>
+<section><div class="section-label">5 · Pitfalls students stumble on</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>"Obtain ⟨M⟩" is not magic.</strong> The recursion theorem says ⟨M⟩ is constructible — there's an actual procedure (Problem 13's quine machinery). It's not hand-waving; it's a buildable feature of the TM.</li>
+  <li><strong>M is not the same as D's classification of M.</strong> M produces an answer (accept/reject w). D produces a classification ("M accepts w" or not). The contradiction is that M's answer disagrees with D's classification on (M, w). Don't conflate the two.</li>
+  <li><strong>This proof generalises; the Problem 3 proof doesn't easily.</strong> Try repeating Problem 3's argument for "the language of M is empty." It gets awkward. The recursion-theorem proof reads "build M to do the opposite of what D says about M's language" and just works. That's the value.</li>
+  <li><strong>The recursion theorem does not bootstrap the universe.</strong> It only says: <em>given</em> any computable t, you can build a fixed point of t. It does not let you compute uncomputable functions.</li>
+</ul>
+</section>
+
+<section><div class="section-label">6 · Q&amp;A defence notes</div>
 <ul class="qa-list">
-<li><div class="q">Q1. Compare with the Problem 3 proof.</div><div class="a">Problem 3 builds an external D that flips H. Problem 16's M flips D <em>from inside itself</em>, using the recursion theorem to get ⟨M⟩. Same contradiction, cleaner structure.</div></li>
-<li><div class="q">Q2. Does M actually "know" its own code?</div><div class="a">In the sense the recursion theorem provides: yes, ⟨M⟩ is written on M's tape before computation begins (or constructable on demand). M can then operate on ⟨M⟩ like any other input.</div></li>
-<li><div class="q">Q3. Where else is self-reference used in this course?</div><div class="a">Rice's theorem (P14), Gödel's incompleteness, the construction of complete problems in complexity theory, fixed-point combinators in λ-calculus.</div></li>
+<li><div class="q">Q1. Compare with the Problem 3 proof.</div><div class="a">Problem 3 builds an external machine D' that flips D, and asks what happens on D' fed itself. Problem 16's M flips D <em>from inside itself</em>, using the recursion theorem to get ⟨M⟩ for free. Same contradiction, but the recursion theorem absorbs the awkward "build D'" step. The technique generalises immediately to Rice's theorem.</div></li>
+<li><div class="q">Q2. Does M actually "know" its own code?</div><div class="a">In the sense the recursion theorem provides: yes. ⟨M⟩ is constructible by M itself, using the quine technique from Problem 13. It's not a runtime introspection feature — it's baked into M's construction at compile time.</div></li>
+<li><div class="q">Q3. Where else is self-reference used in this course?</div><div class="a">Rice's theorem (P14) is the next natural application. Gödel's incompleteness theorems use the same trick at the level of formal proofs. The fixed-point combinator Y in λ-calculus is the functional analog. In complexity theory, complete problems via "diagonalisation against polynomial-time TMs" use the same kind of self-reference.</div></li>
+<li><div class="q">Q4. Does this work for HALT<sub>TM</sub> too?</div><div class="a">Yes. Replace D's role: assume D' decides HALT<sub>TM</sub>. Build M with access to ⟨M⟩: on input w, ask D'(⟨M, w⟩); if D' says "halts," loop; if D' says "doesn't halt," halt. M's behaviour contradicts D's classification.</div></li>
+<li><div class="q">Q5. Can we use this to prove A<sub>DFA</sub> undecidable?</div><div class="a">No — A<sub>DFA</sub> is decidable. The recursion theorem requires the language being defined to have an actual fixed point in the model, which works for TMs. DFAs don't have unrestricted self-reference because they can't encode arbitrary programs.</div></li>
 </ul></section>
+
+<section><div class="section-label">7 · Where to read more</div>
+<p><strong>Sipser:</strong> Theorem 6.5 (recursion theorem corollary — A<sub>TM</sub> proof). <strong>Lecture notes:</strong> Module 3 slide 5 (T = A·B construction). <strong>Companion problems:</strong> P3 (classic A<sub>TM</sub> proof, contrast), P13 (quine, prerequisite), P14 (Rice via recursion theorem), P15 (fixed-point form).</p>
+</section>
 
 </div>
 <footer class="foot">Problem 16 · BCS 402 · Dr. Arash Kermani · CUD</footer>

@@ -15,14 +15,67 @@
 
 <div class="wrap">
 
-<section><div class="section-label">1 · Theory</div>
-<div class="theorem-box"><div class="theorem-label">Recursion theorem (fixed-point form)</div>
-<p style="margin:4px 0;">Let t : Σ* → Σ* be a computable total function. Then there exists a TM R such that
-<span class="math">L(R) = L(t(⟨R⟩))</span>. Equivalently: for any computable transformation t of programs, you can build a program that is unchanged (semantically) by t.</p></div>
-<p>This is the cleaner, more powerful statement. Quines (Problem 13) are the case where t outputs a program that prints its argument. Self-aware TMs (Problem 16) use t to inspect the description.</p>
+<section><div class="section-label">1 · The fixed-point form of the recursion theorem</div>
+<div class="theorem-box"><div class="theorem-label">Theorem (Sipser 6.8)</div>
+<p style="margin:4px 0;">Let t : Σ* → Σ* be a computable total function (a "program transformation"). Then there exists a TM R such that <span class="math">L(R) = L(t(⟨R⟩))</span>. R is a <em>fixed point</em> of t at the level of recognised languages — the transformation t does not change what R recognises.</p>
+</div>
+<p>This is the cleaner, more powerful statement of the recursion theorem. Sipser's classic Theorem 6.3 (every TM can obtain its own description) is a special case. Quines (Problem 13) are another special case: t outputs a program-that-prints-its-argument, and the fixed point is a program-that-prints-itself.</p>
+
+<div class="theorem-box"><div class="theorem-label">Reading "fixed point" carefully</div>
+<p style="margin:4px 0;">"L(R) = L(t(⟨R⟩))" does not say R and t(⟨R⟩) are the same TM — they might have very different code. It says they recognise the same language. R is a <em>semantic</em> fixed point of t, not a syntactic one.</p>
+</div>
 </section>
 
-<section><div class="section-label">2 · Animated demo · auto-plays · loops</div>
+<section><div class="section-label">2 · The proof, in three steps</div>
+<div class="diagram" style="margin:14px 0;">
+<svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
+  <text x="380" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">Recursion theorem proof skeleton · how to find R given t</text>
+
+  <!-- Step 1 -->
+  <rect x="40" y="50" width="220" height="200" rx="10" fill="#f3faf6" stroke="var(--accent, #1c4a3f)" stroke-width="1.6"/>
+  <text x="150" y="74" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--accent, #1c4a3f)">Step 1 · Build helper q</text>
+  <text x="150" y="98" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#444">q : Σ* → Σ* takes ⟨P⟩</text>
+  <text x="150" y="116" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#444">and outputs ⟨P'⟩, where P'</text>
+  <text x="150" y="134" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#444">on input x runs P(⟨P'⟩, x).</text>
+  <text x="150" y="170" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#1c4a3f" font-weight="700">P' "knows" its own code.</text>
+  <text x="150" y="200" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">q exists by the</text>
+  <text x="150" y="216" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10" fill="#666">s-m-n theorem.</text>
+
+  <!-- Step 2 -->
+  <rect x="280" y="50" width="220" height="200" rx="10" fill="#fff7e8" stroke="var(--gold, #c89933)" stroke-width="1.6"/>
+  <text x="390" y="74" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--gold, #c89933)">Step 2 · Apply q to t</text>
+  <text x="390" y="98" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#444">Compute ⟨t∘q⟩, the TM that</text>
+  <text x="390" y="116" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#444">on input ⟨P⟩ computes t(q(⟨P⟩)).</text>
+  <text x="390" y="134" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#444">Plug ⟨t∘q⟩ into q itself.</text>
+  <text x="390" y="170" text-anchor="middle" font-family="var(--mono), ui-monospace, monospace" font-size="12" fill="#1c4a3f">R := q(⟨t∘q⟩)</text>
+
+  <!-- Step 3 -->
+  <rect x="520" y="50" width="220" height="200" rx="10" fill="#fdf4ed" stroke="var(--warn, #b95825)" stroke-width="1.6"/>
+  <text x="630" y="74" text-anchor="middle" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--warn, #b95825)">Step 3 · Verify the fix</text>
+  <text x="630" y="98" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#444">On input x, R runs (t∘q)(⟨R⟩, x)</text>
+  <text x="630" y="116" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#444">= t(q(⟨R⟩))(x)</text>
+  <text x="630" y="134" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="#444">= t(⟨R⟩)(x)</text>
+  <text x="630" y="170" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="var(--warn, #b95825)" font-weight="700">So R and t(⟨R⟩) compute</text>
+  <text x="630" y="186" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" fill="var(--warn, #b95825)" font-weight="700">the same function. ✓</text>
+
+  <!-- arrows -->
+  <path d="M 260 150 L 280 150" stroke="#666" stroke-width="1.5" fill="none" marker-end="url(#fparr1)"/>
+  <defs><marker id="fparr1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#666"/></marker></defs>
+  <path d="M 500 150 L 520 150" stroke="#666" stroke-width="1.5" fill="none" marker-end="url(#fparr2)"/>
+  <defs><marker id="fparr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#666"/></marker></defs>
+
+  <text x="380" y="285" text-anchor="middle" font-family="var(--sans), system-ui" font-size="12" fill="#1c4a3f" font-weight="700">The key move: q gives any program access to its own code, then we apply that to t.</text>
+</svg>
+</div>
+<p>The two non-obvious moves: <em>q</em> is the constructive engine — it converts an arbitrary program description ⟨P⟩ into a self-aware version ⟨P'⟩ that has its own code as data. The s-m-n theorem (or just direct construction) guarantees q is computable. The second move is plugging ⟨t∘q⟩ back into q to get R. That self-application is the closing of the loop.</p>
+</section>
+
+<section><div class="section-label">3 · Concrete example · accept/reject swap</div>
+<p>Let t : Σ* → Σ* take ⟨M⟩ and return the description of the TM obtained by swapping q<sub>accept</sub> and q<sub>reject</sub> in M. Clearly L(t(⟨M⟩)) = Σ* \ L(M) for halting M.</p>
+<p>The recursion theorem gives R with L(R) = L(t(⟨R⟩)) = Σ* \ L(R). So L(R) is its own complement — possible only if L(R) is undefined on some inputs (R loops). The fixed point exists, and exploring why it must loop is a nice consequence: no halting TM can be its own complement under accept/reject swap.</p>
+</section>
+
+<section><div class="section-label">4 · Animated demo · auto-plays · loops</div>
 <div class="widget"><div class="widget-title">A fixed-point construction · q maps any ⟨P⟩ to ⟨P'⟩ <span class="pill">Auto-plays</span></div>
 <div class="controls">
 <button class="btn play-btn" id="fp-run">⏸ Pause</button><button class="btn ghost" id="fp-step">Step</button><button class="btn ghost" id="fp-reset">Reset</button>
@@ -32,13 +85,27 @@
 <div class="explain-panel" id="fp-explain"></div>
 </div></section>
 
-<section><div class="section-label">3 · Q&amp;A defence notes</div>
+<section><div class="section-label">5 · Pitfalls students stumble on</div>
+<ul style="margin:6px 0 0 20px;">
+  <li><strong>Fixed point is semantic, not syntactic.</strong> R and t(⟨R⟩) might be completely different programs — different states, different tape alphabets. They just recognise the same language.</li>
+  <li><strong>t must be total.</strong> If t loops on some ⟨P⟩, the construction breaks because we can't form ⟨t∘q⟩ reliably. Most natural transformations are total: rename states, add transitions, swap accept/reject.</li>
+  <li><strong>The recursion theorem doesn't say R is unique.</strong> Many fixed points may exist for a given t. The theorem only guarantees existence.</li>
+  <li><strong>You don't need to know s-m-n by heart.</strong> The s-m-n theorem just says "you can build a program that hard-codes some of its inputs as constants" — every programming language has this trivially. The proof's <em>structure</em> is the lesson, not the s-m-n syntax.</li>
+</ul>
+</section>
+
+<section><div class="section-label">6 · Q&amp;A defence notes</div>
 <ul class="qa-list">
 <li><div class="q">Q1. Why is the fixed-point form stronger than the quine?</div><div class="a">Quine is t = identity. Fixed-point works for any computable t — including "rewrite every accept into a reject" or "double the number of states".</div></li>
 <li><div class="q">Q2. Why is t required to be total?</div><div class="a">If t loops on some input, the fixed-point construction can fail. Totality ensures t(⟨P⟩) is always defined.</div></li>
 <li><div class="q">Q3. Sketch the proof.</div><div class="a">Use the s-m-n theorem to define a computable q that maps any ⟨P⟩ to ⟨P'⟩ = a program that on input x first writes ⟨P'⟩ on its tape, then runs P(⟨P'⟩, x). Apply q to t to get R = q(t).</div></li>
-<li><div class="q">Q4. Concrete example.</div><div class="a">Let t replace every accept state with reject. There exists a TM R such that L(R) equals the language of R-with-accept-and-reject-swapped. R is "indifferent" to that transformation.</div></li>
+<li><div class="q">Q4. Concrete example.</div><div class="a">Let t replace every accept state with reject. There exists a TM R such that L(R) equals the language of R-with-accept-and-reject-swapped — meaning L(R) is its own complement. Since L(R) = Σ* \ L(R) is impossible for halting TMs, this R must loop on some inputs. The recursion theorem still produces it.</div></li>
+<li><div class="q">Q5. Where does this get used to prove undecidability?</div><div class="a">Rice's theorem (Problem 14) uses it to dodge diagonalisation. If P were a decider for any non-trivial language property, the fixed-point theorem produces a machine that contradicts P's classification of itself. Cleaner than building the diagonal machine D by hand.</div></li>
 </ul></section>
+
+<section><div class="section-label">7 · Where to read more</div>
+<p><strong>Sipser:</strong> §6.1, Theorem 6.8 (fixed-point form) and Theorem 6.9 (corollaries). <strong>Lecture notes:</strong> Module 3 slide 5 has the T = A·B construction. <strong>Companion problems:</strong> P13 (quine, special case), P14 (Rice via recursion theorem), P16 (self-aware TM).</p>
+</section>
 
 </div>
 <footer class="foot">Problem 15 · BCS 402 · Dr. Arash Kermani · CUD</footer>

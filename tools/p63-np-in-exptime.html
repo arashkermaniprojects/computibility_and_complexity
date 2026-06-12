@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P63 · NP ⊆ EXPTIME via NTM determinization</title>
+<link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css">
+<script src="../widget-loop.js"></script></head><body>
+
+<header class="tool-header">
+<div class="crumb"><a href="index.html">← Student tools</a> · Problem 63 · Lecture 11 · Round 2 (30 pts)</div>
+<h1>NP ⊆ EXPTIME · simulate a nondeterministic TM with a deterministic one</h1>
+<p class="sub">An NTM that runs in time n<sup>k</sup> on every branch can be simulated by a deterministic TM in time 2<sup>O(n<sup>k</sup>)</sup>. So NP ⊆ EXPTIME.</p>
+<div class="tags"><span class="tag-pill">CLO-3</span><span class="tag-pill warn">R2·30 pts · R2.12</span><span class="tag-pill info">L11</span></div>
+</header>
+
+<div class="wrap">
+
+<section><div class="section-label">1 · The theorem</div>
+<div class="theorem-box"><div class="theorem-label">NP ⊆ EXPTIME (Sipser §7.2)</div>
+<p style="margin:4px 0;">Every NP language can be decided by a deterministic Turing machine running in time 2<sup>O(n<sup>k</sup>)</sup> for some k. Equivalently: every NTM that halts on every branch in time n<sup>k</sup> can be deterministically simulated in time 2<sup>O(n<sup>k</sup>)</sup>.</p>
+</div>
+<div class="theorem-box"><div class="theorem-label">Why anyone cares</div>
+<p style="margin:4px 0;">This gives the first proven containment in the P ⊆ NP ⊆ EXPTIME chain. Combined with P ⊊ EXPTIME (time hierarchy theorem), it means at least ONE of (P ⊊ NP), (NP ⊊ EXPTIME) is true — we just don't know which.</p>
+</div>
+</section>
+
+<section><div class="section-label">2 · Construction · BFS the nondeterministic computation tree</div>
+<div class="widget"><div class="widget-title">An NTM's computation tree, explored exhaustively <span class="pill">Auto-plays</span></div>
+<div class="controls">
+<button class="btn play-btn" id="np-run">⏸ Pause</button><button class="btn ghost" id="np-step">Step</button><button class="btn ghost" id="np-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="np-speed" min="0.25" max="3" step="0.25" value="1"><span id="np-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label>
+</div>
+<svg id="np-svg" viewBox="0 0 720 320" style="background:#fcfbf7;border-radius:6px;width:100%;"></svg>
+<div class="explain-panel" id="np-explain"></div>
+</div></section>
+
+<section><div class="section-label">3 · The deterministic simulator</div>
+<div class="theorem-box"><div class="theorem-label">Algorithm DSim — simulate NTM N on input x</div>
+<ol style="margin:6px 0 6px 22px;">
+<li>Let b = maximum number of nondeterministic choices at any step (a constant of N). N runs for at most T = |x|<sup>k</sup> steps on every branch.</li>
+<li>Do a breadth-first traversal of N's computation tree, level by level, up to depth T.</li>
+<li>At each leaf (depth T): check if it's an accept configuration. If so, accept and halt.</li>
+<li>If no leaf accepts: reject.</li>
+</ol>
+<p style="margin:4px 0;"><strong>Time analysis:</strong> the tree has fan-out ≤ b and depth ≤ T, so it has at most b<sup>T</sup> = b<sup>|x|<sup>k</sup></sup> leaves. Visiting each takes poly(|x|) time. Total: 2<sup>O(|x|<sup>k</sup>)</sup>. That's EXPTIME.</p>
+</div>
+</section>
+
+<section><div class="section-label">4 · Worked example · 3-SAT with n = 4 variables</div>
+<div class="theorem-box"><div class="theorem-label">An NTM for 3-SAT on n variables</div>
+<ol style="margin:6px 0 6px 22px;">
+<li>For i = 1 to n: nondeterministically guess assignment of variable x<sub>i</sub> (branch ×2).</li>
+<li>Deterministically evaluate the formula on the guessed assignment.</li>
+<li>Accept iff the formula evaluates to true.</li>
+</ol>
+<p style="margin:4px 0;">Branching factor b = 2, depth ≤ n. Tree size: 2<sup>n</sup> leaves. DSim explores all 2<sup>n</sup> assignments — exactly brute force, exponential in n. For n = 4: tree has 16 leaves, DSim checks all 16.</p>
+</div>
+</section>
+
+<section><div class="section-label">5 · Q&amp;A defence notes</div>
+<ul class="qa-list">
+<li><div class="q">Q1. Why BFS and not DFS?</div><div class="a">DFS would also work, but BFS keeps the depth bounded at every level — easier to argue that we stop after T levels and reject if no accept seen. Either traversal still costs 2<sup>O(n<sup>k</sup>)</sup>.</div></li>
+<li><div class="q">Q2. Could we do better than 2<sup>O(n<sup>k</sup>)</sup>?</div><div class="a">Not in general — this is the open P vs NP question. If we could simulate any NTM in polynomial deterministic time, P = NP.</div></li>
+<li><div class="q">Q3. Why is b constant (not part of the input)?</div><div class="a">An NTM is a fixed machine, so its transition function δ : Q × Γ → P(Q × Γ × {L,R}) has a fixed maximum image size — let's call it b. The maximum branching factor doesn't depend on the input length.</div></li>
+<li><div class="q">Q4. What's the memory cost of DSim?</div><div class="a">If we store the whole frontier: 2<sup>T</sup> configurations × O(T) bytes each = 2<sup>O(T)</sup> space. Wasteful. Use Savitch-style recursion or DFS to bring it down to O(T) = polynomial space — this proves NP ⊆ PSPACE as a side benefit.</div></li>
+<li><div class="q">Q5. So NP ⊆ EXPTIME. Does that mean any NP-complete problem is exponentially solvable?</div><div class="a">Yes — at worst. Every NP-complete problem can be solved by exhaustive search in 2<sup>O(n<sup>k</sup>)</sup> time. Real-world algorithms (DPLL for SAT, etc.) use heuristics to do better on practical instances, but the worst case is still exponential as far as anyone knows.</div></li>
+</ul></section>
+
+</div>
+<footer class="foot">Problem 63 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<script>
+(function(){
+const stages = [
+  {label: 'NTM N on input x. The TM at the root branches into multiple choices at every step.', d: 0},
+  {label: 'Depth 1: N makes a nondeterministic choice (branching factor 2 here). Two children.', d: 1},
+  {label: 'Depth 2: each child branches again. Four configurations.', d: 2},
+  {label: 'Depth 3: branching continues. Eight configurations.', d: 3},
+  {label: 'Continue until depth T = n^k. Total leaves ≤ b^T = 2^O(n^k). The DTM walks the whole tree, depth-first or breadth-first, checking every leaf for accept.', d: 3, hi: 'accept'},
+  {label: 'If any leaf accepts: DSim outputs ACCEPT. Otherwise: REJECT. Total time = 2^O(n^k) = EXPTIME.', d: 3, hi: 'conclude'},
+];
+let i = -1;
+function render() {
+  let s = '';
+  s += `<text x="360" y="32" text-anchor="middle" font-family="var(--sans), system-ui" font-size="15" font-weight="700" fill="#1a1a1a">NTM N's computation tree (branching factor b = 2)</text>`;
+  // tree levels
+  const cy0 = 70, dy = 50;
+  const levels = [
+    [{x: 360, y: cy0, label: 'q₀'}],
+    [{x: 240, y: cy0 + dy, label: ''}, {x: 480, y: cy0 + dy, label: ''}],
+    [{x: 180, y: cy0 + 2*dy, label: ''}, {x: 300, y: cy0 + 2*dy, label: ''}, {x: 420, y: cy0 + 2*dy, label: ''}, {x: 540, y: cy0 + 2*dy, label: ''}],
+    [
+      {x: 150, y: cy0 + 3*dy, label: ''}, {x: 210, y: cy0 + 3*dy, label: ''},
+      {x: 270, y: cy0 + 3*dy, label: ''}, {x: 330, y: cy0 + 3*dy, label: ''},
+      {x: 390, y: cy0 + 3*dy, label: ''}, {x: 450, y: cy0 + 3*dy, label: ''},
+      {x: 510, y: cy0 + 3*dy, label: ''}, {x: 570, y: cy0 + 3*dy, label: ''},
+    ],
+  ];
+  const stage = i >= 0 ? stages[i] : null;
+  const maxD = stage ? stage.d : 0;
+  const hi = stage ? stage.hi : '';
+  // accept leaf index (one of the leaves at depth 3)
+  const acceptIdx = 4; // arbitrary
+  // edges
+  for (let d = 1; d <= 3; d++) {
+    const op = d <= maxD ? 1 : 0.15;
+    levels[d].forEach((node, idx) => {
+      const parent = levels[d-1][Math.floor(idx/2)];
+      const onAcceptPath = hi && [Math.floor(idx/2), Math.floor(Math.floor(idx/2)/2)].includes(idx === acceptIdx ? Math.floor(acceptIdx/2) : -1);
+      s += `<line x1="${parent.x}" y1="${parent.y+8}" x2="${node.x}" y2="${node.y-8}" stroke="${onAcceptPath ? 'var(--accent-strong, #1c4a3f)' : '#888'}" stroke-width="${onAcceptPath ? 2 : 1}" opacity="${op}"/>`;
+    });
+  }
+  // nodes
+  for (let d = 0; d <= 3; d++) {
+    const op = d <= maxD ? 1 : 0.15;
+    levels[d].forEach((node, idx) => {
+      const isAccept = (d === 3 && idx === acceptIdx && hi);
+      const isReject = (d === 3 && hi === 'conclude' && idx !== acceptIdx);
+      const isLeaf = d === 3;
+      let fill = '#fff', stroke = '#444', strokeW = 1.5;
+      if (isAccept) { fill = '#c8e6c9'; stroke = '#1b5e20'; strokeW = 2.5; }
+      else if (isReject) { fill = '#fbe9e7'; stroke = '#c62828'; strokeW = 1.2; }
+      else if (d === 0) { fill = 'var(--accent-soft)'; stroke = 'var(--accent-strong, #1c4a3f)'; strokeW = 2; }
+      const r = d === 0 ? 16 : (isLeaf ? 10 : 12);
+      s += `<circle cx="${node.x}" cy="${node.y}" r="${r}" fill="${fill}" stroke="${stroke}" stroke-width="${strokeW}" opacity="${op}"/>`;
+      if (node.label) s += `<text x="${node.x}" y="${node.y+4}" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11" font-weight="700" opacity="${op}">${node.label}</text>`;
+      if (isAccept) s += `<text x="${node.x}" y="${node.y+4}" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="10" font-weight="700" fill="#1b5e20">qₐ</text>`;
+    });
+  }
+  // labels on right
+  if (i >= 1) s += `<text x="610" y="${cy0 + dy + 4}" font-family="var(--sans), system-ui" font-size="11" fill="#666">depth 1: 2 branches</text>`;
+  if (i >= 2) s += `<text x="610" y="${cy0 + 2*dy + 4}" font-family="var(--sans), system-ui" font-size="11" fill="#666">depth 2: 4 branches</text>`;
+  if (i >= 3) s += `<text x="610" y="${cy0 + 3*dy + 4}" font-family="var(--sans), system-ui" font-size="11" fill="#666">depth ≤ T = n<tspan baseline-shift="super" font-size="0.75em">k</tspan></text>`;
+  if (hi === 'accept' || hi === 'conclude') s += `<text x="20" y="${cy0 + 3*dy + 4}" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="var(--accent-strong, #1c4a3f)">Leaves: ≤ b<tspan baseline-shift="super" font-size="0.75em">T</tspan> = 2<tspan baseline-shift="super" font-size="0.75em">O(n^k)</tspan></text>`;
+  document.getElementById('np-svg').innerHTML = s;
+  if (i < 0) document.getElementById('np-explain').innerHTML = `<div class="step-num">Press play to watch DSim explore N's tree</div><p style="margin:4px 0;">An NTM branches at every step. The deterministic simulator just walks the whole tree.</p>`;
+  else document.getElementById('np-explain').innerHTML = `<div class="step-num">Step ${i+1} of ${stages.length}</div><p style="margin:4px 0;">${stages[i].label}</p>`;
+}
+function step() { if (i < stages.length - 1) i++; render(); }
+function reset() { i = -1; render(); }
+function atEnd() { return i >= stages.length - 1; }
+WidgetLoop.create({runBtn:document.getElementById('np-run'),stepBtn:document.getElementById('np-step'),resetBtn:document.getElementById('np-reset'),speedSlider:document.getElementById('np-speed'),speedLabel:document.getElementById('np-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:2200,baseLoopMs:6000,autoStartMs:1300});
+reset();
+})();
+</script><script src="../presentation.js"></script>
+</body></html>

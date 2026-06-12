@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P61 · Bridge theorem (constructive proof)</title>
+<link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css">
+<script src="../widget-loop.js"></script></head><body>
+
+<header class="tool-header">
+<div class="crumb"><a href="index.html">← Student tools</a> · Problem 61 · Lecture 5 · Round 1 (30 pts)</div>
+<h1>The bridge theorem · build a decider from two recognizers</h1>
+<p class="sub">L is decidable <strong>iff</strong> both L and L̅ are Turing-recognizable. Watch the interleaved-simulation trick that builds the decider.</p>
+<div class="tags"><span class="tag-pill">CLO-1</span><span class="tag-pill warn">R1·30 pts · R1.9</span><span class="tag-pill info">L5</span></div>
+</header>
+
+<div class="wrap">
+
+<section><div class="section-label">1 · Theorem statement</div>
+<div class="theorem-box"><div class="theorem-label">Bridge theorem (Sipser §4.2, Theorem 4.22)</div>
+<p style="margin:4px 0;">A language L is <strong>decidable</strong> if and only if both L and its complement L̅ are <strong>Turing-recognizable</strong>.</p>
+</div>
+<div class="theorem-box"><div class="theorem-label">Why it deserves the name "bridge"</div>
+<p style="margin:4px 0;">Decidable lies inside Recognizable. The theorem says decidability = "doubly recognizable" — you need a recognizer for L AND one for ¬L. Either one alone isn't enough (A<sub>TM</sub> has a recognizer but its complement doesn't, so A<sub>TM</sub> is undecidable).</p>
+</div>
+</section>
+
+<section><div class="section-label">2 · Construction · build a decider from R_L and R_¬L</div>
+<div class="widget"><div class="widget-title">Interleaved simulation, step by step <span class="pill">Auto-plays</span></div>
+<div class="controls">
+<button class="btn play-btn" id="br-run">⏸ Pause</button><button class="btn ghost" id="br-step">Step</button><button class="btn ghost" id="br-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="br-speed" min="0.25" max="3" step="0.25" value="1"><span id="br-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label>
+</div>
+<svg id="br-svg" viewBox="0 0 720 320" style="background:#fcfbf7;border-radius:6px;width:100%;"></svg>
+<div class="explain-panel" id="br-explain"></div>
+</div></section>
+
+<section><div class="section-label">3 · The forward direction (⇒)</div>
+<div class="theorem-box"><div class="theorem-label">If L is decidable, both L and L̅ are recognizable</div>
+<p style="margin:4px 0;">Easy. Let D be a decider for L. D always halts and outputs accept/reject. As a recognizer for L, D works directly. For L̅, build D′: on input x, run D(x), output the OPPOSITE answer. D′ is a decider for L̅, hence a recognizer.</p>
+</div>
+</section>
+
+<section><div class="section-label">4 · The reverse direction (⇐) — the constructive trick</div>
+<div class="theorem-box"><div class="theorem-label">Given recognizers R_L and R_¬L, build a decider for L</div>
+<p style="margin:4px 0;"><strong>The new machine D on input x:</strong></p>
+<ol style="margin:6px 0 6px 22px;">
+<li>Simulate R_L on x AND R_¬L on x <em>in parallel</em>, by running them in lockstep (one step of R_L, then one step of R_¬L, then back).</li>
+<li>If R_L accepts: D accepts.</li>
+<li>If R_¬L accepts: D rejects.</li>
+<li>Both can't accept (would mean x ∈ L AND x ∉ L). Exactly one accepts, eventually — because either x ∈ L (so R_L halts and accepts) or x ∉ L (so R_¬L halts and accepts).</li>
+</ol>
+<p style="margin:4px 0;"><strong>Why D always halts:</strong> for every x, exactly one of x ∈ L or x ∉ L holds; the corresponding recognizer is guaranteed to halt and accept; the parallel simulation reaches that decision in finite time.</p>
+</div>
+</section>
+
+<section><div class="section-label">5 · Q&amp;A defence notes</div>
+<ul class="qa-list">
+<li><div class="q">Q1. Why does "interleaved" matter? Couldn't we just run R_L first, then R_¬L?</div><div class="a">No — R_L might loop forever on inputs not in L. If x ∉ L, running R_L first would never finish, and we'd never get to R_¬L. Interleaving guarantees that we make progress on both simulations.</div></li>
+<li><div class="q">Q2. Why can't both recognizers accept the same x?</div><div class="a">R_L accepts x ⇒ x ∈ L. R_¬L accepts x ⇒ x ∉ L. Both accepting would mean x ∈ L AND x ∉ L, a contradiction. So at most one accepts.</div></li>
+<li><div class="q">Q3. Why must <em>some</em> recognizer eventually accept?</div><div class="a">Every x is in L or in L̅ (law of excluded middle for language membership). The matching recognizer accepts strings in its language. Recognizers don't have to halt on rejections, but they do halt on accepts — so the right one will halt and accept on every x.</div></li>
+<li><div class="q">Q4. Application — give an example where the bridge theorem is the key step in proving undecidability.</div><div class="a">A<sub>TM</sub> is recognizable (Universal TM). If A<sub>TM</sub> were decidable, then ¬A<sub>TM</sub> would be recognizable too (by the forward direction). But ¬A<sub>TM</sub> is known to be NOT recognizable. Contradiction. So A<sub>TM</sub> is undecidable. The bridge theorem is the engine for this argument.</div></li>
+<li><div class="q">Q5. Application — EQ<sub>TM</sub> is neither recognizable nor co-recognizable. What does that imply?</div><div class="a">If EQ<sub>TM</sub> were decidable, both it and ¬EQ<sub>TM</sub> would be recognizable (forward direction). Since neither is, EQ<sub>TM</sub> is "even worse than" A<sub>TM</sub>: it's a strictly harder undecidable problem.</div></li>
+</ul></section>
+
+</div>
+<footer class="foot">Problem 61 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<script>
+(function(){
+const stages = [
+  {label: 'Input x arrives at the new machine D.', highlight: 'input'},
+  {label: 'D fires up two simulations in parallel: R_L on x (top) and R_¬L on x (bottom).', highlight: 'both'},
+  {label: 'Step 1: R_L runs one step. R_¬L runs one step. Neither has halted yet.', highlight: 'both', tick: 1},
+  {label: 'Step 2: R_L runs one more step. R_¬L runs one more step. Still no decision.', highlight: 'both', tick: 2},
+  {label: 'Step 3: R_L halts and accepts! ⇒ x ∈ L. D outputs ACCEPT and stops everything.', highlight: 'accept-L', tick: 3},
+  {label: 'Alternative ending: had R_¬L accepted instead, D would have output REJECT — meaning x ∉ L.', highlight: 'accept-notL'},
+  {label: 'D always halts because exactly one of (x ∈ L), (x ∉ L) is true, and the corresponding recognizer halts on accept. The interleaving guarantees we discover which one in finite time.', highlight: 'done'},
+];
+let i = -1;
+function render() {
+  const W = 720, H = 320;
+  let s = '';
+  // input box
+  const inputOp = i < 0 ? 0.25 : 1;
+  s += `<rect x="20" y="140" width="80" height="40" rx="8" fill="#fff" stroke="#444" stroke-width="${i===0?'2.5':'1.4'}" opacity="${inputOp}"/>`;
+  s += `<text x="60" y="164" text-anchor="middle" font-family="ui-monospace, monospace" font-size="14" font-weight="bold" opacity="${inputOp}">input x</text>`;
+  // arrow into D
+  s += `<line x1="100" y1="160" x2="140" y2="160" stroke="#444" stroke-width="1.5" opacity="${inputOp}" marker-end="url(#br-arr)"/>`;
+
+  // The new machine D box
+  const dOp = i < 1 ? 0.3 : 1;
+  s += `<rect x="140" y="60" width="430" height="200" rx="12" fill="#fff" stroke="var(--accent-strong, #1c4a3f)" stroke-width="2.5" opacity="${dOp}"/>`;
+  s += `<text x="156" y="84" font-family="var(--sans), system-ui" font-size="13" font-weight="700" fill="var(--accent-strong, #1c4a3f)" opacity="${dOp}">The decider D (built by interleaved simulation):</text>`;
+
+  // R_L (top sub-box)
+  const stage = i >= 0 ? stages[i] : null;
+  const stageH = stage ? stage.highlight : '';
+  const stageTick = stage ? stage.tick : 0;
+  const rLActive = stageH === 'both' || stageH === 'accept-L' || stageH === 'done';
+  const rLAccept = stageH === 'accept-L';
+  s += `<rect x="160" y="100" width="160" height="60" rx="8" fill="${rLAccept ? '#c8e6c9' : 'var(--accent-soft)'}" stroke="${rLAccept ? '#1b5e20' : 'var(--accent-strong, #1c4a3f)'}" stroke-width="${rLAccept ? '2.5' : '1.6'}" opacity="${dOp}"/>`;
+  s += `<text x="240" y="122" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" font-weight="700" fill="var(--accent-strong, #1c4a3f)" opacity="${dOp}">R_L on x</text>`;
+  s += `<text x="240" y="140" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" opacity="${dOp}">recognizer for L</text>`;
+  // ticks for R_L
+  if (rLActive && stageTick > 0) {
+    s += `<text x="240" y="155" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="10" fill="#888">step ${stageTick}…</text>`;
+  }
+  if (rLAccept) {
+    s += `<text x="240" y="155" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11" font-weight="700" fill="#1b5e20">✓ ACCEPT</text>`;
+  }
+
+  // R_¬L (bottom sub-box)
+  const rNAccept = stageH === 'accept-notL';
+  s += `<rect x="160" y="180" width="160" height="60" rx="8" fill="${rNAccept ? '#fbe9e7' : '#fff4ee'}" stroke="${rNAccept ? '#c62828' : 'var(--warn-strong, #b95825)'}" stroke-width="${rNAccept ? '2.5' : '1.6'}" opacity="${dOp}"/>`;
+  s += `<text x="240" y="202" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" font-weight="700" fill="var(--warn-strong, #b95825)" opacity="${dOp}">R_¬L on x</text>`;
+  s += `<text x="240" y="220" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" opacity="${dOp}">recognizer for L̅</text>`;
+  if (rLActive && stageTick > 0) {
+    s += `<text x="240" y="235" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="10" fill="#888">step ${stageTick}…</text>`;
+  }
+  if (rNAccept) {
+    s += `<text x="240" y="235" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="11" font-weight="700" fill="#c62828">✓ ACCEPT</text>`;
+  }
+
+  // interleaving indicator (dashed line between the two)
+  if (rLActive) {
+    s += `<line x1="240" y1="160" x2="240" y2="180" stroke="#888" stroke-width="1" stroke-dasharray="3 2" opacity="${dOp}"/>`;
+    s += `<text x="330" y="165" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#888" opacity="${dOp}">interleaved</text>`;
+    s += `<text x="330" y="180" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#888" opacity="${dOp}">step-by-step</text>`;
+  }
+
+  // Decision logic box
+  const showDec = stageH === 'accept-L' || stageH === 'accept-notL' || stageH === 'done';
+  s += `<rect x="440" y="120" width="120" height="120" rx="8" fill="#fff" stroke="#444" stroke-width="${showDec ? '2' : '1'}" stroke-dasharray="${showDec ? '0' : '4 2'}" opacity="${showDec ? 1 : 0.5}"/>`;
+  s += `<text x="500" y="140" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700">Decision logic</text>`;
+  s += `<text x="500" y="158" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10">if R_L accepts:</text>`;
+  s += `<text x="500" y="172" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="10" font-weight="700" fill="${stageH==='accept-L' ? 'var(--accent-strong, #1c4a3f)' : '#666'}">→ D outputs ACCEPT</text>`;
+  s += `<text x="500" y="194" text-anchor="middle" font-family="var(--sans), system-ui" font-size="10">if R_¬L accepts:</text>`;
+  s += `<text x="500" y="208" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="10" font-weight="700" fill="${stageH==='accept-notL' ? 'var(--warn-strong, #b95825)' : '#666'}">→ D outputs REJECT</text>`;
+
+  // output arrow + result box
+  if (showDec) {
+    s += `<line x1="570" y1="160" x2="610" y2="160" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.5" marker-end="url(#br-arr)"/>`;
+    const result = stageH === 'accept-L' ? 'ACCEPT' : stageH === 'accept-notL' ? 'REJECT' : 'halt';
+    const resColor = stageH === 'accept-L' ? '#1b5e20' : stageH === 'accept-notL' ? '#c62828' : '#444';
+    const resBg = stageH === 'accept-L' ? '#c8e6c9' : stageH === 'accept-notL' ? '#fbe9e7' : '#fff';
+    s += `<rect x="615" y="140" width="90" height="40" rx="8" fill="${resBg}" stroke="${resColor}" stroke-width="2"/>`;
+    s += `<text x="660" y="164" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="12" font-weight="700" fill="${resColor}">${result}</text>`;
+  }
+
+  // arrowhead defs
+  s = `<defs><marker id="br-arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#444"/></marker></defs>` + s;
+  document.getElementById('br-svg').innerHTML = s;
+
+  if (i < 0) document.getElementById('br-explain').innerHTML = `<div class="step-num">Press play to watch</div><p style="margin:4px 0;">D takes two recognizers (one for L, one for L̅) and runs them in parallel. Whichever accepts first decides the answer.</p>`;
+  else document.getElementById('br-explain').innerHTML = `<div class="step-num">Step ${i+1} of ${stages.length}</div><p style="margin:4px 0;">${stages[i].label}</p>`;
+}
+function step() { if (i < stages.length - 1) i++; render(); }
+function reset() { i = -1; render(); }
+function atEnd() { return i >= stages.length - 1; }
+WidgetLoop.create({runBtn:document.getElementById('br-run'),stepBtn:document.getElementById('br-step'),resetBtn:document.getElementById('br-reset'),speedSlider:document.getElementById('br-speed'),speedLabel:document.getElementById('br-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:2200,baseLoopMs:6000,autoStartMs:1300});
+reset();
+})();
+</script><script src="../presentation.js"></script>
+</body></html>

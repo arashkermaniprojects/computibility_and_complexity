@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P62 · A_LBA decidable vs E_LBA undecidable</title>
+<link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="tool-shell.css">
+<link rel="stylesheet" href="../presentation.css">
+<script src="../widget-loop.js"></script></head><body>
+
+<header class="tool-header">
+<div class="crumb"><a href="index.html">← Student tools</a> · Problem 62 · Lecture 7 · Round 1 (30 pts)</div>
+<h1>A<sub>LBA</sub> decidable vs E<sub>LBA</sub> undecidable</h1>
+<p class="sub">Same machine model (LBA), but one acceptance question is decidable and the other is undecidable. The reason: bounded configurations vs computation-history encoding.</p>
+<div class="tags"><span class="tag-pill">CLO-1</span><span class="tag-pill warn">R1·30 pts · R1.14</span><span class="tag-pill info">L7</span></div>
+</header>
+
+<div class="wrap">
+
+<section><div class="section-label">1 · The two languages</div>
+<div class="theorem-box"><div class="theorem-label">A<sub>LBA</sub> = {⟨M, w⟩ : M is an LBA that accepts w}</div>
+<p style="margin:4px 0;"><strong>Decidable.</strong> Sipser Theorem 5.9.</p>
+</div>
+<div class="theorem-box"><div class="theorem-label">E<sub>LBA</sub> = {⟨M⟩ : M is an LBA and L(M) = ∅}</div>
+<p style="margin:4px 0;"><strong>Undecidable.</strong> Sipser Theorem 5.10.</p>
+</div>
+<p style="margin:8px 0;">Both questions are about LBAs (linear-bounded automata — Turing machines that can only use cells holding the input). Yet one is decidable, one isn't. Why?</p>
+</section>
+
+<section><div class="section-label">2 · A<sub>LBA</sub> decidability · the configuration-count argument</div>
+<div class="widget"><div class="widget-title">Why A<sub>LBA</sub> is decidable — bounded configurations <span class="pill">Auto-plays</span></div>
+<div class="controls">
+<button class="btn play-btn" id="ab-run">⏸ Pause</button><button class="btn ghost" id="ab-step">Step</button><button class="btn ghost" id="ab-reset">Reset</button>
+<label class="speed-control">Speed <input type="range" id="ab-speed" min="0.25" max="3" step="0.25" value="1"><span id="ab-speed-label" style="font-family:var(--mono);min-width:28px;">1×</span></label>
+</div>
+<svg id="ab-svg" viewBox="0 0 720 280" style="background:#fcfbf7;border-radius:6px;width:100%;"></svg>
+<div class="explain-panel" id="ab-explain"></div>
+</div>
+<div class="theorem-box"><div class="theorem-label">Decider for A<sub>LBA</sub></div>
+<ol style="margin:6px 0 6px 22px;">
+<li>On input ⟨M, w⟩ with |w| = n, count the maximum number of distinct configurations: <strong>|Q| · n · |Γ|<sup>n</sup></strong> (state × head position × tape content).</li>
+<li>Simulate M on w for at most this many steps.</li>
+<li>If M accepts: accept. If M rejects or exceeds the bound: reject (any longer run would repeat a configuration → infinite loop).</li>
+</ol>
+<p style="margin:4px 0;"><strong>Why this works:</strong> A loop means the same configuration repeats — so if M hasn't accepted within |Q|·n·|Γ|<sup>n</sup> steps, it never will. The bound is exponential in n, but it's FINITE, so the algorithm always halts.</p>
+</div>
+</section>
+
+<section><div class="section-label">3 · E<sub>LBA</sub> undecidability · the computation-history reduction</div>
+<div class="theorem-box"><div class="theorem-label">Why the configuration bound doesn't save E<sub>LBA</sub></div>
+<p style="margin:4px 0;">A<sub>LBA</sub> asks about <em>one specific w</em>: bound the time, simulate, done. E<sub>LBA</sub> asks about <em>ALL possible inputs</em>: is the language empty? You'd have to check every string — infinitely many.</p>
+</div>
+<div class="theorem-box"><div class="theorem-label">Reduction A<sub>TM</sub> ≤<sub>m</sub> co-E<sub>LBA</sub></div>
+<p style="margin:4px 0;">Given ⟨M, w⟩, build an LBA B<sub>M,w</sub> whose language is the set of <strong>accepting computation histories</strong> of M on w. (A computation history is a string C₁#C₂#…#C_ℓ listing every configuration of M's run.)</p>
+<p style="margin:4px 0;">Key claims:</p>
+<ul style="margin:4px 0 4px 22px;">
+<li>B<sub>M,w</sub> can verify a candidate history with three local checks (start config, every step legal, end accepting) — each uses constant tape per cell, so B<sub>M,w</sub> is genuinely an LBA.</li>
+<li>L(B<sub>M,w</sub>) ≠ ∅ iff M accepts w (the witness is the accepting history).</li>
+<li>So a decider for E<sub>LBA</sub> would decide co-A<sub>TM</sub> — impossible.</li>
+</ul>
+</div>
+</section>
+
+<section><div class="section-label">4 · The contrast in one sentence</div>
+<div class="theorem-box"><div class="theorem-label">Same machine model. Different scope of question.</div>
+<p style="margin:4px 0;"><strong>A<sub>LBA</sub>:</strong> "does this LBA accept THIS specific w?" — finite simulation suffices because configurations are bounded.</p>
+<p style="margin:4px 0;"><strong>E<sub>LBA</sub>:</strong> "does this LBA accept ANY w?" — checking all strings is infinite, and there's no shortcut because LBAs can encode arbitrary TM computation histories.</p>
+</div>
+</section>
+
+<section><div class="section-label">5 · Q&amp;A defence notes</div>
+<ul class="qa-list">
+<li><div class="q">Q1. Why isn't A<sub>TM</sub> also decidable by the same configuration-count argument?</div><div class="a">A TM can use unbounded tape. The number of possible configurations is <strong>infinite</strong>: |Q| · ∞ · |Γ|<sup>∞</sup>. So the bound is not finite, no termination guarantee.</div></li>
+<li><div class="q">Q2. What's the exact bound for an LBA's configurations?</div><div class="a"><strong>|Q| · n · |Γ|<sup>n</sup></strong>, where n = |w|. State × head position (n cells) × tape content (each of n cells holds one of |Γ| symbols).</div></li>
+<li><div class="q">Q3. Is the bound tight? Can an LBA actually use 2<sup>O(n)</sup> steps?</div><div class="a">Yes. LBA's can be programmed to enumerate every configuration before halting — equivalent to PSPACE on input of size n. So worst-case running time really is 2<sup>O(n)</sup>.</div></li>
+<li><div class="q">Q4. Sketch the LBA B<sub>M,w</sub> for R1.5.</div><div class="a">On input x (a candidate history), B<sub>M,w</sub> does three local checks. (i) Start: is the first config q₀w? (ii) Transition: for each adjacent pair (Cᵢ, Cᵢ₊₁), do the local 2×3 windows match δ of M? (iii) End: does the last config contain q<sub>accept</sub>? All three pass ⇒ accept x. Each check fits in |x| cells, so B<sub>M,w</sub> is an LBA. L(B<sub>M,w</sub>) ≠ ∅ iff M accepts w.</div></li>
+<li><div class="q">Q5. Why is "co-E<sub>LBA</sub>" the natural target instead of E<sub>LBA</sub>?</div><div class="a">L(B<sub>M,w</sub>) ≠ ∅ iff M accepts w — so M accepts w iff ⟨B<sub>M,w</sub>⟩ ∈ co-E<sub>LBA</sub>. That's literally a reduction A<sub>TM</sub> ≤<sub>m</sub> co-E<sub>LBA</sub>. Since decidability is closed under complement, this gives both co-E<sub>LBA</sub> and E<sub>LBA</sub> undecidable.</div></li>
+</ul></section>
+
+</div>
+<footer class="foot">Problem 62 · BCS 402 · Dr. Arash Kermani · CUD</footer>
+
+<script>
+(function(){
+const stages = [
+  {label: 'LBA M with state set Q, tape alphabet Γ, input w of length n.', t: 'setup'},
+  {label: 'Tape size is fixed at n cells (LBAs cannot extend the tape past the input).', t: 'tape'},
+  {label: 'How many distinct tape contents are possible? Each of n cells can hold one of |Γ| symbols → |Γ|ⁿ tape configurations.', t: 'tape-count'},
+  {label: 'Multiply by |Q| (state) and n (head position): total distinct configurations = |Q| · n · |Γ|ⁿ. Finite!', t: 'total-count'},
+  {label: 'Run M on w for that many steps. If M accepts within the bound: accept. If M exceeds the bound without accepting: reject.', t: 'simulate'},
+  {label: 'Why this works: any run that exceeds the bound must REPEAT a configuration — so it loops forever. Reject is safe.', t: 'loop'},
+];
+let i = -1;
+function render() {
+  let s = '';
+  // n cells
+  const cellW = 36;
+  const n = 8;
+  const tapeY = 110;
+  const tapeX = 220;
+  s += `<text x="360" y="40" text-anchor="middle" font-family="var(--sans), system-ui" font-size="15" font-weight="700" fill="#1a1a1a">Counting LBA configurations</text>`;
+  // tape
+  for (let k = 0; k < n; k++) {
+    const x = tapeX + k * cellW;
+    const high = (i >= 1);
+    s += `<rect x="${x}" y="${tapeY}" width="${cellW}" height="36" fill="${high ? '#dcedc8' : '#fff'}" stroke="#444" stroke-width="${high ? '1.5' : '1'}"/>`;
+    s += `<text x="${x + cellW/2}" y="${tapeY + 23}" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13">${i >= 0 ? (k < n-1 ? (k%2===0?'0':'1') : 'w') : ''}</text>`;
+  }
+  // left/right end-markers
+  s += `<text x="${tapeX-12}" y="${tapeY+24}" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="14" font-weight="700" fill="var(--gold-strong, #a68526)">⊢</text>`;
+  s += `<text x="${tapeX + n*cellW + 12}" y="${tapeY+24}" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="14" font-weight="700" fill="var(--gold-strong, #a68526)">⊣</text>`;
+  // brace + n label
+  if (i >= 1) {
+    s += `<line x1="${tapeX}" y1="${tapeY+44}" x2="${tapeX+n*cellW}" y2="${tapeY+44}" stroke="var(--accent-strong, #1c4a3f)" stroke-width="1.5"/>`;
+    s += `<text x="${tapeX + n*cellW/2}" y="${tapeY+62}" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="13" font-weight="700" fill="var(--accent-strong, #1c4a3f)">n = ${n} cells</text>`;
+  }
+  // configurations count
+  if (i >= 2) {
+    s += `<rect x="120" y="200" width="220" height="58" rx="8" fill="#bbdefb" stroke="#1976d2" stroke-width="1.5"/>`;
+    s += `<text x="230" y="220" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="#1976d2">Tape contents</text>`;
+    s += `<text x="230" y="240" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="14" font-weight="700" fill="#1976d2">|Γ|<tspan baseline-shift="super" font-size="0.75em">n</tspan> possibilities</text>`;
+  }
+  if (i >= 3) {
+    s += `<rect x="380" y="200" width="280" height="58" rx="8" fill="#dcedc8" stroke="#558b2f" stroke-width="1.5"/>`;
+    s += `<text x="520" y="220" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-weight="700" fill="#558b2f">All configurations</text>`;
+    s += `<text x="520" y="240" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="14" font-weight="700" fill="#558b2f">|Q| · n · |Γ|<tspan baseline-shift="super" font-size="0.75em">n</tspan> — FINITE</text>`;
+  }
+  document.getElementById('ab-svg').innerHTML = s;
+  if (i < 0) document.getElementById('ab-explain').innerHTML = `<div class="step-num">Press play to watch the counting argument</div><p style="margin:4px 0;">We'll see how the bounded tape lets us count all possible configurations and derive a finite simulation bound.</p>`;
+  else document.getElementById('ab-explain').innerHTML = `<div class="step-num">Step ${i+1} of ${stages.length}</div><p style="margin:4px 0;">${stages[i].label}</p>`;
+}
+function step() { if (i < stages.length - 1) i++; render(); }
+function reset() { i = -1; render(); }
+function atEnd() { return i >= stages.length - 1; }
+WidgetLoop.create({runBtn:document.getElementById('ab-run'),stepBtn:document.getElementById('ab-step'),resetBtn:document.getElementById('ab-reset'),speedSlider:document.getElementById('ab-speed'),speedLabel:document.getElementById('ab-speed-label'),doStep:step,atEnd,doReset:reset,baseStepMs:2200,baseLoopMs:6000,autoStartMs:1300});
+reset();
+})();
+</script><script src="../presentation.js"></script>
+</body></html>

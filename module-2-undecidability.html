@@ -281,102 +281,10 @@
   <p>
     Why is this enough to prove that the set of functions ℕ → {0,1} is bigger than ℕ? Because
     <strong>"can be listed"</strong> is exactly the meaning of <em>countable</em>. If no list can
-    contain every such function, the set is uncountable. Now look at the full table below — it is the
-    same three-move proof, but with concrete bits — and then drive it interactively in the widget.
+    contain every such function, the set is uncountable. Drive the three moves interactively below
+    — and on the next slides we will replay the same trick on Turing machines to prove
+    A<sub>TM</sub> undecidable.
   </p>
-
-<figure class="diagram">
-  <svg viewBox="0 0 640 340" xmlns="http://www.w3.org/2000/svg" style="background:#fcfbf7;border-radius:8px;">
-    <text x="320" y="22" text-anchor="middle" font-family="var(--sans), system-ui" font-size="14" font-weight="700" fill="#1a1a1a">
-      Cantor's diagonal · flip every diagonal bit to build a function not in the list
-    </text>
-    <!-- header row -->
-    <g font-family="var(--mono), ui-monospace" font-size="13" fill="#1a1a1a">
-      <text x="100" y="60" font-weight="700">input n →</text>
-      <text x="195" y="60" text-anchor="middle">0</text>
-      <text x="245" y="60" text-anchor="middle">1</text>
-      <text x="295" y="60" text-anchor="middle">2</text>
-      <text x="345" y="60" text-anchor="middle">3</text>
-      <text x="395" y="60" text-anchor="middle">4</text>
-      <text x="445" y="60" text-anchor="middle">…</text>
-      <text x="510" y="60" text-anchor="middle" font-weight="700">function</text>
-    </g>
-    <!-- horizontal rule below header -->
-    <line x1="170" y1="68" x2="540" y2="68" stroke="#888" stroke-width="1"/>
-    <!-- 5 rows of f<sub>i</sub> with diagonal cells highlighted -->
-    <g font-family="var(--mono), ui-monospace" font-size="13">
-      <!-- row 1: diagonal is column 0 -->
-      <text x="100" y="95" font-weight="700">f&#8321;</text>
-      <rect x="180" y="80" width="30" height="22" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.5"/>
-      <text x="195" y="95" text-anchor="middle" font-weight="700" fill="var(--gold)">1</text>
-      <text x="245" y="95" text-anchor="middle">0</text>
-      <text x="295" y="95" text-anchor="middle">1</text>
-      <text x="345" y="95" text-anchor="middle">0</text>
-      <text x="395" y="95" text-anchor="middle">1</text>
-      <text x="445" y="95" text-anchor="middle">…</text>
-      <!-- row 2: diagonal is column 1 -->
-      <text x="100" y="125" font-weight="700">f&#8322;</text>
-      <text x="195" y="125" text-anchor="middle">1</text>
-      <rect x="230" y="110" width="30" height="22" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.5"/>
-      <text x="245" y="125" text-anchor="middle" font-weight="700" fill="var(--gold)">1</text>
-      <text x="295" y="125" text-anchor="middle">0</text>
-      <text x="345" y="125" text-anchor="middle">1</text>
-      <text x="395" y="125" text-anchor="middle">0</text>
-      <text x="445" y="125" text-anchor="middle">…</text>
-      <!-- row 3 -->
-      <text x="100" y="155" font-weight="700">f&#8323;</text>
-      <text x="195" y="155" text-anchor="middle">0</text>
-      <text x="245" y="155" text-anchor="middle">1</text>
-      <rect x="280" y="140" width="30" height="22" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.5"/>
-      <text x="295" y="155" text-anchor="middle" font-weight="700" fill="var(--gold)">0</text>
-      <text x="345" y="155" text-anchor="middle">1</text>
-      <text x="395" y="155" text-anchor="middle">1</text>
-      <text x="445" y="155" text-anchor="middle">…</text>
-      <!-- row 4 -->
-      <text x="100" y="185" font-weight="700">f&#8324;</text>
-      <text x="195" y="185" text-anchor="middle">1</text>
-      <text x="245" y="185" text-anchor="middle">1</text>
-      <text x="295" y="185" text-anchor="middle">0</text>
-      <rect x="330" y="170" width="30" height="22" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.5"/>
-      <text x="345" y="185" text-anchor="middle" font-weight="700" fill="var(--gold)">0</text>
-      <text x="395" y="185" text-anchor="middle">1</text>
-      <text x="445" y="185" text-anchor="middle">…</text>
-      <!-- row 5 -->
-      <text x="100" y="215" font-weight="700">f&#8325;</text>
-      <text x="195" y="215" text-anchor="middle">1</text>
-      <text x="245" y="215" text-anchor="middle">0</text>
-      <text x="295" y="215" text-anchor="middle">1</text>
-      <text x="345" y="215" text-anchor="middle">1</text>
-      <rect x="380" y="200" width="30" height="22" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.5"/>
-      <text x="395" y="215" text-anchor="middle" font-weight="700" fill="var(--gold)">1</text>
-      <text x="445" y="215" text-anchor="middle">…</text>
-      <!-- ellipsis row -->
-      <text x="100" y="240" font-weight="700">⋮</text>
-    </g>
-    <!-- horizontal rule above g -->
-    <line x1="170" y1="255" x2="540" y2="255" stroke="var(--warn-strong, #b95825)" stroke-width="2"/>
-    <!-- diagonal flip row g (label fits in the f_i column, formula moved to caption below) -->
-    <g font-family="var(--mono), ui-monospace" font-size="13" fill="var(--warn-strong, #b95825)">
-      <text x="100" y="280" font-weight="700">g(n)</text>
-      <text x="195" y="280" text-anchor="middle" font-weight="700">0</text>
-      <text x="245" y="280" text-anchor="middle" font-weight="700">0</text>
-      <text x="295" y="280" text-anchor="middle" font-weight="700">1</text>
-      <text x="345" y="280" text-anchor="middle" font-weight="700">1</text>
-      <text x="395" y="280" text-anchor="middle" font-weight="700">0</text>
-      <text x="445" y="280" text-anchor="middle" font-weight="700">…</text>
-      <text x="510" y="280" text-anchor="middle" font-weight="700" font-size="11">≠ every f&#8345;</text>
-    </g>
-    <!-- formula on its own line (no longer crammed into the column-0 cell) -->
-    <text x="320" y="303" text-anchor="middle" font-family="var(--mono), ui-monospace" font-size="12" fill="var(--warn-strong, #b95825)" font-weight="700">
-      g(n) = 1 − f&#8345;(n)
-    </text>
-    <!-- bottom note -->
-    <text x="320" y="320" text-anchor="middle" font-family="var(--sans), system-ui" font-size="11" font-style="italic" fill="#666">
-      The new function g disagrees with each f&#8345; at column i, so it cannot appear in the list.
-    </text>
-  </svg>
-  <figcaption>Cantor lists every alleged function on the natural numbers as a row. By flipping each diagonal cell, he constructs a brand-new function that disagrees with row i at column i — so it cannot already be in the list. The same trick proves A<sub>TM</sub> undecidable when the rows become Turing machines.</figcaption>
-</figure>
 
 
   <h3>Drive the proof yourself</h3>
@@ -1462,6 +1370,16 @@ q0, _ -> qr, _, R`
       const thStyle = isPicked ? 'background: #fffbe6; outline: 2px solid var(--gold-strong, #a68526);' : '';
       html += `<th style="${thStyle}">⟨M<sub>${j+1}</sub>⟩${isPicked ? '<br><span style="font-size:9px;font-weight:700;color:var(--gold-strong, #a68526);">= ⟨D⟩</span>' : ''}</th>`;
     }
+    // Sipser Fig 4.20: explicit ⟨D⟩ column. Always present once we know D is built; highlighted when paradox is set.
+    if (showFinal) {
+      const dColStyle = pickedK >= 0
+        ? 'background: #fff4ee; outline: 2.5px solid var(--warn-strong, #b95825); padding: 4px;'
+        : 'background: var(--gold-soft); outline: 2px solid var(--gold-strong, #a68526);';
+      const dColLabel = pickedK >= 0
+        ? `⟨D⟩<br><span style="font-size:9px;font-weight:700;color:var(--warn-strong, #b95825);">= ⟨M<sub>${pickedK+1}</sub>⟩</span>`
+        : `⟨D⟩`;
+      html += `<th style="${dColStyle}">${dColLabel}</th>`;
+    }
     html += '</tr></thead><tbody>';
 
     for (let i = 0; i < n; i++) {
@@ -1505,6 +1423,17 @@ q0, _ -> qr, _, R`
         }
         html += `<td style="${style}">${inner}</td>`;
       }
+      // Extra ⟨D⟩ column for this Mᵢ row (once D is built).
+      if (showFinal) {
+        if (pickedK >= 0) {
+          // We know ⟨D⟩ = ⟨M_{pickedK+1}⟩, so M_i on ⟨D⟩ equals M[i][pickedK].
+          const dv = M[i][pickedK];
+          const dColor = dv === 'A' ? 'var(--accent)' : 'var(--warn)';
+          html += `<td style="background: #fff4ee; font-weight: bold; color: ${dColor};">${dv}</td>`;
+        } else {
+          html += `<td style="background: var(--gold-soft); color:#999;">?</td>`;
+        }
+      }
       html += '</tr>';
     }
 
@@ -1530,6 +1459,22 @@ q0, _ -> qr, _, R`
           html += `<td style="color:#bbb;">?</td>`;
         }
       }
+      // (D, ⟨D⟩) — Sipser's "?" cell. Once D is built, this is the explicit contradiction site.
+      if (showFinal) {
+        if (pickedK >= 0) {
+          const v = M[pickedK][pickedK];
+          const flipped = v === 'A' ? 'R' : 'A';
+          const vColor = v === 'A' ? 'var(--accent)' : 'var(--warn)';
+          const fColor = flipped === 'A' ? 'var(--accent)' : 'var(--warn)';
+          html += `<td style="background: #fff4ee; border: 2.5px solid var(--warn-strong, #b95825); padding: 4px;">` +
+                    `<div style="font-size:10px; line-height:1.3; color:#444;">M<sub>${pickedK+1}</sub> says <b style="color:${vColor};">${v}</b></div>` +
+                    `<div style="font-size:10px; line-height:1.3; color:#444;">D says <b style="color:${fColor};">${flipped}</b></div>` +
+                    `<div style="color: var(--warn-strong, #b95825); font-weight:900; font-size:18px; line-height:1;">?</div>` +
+                  `</td>`;
+        } else {
+          html += `<td style="background: var(--gold-soft); color: var(--gold-strong, #a68526); font-weight: 800; font-size: 16px;">?</td>`;
+        }
+      }
       html += '</tr>';
     }
 
@@ -1537,7 +1482,7 @@ q0, _ -> qr, _, R`
 
     // Helper banner under the table once D is built
     if (showFinal && pickedK === -1) {
-      html += '<div style="margin-top: 12px; padding: 10px 14px; background: #fffdf3; border: 1px solid var(--gold-soft); border-left: 3px solid var(--gold); border-radius: 6px; font-size: 13px; line-height: 1.5;"><b>Now suppose D = M<sub>k</sub> for some k.</b> Click any of the <b style="color:var(--accent-strong, #1c4a3f); text-decoration:underline dotted;">M<sub>1</sub>, M<sub>2</sub>, …, M<sub>6</sub></b> row labels on the left to pick that k. Column ⟨M<sub>k</sub>⟩ becomes ⟨D⟩, row M<sub>k</sub> becomes D, and the cell where they cross shows two incompatible values — Sipser\'s contradiction.</div>';
+      html += '<div style="margin-top: 12px; padding: 10px 14px; background: #fffdf3; border: 1px solid var(--gold-soft); border-left: 3px solid var(--gold); border-radius: 6px; font-size: 13px; line-height: 1.5;"><b>The ⟨D⟩ column has appeared on the far right</b> — Sipser\'s Figure 4.20. Right now its cells are <b style="color:var(--gold-strong, #a68526);">?</b> because we don\'t yet know which M<sub>k</sub> equals D. <b>Now suppose D = M<sub>k</sub> for some k.</b> Click any of the <b style="color:var(--accent-strong, #1c4a3f); text-decoration:underline dotted;">M<sub>1</sub>, M<sub>2</sub>, …, M<sub>6</sub></b> row labels on the left to pick that k. Column ⟨M<sub>k</sub>⟩ <em>is</em> ⟨D⟩, row M<sub>k</sub> <em>is</em> D, and the (D, ⟨D⟩) cell carries two incompatible values — Sipser\'s contradiction.</div>';
     } else if (pickedK >= 0) {
       html += '<div style="margin-top: 12px; padding: 10px 14px; background: #fff4ee; border-left: 3px solid var(--warn-strong, #b95825); border-radius: 6px; font-size: 13px;">Picked <b>k = ' + (pickedK+1) + '</b>. The orange-outlined cell shows the contradiction. <a href="#" data-clear-pick="1" style="color: var(--accent); margin-left: 8px;">Try a different k</a></div>';
     }

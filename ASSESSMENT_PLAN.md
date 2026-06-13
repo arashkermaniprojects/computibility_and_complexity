@@ -1,16 +1,16 @@
 # BCS 402 — Student-led Lecture Assessment Plan
 
-**Dr. Arash Kermani · CUD · Fall 2026 · Revised for 18 students**
+**Dr. Arash Kermani · CUD · Fall 2026 · Revised for 19 students**
 
 ## What changed in this revision
 
 The previous version of this plan had 60 candidate problems for 20 students. After re-auditing:
 
 - **Many entries weren't really problems** — they were concepts the lecture already explains (Cantor's diagonal, growth-rate animator, P-class showcase, etc.) or duplicates of widgets already living in the companion site (Universal TM, A_TM diagonalization, Cook-Levin tableau, Geography game, hierarchy diagonalizers, …). Asking a student to re-build any of these doesn't test the CLOs, it just produces a slicker version of the lecture demo.
-- **Enrollment dropped to 18.** Total slots needed: 18 × 3 rounds = **54 presentations**.
+- **Enrollment is 19** (one student joined late — S19). Total slots needed: 19 × 3 rounds = **57 presentations**.
 - **It's fine for a problem to be assigned to two students** — they can present different example inputs, different gadget focuses, or different proof angles. The second presentation isn't a re-run; it's a separate worked example.
 
-The result: a curated pool of **39 genuine problems** (14 R1 + 13 R2 + 12 R3), each requiring a substantive construction, reduction, or proof. **15 of them get two presenters** (different inputs); the other 24 get one presenter each. Every student touches **3 distinct CLOs** across the semester.
+The result: a curated pool of **39 genuine problems** (14 R1 + 13 R2 + 12 R3), each requiring a substantive construction, reduction, or proof. **18 of them get two presenters** (different inputs); the other 21 get one presenter each. Every student touches **3 distinct CLOs** across the semester.
 
 ## Logistics
 
@@ -19,12 +19,12 @@ The result: a curated pool of **39 genuine problems** (14 R1 + 13 R2 + 12 R3), e
   - Week 1: Mon Jun 15, Tue Jun 16, Wed Jun 17, Thu Jun 18
   - Week 2: Mon Jun 22, Tue Jun 23, Wed Jun 24, Thu Jun 25
   - Week 3: Mon Jun 29, Tue Jun 30
-- 18 students × 3 presentations each = **54 student slots** → **5.4 presentations per class on average** (4–6 per class in practice).
+- 19 students × 3 presentations each = **57 student slots** → **5.7 presentations per class on average** (4–7 per class in practice).
 - Suggested time per slot: 12–15 min including Q&A. So a typical day runs ≈ 75–105 min of presentations.
 - Each student presents **once per round**.
 
 > **Privacy note.** This file (ASSESSMENT_PLAN.md) is the *public* version — it uses
-> anonymous slot codes **S01 … S18**. The mapping from slot codes to real student names
+> anonymous slot codes **S01 … S19**. The mapping from slot codes to real student names
 > and IDs lives in `SEMESTER_SCHEDULE.xlsx` (gitignored, local-only).
 
 
@@ -33,16 +33,16 @@ The result: a curated pool of **39 genuine problems** (14 R1 + 13 R2 + 12 R3), e
 | Day | Date | Round | Theme | Slots | Problems |
 |---:|---|:---:|---|---:|---|
 |  1 | Mon Jun 15 | R1 | Direct reductions + bridge thm (Mod. 2–3) | 6 | R1.1, R1.2, R1.3, R1.4, R1.9 ×2 |
-|  2 | Tue Jun 16 | R1 | Computation-history + Rice (Mod. 3) | 6 | R1.5 ×2, R1.6, R1.7, R1.8, R1.10 |
+|  2 | Tue Jun 16 | R1 | Computation-history + Rice (Mod. 3) | 7 | R1.5 ×2, R1.6, R1.7, R1.8 ×2, R1.10 |
 |  3 | Wed Jun 17 | R1 | Recursion theorem + self-reference + LBA (Mod. 3) | 6 | R1.11, R1.12 ×2, R1.13, R1.14 ×2 |
 |  4 | Thu Jun 18 | R2 | Cook–Levin NP-complete reductions (Mod. 5) | 6 | R2.1, R2.2, R2.3, R2.4 ×2, R2.5 |
 |  5 | Mon Jun 22 | R2 | 3SAT→HAMPATH + verifiers & self-reducibility (Mod. 5) | 6 | R2.5 *var*, R2.6, R2.7 ×2, R2.8, R2.9 |
-|  6 | Tue Jun 23 | R2 | Class containments + Cook–Levin specifics (Mod. 4–5) | 6 | R2.10, R2.11 ×2, R2.12 ×2, R2.13 |
+|  6 | Tue Jun 23 | R2 | Class containments + Cook–Levin specifics (Mod. 4–5) | 7 | R2.10 ×2, R2.11 ×2, R2.12 ×2, R2.13 |
 |  7 | Wed Jun 24 | R3 | Savitch & TQBF (Mod. 6) | 5 | R3.1 ×2, R3.2, R3.3 ×2 |
 |  8 | Thu Jun 25 | R3 | PSPACE-hardness of games + start NL ⊊ PSPACE (Mod. 6–7) | 4 | R3.4, R3.5 ×2, R3.6 |
 |  9 | Mon Jun 29 | R3 | Hierarchy theorems & L/NL consequences (Mod. 7) | 4 | R3.6 *variant*, R3.7 ×2, R3.8 |
-| 10 | Tue Jun 30 | R3 | Exotic completeness & inductive counting (Mod. 7) | 5 | R3.9 ×2, R3.10, R3.11, R3.12 |
-| **Total** | | | | **54** | |
+| 10 | Tue Jun 30 | R3 | Exotic completeness & inductive counting (Mod. 7) | 6 | R3.9 ×2, R3.10, R3.11 ×2, R3.12 |
+| **Total** | | | | **57** | |
 
 Round structure:
 - **Round 1** = Days 1–3 (Mon Jun 15 – Wed Jun 17). Modules 2–3 (undecidability, reductions, recursion theorem). **CLOs 1, 2.** 30 points.
@@ -233,14 +233,16 @@ For comparison, the ones marked "kept but reframed" (R3.7, R3.9, R3.12) ask the 
 
 ## Problems with two presenters
 
-The 15 problems below get two student presentations. Both presenters work the same construction but on **different example inputs** and may emphasize different aspects (different gadget focus, correctness proof, or running-time analysis).
+The 18 problems below get two student presentations. Both presenters work the same construction but on **different example inputs** and may emphasize different aspects (different gadget focus, correctness proof, or running-time analysis).
 
 | Problem | Topic | Presenters | Suggested variation |
 |---|---|---|---|
 | **R1.12** Self-destructing TM (Kamikaze) | | S08, S10 | Different deliverable styles (Python program vs. abstract TM transitions). |
 | **R1.14** A_LBA decidable vs E_LBA undecidable contrast | | S16, S18 | One emphasizes A_LBA decidability; the other contrasts with E_LBA undecidability. |
 | **R1.5** E_LBA undecidability (computation history) | | S07, S14 | Two different (M, w) instances; one focuses on the constructibility, the other on the rejection chain. |
+| **R1.8** PCP undecidability | | S13, S19 | Different reduction encodings (computation history vs. modified PCP first); two different (M, w) inputs. |
 | **R1.9** Bridge theorem (constructive proof) | | S04, S06 | One does the constructive direction in full; the other focuses on the converse + interleaved-simulation detail. |
+| **R2.10** SET-COVER NP-completeness | | S10, S19 | Two reduction sources (Vertex-Cover vs. directly from 3SAT); two universe sizes. |
 | **R2.11** Cook-Levin on a tiny TM (explicit φ) | | S12, S15 | Different tiny TMs / input lengths; walk the clause families. |
 | **R2.12** NP ⊆ EXPTIME via NTM determinization | | S16, S18 | Different worked NTMs; one tracks states, the other tracks tapes. |
 | **R2.4** 3SAT → SUBSET-SUM | | S05, S09 | Different 3-CNF formulas; show the digit-position number system on two examples. |
@@ -252,9 +254,10 @@ The 15 problems below get two student presentations. Both presenters work the sa
 | **R3.6** NL ⊊ PSPACE via space hierarchy | | S07, S14 | One focuses on Savitch chain; the other on the SPACE(log n) ⊊ SPACE(n) step. |
 | **R3.7** P ⊊ EXPTIME via time hierarchy | | S04, S05 | Different NTM examples in the diagonalization. |
 | **R3.9** NL = coNL: Immerman-Szelepcsényi run | | S10, S12 | Different small graphs; one shows c_i forward, the other reverse direction. |
+| **R3.11** EXPSPACE-completeness of REGEX equivalence | | S11, S19 | One presents the Stockmeyer-Meyer encoding; the other presents the lower-bound argument via space hierarchy + reductions. |
 
 
-## Student → slot assignment (18 students)
+## Student → slot assignment (19 students)
 
 Each student touches **3 distinct CLOs** across their three presentations.
 
@@ -278,12 +281,14 @@ Each student touches **3 distinct CLOs** across their three presentations.
 | **S16** | R1.14 A_LBA decidable vs E_LBA undecidable contrast *(Wed Jun 17)* | R2.12 NP ⊆ EXPTIME via NTM determinization *(Tue Jun 23)* | R3.4 Generalized chess PSPACE-hardness *(Thu Jun 25)* | CLO-4, CLO-1, CLO-3 |
 | **S17** | R1.11 Recursion theorem fixed-point for chosen t(x) *(Wed Jun 17)* | R2.8 COMPOSITES verifier *(Mon Jun 22)* | R3.1 Savitch on small graph (explicit run) (variant) *(Wed Jun 24)* | CLO-4, CLO-2, CLO-3 |
 | **S18** | R1.14 A_LBA decidable vs E_LBA undecidable contrast (variant) *(Wed Jun 17)* | R2.12 NP ⊆ EXPTIME via NTM determinization (variant) *(Tue Jun 23)* | R3.3 TQBF → Generalized Geography *(Wed Jun 24)* | CLO-4, CLO-1, CLO-3 |
+| **S19** | R1.8 PCP undecidability (variant) *(Tue Jun 16)* | R2.10 SET-COVER NP-completeness (variant) *(Tue Jun 23)* | R3.11 EXPSPACE-completeness of REGEX equivalence (variant) *(Tue Jun 30)* | CLO-2, CLO-4, CLO-5 |
 
 ### Verification
 
-- **16 of 18 students** get **3 distinct CLOs** across their three presentations. The 2 exceptions (S13, S15) get only 2 distinct CLOs because both their R2 and R3 problems are CLO-4 reductions. This is the theoretical minimum given the new "double the hard reductions" rule — at least 2 students must double-up on CLO-4 to make the slot counts balance.
-- 39 distinct problems, 54 slots — 15 problems have two presenters, 24 problems have one.
-- Day-by-day load: 6, 6, 6, 6, 6, 6, 5, 4, 4, 5. Min 4 (Thu Jun 25 and Mon Jun 29), max 6 (Days 1–6).
+- **17 of 19 students** get **3 distinct CLOs** across their three presentations. The 2 exceptions (S13, S15) get only 2 distinct CLOs because both their R2 and R3 problems are CLO-4 reductions.
+- S19 (added late) was deliberately given a hard-problem trio touching three distinct CLOs (CLO-2, CLO-4, CLO-5).
+- 39 distinct problems, 57 slots — 18 problems have two presenters, 21 problems have one.
+- Day-by-day load: 6, 7, 6, 6, 6, 7, 5, 4, 4, 6. Min 4 (Thu Jun 25 and Mon Jun 29), max 7 (Days 2 and 6 — the two days where S19's hard problems land).
 
 ---
 

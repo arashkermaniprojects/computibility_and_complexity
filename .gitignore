@@ -8,6 +8,10 @@ _test*.js
 SEMESTER_SCHEDULE.xlsx
 *.xlsx
 
+# Assessment plan stays local — even though it uses anonymous S01..SN codes,
+# keep it off git as defence-in-depth against accidental PII leaks.
+ASSESSMENT_PLAN.md
+
 # OS / editor artifacts
 .DS_Store
 .fuse_hidden*
